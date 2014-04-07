@@ -1,0 +1,17 @@
+#icono{
+	position: absolute;	
+	bottom: 25px; right: 25px;
+}
+
+.icon-check {background-image: url(../img/despachar.png) !important;}
+.icon-lock {background-image: url(../img/lock.png) !important;}
+.icon-unlock {background-image: url(../img/unlock.png) !important;}
+.icon-skp {background-image: url(../img/skp.png) !important;}
+.icon-fastrack {background-image: url(../img/fastrack.png) !important;}
+.icon-config {background-image: url(../img/cog.gif) !important;}
+.icon-vita-eqp {background-image: url(../img/vitacora_state_eqp.png) !important;}
+.icon-update {background-image: url(../img/update.png) !important;}
+.icon-statistics {background-image: url(../img/icon_estadistica.png) !important;}
+.icon-problem {background-image: url(../img/problem.png) !important;}
+.icon-user {background-image: url(../img/user.gif) !important;}
+.icon-donwloaded {background-image: url(../img/dowload.png) !important;}

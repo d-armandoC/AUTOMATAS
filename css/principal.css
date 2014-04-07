@@ -1,0 +1,200 @@
+*{
+	border:0;
+	margin: 0;
+	padding: 0;
+}
+
+header, section, footer, aside, nav, article, figure {
+    display: block;
+}
+
+#panelNorte {
+	background: url(../img/layout-browser-hd-bg.gif) repeat-x;
+	height: '100%';
+}
+
+strong#titulo{
+	text-align: center;
+	font-family: arial;
+	font-size: 20px;
+	color: white;
+}
+
+strong#subtitulo{
+	text-align: left;
+	font-size: 15px;
+	color: white;
+}
+
+#map{	
+	height: 100%;
+	width: 100%;
+	border: 1px solid black;
+	position: absolute;
+}
+
+#grafica td, th{		
+	padding : 3px;
+}
+
+#grafica{
+	width: 80%;	
+	height: 100%;	
+	text-align: center;
+	margin-left: 10%;	
+}
+
+td.tabla_titulo h3{
+	font-size: 12px;
+	font-family: arial;
+	color: blue;
+}
+
+#despachos {    
+	width: 66.5em;
+    height: 17.7em; 
+    margin-left: 20em;
+    margin-top: 10em;
+    background-image: url(../img/logo.png);
+}
+
+#info_veh {	
+	background-color: #dbe6f3;
+	padding: 5px;
+	border : solid 2px;
+	border-color: black;
+}
+
+/*Iconos Hoy - Ayer*/
+.icon-today {background-image: url(../img/icon_hoy.png) !important;}
+.icon-yesterday {background-image: url(../img/icon_ayer.png) !important;}
+
+/*Iconos Menu Reportes*/
+.icon-general {background-image: url(../img/page_attach.png) !important;}
+.icon-informe {background-image: url(../img/icon_informe.png) !important;}
+.icon-asignacion {background-image: url(../img/icon_grid.png) !important;}
+.icon-no-atendidos {background-image: url(../img/icon_no_atendidas.png) !important;}
+.icon-reset {background-image: url(../img/icon_reset.png) !important;}
+.icon-exceso-vel {background-image: url(../img/icon_exceso_vel.png) !important;}
+.icon-servicios {background-image: url(../img/icon_servicios.png) !important;}
+.icon-estado-veh {background-image: url(../img/icon_estado_veh.png) !important;}
+.icon-franjas-hor {background-image: url(../img/icon_franjas_hor.png) !important;}
+.icon-trab-flota {background-image: url(../img/icon_trab_flota.png) !important;}
+.icon-all-flags {background-image: url(../img/icon_all_flags.png) !important;}
+.icon-eventos {background-image: url(../img/icon_eventos.png) !important;}
+.icon-taximetro {background-image: url(../img/icon_taximetro.png) !important;}
+.icon-stop {background-image: url(../img/icon_stop.png) !important;}
+.icon-report-geo {background-image: url(../img/icon_rep_geo.png) !important;}
+.icon-on-off {background-image: url(../img/icon_on_off.png) !important;}
+.icon-flota {background-image: url(../img/icon_flota.png) !important;}
+.icon-email {background-image: url(../img/icon_email.png) !important;}
+.icon-edit {background-image: url(../img/icon_edit.png) !important;}
+.icon-monitoreo {background-image: url(../img/icon_monitoreo.png) !important;}
+.icon-manten {background-image: url(../img/icon_manten.png) !important;}
+.icon-manten-edit {background-image: url(../img/icon_manten_edit.png) !important;}
+.icon-geoloc {background-image: url(../img/localizame.png) !important;}
+.icon-vehiculos_lugar {background-image: url(../img/inspect.png) !important;}
+/*Geocercas*/
+.icon-geocerca {background-image: url(../img/icon_geocerca.png) !important;}
+.icon-find-geo {background-image: url(../img/icon_ver_geo.png) !important;}
+.icon-add-geo {background-image: url(../img/icon_add_geo.png) !important;}
+.icon-show-geo {background-image: url(../img/icon_mostrar_geo.png) !important;}
+/*Otros*/
+.icon-cancelar {background-image: url(../img/cross.gif) !important;}
+.icon-limpiar-mapa {background-image: url(../img/icon_limpiar_mapa.png) !important;}
+.icon-trazar {background-image: url(../img/icon_trazar.png) !important;}
+.icon-rutas {background-image: url(../img/lapiz.png) !important;}
+.icon-bus-rojo{background-image: url(../img/bus_rojo.png) !important;}
+.icon-central{background-image: url(../img/icon_empresa.png) !important;}
+.puntoIco{background-image: url(../img/connect.gif) !important;}
+.estacionIco{background-image: url(../img/localizacion.png) !important;}
+.icon-config{background-image: url(../img/icon_config.png) !important;}
+.icon-save {background-image: url(../img/save.gif) !important;}
+.icon-update {background-image: url(../img/update.png) !important;}
+.icon-user {background-image: url(../img/user.gif) !important;}
+.icon-user-add {background-image: url(../img/user_add.gif) !important;}
+.icon-consultas {background-image: url(../img/icon_consultas.png) !important;}
+.icon-delete {background-image: url(../img/delete.gif) !important;}
+.icon-personal {background-image: url(../img/user_suit.gif) !important;}
+.icon-taxi{background-image: url(../img/icon_taxi.png) !important;}
+.icon-taxi-2{background-image: url(../img/icon_taxi_2.png) !important;}
+.icon-car{background-image: url(../img/icon_car.png) !important;}
+.icon-add-car{background-image: url(../img/icon_add_car.png) !important;}
+.icon-direccion{background-image: url(../img/book.png) !important;}
+.icon-negocio{background-image: url(../img/icon_negocio.png) !important;}
+.icon-plugin{background-image: url(../img/plugin.gif) !important;}
+.icon-add{background-image: url(../img/icon_add.gif) !important;}
+.icon-cmd {background-image: url(../img/icon_cmd.png) !important;}
+.icon-reg-inst {background-image: url(../img/icon_reg_inst.png) !important;}
+.icon-cmd {background-image: url(../img/icon_cmd.png) !important;}
+.icon-cmd-hist {background-image: url(../img/icon_cmd_hist.png) !important;}
+.icon-send-cmd {background-image: url(../img/icon_send_cmd.png) !important;}
+.icon-search-veh {background-image: url(../img/icon_search_veh.png) !important;}
+.icon-mapa {background-image: url(../img/globe-icon.png) !important;}
+.icon-excel {background-image: url(../img/excel.png) !important;}
+.icon-pdf {background-image: url(../img/icon_pdf.png) !important;}
+.icon-lock {background-image: url(../img/lock.png) !important;}
+.icon-unlock {background-image: url(../img/unlock.png) !important;}
+.icon-upload {background-image: url(../img/icon_upload.png) !important;}
+.icon-credits {background-image: url(../img/icon_credits.png) !important;}
+.icon-video {background-image: url(../img/video.png) !important;}
+.icon-statistics {background-image: url(../img/icon_estadistica.png) !important;}
+.icon-options {background-image: url(../img/cog.gif) !important;}
+.icon-facetas {background-image: url(../img/facetas.png) !important;}
+.icon-tree-company {background-image: url(../img/tree_company.png) !important;}
+
+#icono{
+	position: absolute;	
+	top: 150px; right: 25px;
+}
+
+#tablestados{
+    font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+    width:100%;
+    border-collapse:collapse;
+}
+
+#tablestados td, #tablestados th {
+    font-size:11px;
+    border:1px solid #98bf21;
+    padding:3px 7px 2px 7px;
+    font-family: Arial,Helvetica,sans-serif;
+}
+
+#tablestados th {
+    font-size:1.1em;
+    text-align:left;
+    padding-top:5px;
+    padding-bottom:4px;
+    background-color:#A7C942;
+    color:#ffffff;
+}
+
+#tablestados tr.alt td {
+    color:#000000;
+    background-color:#EAF2D3;
+}
+
+body {
+            overflow: hidden;
+        }
+
+        #demo-ct .x-table-layout-cell {
+            padding: 20px;
+        }
+
+        .x-spotlight {
+            background-color: #ccc;
+
+            z-index: 8999;
+            position: absolute;
+            top: 0;
+            left: 0;
+            -moz-opacity: 0.5;
+            opacity: .50;
+            filter: alpha(opacity=50);
+            width: 0;
+            height: 0;
+            zoom: 1;
+            font-size: 0;
+        }

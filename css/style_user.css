@@ -1,0 +1,42 @@
+*{
+	border:0;
+	margin: 0;
+	padding: 0;
+}
+
+header, section, footer, aside, nav, article, figure {
+    display: block;
+}
+
+#panelNorte {
+	background: url(../img/layout-browser-hd-bg.gif) repeat-x;
+	height: '100%';
+}
+
+strong#titulo{
+	text-align: center;
+	font-family: arial;
+	font-size: 20px;
+	color: white;
+}
+
+strong#subtitulo{
+	text-align: left;
+	font-size: 15px;
+	color: white;
+}
+
+#map{	
+	height: 100%;
+	width: 100%;
+	border: 1px solid black;
+	position: absolute;
+}
+
+#icono{
+	position: absolute;	
+	top: 150px; right: 25px;
+}
+
+.icon-taximetro {background-image: url(../img/icon_taximetro.png) !important;}
+.icon-mapa {background-image: url(../img/globe-icon.png) !important;}
