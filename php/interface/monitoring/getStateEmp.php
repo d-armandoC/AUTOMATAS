@@ -6,7 +6,7 @@ include ('../../../dll/config.php');
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-    $idRol = $_SESSION["IDROLKTAXY"];
+    $idRol = $_SESSION["IDROLKARVIEW"];
 
     if ($idRol == 3) {
         $consultaSql = "select e.empresa, ee.ip, timestampdiff(minute,ee.tiempo,now()) as min_atras, ee.ini_conex "

@@ -6,7 +6,7 @@ include ('../../../dll/config.php');
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-    $idRol = $_SESSION["IDROLKTAXY"];
+    $idRol = $_SESSION["IDROLKARVIEW"];
     if ($idRol == 3) {
         $consultaSql = "select d.desco, t.total, e.empresa. "
             . "from (select count(*) as desco, v.id_empresa "
@@ -68,7 +68,7 @@ if (!$mysqli = getConectionDb()) {
         conect:'<b>" . $cantConect . "</b>',
         desco:'<b>" . $cantDesc . "</b>',
         total:'<b>" . $cantTotal . "</b>',
-        empresa: '<b>total</b>'
+        empresa: '<b>Total</b>'
     }";
 
         $objJson .="]}";

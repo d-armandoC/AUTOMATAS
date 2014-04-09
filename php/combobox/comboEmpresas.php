@@ -3,7 +3,7 @@
 include('../login/isLogin.php');
 include ('../../dll/config.php');
 
-$idEmpresa = $_SESSION["IDCOMPANYKTAXY"];
+$idEmpresa = $_SESSION["IDCOMPANYKARVIEW"];
 $menuClick = 0;
 
 extract($_GET);
@@ -11,7 +11,7 @@ extract($_GET);
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, msg: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-    $idRol = $_SESSION["IDROLKTAXY"];
+    $idRol = $_SESSION["IDROLKARVIEW"];
     if ($idRol == 1 && $menuClick != 1) {
         $consultaSql = "select id_empresa, empresa, latitud, longitud,"
                 . "direccion, telefono, email, icon, id_tipo_empresa "

@@ -1,8 +1,8 @@
 <?php
     include("dll/config.php");
     include("php/login/isLogin.php");
-    if (isset($_SESSION["IDROLKTAXY"])) {
-      $rutaPrincipal = $_SESSION["NAMESESIONKTAXY"];
+    if (isset($_SESSION["IDROLKARVIEW"])) {
+      $rutaPrincipal = $_SESSION["NAMESESIONKARVIEW"];
       header("Location: $rutaPrincipal");
     }
 ?>

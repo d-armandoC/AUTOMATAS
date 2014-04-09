@@ -71,7 +71,7 @@ Ext.onReady(function() {
         items : [{
             html : '<section id="panelNorte">'+
                         '<center><strong id="titulo">SISTEMA DE RASTREO VEHICULAR</strong></center>'+
-                        '<strong id="subtitulo">Bienvenido al Sistema:: '+personKTaxy+'</strong>'+
+                        '<strong id="subtitulo">Bienvenido al Sistema:: '+personKarview+'</strong>'+
                     '</section>'
         },barraMenu]
     });

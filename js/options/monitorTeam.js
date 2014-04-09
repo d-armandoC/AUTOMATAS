@@ -73,7 +73,7 @@ Ext.onReady(function() {
                 root: 'stateEqp'
             }
         },
-        fields: ['empresa', 'idEquipo', {name: 'vehiculo', type: 'int'}, 'fhCon', 'fhDes', 'tmpcon', 'tmpdes', 'bateria', 'estado',
+        fields: ['empresa', 'idEquipo', 'vehiculo', 'fhCon', 'fhDes', 'tmpcon', 'tmpdes', 'bateria', 'estado',
             {name: 'fechaEstado', type: 'string'}, 'gsm', 'gps2', 'vel', 'activo', 'ign', 'taximetro', 'panico']/*,
         groupField: 'empresa'*/
     });
@@ -91,21 +91,6 @@ Ext.onReady(function() {
         },
         fields: ['empresa', 'idEquipo', {name: 'vehiculo', type: 'int'}, 'fhCon', 'fhDes', 'tmpcon', 'tmpdes', 'bateria', 'estado',
             {name: 'fechaEstado', type: 'string'}, 'gsm', 'gps2', 'vel', 'activo', 'ign', 'taximetro', 'panico']
-    });
-
-    var storeStateEqpUdp = Ext.create('Ext.data.JsonStore', {
-        autoDestroy: true,
-        autoLoad: true,
-        proxy: {
-            type: 'ajax',
-            url: 'php/interface/monitoring/getStateEqpUdp.php',
-            reader: {
-                type: 'json',
-                root: 'stateEqpUdp'
-            }
-        },
-        fields: ['empresa', 'idEquipo', 'vehiculo', 'velocidad', 'fechaConect', 'timeDesconect',
-            'encabezado', 'estadoUnidad', 'estadoMecanico']
     });
 
     var storeStateEmp = Ext.create('Ext.data.JsonStore', {
@@ -171,7 +156,7 @@ Ext.onReady(function() {
             Ext.create('Ext.grid.RowNumberer', {text: '<b>Nº</b>', width: 35, align: 'center'}),
             {text: '<b>Empresa</b>', width: 100, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}, align: 'center'},
             {text: '<b>Equipo</b>', width: 60, dataIndex: 'idEquipo', filter: {type: 'string'}, align: 'center'},
-            {text: '<b>Vehículo</b>', width: 60, dataIndex: 'vehiculo', filter: {type: 'numeric'}, align: 'center'},
+            {text: '<b>Vehículo</b>', width: 60, dataIndex: 'vehiculo', align: 'center'},
             {text: '<b>Fecha Conexión</b>', width: 140, dataIndex: 'fhCon', align: 'center'},
             {text: '<b>Fecha Ult Trama</b>', width: 140, dataIndex: 'fhDes', align: 'center'},
             {text: '<b>Tmp Conex.</b>', width: 70, dataIndex: 'tmpcon', align: 'center', filter: {type: 'numeric'}},
@@ -230,41 +215,6 @@ Ext.onReady(function() {
             {text: '<b>Pánico</b>', width: 90, dataIndex: 'panico', renderer: formatPanic, align: 'center', filterable: true},
             {text: '<b>Estado</b>', width: 100, dataIndex: 'estado', filter: {type: 'string'}},
             {text: '<b>Fecha Estado</b>', width: 100, dataIndex: 'fechaEstado', align: 'center'}
-        ],
-        listeners: {
-            itemclick: function(thisObj, record, item, index, e, eOpts) {
-                panelEste.down('[name=equipo]').setValue(record.data.idEquipo);
-                panelEste.down('[name=estado]').setValue(record.data.estado);
-                panelEste.down('[name=date]').setValue(record.data.fechaEstado);
-            }
-        }
-    });
-
-    var gridStateEqpUdp = Ext.create('Ext.grid.Panel', {
-        region: 'center',
-        title: '<b>Estado de Equipos Fastrack</b>',
-        iconCls: 'icon-fastrack',
-        split: true,
-        store: storeStateEqpUdp,
-        columnLines: true,
-        features: [filters],
-        viewConfig: {
-            emptyText: '<center>No hay datos que Mostrar</center>',
-            loadMask: false,
-            preserveScrollOnRefresh: true
-        },
-        columns: [
-            Ext.create('Ext.grid.RowNumberer', {text: '<b>Nº</b>', width: 35}),
-            {text: '<b>Empresa</b>', width: 100, dataIndex: 'empresa', align: 'center', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}},
-            {text: '<b>Equipo</b>', width: 60, dataIndex: 'idEquipo', align: 'center', filter: {type: 'string'}},
-            {text: '<b>Vehículo</b>', width: 60, dataIndex: 'vehiculo', align: 'center', filter: {type: 'numeric'}},
-            {text: '<b>Fecha y Hora Conex.</b>', width: 120, dataIndex: 'fechaConect', align: 'center'},
-            {text: '<b>Estado</b>', width: 90, dataIndex: 'timeDesconect', align: 'center', renderer: formatState},
-            {text: '<b>Tmp Desc.</b>', width: 50, dataIndex: 'timeDesconect', align: 'center'},
-            {text: '<b>Encabezado</b>', width: 120, dataIndex: 'encabezado', align: 'center'},
-            {text: '<b>Velocidad</b>', width: 60, dataIndex: 'velocidad', align: 'center', renderer: formatSpeed, filter: {type: 'numeric'}},
-            {text: '<b>Estado Unidad</b>', width: 140, dataIndex: 'estadoUnidad', align: 'center', renderer: formatStateMec},
-            {text: '<b>Estado Mecánico</b>', width: 140, dataIndex: 'estadoMecanico', align: 'center', renderer: formatStateMec}
         ],
         listeners: {
             itemclick: function(thisObj, record, item, index, e, eOpts) {
@@ -571,7 +521,7 @@ Ext.onReady(function() {
         region: 'center',
         deferreRender: false,
         activeTab: 0,
-        items: [gridStateEqpSKP, gridStateEqpUdp, gridProblemEqpSKP]
+        items: [gridStateEqpSKP, gridProblemEqpSKP]
     });
 
     Ext.create('Ext.container.Viewport', {
@@ -580,11 +530,10 @@ Ext.onReady(function() {
     });
 
     reloadStateEqpByItems(storeStateEqp);
-    reloadStateEqpByItems(storeStateEqpUdp);
     reloadStateEqpByItems(storeProblemEqp);
     reloadStateEqpByItems(storeCantEqp);
     reloadStore(storeStateEmp, 20);
-    checkRolSesion(idRolKTaxy);
+    checkRolSesion(idRolKarview);
 });
 
 function reloadStateEqpByItems(store) {

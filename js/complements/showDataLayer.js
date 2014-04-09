@@ -174,7 +174,7 @@ function addCompanyToCanvas(cordGrap) {
         });
 
         // Se coloca el ID de la central
-        if (idRolKTaxy === 2 || idRolKTaxy === 4) {
+        if (idRolKarview === 2 || idRolKarview === 4) {
             showCoopMap[i] = [dataCoop.id, dataCoop.text, true, dataCoop.idTipoEmpresa];
             // Centrar el Mapa
             var lonLat = new OpenLayers.LonLat(dataCoop.longitud, dataCoop.latitud).transform(new OpenLayers.Projection("EPSG:4326"),

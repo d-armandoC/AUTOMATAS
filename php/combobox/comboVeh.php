@@ -8,9 +8,9 @@ extract($_GET);
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-    $idEmpresa = $_SESSION["IDCOMPANYKTAXY"];
-    $idPersona = $_SESSION["IDPERSONKTAXY"];
-    $idRol = $_SESSION["IDROLKTAXY"];
+    $idEmpresa = $_SESSION["IDCOMPANYKARVIEW"];
+    $idPersona = $_SESSION["IDPERSONKARVIEW"];
+    $idRol = $_SESSION["IDROLKARVIEW"];
 
     if ($idRol == 4) {
         $consultaSql = "SELECT v.id_equipo, v.vehiculo, v.reg_municipal, v.icon, v.estado, v.placa, concat(p.apellidos, ' ', p.nombres) as persona

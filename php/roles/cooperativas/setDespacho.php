@@ -8,8 +8,8 @@ if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
 
-	$idUser = $_SESSION["IDUSERKTAXY"];
-	$idEmpresa = $_SESSION["IDCOMPANYKTAXY"];
+	$idUser = $_SESSION["IDUSERKARVIEW"];
+	$idEmpresa = $_SESSION["IDCOMPANYKARVIEW"];
 
 	$updateSql = 
 	    "UPDATE SOLICITUDES SET ID_EMPRESA = ?

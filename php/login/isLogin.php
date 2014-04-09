@@ -7,9 +7,9 @@ if (!isset($_SESSION)) {
 	$rutaPrincipal = "index.php";
 
 	//Comprobar si esta logeado
-	if (!isset($_SESSION["IDCOMPANYKTAXY"]) || 
-		!isset($_SESSION["USERKTAXY"]) || 
-		!isset($_SESSION["SESIONKTAXY"])) {    
+	if (!isset($_SESSION["IDCOMPANYKARVIEW"]) || 
+		!isset($_SESSION["USERKARVIEW"]) || 
+		!isset($_SESSION["SESIONKARVIEW"])) {    
 	    header("Location: $rutaPrincipal");
 		exit();
 	}

@@ -279,7 +279,7 @@ function cargarCapas() {
     lienzoGeoCercas = new OpenLayers.Layer.Vector('GeoCercas');
     markerEdificios = new OpenLayers.Layer.Markers("KRADAC");
 
-    if (idRolKTaxy === 2 || idRolKTaxy === 3 || idRolKTaxy === 4) {
+    if (idRolKarview === 2 || idRolKarview === 3 || idRolKarview === 4) {
         lienzoCentral.name = 'Central';
     }
 

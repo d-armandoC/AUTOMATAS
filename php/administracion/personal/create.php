@@ -7,7 +7,7 @@ extract($_POST);
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-    $idEmpresa = $_SESSION["IDCOMPANYKTAXY"];
+    $idEmpresa = $_SESSION["IDCOMPANYKARVIEW"];
     
     $json = json_decode($personas, true);
 

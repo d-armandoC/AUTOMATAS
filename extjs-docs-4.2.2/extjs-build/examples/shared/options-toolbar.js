@@ -101,7 +101,7 @@
                     rtl: false,
                     width: 170,
                     labelWidth: 45,
-                    fieldLabel: 'Theme',
+                    fieldLabel: '<b>Temas</b>',
                     displayField: 'name',
                     valueField: 'value',
                     labelStyle: 'cursor:move;',

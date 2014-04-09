@@ -4,7 +4,7 @@ require_once('../../../../dll/conect.php');
 
 extract($_GET);
 
-$idUsuario = $_SESSION["IDUSERKTAXY"];
+$idUsuario = $_SESSION["IDUSERKARVIEW"];
 
 $consultaSql = 
     "SELECT RTA 

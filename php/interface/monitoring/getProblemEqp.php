@@ -6,8 +6,8 @@ include ('../../../dll/config.php');
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-    $idEmpresa = $_SESSION["IDCOMPANYKTAXY"];
-    $idRol = $_SESSION["IDROLKTAXY"];
+    $idEmpresa = $_SESSION["IDCOMPANYKARVIEW"];
+    $idRol = $_SESSION["IDROLKARVIEW"];
 
     if ($idRol == 3) {
         $consultaSql = "SELECT e.empresa, ee.id_equipo, v.vehiculo, ee.fh_con, ee.fh_des, ee.tmpcon, ee.tmpdes, ee.bateria,ee.estado, ee.fecha_estado, ee.gsm, ee.gps2, ee.vel, ee.activo, ee.ign, ee.taximetro, ee.panico

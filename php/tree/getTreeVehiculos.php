@@ -5,9 +5,9 @@ include ('../../dll/config.php');
 if (!$mysqli = getConectionDb()) {
     echo "Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.";  
 } else {
-    $idEmpresa = $_SESSION["IDCOMPANYKTAXY"];
-    $idPersona = $_SESSION["IDPERSONKTAXY"];
-    $idRol = $_SESSION["IDROLKTAXY"];
+    $idEmpresa = $_SESSION["IDCOMPANYKARVIEW"];
+    $idPersona = $_SESSION["IDPERSONKARVIEW"];
+    $idRol = $_SESSION["IDROLKARVIEW"];
 
     if ($idRol == 1 || $idRol == 3) {
         $expand = 'false';

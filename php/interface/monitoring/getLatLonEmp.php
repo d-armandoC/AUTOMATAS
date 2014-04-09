@@ -5,8 +5,8 @@ require_once('../../../dll/conect.php');
 extract($_GET);
 Header("content-type: application/x-javascript");
 
-$id_empresa = $_SESSION["IDCOMPANYKTAXY"];
-$id_rol = $_SESSION["IDROLKTAXY"];
+$id_empresa = $_SESSION["IDCOMPANYKARVIEW"];
+$id_rol = $_SESSION["IDROLKARVIEW"];
 
 $salida = "{failure:true}";
 if ($id_rol == 1) {

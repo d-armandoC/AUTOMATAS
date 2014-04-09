@@ -1,7 +1,7 @@
 <?php
 extract($_POST);
 include("../login/isLogin.php");
- $userKTaxy = $_SESSION["USERKTAXY"]; 
+ $userKTaxy = $_SESSION["USERKARVIEW"]; 
  
   
 $salt = "KR@D@C";

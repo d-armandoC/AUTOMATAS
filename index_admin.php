@@ -1,16 +1,16 @@
 <?php
     include("dll/config.php");
     include("php/login/isLogin.php");
-    if (!isset($_SESSION["IDROLKTAXY"])) {
+    if (!isset($_SESSION["IDROLKARVIEW"])) {
       header("Location: index.php");
     } else {
-        if ($_SESSION["IDROLKTAXY"] == 2) {
+        if ($_SESSION["IDROLKARVIEW"] == 2) {
             header("Location: index_central.php");
-        } else if ($_SESSION["IDROLKTAXY"] == 3) {
+        } else if ($_SESSION["IDROLKARVIEW"] == 3) {
             header("Location: index_municipio.php");
-        } else if ($_SESSION["IDROLKTAXY"] == 4) {
+        } else if ($_SESSION["IDROLKARVIEW"] == 4) {
             header("Location: index_propietario.php");
-        } else if ($_SESSION["IDROLKTAXY"] == 6) {
+        } else if ($_SESSION["IDROLKARVIEW"] == 6) {
             header("Location: index_usuarios.php");
         }
     }
@@ -25,7 +25,6 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="shortcut icon" href="img/icon_ktaxy.png" type="image/x-icon">
         
-        <link rel="stylesheet" type="text/css" href="extjs-docs-4.2.2/extjs-build/resources/css/ext-all.css">
         <link rel="stylesheet" type="text/css" href="extjs-docs-4.2.2/extjs-build/examples/shared/example.css">
         <link rel="stylesheet" type="text/css" href="extjs-docs-4.2.2/extjs-build/examples/ux/css/ItemSelector.css">
         <link rel="stylesheet" type="text/css" href="extjs-docs-4.2.2/extjs-build/examples/ux/grid/css/GridFilters.css">
@@ -33,36 +32,21 @@
         
         <link rel="stylesheet" type="text/css" href="css/principal.css">        
         
-        <script type="text/javascript" src="extjs-docs-4.2.2/extjs-build/ext-all.js"></script>
+        <script type="text/javascript" src="extjs-docs-4.2.2/extjs-build/examples/shared/include-ext.js"></script>
+        <script type="text/javascript" src="extjs-docs-4.2.2/extjs-build/examples/shared/options-toolbar.js"></script>
         <script type="text/javascript" src="extjs-docs-4.2.2/extjs-build/examples/example-data.js"></script>
         <script type="text/javascript" src="extjs-docs-4.2.2/extjs-build/examples/shared/examples.js"></script>
         
         <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
         <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
 
-        <!-- Scripts in development mode 
-        <script type="text/javascript" src="jsPDF/jspdf.js"></script>
-        <script type="text/javascript" src="jsPDF/libs/Blob/FileSaver.js"></script>
-        <script type="text/javascript" src="jsPDF/libs/Blob.js/Blob.js"></script>
-        <script type="text/javascript" src="jsPDF/libs/Blob.js/BlobBuilder.js"></script>
-
-        <script type="text/javascript" src="jsPDF/libs/Deflate/deflate.js"></script>
-        <script type="text/javascript" src="jsPDF/libs/Deflate/adler32cs.js"></script>
-
-        <script type="text/javascript" src="jsPDF/jspdf.plugin.addimage.js"></script>
-        <script type="text/javascript" src="jsPDF/jspdf.plugin.from_html.js"></script>
-        <script type="text/javascript" src="jsPDF/jspdf.plugin.ie_below_9_shim.js"></script>
-        <script type="text/javascript" src="jsPDF/jspdf.plugin.sillysvgrenderer.js"></script>
-        <script type="text/javascript" src="jsPDF/jspdf.plugin.split_text_to_size.js"></script>
-        <script type="text/javascript" src="jsPDF/jspdf.plugin.standard_fonts_metrics.js"></script>-->
-
         <script type="text/javascript">
             <?php            
             echo "               
-                var idCompanyKTaxy = '".$_SESSION["IDCOMPANYKTAXY"]."';
-                var userKTaxy = '".$_SESSION["USERKTAXY"]."';
-                var idRolKTaxy = ".$_SESSION["IDROLKTAXY"].";
-                var personKTaxy = '".$_SESSION["PERSONKTAXY"]."';
+                var idCompanyKarview = '".$_SESSION["IDCOMPANYKARVIEW"]."';
+                var userKarview = '".$_SESSION["USERKARVIEW"]."';
+                var idRolKarview = ".$_SESSION["IDROLKARVIEW"].";
+                var personKarview = '".$_SESSION["PERSONKARVIEW"]."';
                 ";
             ?>
         </script>
@@ -118,11 +102,6 @@
     <body oncontextmenu = "return false">        
         <header></header>
         <nav></nav>
-        <section id = 'icono'>
-            <a href='http://www.kradac.com'>
-            <img alt="www.kradac.com"  src='img/credits.png'/>
-            </a>
-        </section>        
         <footer></footer>
     </body>
 </html>

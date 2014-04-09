@@ -181,50 +181,11 @@ function formatStateMec(val) {
 }
 
 function formatCompany(val) {
-    if (val === 'ANDINA SUR') {
-        return '<span style="color:#4000FF;">' + val + '</span>';
-    }
-    if (val === 'CIUDAD VICTORIA') {
-        return '<span style="color:#FF8000;">' + val + '</span>';
-    }
-    if (val === 'DISCATAXI') {
-        return '<span style="color:#DBA901;">' + val + '</span>';
-    }
-    if (val === 'JULIO ORDOÑEZ') {
-        return '<span style="color:#D7DF01">' + val + '</span>';
+    if (val === 'COOPMEGO') {
+        return '<span style="color:blue;">' + val + '</span>';
     }
     if (val === 'KRADAC') {
         return '<span style="color:green;">' + val + '</span>';
-    }
-    if (val === 'LIBERTAXI') {
-        return '<span style="color:#01DFD7;">' + val + '</span>';
-    }
-    if (val === 'LOJA NORTE') {
-        return '<span style="color:#01A9DB;">' + val + '</span>';
-    }
-    if (val === 'LOJA TURISTICA') {
-        return '<span style="color:#0174DF;">' + val + '</span>';
-    }
-    if (val === 'PROPER') {
-        return '<span style="color:#013ADF;">' + val + '</span>';
-    }
-    if (val === 'RIVERAS DE ALCAZAR') {
-        return '<span style="color:#BF00FF;">' + val + '</span>';
-    }
-    if (val === 'SUR AMIGO') {
-        return '<span style="color:#FF00BF;">' + val + '</span>';
-    }
-    if (val === 'TAXOPEL') {
-        return '<span style="color:#61210B;">' + val + '</span>';
-    }
-    if (val === 'TRANSPEÑASUR') {
-        return '<span style="color:#8A084B">' + val + '</span>';
-    }
-    if (val === 'TAXIS CARDERON') {
-        return '<span style="color:#7401DF;">' + val + '</span>';
-    }
-    if (val === 'PUEMBO') {
-        return '<span style="color:#868A08;">' + val + '</span>';
     }
     return val;
 }
@@ -286,7 +247,7 @@ function despachar(idSol) {
 
 function getCoopMenu() {
     for (var i = 0; i < showCoopMap.length; i++) {
-        if (showCoopMap[i][3] === 1) {
+        if (showCoopMap[i][3] === 2) {
             menuCoop.add({id: showCoopMap[i][0], itemId: showCoopMap[i][0], text: showCoopMap[i][1], checked: showCoopMap[i][2]});
         }
     }
@@ -350,11 +311,11 @@ function getNavigator() {
     }
 }
 
-function checkRolSesion(idRolKTaxy) {
+function checkRolSesion(idRolKarview) {
     Ext.Ajax.request({
         url: 'php/login/checkLogin.php',
         params: {
-            idRolKTaxy: idRolKTaxy
+            idRolKarview: idRolKarview
         },
         success: function(response) {
             if (parseInt(response.responseText) === 1) {
@@ -364,7 +325,7 @@ function checkRolSesion(idRolKTaxy) {
     });
 
     setTimeout(function() {
-        checkRolSesion(idRolKTaxy);
+        checkRolSesion(idRolKarview);
     }
     , 3 * 1000);
 }

@@ -1063,5 +1063,5 @@ Ext.onReady(function() {
             }, panelCentral]
     });
     reloadStore(storeCountByDevice, 20);
-    checkRolSesion(idRolKTaxy);
+    checkRolSesion(idRolKarview);
 });

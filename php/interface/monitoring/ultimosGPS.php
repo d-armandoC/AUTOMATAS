@@ -9,9 +9,9 @@ if (!$mysqli = getConectionDb()) {
     //echo "Error: No se ha podido conectar a la Base de Datos.";
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.'}";
 } else {
-    $idEmpresa = $_SESSION["IDCOMPANYKTAXY"];
-    $idPersona = $_SESSION["IDPERSONKTAXY"];
-    $idRol = $_SESSION["IDROLKTAXY"];
+    $idEmpresa = $_SESSION["IDCOMPANYKARVIEW"];
+    $idPersona = $_SESSION["IDPERSONKARVIEW"];
+    $idRol = $_SESSION["IDROLKARVIEW"];
 
     if ($idRol == 4) {
         $consultaSql = "select v.id_empresa, u.id_equipo, u.latitud, u.longitud, u.fecha,"
@@ -53,7 +53,7 @@ if (!$mysqli = getConectionDb()) {
                     . "idCoop: '" . $myrow["id_empresa"] . "',"
                     . "company: '" . utf8_encode($myrow["empresa"]) . "',"
                     . "idEqp: '" . $myrow["id_equipo"] . "',"
-                    . "vehiculo: " . $myrow["vehiculo"] . ","
+                    . "vehiculo: '" . $myrow["vehiculo"] . "',"
                     . "nombre: '" . utf8_encode('VH: ' . $myrow["placa"] . ' - ' . $myrow["vehiculo"]) . "',"
                     . "lat: " . $myrow["latitud"] . ","
                     . "lon: " . $myrow["longitud"] . ","

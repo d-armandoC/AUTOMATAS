@@ -8,8 +8,8 @@ extract($_GET);
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, msg: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-    $idEmpresa = $_SESSION["IDCOMPANYKTAXY"];
-    $idRol = $_SESSION["IDROLKTAXY"];
+    $idEmpresa = $_SESSION["IDCOMPANYKARVIEW"];
+    $idRol = $_SESSION["IDROLKARVIEW"];
 
     if ($idRol == 1) {
         $consultaSql = "select p.id_persona, p.id_empleo, concat(p.nombres, ' ', p.apellidos) as person, e.empresa, p.email "

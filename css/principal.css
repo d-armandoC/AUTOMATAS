@@ -8,11 +8,6 @@ header, section, footer, aside, nav, article, figure {
     display: block;
 }
 
-#panelNorte {
-	background: url(../img/layout-browser-hd-bg.gif) repeat-x;
-	height: '100%';
-}
-
 strong#titulo{
 	text-align: center;
 	font-family: arial;

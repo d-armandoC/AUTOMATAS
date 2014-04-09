@@ -7,7 +7,7 @@ extract($_POST);
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-	$idUser = $_SESSION["IDUSERKTAXY"];
+	$idUser = $_SESSION["IDUSERKARVIEW"];
 
 	$insertSql = 
 	    "INSERT INTO SOLICITUDES (ID_USUARIO, FECHA, HORA, LATITUD, LONGITUD) 

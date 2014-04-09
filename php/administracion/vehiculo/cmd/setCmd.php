@@ -23,7 +23,7 @@ if (!$mysqli = getConectionDb()) {
 
     $stmt = $mysqli->prepare($insertSql);
     if ($stmt) {
-        $stmt->bind_param("iss", $_SESSION["IDUSERKTAXY"], $cbxVeh, utf8_decode($valCmd));
+        $stmt->bind_param("iss", $_SESSION["IDUSERKARVIEW"], $cbxVeh, utf8_decode($valCmd));
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {

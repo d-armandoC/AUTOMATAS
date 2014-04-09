@@ -4,7 +4,7 @@ require_once('../../../dll/conect.php');
 
 extract($_POST);
 
-$id_empresa = $_SESSION["IDCOMPANYKTAXY"];
+$id_empresa = $_SESSION["IDCOMPANYKARVIEW"];
 
 $salida = "{success:false, message:'No se pudo insertar los Datos'}";
 

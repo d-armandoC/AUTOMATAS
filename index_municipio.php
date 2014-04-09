@@ -1,16 +1,16 @@
 <?php
     include("dll/config.php");
     include("php/login/isLogin.php");
-    if (!isset($_SESSION["IDROLKTAXY"])) {
+    if (!isset($_SESSION["IDROLKARVIEW"])) {
       header("Location: index.php");
     } else {        
-        if ($_SESSION["IDROLKTAXY"] == 1) {
+        if ($_SESSION["IDROLKARVIEW"] == 1) {
             header("Location: index_admin.php");
-        } else if ($_SESSION["IDROLKTAXY"] == 2) {
+        } else if ($_SESSION["IDROLKARVIEW"] == 2) {
             header("Location: index_central.php");
-        } else if ($_SESSION["IDROLKTAXY"] == 4) {
+        } else if ($_SESSION["IDROLKARVIEW"] == 4) {
             header("Location: index_propietario.php");
-        } else if ($_SESSION["IDROLKTAXY"] == 6) {
+        } else if ($_SESSION["IDROLKARVIEW"] == 6) {
             header("Location: index_usuarios.php");
         }
     }
@@ -58,10 +58,10 @@
         <script type="text/javascript">
             <?php            
             echo "               
-                var idCompanyKTaxy = '".$_SESSION["IDCOMPANYKTAXY"]."';
-                var userKTaxy = '".$_SESSION["USERKTAXY"]."';
-                var idRolKTaxy = ".$_SESSION["IDROLKTAXY"].";
-                var personKTaxy = '".$_SESSION["PERSONKTAXY"]."';
+                var idCompanyKarview = '".$_SESSION["IDCOMPANYKARVIEW"]."';
+                var userKarview = '".$_SESSION["USERKARVIEW"]."';
+                var idRolKarview = ".$_SESSION["IDROLKARVIEW"].";
+                var personKarview = '".$_SESSION["PERSONKARVIEW"]."';
                 ";
             ?>
         </script>

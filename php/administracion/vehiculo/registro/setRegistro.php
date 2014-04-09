@@ -7,7 +7,7 @@ extract($_POST);
 
 $consultaSql = 
     "INSERT INTO INSTALACIONES (ID_EQUIPO,TECNICO,ID_USUARIO,NUM_CHIP,NUM_CEL,OPERADORA_CHIP,IMEI,LUGAR_INSTALACION,OBSERVACIONES)
-    VALUES('$cbxVeh', '$tecnico', " . $_SESSION["IDUSERKTAXY"] . ", '$numberChip',
+    VALUES('$cbxVeh', '$tecnico', " . $_SESSION["IDUSERKARVIEW"] . ", '$numberChip',
         '$numberCel', '$cbxOperadora', '$imei', '$siteInst','$obser')";
 
 

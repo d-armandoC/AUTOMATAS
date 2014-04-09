@@ -61,35 +61,35 @@ if (!$mysqli = getConectionDb()) {
 
                 if ($stmt->affected_rows > 0) {
                     session_start();
-                    $_SESSION["INIKTAXY"] = 'http://200.0.29.117:8080/k-taxy/';
-                    $_SESSION["IDCOMPANYKTAXY"] = $myrow["id_empresa"];
-                    $_SESSION["IDPERSONKTAXY"] = $myrow["id_persona"];
-                    $_SESSION["COMPANYKTAXY"] = utf8_encode($myrow["empresa"]);
-                    $_SESSION["IDUSERKTAXY"] = $myrow["id_usuario"];
-                    $_SESSION["USERKTAXY"] = utf8_encode($myrow["usuario"]);
-                    $_SESSION["IDROLKTAXY"] = $myrow["id_rol_usuario"];
-                    $_SESSION["PERSONKTAXY"] = utf8_encode($myrow["apellidos"] . " " . $myrow["nombres"]);
-                    $_SESSION["SESIONKTAXY"] = true;
+                    $_SESSION["INIKARVIEW"] = 'http://200.0.29.117:8080/k-taxy/';
+                    $_SESSION["IDCOMPANYKARVIEW"] = $myrow["id_empresa"];
+                    $_SESSION["IDPERSONKARVIEW"] = $myrow["id_persona"];
+                    $_SESSION["COMPANYKARVIEW"] = utf8_encode($myrow["empresa"]);
+                    $_SESSION["IDUSERKARVIEW"] = $myrow["id_usuario"];
+                    $_SESSION["USERKARVIEW"] = utf8_encode($myrow["usuario"]);
+                    $_SESSION["IDROLKARVIEW"] = $myrow["id_rol_usuario"];
+                    $_SESSION["PERSONKARVIEW"] = utf8_encode($myrow["apellidos"] . " " . $myrow["nombres"]);
+                    $_SESSION["SESIONKARVIEW"] = true;
 
                     switch ($myrow["id_rol_usuario"]) {
                         case 1:
-                            $_SESSION["NAMESESIONKTAXY"] = "index_admin.php";
+                            $_SESSION["NAMESESIONKARVIEW"] = "index_admin.php";
                             echo "<script type='text/javascript'>location.href='../../index_admin.php'</script>";
                             break;
                         case 2:
-                            $_SESSION["NAMESESIONKTAXY"] = "index_central.php";
+                            $_SESSION["NAMESESIONKARVIEW"] = "index_central.php";
                             echo "<script type='text/javascript'>location.href='../../index_central.php'</script>";
                             break;
                         case 3:
-                            $_SESSION["NAMESESIONKTAXY"] = "index_municipio.php";
+                            $_SESSION["NAMESESIONKARVIEW"] = "index_municipio.php";
                             echo "<script type='text/javascript'>location.href='../../index_municipio.php'</script>";
                             break;
                         case 4:
-                            $_SESSION["NAMESESIONKTAXY"] = "index_propietario.php";
+                            $_SESSION["NAMESESIONKARVIEW"] = "index_propietario.php";
                             echo "<script type='text/javascript'>location.href='../../index_propietario.php'</script>";
                             break;
                         case 6:
-                            $_SESSION["NAMESESIONKTAXY"] = "index_usuarios.php";
+                            $_SESSION["NAMESESIONKARVIEW"] = "index_usuarios.php";
                             echo "<script type='text/javascript'>location.href='../../index_usuarios.php'</script>";
                             break;
                     }

@@ -296,11 +296,24 @@ Ext.onReady(function() {
         deferreRender: false,
         activeTab: 0,
         items: [{
-                height: 47,
-                html: '<section id="panelNorte">' +
-                        '<center><strong id="titulo">SISTEMA DE RASTREO VEHICULAR</strong></center>' +
-                        '<strong id="subtitulo">Bienvenido al Sistema:: ' + personKTaxy + '</strong>' +
-                        '</section>'
+                layout: 'hbox',
+                bodyStyle: {
+                    background: '#add2ed'
+                },
+                items: [{
+                        xtype: 'label',
+                        html: '<a href="http://www.kradac.com" target="_blank"><img src="img/k-taxy.png" width="250" height="64"></a>'
+                    }, {
+                        xtype: 'label',
+                        padding: '15 0 0 0',
+                        style: {
+                            color: '#157fcc'
+                        },
+                        html: '<section id="panelNorte">' +
+                                '<center><strong id="titulo">Sistema de Rastreo Vehicular</strong></center>' +
+                                '<strong id="subtitulo">Bienvenido al Sistema: ' + personKarview + '</strong>' +
+                                '</section>'
+                    }]
             },
             barraMenu]
     });
@@ -521,19 +534,15 @@ Ext.onReady(function() {
         }
     });
 
-    var toolBarOnMap = Ext.create('Ext.form.Panel', {
+    var toolBarOnMap = Ext.create('Ext.toolbar.Toolbar', {
         region: 'north',
-        frame: true,
-        layout: 'hbox',
-        defaults: {
-            margin: '0 5 0 0'
-        },
+        border: true,
         items: [{
                 xtype: 'combo',
-                width: '88%',
-                labelWidth: 60,
+                width: '86%',
+                padding: '0 0 0 5',
                 store: storeDirecciones,
-                fieldLabel: 'Dirección',
+                fieldLabel: '<b>Dirección</b>',
                 displayField: 'todo',
                 typeAhead: false,
                 hideTrigger: true,
@@ -564,7 +573,6 @@ Ext.onReady(function() {
                 }
             }, {
                 xtype: 'splitbutton',
-                width: '10%',
                 text: 'Cooperativas',
                 iconCls: 'icon-central',
                 menu: menuCoop,
