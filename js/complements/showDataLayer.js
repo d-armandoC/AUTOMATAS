@@ -63,7 +63,7 @@ function addVehiculosToCanvas(cordGrap) {
             point.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
 
             taxiFeature = new OpenLayers.Feature.Vector(point, {
-                icon: getIconByRumbo(datosVeh.rumbo, datosVeh.vel, datosVeh.idEvt),
+                icon: datosVeh.icon,
                 idCoop: datosVeh.idCoop,
                 company: datosVeh.company,
                 equipo: idEquipo,

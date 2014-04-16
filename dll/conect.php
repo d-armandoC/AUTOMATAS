@@ -7,9 +7,9 @@ $Consulta_ID = 0;
 $Errno = 0;
 $Error = "";
 $BaseDatos = "karviewdb";
-$Servidor = "localhost";
-$Usuario = "diego";
-$pss = "diego";
+$Servidor = "172.16.17.214";
+$Usuario = "kradacLoja";
+$pss = "kradac";
 
 
 // Conectamos al servidor
