@@ -15,7 +15,7 @@ if (!$mysqli = getConectionDb()) {
     if ($idRol == 4) {
         $consultaSql = "SELECT v.id_equipo, v.vehiculo, v.reg_municipal, v.icon, v.estado, v.placa, concat(p.apellidos, ' ', p.nombres) as persona
             FROM vehiculos v, personas p
-            where v.id_propietario = p.id_persona
+            where v.id_persona = p.id_persona
             and v.id_equipo = 
                     (SELECT id_equipo 
                     FROM vehiculos 
@@ -25,7 +25,7 @@ if (!$mysqli = getConectionDb()) {
     } else {
         $consultaSql = "SELECT v.id_equipo, v.vehiculo, v.reg_municipal, v.icon, v.estado, v.placa, concat(p.apellidos, ' ', p.nombres) as persona
             FROM vehiculos v, personas p
-            where v.id_propietario = p.id_persona
+            where v.id_persona = p.id_persona
             and v.id_empresa = '$cbxEmpresas'
             ORDER BY v.vehiculo;
         ";

@@ -58,7 +58,6 @@ if (!$mysqli = getConectionDb()) {
             $owner = utf8_encode($myrow["apellidos"].' '.$myrow["nombres"]);
             $iconVeh = $myrow["icon"];
             $estado = $myrow["estado"];
-
             if ($compare != $idCoop) {
                 if ($compare != '') {
                     $objJson .= "]},";
@@ -77,13 +76,13 @@ if (!$mysqli = getConectionDb()) {
                 icon: '". utf8_encode($iconVeh) ."',
                 id: '" . $idCoop . '_' . $idEqp . "',
                 leaf: true,
-                estado: ".$estado. "},";
+                estado: '".$estado. "'},";
             } else {
                 $objJson .= "{text: 'N° ".$veh.": " . $owner . "',
                 icon: '". utf8_encode($iconVeh) ."',
                 id: '" . $idCoop . '_' . $idEqp . "',
                 leaf: true,
-                estado: ".$estado. "},";
+                estado: '".$estado. "'},";
             }
         }
         $objJson .= "]}]";
@@ -93,4 +92,3 @@ if (!$mysqli = getConectionDb()) {
         echo "No hay datos que obtener";
     }
 }
-?>

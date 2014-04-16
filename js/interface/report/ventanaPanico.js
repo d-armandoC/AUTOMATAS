@@ -110,8 +110,8 @@ Ext.onReady(function() {
             }]
     });
     contenedorWinPanelPanico = Ext.create('Ext.form.Panel', {
-        frame: true,
-        height: 200,
+        frame: false,
+        padding: '5 5 5 5',
         fieldDefaults: {
             labelAlign: 'left',
             labelWidth: 70,

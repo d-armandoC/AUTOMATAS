@@ -51,7 +51,7 @@ if (!$mysqli = getConectionDb()) {
         echo "{success: true,$objJson}";
 // echo "{success: true, $json }";
     } else {
-        echo "{failure: true, msg: 'Problemas al Obtener los  Datos'}";
+        echo "{failure: true, msg: 'NO hay Datos que mostrar'}";
     }
 
     $mysqli->close();

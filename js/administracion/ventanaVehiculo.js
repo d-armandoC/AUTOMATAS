@@ -20,7 +20,7 @@ var labelRegistro = Ext.create('Ext.form.Label', {
 
 Ext.onReady(function(){
 
-    //Fenera campos de array para usar en el inicio del store por defecto
+    //Genera campos de array para usar en el inicio del store por defecto
     Ext.define('DataObjectVeh', {
         extend: 'Ext.data.Model',
         fields: [
@@ -91,8 +91,9 @@ Ext.onReady(function(){
             },
             listeners: {
                 exception: function(proxy, response, operation){
-                    if (operation.action == 'create') {
-                        if (operation.success) {                            
+                    if (operation.action === 'create') {
+                        if (operation.success) {   
+                            Ext.example.msg("Mensaje", "Se ejecuto el evento");
                             Ext.example.msg("Mensaje", operation.resultSet.message);                            
                         } else {                            
                             Ext.MessageBox.show({
@@ -116,7 +117,7 @@ Ext.onReady(function(){
         },
         listeners: {
             write: function ( store, operation, eOpts ){                
-                if (operation.action == 'destroy') {                    
+                if (operation.action === 'destroy') {                    
                     setActiveRecordVeh(null);
                     if (operation.success) {
                         Ext.example.msg("Mensaje", operation.resultSet.message);
@@ -133,7 +134,7 @@ Ext.onReady(function(){
                     } 
                 }
 
-                if (operation.action == 'update' || operation.action == 'create') {
+                if (operation.action === 'update' || operation.action === 'create') {
                     if (operation.success) {
                         Ext.example.msg("Mensaje", operation.resultSet.message);
                         formRecordsVeh.down('#updateVeh').disable();
@@ -182,20 +183,20 @@ Ext.onReady(function(){
         columns : columns,
         enableDragDrop : true,
         stripeRows : true,
-        height : 440,
+        height : 400,
         selModel : Ext.create('Ext.selection.RowModel', {singleSelect : true}),
-        features: [filters]
+        features: [filters],
         //Para cuando de click a una de las filas se pasen los datos
-        /*listeners: {
+        listeners: {
             selectionchange: function ( thisObject, selected, eOpts ){
-                //console.log(selected[0]);
+                console.log(selected[0]);
                 setActiveRecordVeh(selected[0] || null);
             },
 
             itemmousedown: function( thisObject, record, item, index, e, eOpts ){
-                //console.log('mouse sobre item');
+                console.log('mouse sobre item');
             }
-        }*/
+        }
     });
 
     formImage = Ext.create('Ext.form.Panel', {
@@ -233,7 +234,7 @@ Ext.onReady(function(){
         }, {
             xtype : 'image',
             name : 'labelImage',
-            src: 'img/uploads/vehiculos/sin_img.png',
+            src: 'img/uploads/vehiculos/sin_img.jpg',
             height : 100,
             border : 2,
             margin : '0 0 0 10',
@@ -248,6 +249,7 @@ Ext.onReady(function(){
         width : '45%',        
         margins : '0 2 0 0',
         region : 'west',
+        autoScroll : true,
         title : '<b>Registros de Vehiculos</b>',
         items : [gridRecordsVeh]
     });
@@ -423,7 +425,7 @@ Ext.onReady(function(){
                         allowBlank : false,
                         listeners : {
                             select: function ( combo, records, eOpts ) {
-                                if (records[0].data.field1 == 'Y') {
+                                if (records[0].data.field1 === 'Y') {
                                     formRecordsVeh.down('[name=idTaximetro]').enable();
                                 } else {
                                     formRecordsVeh.down('[name=idTaximetro]').disable();
@@ -535,7 +537,7 @@ Ext.onReady(function(){
 
     contenedorVeh = Ext.create('Ext.form.Panel', {        
         layout   : 'border',        
-        bodyPadding: 5,
+        bodyPadding: 8,
         items: [
             formPanelGrid,
             formRecordsVeh
@@ -550,7 +552,7 @@ function ventAddVehiculo(){
             title : '<b>Vehiculos</b>',
             iconCls : 'icon-car',
             resizable : false,
-            width : 950,
+            width : 1100,
             height : 510,
             closeAction : 'hide',
             plain : false,
@@ -566,7 +568,7 @@ function ventAddVehiculo(){
     formRecordsVeh.down('#createVeh').enable();
     formRecordsVeh.down('#deleteVeh').disable();
 
-    if (gridRecordsVeh.getStore().getCount() == 0) {
+    if (gridRecordsVeh.getStore().getCount() === 0) {
         gridRecordsVeh.getStore().load();
     }
 
@@ -622,7 +624,6 @@ function setActiveRecordVeh(record){
 function onUpdateVeh(){
     var active = formRecordsVeh.activeRecord,
     form = formRecordsVeh.getForm();
-
     active.set({
         labelImage: formImage.down('[name=image]').getRawValue()
     });
@@ -642,7 +643,7 @@ function onUpdateVeh(){
 function onCreateVeh(){
     var form = formRecordsVeh.getForm();    
 
-    if (form.isValid()) {        
+    if (form.isValid()) {    
         formRecordsVeh.fireEvent('create', formRecordsVeh, form.getValues());
     }
 }

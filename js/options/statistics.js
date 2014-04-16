@@ -340,7 +340,7 @@ function agregarGrficas() {
             region: 'center',
             deferreRender: false,
             activeTab: 0,
-            items: [panelCountByDevice, panelChartCountAccessByUser, panelCountTramasMonthNow, panelChartCountByAsig,DatosAsinacion, principal]
+            items: [panelCountByDevice, panelChartCountAccessByUser, panelCountTramasMonthNow, principal]
         });
     }
 }

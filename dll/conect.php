@@ -7,15 +7,13 @@ $Consulta_ID = 0;
 $Errno = 0;
 $Error = "";
 $BaseDatos = "karviewdb";
-$Servidor = "172.16.17.214";
-$Usuario = "kradacLoja";
-$Clave = "kradac";
+$Servidor = "localhost";
+$Usuario = "diego";
+$pss = "diego";
 
-//$pss = md5($Clave);
-$pss = $Clave;
 
 // Conectamos al servidor
-@$Conexion_ID = mysql_connect($Servidor, $Usuario, $pss);
+$Conexion_ID = mysql_connect($Servidor, $Usuario, $pss);
 
 if (!$Conexion_ID) {
     $Error = "Error: No se ha podido conectar a la Base de Datos.";
@@ -23,6 +21,7 @@ if (!$Conexion_ID) {
     echo "<script>location.href='../../index.php'</script>";
     //exit();
 } else {
+    
     $_SESSION["idBD"] = $Conexion_ID;
 }
 

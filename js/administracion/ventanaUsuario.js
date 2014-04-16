@@ -302,7 +302,7 @@ function ventAddUser(){
             iconCls : 'icon-user-add',
             resizable : false,
             width : 780,
-            height : 340,
+            height : 370,
             closeAction : 'hide',
             plain : false,
             items : [contenedorUser]

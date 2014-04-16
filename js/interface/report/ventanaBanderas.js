@@ -137,7 +137,8 @@ Ext.onReady(function() {
     });
 
     contenedorWinBan = Ext.create('Ext.form.Panel', {
-        frame: true,
+         frame: false,
+        padding: '5 5 5 5',
         fieldDefaults: {
             labelAlign: 'left',
             labelWidth: 70,

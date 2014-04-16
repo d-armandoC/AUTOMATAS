@@ -4,34 +4,34 @@ var winEvt;
 Ext.onReady(function() {
 
     var storeVeh = Ext.create('Ext.data.JsonStore', {
-        autoDestroy : true,
-        proxy : {
-            type : 'ajax',
-            url:'php/combobox/comboVeh.php',
-            reader : {
-                type : 'json',
+        autoDestroy: true,
+        proxy: {
+            type: 'ajax',
+            url: 'php/combobox/comboVeh.php',
+            reader: {
+                type: 'json',
                 root: 'veh'
             }
         },
-        fields : [{name:'value',mapping:'id'}, 'text']
+        fields: [{name: 'value', mapping: 'id'}, 'text']
     });
 
     var storeEventos = Ext.create('Ext.data.JsonStore', {
-        autoDestroy : true,
-        autoLoad : true,
-        proxy : {
-            type : 'ajax',
-            url:'php/combobox/comboEventos.php',
-            reader : {
-                type : 'json',
+        autoDestroy: true,
+        autoLoad: true,
+        proxy: {
+            type: 'ajax',
+            url: 'php/combobox/comboEventos.php',
+            reader: {
+                type: 'json',
                 root: 'eventos'
             }
         },
-        fields : [{name:'value', mapping: 'id'}, {name:'text',mapping:'nombre'}]
+        fields: [{name: 'value', mapping: 'id'}, {name: 'text', mapping: 'nombre'}]
     });
 
     var cbxEmpresasBD = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Cooperativa',        
+        fieldLabel: 'Cooperativa',
         name: 'cbxEmpresas',
         store: storeEmpresas,
         valueField: 'id',
@@ -56,7 +56,7 @@ Ext.onReady(function() {
     });
 
     var cbxVehBD = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Vehículo:',        
+        fieldLabel: 'Vehículo:',
         name: 'cbxVeh',
         store: storeVeh,
         valueField: 'id',
@@ -67,7 +67,7 @@ Ext.onReady(function() {
         editable: false,
         allowBlank: false,
         listConfig: {
-            minWidth : 300
+            minWidth: 300
         }
     });
 
@@ -111,7 +111,7 @@ Ext.onReady(function() {
 
     var today = Ext.create('Ext.button.Button', {
         text: 'Hoy',
-        iconCls : 'icon-today',
+        iconCls: 'icon-today',
         handler: function() {
             var nowDate = new Date();
 
@@ -125,7 +125,7 @@ Ext.onReady(function() {
 
     var yesterday = Ext.create('Ext.button.Button', {
         text: 'Ayer',
-        iconCls : 'icon-yesterday',
+        iconCls: 'icon-yesterday',
         handler: function() {
             var nowDate = new Date();
             var año = nowDate.getFullYear();
@@ -161,106 +161,106 @@ Ext.onReady(function() {
             }]
     });
 
-    contenedorwinEvt = Ext.create('Ext.form.Panel', {        
-        bodyStyle : 'padding: 10px; background-color: #DFE8F6',
-        baseCls : 'x-plain',
-        
+    contenedorwinEvt = Ext.create('Ext.form.Panel', {
+//        bodyStyle : 'padding: 10px; background-color: #DFE8F6',
+//        baseCls : 'x-plain',
+        frame: false,
+        padding: '5 5 5 5',
         items: [{
-            xtype : 'form',            
-            baseCls : 'x-plain',
-            fieldDefaults: {
-                labelAlign: 'left',
-                labelWidth: 70,
-                width : 260
-            },
-            items : [{
-                layout: 'column',
+                xtype: 'form',
+                baseCls: 'x-plain',
+                fieldDefaults: {
+                    labelAlign: 'left',
+                    labelWidth: 70,
+                    width: 260
+                },
+                items: [{
+                        layout: 'column',
+                        baseCls: 'x-plain',
+                        items: [{
+                                columnWidth: .5,
+                                baseCls: 'x-plain',
+                                items: [
+                                    cbxEmpresasBD,
+                                ]
+                            }]
+                    }]
+            }, {
+                xtype: 'form',
+                bodyStyle: 'padding: 10px 0 10px 0',
+                width: 570,
                 baseCls: 'x-plain',
                 items: [{
-                    columnWidth: .5,
-                    baseCls: 'x-plain',
-                    items: [
-                        cbxEmpresasBD,                    
-                    ]
-                }]
-            }]            
-        },{
-            xtype : 'form',
-            bodyStyle : 'padding: 10px 0 10px 0',
-            width : 570,
-            baseCls: 'x-plain',
-            items : [{
-                xtype: 'itemselector',            
-                name: 'listVeh',                
-                anchor : '97%',
-                height : 150,
-                store: storeVeh,
-                displayField: 'text',
-                valueField: 'value',            
-                allowBlank: false,
-                msgTarget: 'side',
-                fromTitle: 'Vehiculos',
-                toTitle: 'Seleccionados'
-            },{
-                xtype: 'itemselector',            
-                name: 'listEvt',
-                anchor : '97%',
-                height : 150,
-                store: storeEventos,
-                displayField: 'text',
-                valueField: 'value',
-                allowBlank: false,
-                msgTarget: 'side',
-                fromTitle: 'Eventos',
-                toTitle: 'Seleccionados'
-            }]            
-        },{
-            xtype : 'form',             
-            baseCls : 'x-plain',           
-            fieldDefaults: {
-                labelAlign: 'left',
-                labelWidth: 70,
-                width : 260
-            },
-            items : [{
-                layout: 'column',
+                        xtype: 'itemselector',
+                        name: 'listVeh',
+                        anchor: '97%',
+                        height: 150,
+                        store: storeVeh,
+                        displayField: 'text',
+                        valueField: 'value',
+                        allowBlank: false,
+                        msgTarget: 'side',
+                        fromTitle: 'Vehiculos',
+                        toTitle: 'Seleccionados'
+                    }, {
+                        xtype: 'itemselector',
+                        name: 'listEvt',
+                        anchor: '97%',
+                        height: 150,
+                        store: storeEventos,
+                        displayField: 'text',
+                        valueField: 'value',
+                        allowBlank: false,
+                        msgTarget: 'side',
+                        fromTitle: 'Eventos',
+                        toTitle: 'Seleccionados'
+                    }]
+            }, {
+                xtype: 'form',
                 baseCls: 'x-plain',
+                fieldDefaults: {
+                    labelAlign: 'left',
+                    labelWidth: 70,
+                    width: 260
+                },
                 items: [{
-                    columnWidth: .5,
-                    baseCls: 'x-plain',
-                    items: [                    
-                        dateIni,
-                        timeIni
-                    ]
-                }, {
-                    columnWidth: .5,
-                    baseCls: 'x-plain',
-                    items: [                    
-                        dateFin,
-                        timeFin
-                    ]
-                }]
-            }]
-        },panelBotones],
-
+                        layout: 'column',
+                        baseCls: 'x-plain',
+                        items: [{
+                                columnWidth: .5,
+                                baseCls: 'x-plain',
+                                items: [
+                                    dateIni,
+                                    timeIni
+                                ]
+                            }, {
+                                columnWidth: .5,
+                                baseCls: 'x-plain',
+                                items: [
+                                    dateFin,
+                                    timeFin
+                                ]
+                            }]
+                    }]
+            }, panelBotones],
         buttons: [{
-            text: 'Obtener',
-            iconCls: 'icon-consultas',
-            handler: function() {
-                if (contenedorwinEvt.getForm().isValid()) {
-                    loadGridEvents();                        
+                text: 'Obtener',
+                iconCls: 'icon-consultas',
+                handler: function() {
+                    if (contenedorwinEvt.getForm().isValid()) {
+                        loadGridEvents();
+                    }
                 }
-            }
-        }, {
-            text: 'Cancelar',
-            iconCls: 'icon-cancelar',
-            handler: limpiar_datosEvt
-        }]
+            }, {
+                text: 'Cancelar',
+                iconCls: 'icon-cancelar',
+                handler: limpiar_datosEvt
+            }]
     });
 });
 
 function limpiar_datosEvt() {
-    contenedorwinEvt.getForm().reset();    
+    contenedorwinEvt.getForm().reset();
 
     if (winEvt) {
         winEvt.hide();
@@ -279,8 +279,8 @@ function ventanaEventos() {
             closeAction: 'hide',
             plain: false,
             items: [contenedorwinEvt],
-            listeners : {
-                close : function(panel, eOpts) {
+            listeners: {
+                close: function(panel, eOpts) {
                     limpiar_datosEvt();
                 }
             }
@@ -302,21 +302,21 @@ function loadGridEvents() {
     var nameEmp = contenedorwinEvt.down('[name=cbxEmpresas]').getRawValue();
 
     Ext.MessageBox.show({
-        title : "Obteniendo Datos",
-        msg : "Reportes",
-        progressText : "Obteniendo...",                        
-        wait : true,
-        waitConfig : {
-            interval:200
+        title: "Obteniendo Datos",
+        msg: "Reportes",
+        progressText: "Obteniendo...",
+        wait: true,
+        waitConfig: {
+            interval: 200
         }
     });
-function formato(val) {
-    if (val==='1') {
-        return '<span style="color:green;">SI</span>';
-    } else {
-        return '<span style="color:red;">NO</span>';
+    function formato(val) {
+        if (val === '1') {
+            return '<span style="color:green;">SI</span>';
+        } else {
+            return '<span style="color:red;">NO</span>';
+        }
     }
-}
     var store = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
         autoLoad: true,
@@ -334,15 +334,15 @@ function formato(val) {
                 root: 'datos'
             }
         },
-        fields: ['vehiculor','latitudr', 'longitudr', 'fecha_horar', 'velocidadr', 'bateriar', 'gsmr', 'gps2r', 'ignr', 'evtr', 'direccionr'],
+        fields: ['vehiculor', 'latitudr', 'longitudr', 'fecha_horar', 'velocidadr', 'bateriar', 'gsmr', 'gps2r', 'ignr', 'evtr', 'direccionr'],
         listeners: {
             load: function(thisObject, records, successful, eOpts) {
 
                 Ext.MessageBox.hide();
 
-                if (records !== null) {                    
+                if (records !== null) {
                     var columnEvets = [
-                        Ext.create('Ext.grid.RowNumberer',{text : 'N°', width : 40}),
+                        Ext.create('Ext.grid.RowNumberer', {text: 'N°', width: 40}),
                         {text: '<b>Vehiculo</b>', width: 200, dataIndex: 'vehiculor', tooltip: 'vehiculo de la Empresa'},
                         {text: '<b>Fecha</b>', xtype: 'datecolumn', format: 'd-m-Y', width: 75, dataIndex: 'fecha_horar', align: 'center', tooltip: 'Fecha'},
                         {text: '<b>Hora</b>', xtype: 'datecolumn', format: 'H:i:s', width: 75, dataIndex: 'fecha_horar', align: 'center', tooltip: 'Hora'},
@@ -350,7 +350,7 @@ function formato(val) {
                         {text: '<b>Bateria</b>', width: 50, dataIndex: 'bateriar', align: 'center', renderer: formato, tooltip: 'Bateria'},
                         {text: '<b>GSM</b>', width: 50, dataIndex: 'gsmr', align: 'center', renderer: formato, tooltip: 'GSM'},
                         {text: '<b>GPS2</b>', width: 50, dataIndex: 'gps2r', align: 'center', renderer: formato, tooltip: 'GPS2'},
-                         {text: '<b>IGN</b>', width: 50, dataIndex: 'ignr', align: 'center', renderer: formato, tooltip: 'IGN'},
+                        {text: '<b>IGN</b>', width: 50, dataIndex: 'ignr', align: 'center', renderer: formato, tooltip: 'IGN'},
                         {text: '<b>Evento</b>', width: 250, dataIndex: 'evtr', tooltip: 'Evento'},
                         {text: '<b>Direccion</b>', width: 300, dataIndex: 'direccionr', tooltip: 'Direccion'},
                         {text: '<b>Latitud</b>', width: 150, dataIndex: 'latitudr', tooltip: 'Latitud'},
@@ -369,8 +369,8 @@ function formato(val) {
                             emptyText: 'No hay datos que Mostrar'
                         },
                         columns: columnEvets,
-                        listeners : {
-                            itemcontextmenu : function( thisObj, record, item, index, e, eOpts ){
+                        listeners: {
+                            itemcontextmenu: function(thisObj, record, item, index, e, eOpts) {
                                 panelMapa.setActiveTab('panelMapaTab');
                                 localizarDireccion(record.data.longitud, record.data.latitud, 17);
                             }
@@ -396,7 +396,7 @@ function formato(val) {
                         icon: Ext.MessageBox.ERROR
                     });
                 }
-                
+
             }
         }
     });

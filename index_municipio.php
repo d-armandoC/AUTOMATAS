@@ -24,7 +24,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <meta name="apple-mobile-web-app-capable" content="yes">
         
-        <link rel="stylesheet" type="text/css" href="extjs-docs-4.2.2/extjs-build/resources/css/ext-all.css">
+<!--        <link rel="stylesheet" type="text/css" href="extjs-docs-4.2.2/extjs-build/resources/css/ext-all.css">-->
         <link rel="stylesheet" type="text/css" href="extjs-docs-4.2.2/extjs-build/examples/shared/example.css">
         <link rel="stylesheet" type="text/css" href="extjs-docs-4.2.2/extjs-build/examples/ux/css/ItemSelector.css">
         <link rel="stylesheet" type="text/css" href="extjs-docs-4.2.2/extjs-build/examples/ux/grid/css/GridFilters.css">
@@ -32,15 +32,21 @@
 
         <link rel="stylesheet" type="text/css" href="css/principal.css">        
         
-        <script type="text/javascript" src="extjs-docs-4.2.2/extjs-build/ext-all.js"></script>
+             <script type="text/javascript" src="extjs-docs-4.2.2/extjs-build/examples/shared/include-ext.js"></script>
+        <script type="text/javascript" src="extjs-docs-4.2.2/extjs-build/examples/shared/options-toolbar.js"></script>
         <script type="text/javascript" src="extjs-docs-4.2.2/extjs-build/examples/example-data.js"></script>
         <script type="text/javascript" src="extjs-docs-4.2.2/extjs-build/examples/shared/examples.js"></script>
+        
+        
+<!--        <script type="text/javascript" src="extjs-docs-4.2.2/extjs-build/ext-all.js"></script>-->
+<!--        <script type="text/javascript" src="extjs-docs-4.2.2/extjs-build/examples/example-data.js"></script>-->
+<!--        <script type="text/javascript" src="extjs-docs-4.2.2/extjs-build/examples/shared/examples.js"></script>-->
         
         <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
         <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
 
         <!-- Scripts in development mode -->
-        <script type="text/javascript" src="jsPDF/jspdf.js"></script>
+<!--        <script type="text/javascript" src="jsPDF/jspdf.js"></script>
         <script type="text/javascript" src="jsPDF/libs/Blob/FileSaver.js"></script>
         <script type="text/javascript" src="jsPDF/libs/Blob.js/Blob.js"></script>
         <script type="text/javascript" src="jsPDF/libs/Blob.js/BlobBuilder.js"></script>
@@ -53,7 +59,7 @@
         <script type="text/javascript" src="jsPDF/jspdf.plugin.ie_below_9_shim.js"></script>
         <script type="text/javascript" src="jsPDF/jspdf.plugin.sillysvgrenderer.js"></script>
         <script type="text/javascript" src="jsPDF/jspdf.plugin.split_text_to_size.js"></script>
-        <script type="text/javascript" src="jsPDF/jspdf.plugin.standard_fonts_metrics.js"></script>
+        <script type="text/javascript" src="jsPDF/jspdf.plugin.standard_fonts_metrics.js"></script>-->
 
         <script type="text/javascript">
             <?php            

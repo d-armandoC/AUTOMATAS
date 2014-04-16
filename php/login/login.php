@@ -5,8 +5,8 @@ extract($_POST);
 
 if (!$mysqli = getConectionDb()) {
     $Error = "Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.";
-    echo "<script>alert('$Error');</script>";
-    echo "<script>location.href='../../index.php'</script>";
+//    echo "<script>alert('$Error');</script>";
+//    echo "<script>location.href='../../index.php'</script>";
 } else {
     $salt = "KR@D@C";
     $encriptClave = md5(md5(md5($ps) . md5($salt)));

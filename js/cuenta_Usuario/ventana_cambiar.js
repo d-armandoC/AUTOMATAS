@@ -104,7 +104,7 @@ function ventanaCambiarContrasenia() {
             iconCls: 'icon-user-add',
             resizable: false,
             width: 370,
-            height: 220,
+            height: 230,
             closeAction: 'hide',
             plain: false,
             items: [panel1]

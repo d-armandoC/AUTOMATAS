@@ -8,15 +8,15 @@ if (!$mysqli = getConectionDb()) {
 } else {
     $consultaSql = 
         "SELECT v.id_vehiculo, v.placa, v.id_equipo, v.id_empresa,
-        v.vehiculo, v.id_propietario, v.reg_municipal, v.year,
+        v.vehiculo, v.id_persona, v.reg_municipal, v.year,
         v.marca, v.modelo, v.num_motor, v.num_chasis, v.image,
         v.imei, v.id_operadora, v.lugar_instalacion,
-        v.have_taximetro, v.id_taximetro, v.fecha_instalacion, v.fecha_hora_registro,
+         v.id_taximetro, v.fecha_instalacion,v.fecha_registro,
         v.id_interfaz, v.id_tipo_equipo, v.observacion, v.num_chip, v.num_cel,
         e.empresa, p.nombres, p.apellidos, CONCAT(pt.apellidos, ' ', pt.nombres) as id_tecnico
         FROM vehiculos v, empresas e, personas p, personas pt
         WHERE v.id_empresa = e.id_empresa
-        AND v.id_propietario = p.id_persona
+        AND v.id_persona = p.id_persona
         AND v.id_tecnico = pt.id_persona
         ORDER BY e.empresa, v.vehiculo
         ";
@@ -33,7 +33,7 @@ if (!$mysqli = getConectionDb()) {
                 idEquipo:'" . utf8_encode($myrow["id_equipo"]) . "',
                 idEmpresa:'" . utf8_encode($myrow["id_empresa"]) . "',
                 vehiculo:'" . utf8_encode($myrow["vehiculo"]) . "',
-                cbxPropietario:".$myrow["id_propietario"].",
+                cbxPropietario:'".$myrow["id_persona"]."',
                 regMunicipal:'" . utf8_encode($myrow["reg_municipal"]) . "',
                 year:" . $myrow["year"] . ",
                 marca:'" . utf8_encode($myrow["marca"]) . "',
@@ -49,10 +49,9 @@ if (!$mysqli = getConectionDb()) {
                 cbxOperadora:" . $myrow["id_operadora"] . ",
                 cbxTecnico:'" . utf8_encode($myrow["id_tecnico"]) . "',
                 siteInst:'" . utf8_encode($myrow["lugar_instalacion"]) . "',
-                cbxTaximetro:'" . $myrow["have_taximetro"] . "',
                 idTaximetro:'" . utf8_encode($myrow["id_taximetro"]) . "',
                 dateInst:'" . $myrow["fecha_instalacion"] . "',
-                dateTimeRegistro:'" . $myrow["fecha_hora_registro"] . "',
+                dateTimeRegistro:'" . $myrow["fecha_registro"] . "',
                 cbxInterfaz:" . $myrow["id_interfaz"] . ",
                 cbxTipoEquipo:" . $myrow["id_tipo_equipo"] . ",
                 obser:'" . utf8_encode($myrow["observacion"]) . "'

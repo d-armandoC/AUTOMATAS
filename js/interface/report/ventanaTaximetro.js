@@ -141,8 +141,8 @@ Ext.onReady(function() {
             }]
     });
     contenedorWinTax = Ext.create('Ext.form.Panel', {
-        frame: true,
-        height: 200,
+        frame: false,
+        padding: '5 5 5 5',
         fieldDefaults: {
             labelAlign: 'left',
             labelWidth: 70,
@@ -290,7 +290,7 @@ function loadGridInfTax(records1, empresa, equipo, fi, ff, hi, hf) {
         {text: '<b>Id equipo</b>', width: 75, dataIndex: 'id_equipo', align: 'center'},
         {text: '<b>Fecha</b>', xtype: 'datecolumn', format: 'd-m-Y', width: 150, dataIndex: 'fecha', align: 'center'},
         {text: '<b>Hora Inicial</b>', width: 80, dataIndex: 'hora_inicial', align: 'center'},
-        {text: '<b>Hora Final</b>',  width: 80, dataIndex: 'hora_final', align: 'center'},
+        {text: '<b>Hora Final</b>', width: 80, dataIndex: 'hora_final', align: 'center'},
         {text: '<b>Distancia</b>', width: 80, dataIndex: 'distancia', align: 'center'},
         {text: '<b>Costo</b>', width: 75, dataIndex: 'costo', align: 'center'},
         {text: '<b>Paga</b>', width: 75, dataIndex: 'paga', align: 'center'},
@@ -326,8 +326,8 @@ function panelTax() {
         items: gridInfTax
 
     });
-       
-   
+
+
     panelMapa.add(tabTax);
     panelMapa.setActiveTab(tabTax);
 }

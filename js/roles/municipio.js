@@ -114,24 +114,26 @@ Ext.onReady(function() {
         iconCls: 'icon-config',
         scope: this,
         menu: [
-            {text: 'Usuarios', iconCls: 'icon-user-add', handler: function() {
-                    ventAddUser();
-                }},
-            {
-                text: 'Vehiculos',
-                iconCls: 'icon-add-car',
-                menu: [
-                    {text: 'Administrar', iconCls: 'icon-car', handler: function() {
-                            ventAddVehiculo();
-                        }},
-                    {text: 'Enviar CMD', iconCls: 'icon-cmd', handler: function() {
-                            ventComands();
-                        }},
-                    {text: 'CMD Enviados', iconCls: 'icon-cmd-hist', handler: function() {
-                            ventanaCmdHistorial();
-                        }}
-                ]
-            },
+            
+//            {text: 'Usuarios', iconCls: 'icon-user', handler: function() {
+//                    ventAddUser();
+//                }},
+//            {
+//                text: 'Vehiculos',
+//                iconCls: 'icon-add-car',
+//                menu: [
+//                    {text: 'Administrar', iconCls: 'icon-car', handler: function() {
+//                            ventAddVehiculo();
+//                        }},
+//                    {text: 'Enviar CMD', iconCls: 'icon-cmd', handler: function() {
+//                            ventComands();
+//                        }},
+//                    {text: 'CMD Enviados', iconCls: 'icon-cmd-hist', handler: function() {
+//                            ventanaCmdHistorial();
+//                        }}
+//                ]
+//            }
+            ,
             {text: 'Personal', iconCls: 'icon-personal', handler: function() {
                     ventAddPersonal();
                 }}, '-',
@@ -163,10 +165,13 @@ Ext.onReady(function() {
         scope: this,
         icon: 'img/table_refresh.png',
         menu: [
-            /*{ text : 'Direcciones', iconCls : 'icon-direccion', handler : function(){ventDireccion();}},
-             { text : 'Negocios', iconCls : 'icon-negocio', handler : function(){ventAddUser();}},
-             { text : 'Vehiculos en Lugares', iconCls : 'icon-vehiculos_lugar', handler : function(){ventanaVehLugares();}},
-             '-',*/
+            {text: 'Vehiculos en Lugares', iconCls: 'icon-vehiculos_lugar', handler: function() {
+                    ventanaVehLugares();
+                }},
+            {text: 'Cuenta Usuario', iconCls: 'icon-user-add', handler: function() {
+                    ventanaCambiarContrasenia();
+                }},
+            '-',
             {text: 'Videos',
                 iconCls: 'icon-video',
                 handler: showVideo
@@ -188,13 +193,10 @@ Ext.onReady(function() {
     });
 
     var monitoreo = Ext.create('Ext.button.Button', {
-        text: 'Monitoreo',
-        iconCls: 'icon-monitoreo',
-        scope: this,
-        handler: function() {
-            //window.location = 'monitorTeam.php';
-            window.open('monitorTeam.php');
-        }
+            text: 'Monitoreo', iconCls: 'icon-monitoreo', handler: function() {
+                    window.open('monitorTeam.php');
+                }
+            
     });
 
     var salir = Ext.create('Ext.button.Button', {
@@ -209,53 +211,67 @@ Ext.onReady(function() {
     var barraMenu = Ext.create('Ext.toolbar.Toolbar', {
         width: '100%',
         items: [{
-                text: 'Rastreo Satelital',
-                icon: 'img/application_go.png',
+                text: 'Menú',
+                icon: 'img/menu.png',
                 menu: [{
                         text: 'Reportes',
                         iconCls: 'icon-general',
                         menu: [
-                            {text: 'Asignacion Central', iconCls: 'icon-asignacion', handler: function() {
-                                    ventanaAsignacion();
-                                }},
-                            {text: 'Carreas Realizadas', iconCls: 'icon-informe', handler: function() {
-                                    ventanaSoftware();
-                                }},
-                            {text: 'Carreras No Atendidas', iconCls: 'icon-no-atendidos', handler: function() {
-                                    ventanaNoAtendidas();
-                                }},
+//                            {text: 'Asignacion Central', iconCls: 'icon-asignacion', handler: function() {
+//                                    ventanaAsignacion();
+//                                }}
+////                            ,
+//                            {text: 'Carreas Realizadas', iconCls: 'icon-informe', handler: function() {
+//                                   carerrasRealizadas();
+//                                }}
+////                            ,
+//                            {text: 'Carreras No Atendidas', iconCls: 'icon-no-atendidos', handler: function() {
+//                                    ventanaNoAtendidas();
+//                                }}
+                            ,
                             {text: 'Registros de Panico', iconCls: 'icon-reset', handler: function() {
-                                    ventanaPanico();
+                                    ventanaPanicos();
                                 }},
                             {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function() {
-                                    ventanaExcesosVelocidad();
-                                }},
-                            {text: 'Servicios', iconCls: 'icon-servicios', handler: function() {
-                                    ventanaServicios();
-                                }},
-                            {text: 'Estado de Vehiculos', iconCls: 'icon-estado-veh', handler: function() {
-                                    ventanaEstadoDeVehiculos();
-                                }},
-                            {text: 'Franjas Horarias', iconCls: 'icon-franjas-hor', handler: function() {
-                                    ventanaFranjasHorarias();
-                                }},
-                            {text: 'Trabajo por Flota', iconCls: 'icon-trab-flota', handler: function() {
-                                    ventanaTrabajoPorFlota();
-                                }},
+                                    ventanaExcesoVelocidad();
+                                }}
+//                            ,
+//                            {text: 'Servicios', iconCls: 'icon-servicios', handler: function() {
+//                                    ventanaServicios();
+//                                }}
+//                            ,
+//                            {text: 'Estado de Vehiculos', iconCls: 'icon-estado-veh', handler: function() {
+//                                    ventanaEstadoDeVehiculos();
+//                                }}
+//                            ,
+//                            {text: 'Franjas Horarias', iconCls: 'icon-franjas-hor', handler: function() {
+//                                    ventanaFranjasHorarias();
+//                                }}
+//                            ,
+//                            {text: 'Trabajo por Flota', iconCls: 'icon-trab-flota', handler: function() {
+//                                    ventanaTrabajoPorFlota();
+//                                }}
+                            ,
                             {text: 'Recorridos General', iconCls: 'icon-all-flags', handler: function() {
                                     ventanaBanderas();
-                                }},
+                                }}
+                            ,
                             {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
                                     ventanaEventos();
-                                }},
-                            {text: 'Geocercas', iconCls: 'icon-report-geo', handler: function() {
-                                    ventanaGeocercas();
-                                }},
-                            {text: 'Taximetro', iconCls: 'icon-taximetro', handler: function() {
-                                    ventanaTaximetro();
                                 }}
+                            ,
+//                            {text: 'Geocercas', iconCls: 'icon-report-geo', handler: function() {
+//                                    ventanaGeocercas();
+//                                }},
+//                            {text: 'Taximetro', iconCls: 'icon-taximetro', handler: function() {
+//                                    ventanaTaximetro();
+//                                }}
                         ]
-                    }, '-',
+                    },
+//                    {text: 'Estadisticas', iconCls: 'icon-statistics', handler: function() {
+//                            window.open('statistics.php');
+//                        }}
+                    , '-',
                     {text: 'Limpiar Mapa', iconCls: 'icon-limpiar-mapa', handler: function() {
                             limpiarCapasAll();
                         }},
@@ -265,11 +281,17 @@ Ext.onReady(function() {
                 ]
             },
             geocerca,
-            //editPosEmp,
-            monitoreo,
-            //administracion,
-            extra,
-            salir
+            editPosEmp,
+           // extra,
+            //monitoreo,
+            administracion,
+            salir, '->', {
+                xtype: 'image',
+                src: getNavigator(),
+                width: 16,
+                height: 16,
+                margin: '0 5 0 0'
+            }
         ]
     });
 
@@ -278,11 +300,24 @@ Ext.onReady(function() {
         deferreRender: false,
         activeTab: 0,
         items: [{
-                height: 47,
-                html: '<section id="panelNorte">' +
-                        '<center><strong id="titulo">SISTEMA DE RASTREO VEHICULAR</strong></center>' +
-                        '<strong id="subtitulo">Bienvenido al Sistema:: ' + userKTaxy + '</strong>' +
-                        '</section>'
+                layout: 'hbox',
+                bodyStyle: {
+                    background: '#add2ed'
+                },
+                items: [{
+                        xtype: 'label',
+                        html: '<a href="http://www.kradac.com" target="_blank"><img src="img/k-taxy.png" width="250" height="64"></a>'
+                    }, {
+                        xtype: 'label',
+                        padding: '15 0 0 0',
+                        style: {
+                            color: '#157fcc'
+                        },
+                        html: '<section id="panelNorte">' +
+                                '<center><strong id="titulo">Sistema de Rastreo Vehicular</strong></center>' +
+                                '<strong id="subtitulo">Bienvenido al Sistema: ' + personKarview + '</strong>' +
+                                '</section>'
+                    }]
             },
             barraMenu]
     });
@@ -337,7 +372,7 @@ Ext.onReady(function() {
                         editable: false,
                         allowBlank: false,
                         listConfig: {
-                            minWidth: 300
+                            minWidth: 450
                         }
                     }],
                 buttons: [{
@@ -360,7 +395,8 @@ Ext.onReady(function() {
     var panelEste = Ext.create('Ext.form.Panel', {
         region: 'west',
         id: 'west_panel',
-        title: 'Localizacion',
+        title: 'Facetas Karview',
+        iconCls: 'icon-facetas',
         frame: true,
         width: 240,
         split: true,
@@ -374,9 +410,9 @@ Ext.onReady(function() {
                 xtype: 'treepanel',
                 id: 'veh-taxis-tree',
                 rootVisible: false,
-                title: 'Rastreo Taxis',
+                title: 'Empresas',
                 autoScroll: true,
-                iconCls: 'icon-taxi-2',
+                iconCls: 'icon-tree-company',
                 store: storeTreeVehTaxis,
                 columns: [
                     {xtype: 'treecolumn', text: 'Central', flex: 4, sortable: true, dataIndex: 'text'}/*,
@@ -415,9 +451,6 @@ Ext.onReady(function() {
 
                         var capa = aux.split('_')[0];
                         var idEqpCoop = aux.split('_')[1];
-                        if (capa !== 'coop') {
-                            capa = 'KRC';
-                        }
 
                         buscarEnMapa(capa, idEqpCoop);
                     },
@@ -425,10 +458,7 @@ Ext.onReady(function() {
                         idEqpMen = record.internalId;
                         nameVeh = record.data.text;
                         if (idEqpMen.indexOf('ext-record') === -1) {
-                            var posXY = new Array(2);
-                            posXY[0] = window.event.clientX;
-                            posXY[1] = window.event.clientY;
-                            menuContext.showAt(posXY);
+                            menuContext.showAt(e.getXY());
                         } else {
                             idEqpMen = '';
                             nameVeh = '';
@@ -508,19 +538,15 @@ Ext.onReady(function() {
         }
     });
 
-    var toolBarOnMap = Ext.create('Ext.form.Panel', {
+    var toolBarOnMap = Ext.create('Ext.toolbar.Toolbar', {
         region: 'north',
-        frame: true,
-        layout: 'hbox',
-        defaults: {
-            margin: '0 5 0 0'
-        },
+        border: true,
         items: [{
                 xtype: 'combo',
-                width: '88%',
-                labelWidth: 60,
+                width: '86%',
+                padding: '0 0 0 5',
                 store: storeDirecciones,
-                fieldLabel: 'Dirección',
+                fieldLabel: '<b>Dirección</b>',
                 displayField: 'todo',
                 typeAhead: false,
                 hideTrigger: true,
@@ -551,7 +577,6 @@ Ext.onReady(function() {
                 }
             }, {
                 xtype: 'splitbutton',
-                width: '10%',
                 text: 'Cooperativas',
                 iconCls: 'icon-central',
                 menu: menuCoop,
@@ -568,6 +593,7 @@ Ext.onReady(function() {
         activeTab: 0,
         items: [{
                 title: 'Mapa',
+                id: 'panelMapaTab',
                 iconCls: 'icon-mapa',
                 html: '<div id="map"></div>'
             }]

@@ -218,10 +218,10 @@ Ext.onReady(function() {
 //                            {text: 'Asignacion Central', iconCls: 'icon-asignacion', handler: function() {
 //                                    ventanaAsignacion();
 //                                }}
-//                            ,
-                            {text: 'Carreas Realizadas', iconCls: 'icon-informe', handler: function() {
-                                   carerrasRealizadas();
-                                }}
+////                            ,
+//                            {text: 'Carreas Realizadas', iconCls: 'icon-informe', handler: function() {
+//                                   carerrasRealizadas();
+//                                }}
 //                            ,
 //                            {text: 'Carreras No Atendidas', iconCls: 'icon-no-atendidos', handler: function() {
 //                                    ventanaNoAtendidas();
@@ -261,9 +261,9 @@ Ext.onReady(function() {
 //                            {text: 'Geocercas', iconCls: 'icon-report-geo', handler: function() {
 //                                    ventanaGeocercas();
 //                                }},
-                            {text: 'Taximetro', iconCls: 'icon-taximetro', handler: function() {
-                                    ventanaTaximetro();
-                                }}
+//                            {text: 'Taximetro', iconCls: 'icon-taximetro', handler: function() {
+//                                    ventanaTaximetro();
+//                                }}
                         ]
                     }, {text: 'Estadisticas', iconCls: 'icon-statistics', handler: function() {
                             window.open('statistics.php');
