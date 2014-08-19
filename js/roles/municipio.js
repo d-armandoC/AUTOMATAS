@@ -139,6 +139,16 @@ Ext.onReady(function() {
                 }}, '-',
             {text: 'Envio Email', iconCls: 'icon-email', handler: function() {
                     ventanaEnvioMail();
+                }},
+            {text: 'Mantenimientos', iconCls: 'icon-add-geo', handler: function() {
+                   // ventAddMantenimientos();
+                        Ext.MessageBox.show({
+                                title: ' IMPORTANTE',
+                                msg: 'ESTAMOS TRABAJANDO PARA UN MEJOR SERVICIO.....',
+                                icon: Ext.MessageBox.OK,
+                                buttons: Ext.Msg.OK
+                            });
+                   
                 }}
         ]
     });
@@ -203,8 +213,12 @@ Ext.onReady(function() {
         text: 'Salir',
         scope: this,
         icon: 'img/salir.png',
-        handler: function() {
-            window.location = 'php/login/logout.php';
+          handler: function() {
+            Ext.MessageBox.confirm('Exit', 'Desea Salir del Sistema ?', function(choice) {
+                if (choice === 'yes') {
+                    window.location = 'php/login/logout.php';
+                }
+            });
         }
     });
 

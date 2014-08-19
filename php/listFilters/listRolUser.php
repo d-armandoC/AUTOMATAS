@@ -6,7 +6,7 @@ extract($_GET);
 $salida = "{failure:true}";
 
 $consultaSql = "SELECT ID_ROL_USUARIO, NOMBRE
-    FROM ROL_USUARIO
+    FROM ROL_USUARIOS
 ";
 
 consulta($consultaSql);

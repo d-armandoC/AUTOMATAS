@@ -1,22 +1,20 @@
 <?php
-
 include ('../../../dll/config.php');
-
 extract($_POST);
-
 if (!$mysqli = getConectionDb()) {
-    echo "{failure:true, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
+    echo "{failure:true, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.',state: false}";
 } else {
     $json = json_decode($puntos, true);
     $problem = false;
 
     for ($i = 0; $i < count($json); $i++) {
         if ($json[$i]["state"]) {
-            $insertSql = "insert into send_mail (id_persona, parametro, id_empresa) values(?, ?, ?)";
+            
+            $insertSql = "insert into karviewdb.envio_correos (id_persona, id_sky_evento, id_empresa) values(?, ?, ?)";
 
             $stmt = $mysqli->prepare($insertSql);
             if ($stmt) {
-                $stmt->bind_param("iis", $idPersona, $json[$i]["parametro"], $cbxEmpresas);
+                $stmt->bind_param("iii", $idPerson, $json[$i]["idSkyEvt"], $idCompany);
                 $stmt->execute();
 
                 if ($stmt->affected_rows == 0) {
@@ -28,10 +26,10 @@ if (!$mysqli = getConectionDb()) {
                 break;
             }
         } else {
-            $destroySql = "delete from send_mail where id_persona = ? and parametro = ? and id_empresa = ?";
+            $destroySql = "delete from karviewdb.envio_correos where id_persona = ? and id_sky_evento = ? and id_empresa = ?";
             $stmt = $mysqli->prepare($destroySql);
             if ($stmt) {
-                $stmt->bind_param("iis", $idPersona, $json[$i]["parametro"], $cbxEmpresas);
+                $stmt->bind_param("iii", $idPerson, $json[$i]["idSkyEvt"], $idCompany);
                 $stmt->execute();
 
                 if ($stmt->affected_rows == 0) {
@@ -44,9 +42,9 @@ if (!$mysqli = getConectionDb()) {
         }
     }
     if ($problem) {
-        echo "{failure:true, message: 'Problemas al Guardar la Información.'}";
+        echo "{failure:true, message: 'Problemas al Guardar la Información.',state: false}";
     } else {
-        echo "{success:true, message:'Datos Guardados Correctamente.'}";
+        echo "{success:true, message:'Datos Guardados Correctamente.',state: false}";
     }
     
     $stmt->close();

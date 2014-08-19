@@ -8,10 +8,7 @@ if (!$mysqli = getConectionDb()) {
 } else {
 	$json = json_decode($personas, true);
 
-	$destroySql = 
-	    "DELETE FROM personas WHERE id_persona = ?"
-	;
-
+	$destroySql ="DELETE FROM personas WHERE id_persona = ?";
 	if ($stmt = $mysqli->prepare($destroySql)) {
 		$stmt->bind_param("i", $json["id"]);
 		$stmt->execute();

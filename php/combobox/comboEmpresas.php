@@ -13,36 +13,26 @@ if (!$mysqli = getConectionDb()) {
 } else {
     $idRol = $_SESSION["IDROLKARVIEW"];
     if ($idRol == 1 && $menuClick != 1) {
-        $consultaSql = "select id_empresa, empresa, latitud, longitud,"
-                . "direccion, telefono, email, icon, id_tipo_empresa "
-                . "from empresas "
-                . "order by empresa"
+        $consultaSql = "select id_empresa, empresa,
+                direccion, telefono, correo from empresas 
+                order by empresa";
         ;
     } else {
-        $consultaSql = "select id_empresa, empresa, latitud, longitud, "
-                . "direccion, telefono, email, icon, id_tipo_empresa "
-                . "from empresas "
-                . "where id_empresa = '$idEmpresa'"
+        $consultaSql = "select id_empresa, empresa,
+                direccion, telefono, correo 
+                from empresas 
+                where id_empresa = '$idEmpresa'"
         ;
     }
-
-    $result = $mysqli->query($consultaSql);
+      $result = $mysqli->query($consultaSql);
     $mysqli->close();
 
     if ($result->num_rows > 0) {
         $objJson = "{empresas: [";
         while ($myrow = $result->fetch_assoc()) {
             $objJson .= "{"
-                    . "id:'" . $myrow["id_empresa"] . "',"
-                    . "idTipoEmpresa:" . $myrow["id_tipo_empresa"] . ","
-                    . "text:'" . utf8_encode($myrow["empresa"]) . "',"
-                    . "latitud: " . $myrow["latitud"] . ","
-                    . "longitud: " . $myrow["longitud"] . ","
-                    . "direccion: '" . utf8_encode($myrow["direccion"]) . "',"
-                    . "telefono: '" . $myrow["telefono"] . "',"
-                    . "email: '" . $myrow["email"] . "',"
-                    . "icon: '" . $myrow["icon"] . "'"
-                    . "},";
+                    . "id:" . $myrow["id_empresa"] . ","
+                    . "text:'" . utf8_encode($myrow["empresa"]) . "'},";
         }
 
         $objJson .="]}";
@@ -50,4 +40,26 @@ if (!$mysqli = getConectionDb()) {
     } else {
         echo "{success:false, msg: 'No hay datos que obtener'}";
     }
+    
+
+//    $result = $mysqli->query($consultaSql);
+//    $mysqli->close();
+//
+//    if ($result->num_rows > 0) {
+//        $objJson = "{empresas: [";
+//        while ($myrow = $result->fetch_assoc()) {
+//            $objJson .= "{"
+//                    . "id:" . $myrow["id_empresa"] . ","
+//                    . "text:'" . utf8_encode($myrow["empresa"]) . "',"
+//                    . "direccion: '" . utf8_encode($myrow["direccion"]) . "',"
+//                    . "telefono: '" . $myrow["telefono"] . "',"
+//                    . "email: '" . $myrow["correo"] . "',"
+//                    . "},";
+//        }
+//
+//        $objJson .="]}";
+//        echo $objJson;
+//    } else {
+//        echo "{success:false, msg: 'No hay datos que obtener'}";
+//    }
 }

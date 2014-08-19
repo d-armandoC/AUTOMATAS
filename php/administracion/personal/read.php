@@ -12,22 +12,21 @@ if (!$mysqli = getConectionDb()) {
 
     if ($idRol == 1) {
         $consultaSql = 
-            "SELECT ee.empresa, p.id_persona, p.cedula, p.nombres,
-            p.apellidos, p.email, e.empleo, p.fecha_nacimiento, p.direccion,
+            "SELECT es.empresa, p.id_persona, p.cedula, p.nombres,
+            p.apellidos, p.correo, p.fecha_nacimiento, p.direccion,
             p.celular
-            FROM personas p, empleos e, empresas ee
-            WHERE p.id_empleo = e.id_empleo
-            AND p.id_empresa = ee.id_empresa
+            FROM personas p, empresas es
+            WHERE p.id_empresa = es.id_empresa
             ORDER BY p.apellidos
         ";
     } else {
         $consultaSql = 
-            "SELECT ee.empresa, p.id_persona, p.cedula, p.nombres,
-            p.apellidos, p.email, e.empleo, p.fecha_nacimiento, p.direccion,
+            "SELECT es.empresa, p.id_persona, p.cedula, p.nombres,
+            p.apellidos, p.correo, p.fecha_nacimiento, p.direccion,
             p.celular
-            FROM personas p, empleos e, empresas ee
-            WHERE p.id_empleo = e.id_empleo
-            AND p.id_empresa = ee.id_empresa
+            FROM personas p, empresas es
+            WHERE 
+            p.id_empresa = es.id_empresa
             AND P.ID_EMPRESA = '$idEmpresa'
             ORDER BY p.apellidos
         ";
@@ -46,8 +45,7 @@ if (!$mysqli = getConectionDb()) {
                 cedula:'" . $myrow["cedula"] . "',
                 nombres:'" . utf8_encode($myrow["nombres"]) . "',
                 apellidos:'" . utf8_encode($myrow["apellidos"]) . "',            
-                email:'" . utf8_encode($myrow["email"]) . "',
-                cbxEmpleo:'" . utf8_encode($myrow["empleo"]) . "',
+                email:'" . utf8_encode($myrow["correo"]) . "',
                 fechaNacimiento:'" . $myrow["fecha_nacimiento"] . "',
                 direccion:'" . utf8_encode($myrow["direccion"]) . "',
                 celular:'" .$myrow["celular"] . "'

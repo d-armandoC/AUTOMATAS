@@ -12,16 +12,16 @@ if (!$mysqli = getConectionDb()) {
     $idRol = $_SESSION["IDROLKARVIEW"];
 
     if ($idRol == 1) {
-        $consultaSql = "select p.id_persona, p.id_empleo, concat(p.nombres, ' ', p.apellidos) as person, e.empresa, p.email "
-                . "from personas p, empresas e "
-                . "where p.id_empresa = e.id_empresa "
-                . "order by p.apellidos";
+        $consultaSql = "select p.id_persona, concat(p.nombres, ' ', p.apellidos) as person, e.empresa, p.correo 
+                from personas p, empresas e 
+                 where p.id_empresa = e.id_empresa 
+                order by p.apellidos";
     } else {
-        $consultaSql = "select p.id_persona, p.id_empleo, concat(p.nombres, ' ', p.apellidos) as person, e.empresa, p.email "
-                . "from personas p, empresas e "
-                . "where p.id_empresa = e.id_empresa "
-                . "and p.id_empresa = '$idEmpresa' "
-                . "order by p.apellidos";
+        $consultaSql = "select p.id_persona, concat(p.nombres, ' ', p.apellidos) as person, e.empresa, p.correo 
+              from personas p, empresas e 
+                where p.id_empresa = e.id_empresa 
+               and p.id_empresa = '$idEmpresa' 
+                order by p.apellidos";
     }
 
     $result = $mysqli->query($consultaSql);
@@ -33,9 +33,8 @@ if (!$mysqli = getConectionDb()) {
             $objJson .= "{"
                     . "id:" . $myrow["id_persona"] . ", "
                     . "text:'" . utf8_encode($myrow["person"]) . "', "
-                    . "idEmpleo:" . $myrow["id_empleo"] . ", "
                     . "empresa:'" . utf8_encode($myrow["empresa"]) . "', "
-                    . "mail:'" . utf8_encode($myrow["email"]) . "', "
+                    . "mail:'" . utf8_encode($myrow["correo"]) . "', "
                     . "}, ";
         }
 

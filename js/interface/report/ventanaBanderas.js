@@ -215,7 +215,7 @@ Ext.onReady(function() {
                                             Ext.Msg.alert('Error', 'Los campos no se pueden enviar con valores invalidos.');
                                             break;
                                         case Ext.form.action.Action.CONNECT_FAILURE:
-                                            Ext.Msg.alert('Error', 'Escoja un Rango de Fechas y Horas Menor.');
+                                            Ext.Msg.alert('Error', 'No hay datos a mostrar en su Petición');
                                             break;
                                         case Ext.form.action.Action.SERVER_INVALID:
                                             Ext.Msg.alert('Error', action.result.message);
@@ -274,8 +274,8 @@ function ventanaBanderas() {
             title: 'Todas las Banderas',
             iconCls: 'icon-all-flags',
             resizable: false,
-            width: 560,
-            height: 275,
+                width: 560,
+            height: 300,
             closeAction: 'hide',
             plain: false,
             items: [contenedorWinBan]
@@ -328,46 +328,48 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
             type: 'ajax',
             reader: 'array'
         },
-        fields: ['vehiculo', 'latitud', 'longitud', {name: 'fecha_hora', type: 'date', dateFormat:'c'}, {name: 'fecha_hora_reg', type: 'date', dateFormat:'c'}, 'velocidad', 'bateria', 
-            'gsm', 'gps2', 'ign', 'direccion', 'color', 'evento', 'idEvento', 'parametro', 'g1', 'g2', 'salida']
+        fields: [ 'latitud', 'longitud', {name: 'fecha_hora', type: 'date', dateFormat:'c'}, {name: 'fecha_hora_reg', type: 'date', dateFormat:'c'}, 'velocidad', 'bateria', 
+            'gsm', 'gps2', 'ign', 'direccion', 'color', 'evento', 'idEvento', 'g1', 'g2', 'salida']
     });
     var columnFlags = [];
 
-    if (records[0].bateria === -1) {
+//    if (records[0].bateria === -1) {
+//        columnFlags = [
+//            Ext.create('Ext.grid.RowNumberer', {text: '<b>Nº</b>', align: 'center', width: 40}),
+//            {text: '<b>Fecha y Hora</b>', xtype: 'datecolumn', format: 'd-m-Y H:i:s', width: 150, dataIndex: 'fecha_hora', align: 'center'},
+//            {text: '<b>Registro</b>', xtype: 'datecolumn', format: 'd-m-Y H:i:s', width: 150, dataIndex: 'fecha_hora_reg', align: 'center'},
+//            {text: '<b>Vel (Km/h)</b>', dataIndex: 'velocidad', align: 'center', width: 75, cls: 'listview-filesize', renderer: formatSpeed},
+//            {text: '<b>Evento</b>', width: 130, dataIndex: 'evento', align: 'center'},
+//            {text: '<b>Est. Unid.</b>', width: 130, dataIndex: 'ign', align: 'center'},
+//            {text: '<b>Id Est. Unid.</b>', width: 50, dataIndex: 'gsm', align: 'center'},
+//            {text: '<b>Est. Mec.</b>', width: 130, dataIndex: 'gps2', align: 'center'}
+//        ];
+//    } else {
         columnFlags = [
             Ext.create('Ext.grid.RowNumberer', {text: '<b>Nº</b>', align: 'center', width: 40}),
             {text: '<b>Fecha y Hora</b>', xtype: 'datecolumn', format: 'd-m-Y H:i:s', width: 150, dataIndex: 'fecha_hora', align: 'center'},
             {text: '<b>Registro</b>', xtype: 'datecolumn', format: 'd-m-Y H:i:s', width: 150, dataIndex: 'fecha_hora_reg', align: 'center'},
-            {text: '<b>Vel (Km/h)</b>', dataIndex: 'velocidad', align: 'center', width: 75, cls: 'listview-filesize', renderer: formatSpeed},
-            {text: '<b>Evento</b>', width: 130, dataIndex: 'evento', align: 'center'},
-            {text: '<b>Est. Unid.</b>', width: 130, dataIndex: 'ign', align: 'center'},
-            {text: '<b>Id Est. Unid.</b>', width: 50, dataIndex: 'gsm', align: 'center'},
-            {text: '<b>Est. Mec.</b>', width: 130, dataIndex: 'gps2', align: 'center'}
+            {text: '<b>Vel (Km/h)</b>', dataIndex: 'velocidad', align: 'center', width: 95, cls: 'listview-filesize', renderer: formatSpeed},
+            {text: '<b>Bateria</b>', width: 80, dataIndex: 'bateria', align: 'center', renderer: formatBatIgnGsmGps2},
+            {text: '<b>IGN</b>', width: 70, dataIndex: 'ign', align: 'center', renderer: formatBatIgnGsmGps2},
+            {text: '<b>GSM</b>', width: 70, dataIndex: 'gsm', align: 'center', renderer: formatBatIgnGsmGps2},
+            {text: '<b>GPS</b>', width: 70, dataIndex: 'gps2', align: 'center', renderer: formatBatIgnGsmGps2},
+            {text: '<b>G1</b>', width: 90, dataIndex: 'g1', align: 'center', renderer: formatStateTaxy,},
+            {text: '<b>G2</b>', width: 70, dataIndex: 'g2', align: 'center', renderer: formatPanic},
+            {text: '<b>Salida</b>', width: 70, dataIndex: 'salida', align: 'center'},
+            {text: '<b>Evento</b>', width: 280, dataIndex: 'evento', align: 'center'},
+            {text: '<b>Id Evento</b>', width: 80, dataIndex: 'idEvento', align: 'center'},
         ];
-    } else {
-        columnFlags = [
-            Ext.create('Ext.grid.RowNumberer', {text: '<b>Nº</b>', align: 'center', width: 40}),
-            {text: '<b>Fecha y Hora</b>', xtype: 'datecolumn', format: 'd-m-Y H:i:s', width: 150, dataIndex: 'fecha_hora', align: 'center'},
-            {text: '<b>Registro</b>', xtype: 'datecolumn', format: 'd-m-Y H:i:s', width: 150, dataIndex: 'fecha_hora_reg', align: 'center'},
-            {text: '<b>Vel (Km/h)</b>', dataIndex: 'velocidad', align: 'center', width: 75, cls: 'listview-filesize', renderer: formatSpeed},
-            {text: '<b>Bateria</b>', width: 60, dataIndex: 'bateria', align: 'center', renderer: formatBatIgnGsmGps2},
-            {text: '<b>IGN</b>', width: 50, dataIndex: 'ign', align: 'center', renderer: formatBatIgnGsmGps2},
-            {text: '<b>GSM</b>', width: 50, dataIndex: 'gsm', align: 'center', renderer: formatBatIgnGsmGps2},
-            {text: '<b>GPS2</b>', width: 50, dataIndex: 'gps2', align: 'center', renderer: formatBatIgnGsmGps2},
-            {text: '<b>Taximetro</b>', width: 90, dataIndex: 'g2', align: 'center', renderer: formatStateTaxy,},
-            {text: '<b>Panico</b>', width: 60, dataIndex: 'g1', align: 'center', renderer: formatPanic},
-            {text: '<b>Salida</b>', width: 60, dataIndex: 'salida', align: 'center'},
-            {text: '<b>Evento</b>', width: 200, dataIndex: 'evento', align: 'center'},
-            {text: '<b>Id Evento</b>', width: 75, dataIndex: 'idEvento', align: 'center'},
-            {text: '<b>Parametro</b>', width: 75, dataIndex: 'parametro', align: 'center'}
-        ];
-    }
+//    }
 
     var gridFlags = Ext.create('Ext.grid.Panel', {
         region: 'center',
         title: '<center>Recorridos Historico: ' + vehiculo + '<br>Desde: '+fi+' '+hi+' | Hasta: '+ff+' '+hf+'</center>',
         store: storeFlags,
         columnLines: true,
+         autoScroll: true,
+        height: 435,
+        width: 800,
         viewConfig: {
             emptyText: 'No hay datos que Mostrar'
         },

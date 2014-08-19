@@ -94,7 +94,7 @@ Ext.onReady(function(){
                 iconCls : 'icon-personal',
                 scope : this,
                 tooltip : 'Personas',
-                handler : ventAddPersonal
+               // handler : ventAddPersonal
             },{
                 iconCls: 'icon-add',
                 disabled: true,

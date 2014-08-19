@@ -1,4 +1,6 @@
 //Modelos para Store y JsonStore
+var showCoopMap = new Array();
+var menuCoop;
 Ext.define('vehModel', {
     extend: 'Ext.data.Model',
     fields: [
@@ -67,8 +69,43 @@ var storeTreeVehTaxis = Ext.create('Ext.data.TreeStore', {
 
 //Store para combobox
 
+
+   var storeVehiculosservicios = Ext.create('Ext.data.JsonStore', {
+        autoDestroy: true,
+        autoLoad: true,
+        proxy: {
+            type: 'ajax',
+            url: 'php/combobox/comboServicios.php',
+            reader: {
+                type: 'json',
+                root: 'veh'
+            }
+        },
+        fields: [{name: 'value', mapping: 'id'}, {name: 'text'}, {name: 'tiempo'}, {name: 'kilometro'}],
+    });
+
+
+var storeDevice = Ext.create('Ext.data.Store', {
+    autoDestroy: true,
+    autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        url: 'php/combobox/comboEquipos.php',
+        reader: {
+            type: 'json',
+            root: 'data'
+        }
+    },
+    fields: [
+        {name: 'id', type: 'int'},
+        {name: 'text', type: 'string'}
+    ]
+});
+
+
 var storeEmpresas = Ext.create('Ext.data.Store', {
     autoDestroy: true,
+    autoLoad: true,
     proxy: {
         type: 'ajax',
         url: 'php/combobox/comboEmpresas.php',
@@ -77,21 +114,144 @@ var storeEmpresas = Ext.create('Ext.data.Store', {
             root: 'empresas'
         }
     },
-    fields: ['id', 'idTipoEmpresa', 'text', 'latitud', 'longitud', 'direccion', 'telefono', 'email', 'icon'],
+    fields: ['id', 'idTipoEmpresa', 'text', 'latitud', 'longitud', 'direccion', 'telefono', 'email'],
     listeners: {
         load: function(thisObject, records, successful, eOpts) {
-            if (successful) {
-                lienzoCentral.destroyFeatures();
-                addCompanyToCanvas(records);
-            } else {
-                Ext.example.msg('Error', 'No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.')
-            }
+                for (var i = 0; i < records.length; i++) {
+                    var dataCoop = records[i].data;
+                      showCoopMap[i] = [dataCoop.id, dataCoop.text, false];
+                }
+                for(var j = 0; j < showCoopMap.length; j++){
+                    menuCoop.add({itemId: showCoopMap[j][0], text: showCoopMap[j][1], checked: showCoopMap[j][2]});
+                }
+            
+            // var dataCoop = records[0].data;
+            
+//            if (successful) {
+//                lienzoCentral.destroyFeatures();
+//                addCompanyToCanvas(records);
+//            } else {
+//                Ext.example.msg('Error', 'No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.')
+//            }
+
+//   if (successful && typeof idRolKBus !== 'undefined') {
+//                for (var i = 0; i < records.length; i++) {
+//                    var dataCoop = records[i].data;
+//                    if (idRolKBus === 2 || idRolKBus === 4) {
+//                        showCoopMap[i] = [dataCoop.id, dataCoop.text, true];
+//                        // Centrar el Mapa
+//                        /*var lonLat = new OpenLayers.LonLat(dataCoop.longitud, dataCoop.latitud).transform(new OpenLayers.Projection("EPSG:4326"),
+//                         map.getProjectionObject());
+//                         map.setCenter(lonLat, 13);*/
+//                    } else {
+//                        showCoopMap[i] = [dataCoop.id, dataCoop.text, false];
+//                    }
+//                }
+//                storeVehicle.load({
+//                    params: {
+//                        idCompany: 1
+//                    }
+//                });
+//                getCoopMenu();
+//            }
         }
     }
 });
 
-var storeVeh = Ext.create('Ext.data.JsonStore', {
+var store_equipo = Ext.create('Ext.data.Store', {
+    //autoDestroy: true,
+    autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        url: 'php/combobox/comboEquipo.php',
+        reader: {
+            type: 'json',
+            root: 'equipo'
+        }
+    },
+    fields: ['id', 'text']
+});
+
+var storetipo_equipo_vehiculo = Ext.create('Ext.data.Store', {
+      autoDestroy: true,
+    autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        url: 'php/combobox/comboTipoEquipoVehiculo.php',
+        reader: {
+            type: 'json',
+            root: 'tipo_veh'
+        }
+    },
+    fields: ['id', 'text']
+});
+
+
+
+var storeTypeDevice = Ext.create('Ext.data.Store', {
     autoDestroy: true,
+    autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        url: 'php/combobox/comboTipoEquipoVehiculo.php',
+        reader: {
+            type: 'json',
+            root: 'interfaz_veh'
+        }
+    },
+    fields: ['id', 'text']
+});
+
+var storetipo_operadora_vehiculo = Ext.create('Ext.data.Store', {
+    autoDestroy: true,
+    autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        url: 'php/combobox/comboTipoOperadoraVehiculo.php',
+        reader: {
+            type: 'json',
+            root: 'operadora_veh'
+        }
+    },
+    fields: ['id', 'text']
+
+});
+
+
+var storeclasseVehiculo = Ext.create('Ext.data.Store', {
+    autoDestroy: true,
+     autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        url: 'php/combobox/comboClassVehiculo.php',
+        reader: {
+            type: 'json',
+            root: 'class_veh'
+        }
+    },
+    fields: ['id', 'text']
+});
+
+
+var storeTipoEstado = Ext.create('Ext.data.Store', {
+    autoDestroy: true,
+     autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        url: 'php/combobox/comboTipoEstadoVehiculo.php',
+        reader: {
+            type: 'json',
+            root: 'estado_veh'
+        }
+    },
+    fields: ['id', 'text']
+});
+
+
+
+var storeVeh = Ext.create('Ext.data.JsonStore', {
+         autoLoad: true, 
+         //autoDestroy: true,
     proxy: {
         type: 'ajax',
         url: 'php/combobox/comboVeh.php',
@@ -104,7 +264,8 @@ var storeVeh = Ext.create('Ext.data.JsonStore', {
 });
 
 var storeGeo = Ext.create('Ext.data.JsonStore', {
-    autoDestroy: true,
+     autoDestroy: true,
+    autoLoad: true,
     proxy: {
         type: 'ajax',
         url: 'php/combobox/comboGeocercas.php',
@@ -113,7 +274,21 @@ var storeGeo = Ext.create('Ext.data.JsonStore', {
             root: 'adminGeo'
         }
     },
-    fields: ['id', 'nombre']
+    fields: [{name:'id', type:'int'}, {name:'text', type:'string'}]
+});
+var storeMensajeGeos = Ext.create('Ext.data.Store', {
+    proxy: {
+        type: 'ajax',
+        url: 'php/interface/geosAdministrador/obtenerGeosMensajes.php',
+        reader: {
+            type: 'json',
+            root: 'data'
+        }
+    },
+    fields: [
+        {name: 'estado', type: 'string'},
+        {name: 'state', type: 'boolean'}
+    ]
 });
 
 var storePersonas = Ext.create('Ext.data.Store', {
@@ -127,7 +302,7 @@ var storePersonas = Ext.create('Ext.data.Store', {
             root: 'personas'
         }
     },
-    fields: ['id', 'text', 'idEmpleo', 'empresa', 'mail']
+    fields: ['id', 'text', 'empresa', 'mail']
 });
 
 var storeMails = Ext.create('Ext.data.Store', {
@@ -253,46 +428,3 @@ var storeGeocercas = Ext.create('Ext.data.JsonStore', {
     fields: ['id_geocerca', 'geocerca', 'desc_geo', 'empresa', 'id_empresa']
 });
 
-var menuCoop = Ext.create('Ext.menu.Menu', {
-    items: [],
-    listeners: {
-        click: function(menu, item, e, eOpts) {
-            for (var i = 0; i < showCoopMap.length; i++) {
-                if (showCoopMap[i][0] == item.getItemId()) {
-                    showCoopMap[i][2] = item.checked;
-
-                    if (!item.checked) {
-                        Ext.create('Ext.data.Store', {
-                            autoLoad: true,
-                            model: 'ultimos_gps',
-                            proxy: {
-                                type: 'ajax',
-                                url: 'php/interface/monitoring/ultimosGPS.php?listCoop=' + showCoopMap[i][0],
-                                reader: {
-                                    type: 'json',
-                                    root: 'dataGps'
-                                }
-                            },
-                            fields: ['idCoop', 'idEqp', 'nombre', 'lat', 'lon', 'fec', 'hor', 'vel', 'dir', 'evt', 'idEvt', 'icon'],
-                            listeners: {
-                                load: function(thisObject, records, successful, eOpts) {
-                                    if (records != null) {
-                                        if (records.length > 0) {
-                                            for (var i = 0; i < records.length; i++) {
-                                                var taxiFeature = vectorKRC.getFeatureById(records[i].data.idEqp);
-                                                if (taxiFeature != null) {
-                                                    vectorKRC.removeFeatures(taxiFeature);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                    }
-                }
-            }
-        }
-    }
-});
-var showCoopMap = new Array();

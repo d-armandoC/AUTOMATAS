@@ -1,4 +1,6 @@
 /*Funciones para guardar Geolocalizacion de Usuario*/
+var cadena;
+var data = [];
 function getLocationUser() {
     if (navigator.geolocation) {
         var position = navigator.geolocation.getCurrentPosition(showPositionUser, showError);
@@ -27,12 +29,22 @@ function getLocation() {
     }
 }
 
+function connectionMap() {
+    if (typeof OpenLayers !== 'undefined') {
+        return true;
+    } else {
+        Ext.example.msg('Mensaje', 'El mapa se encuentra deshabilitado.');
+        return false;
+    }
+}
+
 function showPosition(position) {
     //x.innerHTML="Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude; 
     localizarDireccion(position.coords.longitude, position.coords.latitude, 17);
 }
 
 function showError(error) {
+    console.log(error);
     switch (error.code) {
         case error.PERMISSION_DENIED:
             //x.innerHTML="User denied the request for Geolocation."
@@ -113,7 +125,7 @@ function formatoHora(time) {
 }
 
 function formatBatIgnGsmGps2(val) {
-    if (val===1) {
+    if (val === 1) {
         return '<span style="color:green;">SI</span>';
     } else {
         return '<span style="color:red;">NO</span>';
@@ -146,11 +158,46 @@ function formatStateTaxy(val) {
     }
 }
 
+function formatTipoServicio(val) {
+    switch (val) {
+        case 1:
+            return '<span style="color:blue;">Mantenimiento</span>';
+            break;
+        case 2:
+             return '<span style="color:orange;">Reparacion</span>';
+            break;
+        case 3:
+            return '<span style="color:green;">Repuesto</span>';
+            break;
+    }
+
+
+//    if (val === 1) {
+//        return '<span style="color:blue;">NORMAL</span>';
+//    } else {
+//        return '<span style="color:red;"> PANICO RECEPTADO</span>';
+//    }
+}
+
+
+
+
+
 function formatPanic(val) {
     if (val === 1) {
-        return '<span style="color:blue;">Normal</span>';
+        return '<span style="color:blue;">NORMAL</span>';
     } else {
-        return '<span style="color:red;">Panico</span>';
+        return '<span style="color:red;"> PANICO RECEPTADO</span>';
+    }
+}
+
+function parametroServicio(val) {
+    if (val === "1") {
+        return '<span style="color:blue;"><b>KILOMETRO</b></span>';
+    } else if (val === "2") {
+        return '<span style="color:green;"><b>DIA</b></span>';
+    } else {
+        return '<span style="color:orange;"><b>VACIO</b> </span>';
     }
 }
 
@@ -332,8 +379,62 @@ function checkRolSesion(idRolKarview) {
 
 function reloadStore(store, cant) {
     setTimeout(function() {
-       // reloadStateEqp(store, cant);
+        // reloadStateEqp(store, cant);
         store.reload();
     }
     , cant * 1000);
+}
+function fijarcadenaPrueba(cadenas) {
+    cadena = cadenas;
+//console.log(cadena);
+    cadena = cadena.replace(/;/g, ',');
+    if (cadena.charAt(cadena.length - 1) == ',') {
+        cadena = cadena.substring(0, cadena.length - 1)
+//        console.log(cadena);
+    }
+    ;
+//console.log(cadena.charAt(cadena.length-1));
+}
+
+
+function dataPrueba() {
+//
+    var data = [];
+    var lasts = [];
+//    var cadena ='';
+//    console.log(cadena);
+//    cadena.replace(';',',')
+    lasts = cadena.split(',');
+    var count = 0;
+    var oper = ' ';
+    var hasta = lasts.length / 2;
+    for (var i = 0; i < hasta; i++) {
+        if (lasts[count] || null) {
+            if (lasts[count] == 1) {
+                oper = 'Claro';
+            } else {
+                if (lasts[count] == 2) {
+                    oper = 'Movistar';
+                } else {
+                    if (lasts[count] == 3) {
+                        oper = 'Convencional'
+                    } else {
+                    }
+                }
+                ;
+            }
+        } else {
+            oper = '';
+        }
+        ;
+        data.push({
+            name: lasts[count],
+            numero: lasts[count + 1],
+            tipo: oper
+        });
+        count = count + 2;
+    }
+
+    return data;
+
 }

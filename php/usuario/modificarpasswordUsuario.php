@@ -1,7 +1,7 @@
 <?php
 extract($_POST);
 include("../login/isLogin.php");
- $userKTaxy = $_SESSION["USERKARVIEW"]; 
+ $userKarview = $_SESSION["USERKARVIEW"]; 
  
   
 $salt = "KR@D@C";
@@ -11,10 +11,10 @@ include ('../../dll/config.php');
 if (!$mysqli = getConectionDb()) {
     echo "{failure:true, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-    $insertSql = "select * from usuarios where usuario='$userKTaxy' and clave= '$passwordencript'";
+    $insertSql = "select * from usuarios where usuario='$userKarview' and clave= '$passwordencript'";
     $result = $mysqli->query($insertSql);
     if ($result->num_rows == 1) {
-        $insertSql = "UPDATE usuarios SET clave='$passwordNew' WHERE clave = '$passwordencript' AND usuario = '$userKTaxy'";
+        $insertSql = "UPDATE usuarios SET clave='$passwordNew' WHERE clave = '$passwordencript' AND usuario = '$userKarview'";
         if (!$mysqli->query($insertSql)) {
             echo "{failure: true, msg: 'Problemas al Insertar Datos'}";
         } else {

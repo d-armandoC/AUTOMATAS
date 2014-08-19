@@ -7,11 +7,11 @@
 
 function graficarCoop(){
     var coopToShow = "";
-    for ( var i = 0;  i < showCoopMap.length; i++){
-        if (showCoopMap[i][2]) { // 0: AS :: 1: ANDINASUR :: 2: true/false (isChecked)
-            coopToShow += showCoopMap[i][0]+";";
-        }
-    }
+//    for ( var i = 0;  i < showCoopMap.length; i++){
+//        if (showCoopMap[i][2]) { // 0: AS :: 1: ANDINASUR :: 2: true/false (isChecked)
+//            coopToShow += showCoopMap[i][0]+";";
+//        }
+//    }
 
     if (coopToShow != "") {
         Ext.create('Ext.data.Store', {

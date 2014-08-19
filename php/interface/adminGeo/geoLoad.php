@@ -10,15 +10,14 @@ $id_rol = $_SESSION["IDROLKARVIEW"];
 $salida = "{failure:true}";
 
 if ($id_rol == 1) {
-    $consultaSql = "SELECT G.ID_GEOCERCA, G.NOMBRE_GEOC, G.DESC_GEOC, E.EMPRESA, E.ID_EMPRESA
-        FROM GEOCERCAS G, EMPRESAS E    
-        WHERE G.ID_EMPRESA = E.ID_EMPRESA"
+    $consultaSql = "SELECT g.id_geocerca, g.geocerca, g.descripcion, e.empresa, e.id_empresa
+        FROM karviewdb.geocercas g,  karviewdb.empresas e  
+        WHERE g.id_empresa=e.id_empresa"
     ;
 } else {
-    $consultaSql = "SELECT G.ID_GEOCERCA, G.NOMBRE_GEOC, G.DESC_GEOC, E.EMPRESA, E.ID_EMPRESA
-        FROM GEOCERCAS G, EMPRESAS E    
-        WHERE G.ID_EMPRESA = E.ID_EMPRESA
-        AND E.ID_EMPRESA = '$id_empresa'"
+    $consultaSql = "SELECT g.id_geocerca, g.geocerca, g.descripcion, e.empresa, e.id_empresa
+        FROM karviewdb.geocercas g,  karviewdb.empresas e  
+        WHERE g.id_empresa=e.id_empresa and e.id_empresa='$id_empresa'"
     ;
 }
 
@@ -30,11 +29,11 @@ $salida = "{'adminGeo': [";
 for ($i = 0; $i < count($resulset); $i++) {
     $fila = $resulset[$i];
     $salida .= "{
-            'id_geocerca':" . $fila["ID_GEOCERCA"] . ",
-            'geocerca':'" . utf8_encode($fila["NOMBRE_GEOC"]) . "',
-            'desc_geo':'" . utf8_encode($fila["DESC_GEOC"]) . "',
-            'empresa':'" . utf8_encode($fila["EMPRESA"]) . "',
-            'id_empresa':'" . utf8_encode($fila["ID_EMPRESA"]) . "'
+            'id_geocerca':" . $fila["id_geocerca"] . ",
+            'geocerca':'" . utf8_encode($fila["geocerca"]) . "',
+            'desc_geo':'" . utf8_encode($fila["descripcion"]) . "',
+            'empresa':'" . utf8_encode($fila["empresa"]) . "',
+            'id_empresa':'" . utf8_encode($fila["id_empresa"]) . "'
         }";
     if ($i != count($resulset) - 1) {
         $salida .= ",";

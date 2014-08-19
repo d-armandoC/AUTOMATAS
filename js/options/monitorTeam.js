@@ -1,7 +1,7 @@
 Ext.Loader.setConfig({
     enabled: true
 });
-Ext.Loader.setPath('Ext.ux', 'extjs-docs-4.2.2/extjs-build/examples/ux');
+Ext.Loader.setPath('Ext.ux', 'extjs-docs-5.0.0/extjs-build/build/examples/ux');
 Ext.require([
     'Ext.grid.*',
     'Ext.data.*',
@@ -14,8 +14,7 @@ Ext.require([
     'Ext.ux.ajax.SimManager',
     'Ext.ux.grid.FiltersFeature',
     'Ext.selection.CellModel',
-    'Ext.ux.CheckColumn',
-    'Ext.chart.*'
+    'Ext.ux.CheckColumn'
 ]);
 
 var refresh = false;

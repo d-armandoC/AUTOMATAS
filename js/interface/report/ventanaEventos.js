@@ -162,8 +162,8 @@ Ext.onReady(function() {
     });
 
     contenedorwinEvt = Ext.create('Ext.form.Panel', {
-//        bodyStyle : 'padding: 10px; background-color: #DFE8F6',
-//        baseCls : 'x-plain',
+        bodyStyle : 'padding: 10px; background-color: #DFE8F6',
+        baseCls : 'x-plain',
         frame: false,
         padding: '5 5 5 5',
         items: [{
@@ -275,7 +275,7 @@ function ventanaEventos() {
             iconCls: 'icon-eventos',
             resizable: false,
             width: 600,
-            height: 500,
+            height: 530,
             closeAction: 'hide',
             plain: false,
             items: [contenedorwinEvt],
@@ -292,6 +292,7 @@ function ventanaEventos() {
 
 
 function loadGridEvents() {
+    
     var empresa = contenedorwinEvt.down('[name=cbxEmpresas]').getValue();
     var listVeh = contenedorwinEvt.down('[name=listVeh]').getValue();
     var listEvt = contenedorwinEvt.down('[name=listEvt]').getValue();
@@ -302,12 +303,12 @@ function loadGridEvents() {
     var nameEmp = contenedorwinEvt.down('[name=cbxEmpresas]').getRawValue();
 
     Ext.MessageBox.show({
-        title: "Obteniendo Datos",
-        msg: "Reportes",
+        title: "Cargando....",
+        msg: "Procesando Datos",
         progressText: "Obteniendo...",
         wait: true,
         waitConfig: {
-            interval: 200
+            interval: 150
         }
     });
     function formato(val) {
@@ -322,7 +323,7 @@ function loadGridEvents() {
         autoLoad: true,
         proxy: {
             type: 'ajax',
-            url: 'php/interface/report/getReportEvent.php?cbxEmpresas=' + empresa +
+            url: 'php/interface/report/getReportEvent.php?cbxEmpresas='+empresa +
                     '&listVeh=' + listVeh +
                     '&listEvt=' + listEvt +
                     '&fechaIni=' + fi +
@@ -339,18 +340,18 @@ function loadGridEvents() {
             load: function(thisObject, records, successful, eOpts) {
 
                 Ext.MessageBox.hide();
-
-                if (records !== null) {
+               
+                if (records !== null && records.length>0) {
                     var columnEvets = [
-                        Ext.create('Ext.grid.RowNumberer', {text: 'N°', width: 40}),
+                        Ext.create('Ext.grid.RowNumberer', {text: 'N°', width: 48}),
                         {text: '<b>Vehiculo</b>', width: 200, dataIndex: 'vehiculor', tooltip: 'vehiculo de la Empresa'},
-                        {text: '<b>Fecha</b>', xtype: 'datecolumn', format: 'd-m-Y', width: 75, dataIndex: 'fecha_horar', align: 'center', tooltip: 'Fecha'},
+                        {text: '<b>Fecha</b>', xtype: 'datecolumn', format: 'd-m-Y', width: 85, dataIndex: 'fecha_horar', align: 'center', tooltip: 'Fecha'},
                         {text: '<b>Hora</b>', xtype: 'datecolumn', format: 'H:i:s', width: 75, dataIndex: 'fecha_horar', align: 'center', tooltip: 'Hora'},
-                        {text: '<b>Vel. (Km/h)</b>', dataIndex: 'velocidadr', align: 'right', width: 75, cls: 'listview-filesize', renderer: formatSpeed, tooltip: 'Velocidad'},
-                        {text: '<b>Bateria</b>', width: 50, dataIndex: 'bateriar', align: 'center', renderer: formato, tooltip: 'Bateria'},
-                        {text: '<b>GSM</b>', width: 50, dataIndex: 'gsmr', align: 'center', renderer: formato, tooltip: 'GSM'},
-                        {text: '<b>GPS2</b>', width: 50, dataIndex: 'gps2r', align: 'center', renderer: formato, tooltip: 'GPS2'},
-                        {text: '<b>IGN</b>', width: 50, dataIndex: 'ignr', align: 'center', renderer: formato, tooltip: 'IGN'},
+                        {text: '<b>Vel. (Km/h)</b>', dataIndex: 'velocidadr', align: 'right', width: 105, cls: 'listview-filesize', renderer: formatSpeed, tooltip: 'Velocidad'},
+                        {text: '<b>Bateria</b>', width: 75, dataIndex: 'bateriar', align: 'center', renderer: formato, tooltip: 'Bateria'},
+                        {text: '<b>GSM</b>', width: 65, dataIndex: 'gsmr', align: 'center', renderer: formato, tooltip: 'GSM'},
+                        {text: '<b>GPS2</b>', width: 65, dataIndex: 'gps2r', align: 'center', renderer: formato, tooltip: 'GPS2'},
+                        {text: '<b>IGN</b>', width: 65, dataIndex: 'ignr', align: 'center', renderer: formato, tooltip: 'IGN'},
                         {text: '<b>Evento</b>', width: 250, dataIndex: 'evtr', tooltip: 'Evento'},
                         {text: '<b>Direccion</b>', width: 300, dataIndex: 'direccionr', tooltip: 'Direccion'},
                         {text: '<b>Latitud</b>', width: 150, dataIndex: 'latitudr', tooltip: 'Latitud'},
@@ -359,8 +360,11 @@ function loadGridEvents() {
 
                     var gridEvents = Ext.create('Ext.grid.Panel', {
                         width: '100%',
-                        height: 485,
+//                        height: 485,
                         collapsible: true,
+                        autoScroll: true,
+                        height: 435,
+                        //width: 800,
                         title: '<center>Reporte de Eventos: ' + nameEmp + '</center>',
                         store: store,
                         multiSelect: true,
@@ -391,10 +395,11 @@ function loadGridEvents() {
                 } else {
                     Ext.MessageBox.show({
                         title: 'Error...',
-                        msg: 'No hay Datos en estas fechas y horas...',
+                        msg: 'No hay datos a mostrar en su Petición',
                         buttons: Ext.MessageBox.OK,
                         icon: Ext.MessageBox.ERROR
                     });
+                   
                 }
 
             }

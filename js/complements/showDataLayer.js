@@ -108,7 +108,7 @@ function addVehiculosToCanvas(cordGrap) {
                 newPoint.transform(new OpenLayers.Projection("EPSG:4326"),
                         new OpenLayers.Projection("EPSG:900913"));
                 // Asignamos icono y Movemos el vehiculo 
-                taxiFeature.attributes.icon = getIconByRumbo(datosVeh.rumbo, datosVeh.vel, datosVeh.idEvt);
+               // taxiFeature.attributes.icon = getIconByRumbo(datosVeh.rumbo, datosVeh.vel, datosVeh.idEvt);
                 taxiFeature.move(newPoint);
 
                 if (datosVeh.idEvt === 1 || datosVeh.idEvt === 3 || datosVeh.idEvt === 7 || datosVeh.idEvt === 8 ||
@@ -186,7 +186,7 @@ function addCompanyToCanvas(cordGrap) {
 
         pointFeature.id = dataCoop.id;
 
-        // Anadir  central al mapa
+//        // Anadir  central al mapa
         lienzoCentral.addFeatures([pointFeature]);
     }
 

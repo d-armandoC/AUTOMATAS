@@ -8,12 +8,13 @@ extract($_GET);
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, msg: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-    $queryEvents = "select parametro, desc_evento from sky_eventos";
-
-    $queryMail = "select id_persona, parametro, id_empresa "
-            . "from send_mail where id_persona = $idPerson "
-            . "and id_equipo = -1 and id_empresa = '$cbxEmpresas'"
-    ;
+         $queryEvents = "select id_sky_evento, sky_evento from sky_eventos";
+$queryMail = "select id_persona, id_sky_evento, id_empresa "
+            . "from envio_correos where id_persona = $idPerson "
+            . "and id_empresa = $cbxEmpresas";
+//    $queryMail = "select id_persona, id_sky_evento, id_empresa
+//            from envio_correos where id_persona = 6
+//            and id_empresa = 2";
 
     $resultEvents = $mysqli->query($queryEvents);
     $resultMail = $mysqli->query($queryMail);
@@ -21,11 +22,12 @@ if (!$mysqli = getConectionDb()) {
     if ($resultMail->num_rows > 0) {
         $objJson = "{mails: [";
         $exist = false;
+        $resultMail = allRows($mysqli->query($queryMail));
         while ($myrow = $resultEvents->fetch_assoc()) {
-            $resultMail = $mysqli->query($queryMail);
-            while ($myrow2 = $resultMail->fetch_assoc()) {
-                if ($myrow["parametro"] == $myrow2["parametro"]) {
-                    $objJson .= "{idEmpresa: '".$myrow2["id_empresa"]."', parametro: ".$myrow["parametro"].", event: '" . utf8_encode($myrow["desc_evento"]) . "',"
+            for ($i = 0; $i < count($resultMail); $i++) {
+                $myrow2 = $resultMail[$i];
+                if ($myrow["id_sky_evento"] == $myrow2["id_sky_evento"]) {
+                    $objJson .= "{idEmpresa: '".$myrow2["id_empresa"]."', idSkyEvt: ".$myrow["id_sky_evento"].", event: '" . utf8_encode($myrow["sky_evento"]) . "',"
                             . "state: true},";
                     $exist = true;
                     break;
@@ -33,8 +35,9 @@ if (!$mysqli = getConectionDb()) {
                     $exist = false;
                 }
             }
+            
             if (!$exist) {
-                $objJson .= "{idEmpresa: '".$myrow2["id_empresa"]."', parametro: ".$myrow["parametro"].", event: '" . utf8_encode($myrow["desc_evento"]) . "',"
+                $objJson .= "{idEmpresa: '".$myrow2["id_empresa"]."', idSkyEvt: ".$myrow["id_sky_evento"].", event: '" . utf8_encode($myrow["sky_evento"]) . "',"
                             . "state: false},";
             }
         }
@@ -43,7 +46,7 @@ if (!$mysqli = getConectionDb()) {
     } else {
         $objJson = "{mails: [";
         while ($myrow = $resultEvents->fetch_assoc()) {
-            $objJson .= "{idEmpresa: null, parametro: ".$myrow["parametro"].", event: '" . utf8_encode($myrow["desc_evento"]) . "',"
+            $objJson .= "{idEmpresa: null, idSkyEvt: ".$myrow["id_sky_evento"].", event: '" . utf8_encode($myrow["sky_evento"]) . "',"
                     . "state: false},";
         }
         $objJson .="]}";

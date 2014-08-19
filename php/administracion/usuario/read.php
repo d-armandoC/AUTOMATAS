@@ -9,12 +9,11 @@ if (!$mysqli = getConectionDb()) {
     $consultaSql = 
         "SELECT u.id_usuario, p.cedula, p.nombres, p.apellidos,
         ru.nombre, e.empresa, u.usuario, u.clave, p.id_persona, e.id_empresa
-        FROM usuarios u, personas p, rol_usuario ru, empresas e
+        FROM usuarios u, personas p, rol_usuarios ru, empresas e
         WHERE u.id_persona = p.id_persona
         AND u.id_rol_usuario = ru.id_rol_usuario
         AND u.id_empresa = e.id_empresa
-        order by p.apellidos
-    ";
+        order by p.apellidos";
 
     $result = $mysqli->query($consultaSql);
     $mysqli->close();
@@ -28,7 +27,7 @@ if (!$mysqli = getConectionDb()) {
                 idPerson:".$myrow["id_persona"].",
                 person:'" . utf8_encode($myrow["apellidos"]." ".$myrow["nombres"]) . "',
                 rol:'" . utf8_encode($myrow["nombre"]) . "',
-                idEmp:'" . utf8_encode($myrow["id_empresa"]) . "',
+                idEmp:" . utf8_encode($myrow["id_empresa"]) . ",
                 empresa:'" . utf8_encode($myrow["empresa"]) . "',
                 usuario:'" . utf8_encode($myrow["usuario"]) . "',
                 clave:'" . utf8_encode($myrow["clave"]) . "'            

@@ -21,24 +21,22 @@
         <meta charset="utf-8">
         <title><?php echo $site_title?></title>
         <link rel="shortcut icon" href="<?php echo $site_icon?>" type="image/x-icon">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="shortcut icon" href="img/icon_ktaxy.png" type="image/x-icon">
-        
-        <link rel="stylesheet" type="text/css" href="extjs-docs-4.2.2/extjs-build/examples/shared/example.css">
-        <link rel="stylesheet" type="text/css" href="extjs-docs-4.2.2/extjs-build/examples/ux/css/ItemSelector.css">
-        <link rel="stylesheet" type="text/css" href="extjs-docs-4.2.2/extjs-build/examples/ux/grid/css/GridFilters.css">
-        <link rel="stylesheet" type="text/css" href="extjs-docs-4.2.2/extjs-build/examples/ux/grid/css/RangeMenu.css">
-        
+        <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/shared/example.css">
+       <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/ux/grid/css/GridFilters.css">
+       <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/ux/grid/css/RangeMenu.css">
         <link rel="stylesheet" type="text/css" href="css/principal.css">        
         
-        <script type="text/javascript" src="extjs-docs-4.2.2/extjs-build/examples/shared/include-ext.js"></script>
-        <script type="text/javascript" src="extjs-docs-4.2.2/extjs-build/examples/shared/options-toolbar.js"></script>
-        <script type="text/javascript" src="extjs-docs-4.2.2/extjs-build/examples/example-data.js"></script>
-        <script type="text/javascript" src="extjs-docs-4.2.2/extjs-build/examples/shared/examples.js"></script>
-        
-        <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
-        <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
+        <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/shared/example.css">
+       <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/ux/grid/css/GridFilters.css">
+       <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/ux/grid/css/RangeMenu.css">
+       <script type="text/javascript" src="extjs-docs-5.0.0/extjs-build/build/examples/shared/include-ext.js"></script>
+       <script type="text/javascript" src="extjs-docs-5.0.0/extjs-build/build/examples/shared/options-toolbar.js"></script>
+       <script type="text/javascript" src="extjs-docs-5.0.0/extjs-build/build/examples/shared/examples.js"></script>
+       
+       <script type="text/javascript" src="extjs-docs-5.0.0/extjs-build/build/packages/ext-charts/build/ext-charts.js"></script>
+       
+<!--        <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
+        <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>-->
 
         <script type="text/javascript">
             <?php            
@@ -50,12 +48,13 @@
                 ";
             ?>
         </script>
-
+         <!--Dependencias-->
         <script type="text/javascript" src="js/requerid/functions.js"></script>
         <script type="text/javascript" src="js/requerid/stores.js"></script>
+        <!--Fin Dependencias-->
         
         <script type="text/javascript" src="js/roles/admin.js"></script>
-        <script type="text/javascript" src="js/mapa.js"></script>
+<!--        <script type="text/javascript" src="js/mapa.js"></script>-->
 
         <script type="text/javascript" src="js/complements/loadLayer.js"></script>        
         <script type="text/javascript" src="js/complements/drawLine.js"></script>
@@ -64,11 +63,20 @@
         <script type="text/javascript" src="js/complements/getPositon.js"></script>
 
         <script type="text/javascript" src="js/administracion/ventanaPersonal.js"></script>
+        <script type="text/javascript" src="js/administracion/ventanaMantenimineto.js"></script>
+        <script type="text/javascript" src="js/administracion/ventanaEmpresa.js"></script>
         <script type="text/javascript" src="js/administracion/ventanaVehiculo.js"></script>
         <script type="text/javascript" src="js/administracion/ventanaUsuario.js"></script>
-        <script type="text/javascript" src="js/administracion/cmd/ventanaCmd.js"></script>
-        <script type="text/javascript" src="js/administracion/cmd/ventanaCmdHist.js"></script>
+        
+        <script type="text/javascript" src="js/administracion/cmd/ventanaCmd.js"></script><!--
+       
+        
+<!--        <script type="text/javascript" src="js/administracion/cmd/reportCmd.js"></script>
+        <script type="text/javascript" src="js/administracion/cmd/sendCmd.js"></script>-->
+        
         <script type="text/javascript" src="js/administracion/ventanaSendMail.js"></script>
+        <script type="text/javascript" src="js/administracion/ventanaEquipos.js"></script>
+          
 
         <script type="text/javascript" src="js/interface/report/ventanaAsignacion.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaBanderas.js"></script>
@@ -76,7 +84,6 @@
         <script type="text/javascript" src="js/interface/report/ventanaExcesosVelocidad.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaFranjasHorarias.js"></script>        
         <script type="text/javascript" src="js/interface/report/ventanaNoAtendidas.js"></script>
-        <script type="text/javascript" src="js/interface/report/ventanaPanico.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaRutas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaServicios.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaSoftware.js"></script>
@@ -85,10 +92,16 @@
         <script type="text/javascript" src="js/interface/report/ventanaEventos.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaGeocercas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaSimbologia.js"></script>
+        <script type="text/javascript" src="js/interface/report/ventanaRegistroPanico.js"></script>
+        <script type="text/javascript" src="js/interface/report/ventanaReporteMantenimiento.js"></script>
+        <script type="text/javascript" src="js/interface/report/ventanaReporteMantenimientoDetallado.js"></script>
+        <script type="text/javascript" src="js/interface/report/ventanaCmdHist.js"></script>
 
         <script type="text/javascript" src="js/interface/adminGeo/ventanaVerGeo.js"></script>
         <script type="text/javascript" src="js/interface/adminGeo/ventanaAgregarGeo.js"></script>
         <script type="text/javascript" src="js/interface/adminGeo/ventanaSendMailGeo.js"></script>
+        <script type="text/javascript" src="js/interface/adminGeo/VentanaGeosPruebas.js"></script>
+        <script type="text/javascript" src="js/interface/adminGeo/ventanaSendMailGeoPrueba.js"></script>
 
         <script type="text/javascript" src="js/interface/edit/ventanaEditEmp.js"></script>
         
@@ -98,6 +111,21 @@
         <script type="text/javascript" src="js/extra/ventanaCreditos.js"></script>
         <script type="text/javascript" src="js/extra/ventanaVideos.js"></script>
         <script type="text/javascript" src="js/cuenta_Usuario/ventana_cambiar.js"></script>
+       <script type="text/javascript" src="js/cuenta_Usuario/modificarUsuario.js"></script>
+       <script type="text/javascript" src="js/cuenta_Usuario/actualizarEmail.js"></script>
+    
+     <!--Ayuda-->
+        <!--<script type="text/javascript" src="js/gui/menu/windowAbout.js"></script>-->
+        <!--Fin de Ayuda-->
+
+        <!--Mapa-->
+        <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
+        <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
+        <script type="text/javascript" src="js/mapa.js"></script>
+        <!--Fin Mapa-->
+    
+    
+    
     </head>
     <body oncontextmenu = "return false">        
         <header></header>

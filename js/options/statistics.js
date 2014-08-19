@@ -1,7 +1,7 @@
 Ext.Loader.setConfig({
     enabled: true
 });
-Ext.Loader.setPath('Ext.ux', 'extjs-docs-4.2.2/extjs-build/examples/ux');
+Ext.Loader.setPath('Ext.ux', 'extjs-docs-5.0.0/extjs-build/build/examples/ux');
 Ext.require([
     'Ext.grid.*',
     'Ext.data.*',
@@ -167,7 +167,8 @@ function createGrafic(parametro) {
                         }
                     });
                 }
-            }],
+            }
+        ],
         items: chartCountPanicByDayToday
     });
     return  panelCountPanicByDayToday;
@@ -427,7 +428,7 @@ Ext.onReady(function() {
                 type: 'Numeric',
                 position: 'left',
                 fields: ['total'],
-                title: 'Cantidad',
+                title: 'Tramas Diarias',
                 grid: true,
                 minimum: 0,
                 maximum: 1500
@@ -565,10 +566,10 @@ Ext.onReady(function() {
                 type: 'Numeric',
                 position: 'left',
                 fields: ['total'],
-                title: 'Tramas Diario',
+                title: 'Tramas Mes Actual',
                 grid: true,
                 minimum: 0,
-                maximum: 1000000
+                maximum: 15000
             }, {
                 type: 'Category',
                 position: 'bottom',
@@ -815,7 +816,7 @@ Ext.onReady(function() {
                 dataIndex: 'total',
                 align: 'right',
                 renderer: 'perc'
-            },
+            }
         ],
         listeners: {
             selectionchange: function(model, records) {

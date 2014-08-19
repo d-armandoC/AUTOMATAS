@@ -5,8 +5,8 @@ extract($_GET);
 
 $salida = "{failure:true}";
 
-$consultaSql = "SELECT ID_ROL_USUARIO, NOMBRE
-    FROM ROL_USUARIO
+$consultaSql = "SELECT id_rol_usuario, nombre
+    FROM rol_usuarios
 ";
 
 consulta($consultaSql);
@@ -17,8 +17,8 @@ $salida = "{'rol_usuario': [";
 for ($i = 0; $i < count($resulset); $i++) {
     $fila = $resulset[$i];
     $salida .= "{
-            'id':" . $fila["ID_ROL_USUARIO"] . ",
-            'nombre':'" . utf8_encode($fila["NOMBRE"]). "'
+            'id':" . $fila["id_rol_usuario"] . ",
+            'nombre':'" . utf8_encode($fila["nombre"]). "'
         }";
     if ($i != count($resulset) - 1) {
         $salida .= ",";

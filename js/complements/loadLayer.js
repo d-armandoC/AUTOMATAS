@@ -40,7 +40,7 @@ function cargarCapas() {
     var styleVeh = new OpenLayers.StyleMap({
         externalGraphic: "${icon}",
         graphicWidth: 25,
-        graphicHeight: 25,
+        graphicHeight: 16,
         fillOpacity: 0.85,
         idCoop: "${idCoop}",
         company: "${company}",

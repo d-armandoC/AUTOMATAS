@@ -1,6 +1,5 @@
 var contenedorWinAddGeo;
 var winAddGeo;
-
 var vertPolygon="";
 var trazando=0;
 
@@ -118,13 +117,15 @@ Ext.onReady(function() {
             labelWidth: 75
         },
         
-        items: [{
+        items: [//////
+            {
             layout : 'column',
             baseCls: 'x-plain',
             items: [{
                 columnWidth: .5,
                 baseCls: 'x-plain',
-                items : [{
+                items : [
+                    {
                     xtype : 'combobox',
                     fieldLabel: 'Cooperativa',
                     afterLabelTextTpl: required,
@@ -158,7 +159,9 @@ Ext.onReady(function() {
                     fieldLabel: 'Geocerca:',
                     tooltip : 'Nombre de la Geocerca',
                     maxLength : 45       
-                },{
+                },
+                //////
+                        {
                     layout : 'column',
                     baseCls: 'x-plain',
                     items : [{
@@ -187,7 +190,8 @@ Ext.onReady(function() {
                             }
                         }]                    
                     }]                    
-                }]
+                }
+            ]
             },{
                 columnWidth: .5,
                 baseCls: 'x-plain',

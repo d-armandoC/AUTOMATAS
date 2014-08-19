@@ -4,9 +4,7 @@ require_once('../../dll/conect.php');
 extract($_GET);
 
 $consultaSql = "SELECT ID_EMPRESA, EMPRESA
-    FROM EMPRESAS 
-    WHERE id_tipo_empresa = 1
-    ORDER BY EMPRESA
+    FROM EMPRESAS ORDER BY EMPRESA
 ";
 
 consulta($consultaSql);
