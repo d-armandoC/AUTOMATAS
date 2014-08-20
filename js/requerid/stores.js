@@ -1,6 +1,8 @@
 //Modelos para Store y JsonStore
-var showCoopMap = new Array();
+
 var menuCoop;
+var showCoopMap = new Array();
+
 Ext.define('vehModel', {
     extend: 'Ext.data.Model',
     fields: [
@@ -70,19 +72,19 @@ var storeTreeVehTaxis = Ext.create('Ext.data.TreeStore', {
 //Store para combobox
 
 
-   var storeVehiculosservicios = Ext.create('Ext.data.JsonStore', {
-        autoDestroy: true,
-        autoLoad: true,
-        proxy: {
-            type: 'ajax',
-            url: 'php/combobox/comboServicios.php',
-            reader: {
-                type: 'json',
-                root: 'veh'
-            }
-        },
-        fields: [{name: 'value', mapping: 'id'}, {name: 'text'}, {name: 'tiempo'}, {name: 'kilometro'}],
-    });
+var storeVehiculosservicios = Ext.create('Ext.data.JsonStore', {
+    autoDestroy: true,
+    autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        url: 'php/combobox/comboServicios.php',
+        reader: {
+            type: 'json',
+            root: 'veh'
+        }
+    },
+    fields: [{name: 'value', mapping: 'id'}, {name: 'text'}, {name: 'tiempo'}, {name: 'kilometro'}],
+});
 
 
 var storeDevice = Ext.create('Ext.data.Store', {
@@ -117,16 +119,20 @@ var storeEmpresas = Ext.create('Ext.data.Store', {
     fields: ['id', 'idTipoEmpresa', 'text', 'latitud', 'longitud', 'direccion', 'telefono', 'email'],
     listeners: {
         load: function(thisObject, records, successful, eOpts) {
-                for (var i = 0; i < records.length; i++) {
-                    var dataCoop = records[i].data;
-                      showCoopMap[i] = [dataCoop.id, dataCoop.text, false];
+            for (var i = 0; i < records.length; i++) {
+                var dataCoop = records[i].data;
+                showCoopMap[i] = [dataCoop.id, dataCoop.text, false];
+            }
+            for (var i = 0; i < showCoopMap.length; i++) {
+                if (showCoopMap[i][0] > 1) {
+                    menuCoop.add({itemId: showCoopMap[i][0], text: showCoopMap[i][1], checked: showCoopMap[i][2]});
                 }
-                for(var j = 0; j < showCoopMap.length; j++){
-                    menuCoop.add({itemId: showCoopMap[j][0], text: showCoopMap[j][1], checked: showCoopMap[j][2]});
-                }
-            
+            }
+
+            //getCoopMenu();
+
             // var dataCoop = records[0].data;
-            
+
 //            if (successful) {
 //                lienzoCentral.destroyFeatures();
 //                addCompanyToCanvas(records);
@@ -173,7 +179,7 @@ var store_equipo = Ext.create('Ext.data.Store', {
 });
 
 var storetipo_equipo_vehiculo = Ext.create('Ext.data.Store', {
-      autoDestroy: true,
+    autoDestroy: true,
     autoLoad: true,
     proxy: {
         type: 'ajax',
@@ -220,7 +226,7 @@ var storetipo_operadora_vehiculo = Ext.create('Ext.data.Store', {
 
 var storeclasseVehiculo = Ext.create('Ext.data.Store', {
     autoDestroy: true,
-     autoLoad: true,
+    autoLoad: true,
     proxy: {
         type: 'ajax',
         url: 'php/combobox/comboClassVehiculo.php',
@@ -235,7 +241,7 @@ var storeclasseVehiculo = Ext.create('Ext.data.Store', {
 
 var storeTipoEstado = Ext.create('Ext.data.Store', {
     autoDestroy: true,
-     autoLoad: true,
+    autoLoad: true,
     proxy: {
         type: 'ajax',
         url: 'php/combobox/comboTipoEstadoVehiculo.php',
@@ -250,8 +256,8 @@ var storeTipoEstado = Ext.create('Ext.data.Store', {
 
 
 var storeVeh = Ext.create('Ext.data.JsonStore', {
-         autoLoad: true, 
-         //autoDestroy: true,
+    autoLoad: true,
+    //autoDestroy: true,
     proxy: {
         type: 'ajax',
         url: 'php/combobox/comboVeh.php',
@@ -264,7 +270,7 @@ var storeVeh = Ext.create('Ext.data.JsonStore', {
 });
 
 var storeGeo = Ext.create('Ext.data.JsonStore', {
-     autoDestroy: true,
+    autoDestroy: true,
     autoLoad: true,
     proxy: {
         type: 'ajax',
@@ -274,7 +280,7 @@ var storeGeo = Ext.create('Ext.data.JsonStore', {
             root: 'adminGeo'
         }
     },
-    fields: [{name:'id', type:'int'}, {name:'text', type:'string'}]
+    fields: [{name: 'id', type: 'int'}, {name: 'text', type: 'string'}]
 });
 var storeMensajeGeos = Ext.create('Ext.data.Store', {
     proxy: {

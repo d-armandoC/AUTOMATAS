@@ -65,6 +65,14 @@ function showError(error) {
     }
 }
 
+function getCoopMenu() {
+    for (var i = 0; i < showCoopMap.length; i++) {
+        if (showCoopMap[i][0] > 1) {
+            menuCoop.add({itemId: showCoopMap[i][0], text: showCoopMap[i][1], checked: showCoopMap[i][2]});
+        }
+    }
+}
+
 /*
  Funciones para recargar la region Este del sistema de forma Automatica
  */

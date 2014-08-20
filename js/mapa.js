@@ -71,7 +71,7 @@ function loadMap() {
 //                    positionPoint = false;
 //                }
             }
-           );
+            );
 
             var styleVehicle = new OpenLayers.StyleMap({
                 externalGraphic: "${iconLast}",
@@ -348,7 +348,6 @@ function graficarCoop() {
             coopToShow += showCoopMap[i][0] + ",";
         }
     }
-
     if (coopToShow !== "") {
         var form = Ext.create('Ext.form.Panel');
         form.getForm().submit({
@@ -360,13 +359,14 @@ function graficarCoop() {
                 Ext.example.msg('Mensaje', action.result.message);
             },
             success: function(form, action) {
-                addVehiculosToCanvas(action.result.data);
+                addVehiculosToCanvas(action.result.dataGps);
+                console.log(action.result.dataGps);
             }
         });
     }
-
     setTimeout(function() {
-        graficarCoop();
+        console.log(coopToShow);
+        graficarCoop(coopToShow);
     }
     , 5 * 1000);
 }
@@ -453,10 +453,14 @@ function onVehiculoUnselect(evt) {
 
 //Grafica los vehiculos luego de consultar a la BD
 function addVehiculosToCanvas(cordGrap) {
+    console.log(cordGrap);
     for (var i = 0; i < cordGrap.length; i++) {
         // Extraigo columnas
         var datosVeh = cordGrap[i];
-        var idVehicle = datosVeh.idVehicleLast;
+        var idVehicle = datosVeh.id;
+        console.log(datosVeh + 'datos_vehiculo');
+        console.log(idVehicle + 'id_vehiculo');
+
         //Extracción dependiendo del Layer
         var vehicleFeature = lienzoVehicle.getFeatureById('last' + idVehicle);
 

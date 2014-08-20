@@ -42,7 +42,7 @@ function lienzosRecorridoHistorico(idEquipo, coordPuntos) {
 }
 
 //Grafica los vehiculos luego de consultar a la BD
-function addVehiculosToCanvas(cordGrap) {
+function addVehiculoToCanvas(cordGrap) {
     storeEventos.removeAll;
     for (var i = 0; i < cordGrap.length; i++) {
         // Extraigo columnas
