@@ -165,6 +165,23 @@ function formatStateTaxy(val) {
         return '<span style="color:green;">Libre</span>';
     }
 }
+///
+function formatTipoEstado(val) {
+    switch (val) {
+        case 0:
+            return '<span style="color:blue;"><b>Entrada</b></span>';
+            break;
+        case 1:
+             return '<span style="color:orange;"><b>Salida</b></span>';
+            break;
+    }
+}
+
+
+
+
+
+
 
 function formatTipoServicio(val) {
     switch (val) {
@@ -178,13 +195,6 @@ function formatTipoServicio(val) {
             return '<span style="color:green;">Repuesto</span>';
             break;
     }
-
-
-//    if (val === 1) {
-//        return '<span style="color:blue;">NORMAL</span>';
-//    } else {
-//        return '<span style="color:red;"> PANICO RECEPTADO</span>';
-//    }
 }
 
 

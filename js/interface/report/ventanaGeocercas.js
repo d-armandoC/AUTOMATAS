@@ -1,10 +1,10 @@
-var contenedorwinRepGeo;
-var winRepGeo;
+var contenedorwinRepGeocercas;
+var winRepGeocerca;
 
-Ext.onReady(function() {   
+Ext.onReady(function() {
 
-    var cbxEmpresasBD = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Cooperativa',        
+    var cbxEmpresas = Ext.create('Ext.form.ComboBox', {
+        fieldLabel: 'Cooperativa',
         name: 'cbxEmpresas',
         store: storeEmpresas,
         valueField: 'id',
@@ -15,9 +15,9 @@ Ext.onReady(function() {
         allowBlank: false,
         listeners: {
             select: function(combo, records, eOpts) {
-                cbxVehBD.enable();
-                cbxVehBD.clearValue();
-                cbxGeoBD.clearValue();
+                cbxVehiculos.enable();
+                cbxVehiculos.clearValue();
+                cbxGeocerca.clearValue();
                 storeVeh.load({
                     params: {
                         cbxEmpresas: records[0].data.id
@@ -32,8 +32,8 @@ Ext.onReady(function() {
         }
     });
 
-    var cbxVehBD = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Vehículo:',        
+    var cbxVehiculos = Ext.create('Ext.form.ComboBox', {
+        fieldLabel: 'Vehículo:',
         name: 'cbxVeh',
         store: storeVeh,
         valueField: 'id',
@@ -44,32 +44,32 @@ Ext.onReady(function() {
         editable: false,
         allowBlank: false,
         listConfig: {
-            minWidth : 300
+            minWidth: 300
         },
-        listeners : {
+        listeners: {
             select: function(combo, records, eOpts) {
-                cbxGeoBD.enable();
+                cbxGeocerca.enable();
             }
         }
     });
 
-    var cbxGeoBD = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Geocerca:',        
+    var cbxGeocerca = Ext.create('Ext.form.ComboBox', {
+        fieldLabel: 'Geocerca:',
         name: 'cbxGeo',
         store: storeGeo,
         valueField: 'id',
-        displayField: 'nombre',
+        displayField: 'text',
         queryMode: 'local',
         emptyText: 'Seleccionar Geocerca...',
         disabled: false,
         editable: false,
         allowBlank: false,
         listConfig: {
-            minWidth : 325
+            minWidth: 325
         }
     });
 
-    var dateIni = Ext.create('Ext.form.field.Date', {
+    var dateInicio = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
         id: 'fechaIniGeo',
@@ -80,7 +80,7 @@ Ext.onReady(function() {
         emptyText: 'Fecha Inicial...'
     });
 
-    var dateFin = Ext.create('Ext.form.field.Date', {
+    var dateFinal = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Hasta el',
         format: 'Y-m-d',
         id: 'fechaFinGeo',
@@ -91,7 +91,7 @@ Ext.onReady(function() {
         emptyText: 'Fecha Final...'
     });
 
-    var timeIni = Ext.create('Ext.form.field.Time', {
+    var timeInicio = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
         name: 'horaIni',
         format: 'H:i',
@@ -99,7 +99,7 @@ Ext.onReady(function() {
         emptyText: 'Hora Inicial...'
     });
 
-    var timeFin = Ext.create('Ext.form.field.Time', {
+    var timeFinal = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Hasta las',
         name: 'horaFin',
         format: 'H:i',
@@ -107,23 +107,23 @@ Ext.onReady(function() {
         emptyText: 'Hora Final...'
     });
 
-    var today = Ext.create('Ext.button.Button', {
+    var hoy = Ext.create('Ext.button.Button', {
         text: 'Hoy',
-        iconCls : 'icon-today',
+        iconCls: 'icon-today',
         handler: function() {
             var nowDate = new Date();
 
-            dateIni.setValue(formatoFecha(nowDate));
-            dateFin.setValue(formatoFecha(nowDate));
+            dateInicio.setValue(formatoFecha(nowDate));
+            dateFinal.setValue(formatoFecha(nowDate));
 
-            timeIni.setValue('00:01');
-            timeFin.setValue('23:59');
+            timeInicio.setValue('00:01');
+            timeFinal.setValue('23:59');
         }
     });
 
-    var yesterdey = Ext.create('Ext.button.Button', {
+    var hayer = Ext.create('Ext.button.Button', {
         text: 'Ayer',
-        iconCls : 'icon-yesterday',
+        iconCls: 'icon-yesterday',
         handler: function() {
             var nowDate = new Date();
             var año = nowDate.getFullYear();
@@ -137,140 +137,140 @@ Ext.onReady(function() {
             }
             nowDate.setMinutes(nowDate.getMinutes() + 10);
 
-            dateIni.setValue(año + "-" + mes + "-" + dia);
-            dateFin.setValue(año + "-" + mes + "-" + dia);
+            dateInicio.setValue(año + "-" + mes + "-" + dia);
+            dateFinal.setValue(año + "-" + mes + "-" + dia);
 
-            timeIni.setValue('00:01');
-            timeFin.setValue('23:59');
+            timeInicio.setValue('00:01');
+            timeFinal.setValue('23:59');
         }
     });
 
-    var panelBotones = Ext.create('Ext.form.Panel', {
+    var panelBoton = Ext.create('Ext.form.Panel', {
         layout: 'column',
         baseCls: 'x-plain',
         items: [{
-            baseCls: 'x-plain',
-            bodyStyle: 'padding:0 5px 0 0',
-            items: [today]
-        }, {
-            baseCls: 'x-plain',
-            bodyStyle: 'padding:0 5px 0 0',
-            items: [yesterdey]
-        }]
+                baseCls: 'x-plain',
+                bodyStyle: 'padding:0 5px 0 0',
+                items: [hoy]
+            }, {
+                baseCls: 'x-plain',
+                bodyStyle: 'padding:0 5px 0 0',
+                items: [hayer]
+            }]
     });
 
-    contenedorwinRepGeo = Ext.create('Ext.form.Panel', {
+    contenedorwinRepGeocercas = Ext.create('Ext.form.Panel', {
         frame: true,
         fieldDefaults: {
             labelAlign: 'left',
             labelWidth: 70,
-            width : 260
+            width: 260
         },
         items: [{
-            layout: 'column',
-            baseCls: 'x-plain',
-            items: [{
-                columnWidth: .5,
+                layout: 'column',
                 baseCls: 'x-plain',
-                items: [
-                    cbxEmpresasBD,
-                    cbxGeoBD
-                ]
-            },{
-                columnWidth: .5,
-                baseCls: 'x-plain',
-                items: [
-                    cbxVehBD                    
-                ]
-            }]
-        },{
-            layout: 'column',
-            baseCls: 'x-plain',
-            items: [{
-                columnWidth: .5,
-                baseCls: 'x-plain',
-                items: [                    
-                    dateIni,
-                    timeIni
-                ]
+                items: [{
+                        columnWidth: .5,
+                        baseCls: 'x-plain',
+                        items: [
+                            cbxEmpresas,
+                            cbxGeocerca
+                        ]
+                    }, {
+                        columnWidth: .5,
+                        baseCls: 'x-plain',
+                        items: [
+                            cbxVehiculos
+                        ]
+                    }]
             }, {
-                columnWidth: .5,
+                layout: 'column',
                 baseCls: 'x-plain',
-                items: [                    
-                    dateFin,
-                    timeFin
-                ]
-            }]
-        },
-        panelBotones],
+                items: [{
+                        columnWidth: .5,
+                        baseCls: 'x-plain',
+                        items: [
+                            dateInicio,
+                            timeInicio
+                        ]
+                    }, {
+                        columnWidth: .5,
+                        baseCls: 'x-plain',
+                        items: [
+                            dateFinal,
+                            timeFinal
+                        ]
+                    }]
+            },
+            panelBoton],
         buttons: [{
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
                 handler: function() {
-                    if (contenedorwinRepGeo.getForm().isValid()) {
-                        loadGridGeo();                        
+                    if (contenedorwinRepGeocercas.getForm().isValid()) {
+                        loadGridGeo();
                     }
                 }
             }, {
                 text: 'Cancelar',
                 iconCls: 'icon-cancelar',
-                handler: limpiar_datosGeo
+                handler: limpiar_datosGeocercas
             }]
     });
 });
 
-function limpiar_datosGeo() {
-    contenedorwinRepGeo.getForm().reset();
-    contenedorwinRepGeo.down('[name=cbxVeh]').disable();
-    contenedorwinRepGeo.down('[name=cbxGeo]').disable();
+function limpiar_datosGeocercas() {
+    contenedorwinRepGeocercas.getForm().reset();
+    contenedorwinRepGeocercas.down('[name=cbxVeh]').disable();
+    contenedorwinRepGeocercas.down('[name=cbxGeo]').disable();
 
-    if (winRepGeo) {
-        winRepGeo.hide();
+    if (winRepGeocerca) {
+        winRepGeocerca.hide();
     }
 }
 
-function ventanaGeocercas() {
-    if (!winRepGeo) {
-        winRepGeo = Ext.create('Ext.window.Window', {
+function ventanaReporteGeocerca() {
+    if (!winRepGeocerca) {
+        winRepGeocerca = Ext.create('Ext.window.Window', {
             layout: 'fit',
             title: 'Reporte de Geocercas',
             iconCls: 'icon-report-geo',
             resizable: false,
             width: 560,
-            height: 210,
+            height: 250,
             closeAction: 'hide',
             plain: false,
-            items: [contenedorwinRepGeo],
-            listeners : {
-                close : function(panel, eOpts) {
-                    limpiar_datosGeo();
+            items: [contenedorwinRepGeocercas],
+            listeners: {
+                close: function(panel, eOpts) {
+                    limpiar_datosGeocercas();
                 }
             }
         });
     }
-    contenedorwinRepGeo.getForm().reset();
-    winRepGeo.show();
+    contenedorwinRepGeocercas.getForm().reset();
+    winRepGeocerca.show();
 }
 
 
 function loadGridGeo() {
-    var empresa = contenedorwinRepGeo.down('[name=cbxEmpresas]').getValue();
-    var idEqp = contenedorwinRepGeo.down('[name=cbxVeh]').getValue();
-    var idGeo = contenedorwinRepGeo.down('[name=cbxGeo]').getValue();    
-    var fi = formatoFecha(contenedorwinRepGeo.down('[name=fechaIni]').getValue());
-    var ff = formatoFecha(contenedorwinRepGeo.down('[name=fechaFin]').getValue());
-    var hi = formatoHora(contenedorwinRepGeo.down('[name=horaIni]').getValue());
-    var hf = formatoHora(contenedorwinRepGeo.down('[name=horaFin]').getValue());
+    var empresa = contenedorwinRepGeocercas.down('[name=cbxEmpresas]').getRawValue();
+    var idEqp = contenedorwinRepGeocercas.down('[name=cbxVeh]').getValue();
+    var idGeo = contenedorwinRepGeocercas.down('[name=cbxGeo]').getValue();
+    var fi = formatoFecha(contenedorwinRepGeocercas.down('[name=fechaIni]').getValue());
+    var ff = formatoFecha(contenedorwinRepGeocercas.down('[name=fechaFin]').getValue());
+    var hi = formatoHora(contenedorwinRepGeocercas.down('[name=horaIni]').getValue());
+    var hf = formatoHora(contenedorwinRepGeocercas.down('[name=horaFin]').getValue());
 
-    var vehiculo = contenedorwinRepGeo.down('[name=cbxVeh]').getRawValue();
+    var vehiculo = contenedorwinRepGeocercas.down('[name=cbxVeh]').getRawValue();
 
     Ext.MessageBox.show({
-        title : "Obteniendo Datos",
-        msg : "Reportes",
-        progressText : "Obteniendo...",                        
-        wait : true,
-        waitConfig : {
-            interval:200
+        title: "Obteniendo Datos",
+        msg: "Reportes",
+        progressText: "Obteniendo...",
+        wait: true,
+        waitConfig: {
+            interval: 200
         }
     });
 
@@ -291,30 +291,29 @@ function loadGridGeo() {
                 root: 'datos'
             }
         },
-        fields: ['id_geocerca', 'geocerca', 'id_equipo', 'placa', 'vehiculo', 'accion', 'fecha_hora', 'notificada'],
+        fields: ['id_geocerca', 'geocerca', 'placa', 'vehiculo', 'estado', 'fecha_hora'],
         listeners: {
             load: function(thisObject, records, successful, eOpts) {
-
                 Ext.MessageBox.hide();
-
-                if (records.length > 0) {                    
+                if (records.length > 0) {
                     var columnGeo = [
                         Ext.create('Ext.grid.RowNumberer'),
-                        {text: 'Geocerca', flex: 50, dataIndex: 'geocerca'},
-                        {text: 'Equipo', flex: 10, dataIndex: 'id_equipo'},
-                        {text: 'Placa', flex: 10, dataIndex: 'placa'},
-                        {text: 'Vehiculo', flex: 50, dataIndex: 'vehiculo'},
-                        {text: 'Accion', flex: 1, dataIndex: 'accion'},
-                        {text: 'Fecha', xtype: 'datecolumn', format: 'd-m-Y', flex: 35, dataIndex: 'fecha_hora'},
-                        {text: 'Hora', xtype: 'datecolumn', format: 'H:i:s', flex: 35, dataIndex: 'fecha_hora'},
-                        {text: 'Notificada', flex: 20, dataIndex: 'notificada', align: 'center'}
+                        {text: 'Geocerca', flex: 20, dataIndex: 'geocerca'},
+                        {text: 'Vehiculo', flex: 20, dataIndex: 'vehiculo'},
+                        {text: 'Placa', flex: 15, dataIndex: 'placa'},
+                        {text: 'Estado', flex: 10, dataIndex: 'estado', renderer: formatTipoEstado},
+                        {text: 'Fecha', flex: 15, dataIndex: 'fecha_hora'}
+                        //{text: 'Hora', xtype: 'datecolumn', format: 'H:i:s', flex: 10, dataIndex: 'fecha_hora'},
                     ]
 
-                    var gridGeocercas = Ext.create('Ext.grid.Panel', {
+                    var gridGeocerca = Ext.create('Ext.grid.Panel', {
                         width: '100%',
                         height: 435,
                         collapsible: true,
-                        title: '<center>Reporte de Geocercas: ' + vehiculo + '</center>',
+                        //title: '<center>Reporte de Geocercas: ' + vehiculo + '</center>',
+                        title:'<center><span style="color:#000000">Empresa: ' +'<span style="color:#FFFF00">'+ empresa + '</center>\
+                                    <center><span style="color:#000000">Vehiculo: '+'<span style="color:#FFFF00">'+ vehiculo+' </center>\n\
+                                  <center><span style="color:#000000">Desde: '+'<span style="color:#FFFF00">' + fi + ' |<span style="color:#000000"> Hasta: '+'<span style="color:#FFFF00">' + ff + '</center> ',
                         store: store,
                         multiSelect: true,
                         columnLines: true,
@@ -328,13 +327,14 @@ function loadGridGeo() {
                         title: 'Reporte de Geocercas',
                         closable: true,
                         iconCls: 'icon-report-geo',
-                        items: gridGeocercas
+                        items: gridGeocerca
                     });
-
-                    panelMapa.add(tab);
-                    panelMapa.setActiveTab(tab);
-
-                    limpiar_datosGeo();
+                    limpiar_datosGeocercas();
+                    panelTabMapaAdmin.add(tab);
+                    panelTabMapaAdmin.setActiveTab(tab);
+                    //contenedorwinRepGeocercas.getForm().reset();
+                    //contenedorwinRepGeocercas.hide();
+                    
                 } else {
                     Ext.MessageBox.show({
                         title: 'Error...',
@@ -343,7 +343,7 @@ function loadGridGeo() {
                         icon: Ext.MessageBox.ERROR
                     });
                 }
-                
+
             }
         }
     });
