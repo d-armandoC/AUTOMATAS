@@ -501,7 +501,9 @@ Ext.onReady(function() {
                                 fieldLabel: '<b>Año</b>',
                                 name: 'year',
                                 emptyText: 'Año del Vehiculo...',
+                                value:1950,
                                 minValue: 1950,
+                                editable: false,
                                 maxValue: Ext.Date.format(new Date(), 'Y')
                             }
                         ]

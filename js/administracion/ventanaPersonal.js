@@ -57,11 +57,12 @@ Ext.onReady(function() {
             write: function(store, operation, eOpts) {
                 if (operation.success) {
                     Ext.example.msg("Mensaje", operation._resultSet.message);
+                    storePersonas.reload();
                     gridStorePerson.reload();
+                    formPersona.getForm().reset();
                     if (operation.state) {
                         formPersona.getForm().reset();
                         storePersonas.reload();
-                        formPersonal.getForm().reset();
                     }
                 }
             }
@@ -142,7 +143,7 @@ Ext.onReady(function() {
                         } else {
                             Ext.MessageBox.show({
                                 title: 'Error',
-                                msg: 'El Servicio para este navegador no permitido',
+                                msg: 'El Servicio para este navegador no permitido,use un navegador como Google Chrome',
                                 buttons: Ext.MessageBox.OK,
                                 icon: Ext.MessageBox.ERROR
                             });
@@ -239,6 +240,7 @@ Ext.onReady(function() {
                         fieldLabel: '<b>Fecha de Nacimiento</b>',
                         afterLabelTextTpl: required,
                         blankText: 'Este campo es obligatorio',
+                        editable: false,
                         maxValue: edadDate,
                         value: edadDate,
                         name: 'fechaNacimiento',
@@ -322,7 +324,7 @@ function ventAddPersonal() {
     }
     onResetPersona();
     winAddPesonal.show();
-
+    storePersonas.reload();
     formPersona.down('#updatePerson').disable();
     formPersona.down('#createPerson').enable();
     formPersona.down('#deletePerson').disable();
@@ -387,7 +389,8 @@ function onCreatePersona() {
     var form = formPersona.getForm();
     if (form.isValid()) {
         formPersona.fireEvent('create', formPersona, form.getValues());
-        formPersona.down('#update').disable();
+        formPersona.down('#update').enable();
+        form.reset();
         storePersonas.reload();
     } else {
         Ext.example.msg("Alerta", 'Llenar los campos marcados en rojo, correctamente ');

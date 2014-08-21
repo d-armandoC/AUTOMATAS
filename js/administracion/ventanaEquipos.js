@@ -54,11 +54,11 @@ Ext.onReady(function() {
             write: function(store, operation, eOpts) {
                 if (operation.success) {
                     Ext.example.msg("Mensaje", operation._resultSet.message);
-                    // gridStore.reload();
-                    //storeCompany.reload();
+                    gridStore.reload();
+                    store_equipo.reload();
                     if (operation.state) {
-                        formAdminCompany.getForm().reset();
-                        storeCompany.reload();
+                        formAdminDevice.getForm().reset();
+                        store_equipo.reload();
                     }
                 }
             }
@@ -207,7 +207,7 @@ Ext.onReady(function() {
             create: function(form, data) {
                 gridStore.insert(0, data);
                 gridStore.reload();
-                // storeDevice.reload();
+                store_equipo.reload();
             }
         },
         dockedItems: [{
@@ -275,6 +275,7 @@ function showWinAdminDevice() {
     onResetDevice();
     winAdminDevice.show();
     storetipo_equipo_vehiculo.reload();
+    store_equipo.reload();
 }
 
 function setActiveRecordDevice(record) {
