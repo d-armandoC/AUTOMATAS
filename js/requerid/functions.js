@@ -65,13 +65,13 @@ function showError(error) {
     }
 }
 
-function getCoopMenu() {
-    for (var i = 0; i < showCoopMap.length; i++) {
-        if (showCoopMap[i][0] > 1) {
-            menuCoop.add({itemId: showCoopMap[i][0], text: showCoopMap[i][1], checked: showCoopMap[i][2]});
-        }
-    }
-}
+//function getCoopMenu() {
+//    for (var i = 0; i < showCoopMap.length; i++) {
+//        if (showCoopMap[i][0] > 1) {
+//            menuCoop.add({itemId: showCoopMap[i][0], text: showCoopMap[i][1], checked: showCoopMap[i][2]});
+//        }
+//    }
+//}
 
 /*
  Funciones para recargar la region Este del sistema de forma Automatica
@@ -300,13 +300,13 @@ function despachar(idSol) {
 
 }
 
-function getCoopMenu() {
-    for (var i = 0; i < showCoopMap.length; i++) {
-        if (showCoopMap[i][3] === 2) {
-            menuCoop.add({id: showCoopMap[i][0], itemId: showCoopMap[i][0], text: showCoopMap[i][1], checked: showCoopMap[i][2]});
-        }
-    }
-}
+//function getCoopMenu() {
+//    for (var i = 0; i < showCoopMap.length; i++) {
+//        if (showCoopMap[i][3] === 2) {
+//            menuCoop.add({id: showCoopMap[i][0], itemId: showCoopMap[i][0], text: showCoopMap[i][1], checked: showCoopMap[i][2]});
+//        }
+//    }
+//}
 
 function getIconByRumbo(rumbo, velocidad, idEvento) {
     var icon = '';
@@ -346,6 +346,7 @@ function getIconByRumbo(rumbo, velocidad, idEvento) {
     return icon;
 }
 
+
 function getNavigator() {
     if (navigator.appName === "Microsoft Internet Explorer") {
         return 'img/explorer.png';
@@ -365,6 +366,14 @@ function getNavigator() {
         }
     }
 }
+
+//function getCoopMenu() {
+//    for (var i = 0; i < showCoopMap.length; i++) {
+//        if (showCoopMap[i][0] > 0) {
+//            menuCoop.add({itemId: showCoopMap[i][0], text: showCoopMap[i][1], checked: showCoopMap[i][2]});
+//        }
+//    }
+//}
 
 function checkRolSesion(idRolKarview) {
     Ext.Ajax.request({

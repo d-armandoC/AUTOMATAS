@@ -119,17 +119,22 @@ var storeEmpresas = Ext.create('Ext.data.Store', {
     fields: ['id', 'idTipoEmpresa', 'text', 'latitud', 'longitud', 'direccion', 'telefono', 'email'],
     listeners: {
         load: function(thisObject, records, successful, eOpts) {
+            
             for (var i = 0; i < records.length; i++) {
                 var dataCoop = records[i].data;
                 showCoopMap[i] = [dataCoop.id, dataCoop.text, false];
+                
             }
             for (var i = 0; i < showCoopMap.length; i++) {
-                if (showCoopMap[i][0] > 1) {
+                if (showCoopMap[i][0] >=1) {
+//                    console.log(showCoopMap[i][0]+'po1');
+//                    console.log(showCoopMap[i][1]+'po2');
+//                    console.log(showCoopMap[i][2]+'pos3');
                     menuCoop.add({itemId: showCoopMap[i][0], text: showCoopMap[i][1], checked: showCoopMap[i][2]});
                 }
             }
 
-            //getCoopMenu();
+//            getCoopMenu();
 
             // var dataCoop = records[0].data;
 

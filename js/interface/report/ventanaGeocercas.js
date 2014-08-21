@@ -18,13 +18,11 @@ Ext.onReady(function() {
                 cbxVehBD.enable();
                 cbxVehBD.clearValue();
                 cbxGeoBD.clearValue();
-
                 storeVeh.load({
                     params: {
                         cbxEmpresas: records[0].data.id
                     }
                 });
-
                 storeGeo.load({
                     params: {
                         cbxEmpresas: records[0].data.id
@@ -239,7 +237,7 @@ function ventanaGeocercas() {
             iconCls: 'icon-report-geo',
             resizable: false,
             width: 560,
-            height: 200,
+            height: 210,
             closeAction: 'hide',
             plain: false,
             items: [contenedorwinRepGeo],

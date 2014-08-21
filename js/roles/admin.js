@@ -440,6 +440,12 @@ Ext.onReady(function() {
                                     ventanaBanderas();
                                 }}
                             ,
+                             {text: 'Reporte de Paradas', iconCls: 'icon-unlock', handler: function() {
+                                    showWinPradas();
+                                }},
+                              {text: 'Reporte de Geocercas', iconCls: 'icon-report-geo', handler: function() {
+                                   ventanaGeocercas();
+                                }},,
                             {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
                                     ventanaEventos();
                                 }},
@@ -613,7 +619,6 @@ Ext.onReady(function() {
                         type: 'refresh',
                         itemId: 'refresh_taxis',
                         tooltip: 'Recargar Datos',
-                        //hidden: true,
                         handler: function() {
                             var tree = Ext.getCmp('veh-taxis-tree');
                             tree.body.mask('Loading', 'x-mask-loading');
@@ -626,7 +631,7 @@ Ext.onReady(function() {
                         tooltip: 'Buscar Vehiculo',
                         handler: function(event, target, owner, tool) {
                             // do search                    
-                            //owner.child('#refresh_taxis').show();
+                            owner.child('#refresh_taxis').show();
                             winSearchVeh.showAt(event.getXY());
                         }
                     }],

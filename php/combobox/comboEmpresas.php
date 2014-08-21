@@ -15,7 +15,7 @@ if (!$mysqli = getConectionDb()) {
     if ($idRol == 1 && $menuClick != 1) {
         $consultaSql = "select id_empresa, empresa,
                 direccion, telefono, correo from empresas 
-                order by empresa";
+                order by id_empresa";
         ;
     } else {
         $consultaSql = "select id_empresa, empresa,
@@ -28,15 +28,15 @@ if (!$mysqli = getConectionDb()) {
     $mysqli->close();
 
     if ($result->num_rows > 0) {
-        $objJson = "{empresas: [";
+        $objJson = "empresas: [";
         while ($myrow = $result->fetch_assoc()) {
             $objJson .= "{"
                     . "id:" . $myrow["id_empresa"] . ","
                     . "text:'" . utf8_encode($myrow["empresa"]) . "'},";
         }
 
-        $objJson .="]}";
-        echo $objJson;
+        $objJson .="]";
+        echo "{success: true, $objJson }";
     } else {
         echo "{success:false, msg: 'No hay datos que obtener'}";
     }

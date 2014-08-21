@@ -72,7 +72,7 @@ function loadMap() {
 //                }
             }
             );
-
+    
             var styleVehicle = new OpenLayers.StyleMap({
                 externalGraphic: "${iconLast}",
                 graphicWidth: 16,
@@ -85,7 +85,7 @@ function loadMap() {
                 dateTimeLast: "${dateTimeLast}",
                 speedLast: "${speedLast}",
                 addressLast: "${addressLast}",
-                label: "..${muniRegLast}",
+                label: "${placaLast}",
                 fontColor: "${favColor}",
                 fontSize: "13px",
                 fontFamily: "Times New Roman",
@@ -360,12 +360,11 @@ function graficarCoop() {
             },
             success: function(form, action) {
                 addVehiculosToCanvas(action.result.dataGps);
-                console.log(action.result.dataGps);
+//                console.log(action.result.dataGps);
             }
         });
     }
     setTimeout(function() {
-        console.log(coopToShow);
         graficarCoop(coopToShow);
     }
     , 5 * 1000);
@@ -402,7 +401,7 @@ function onVehiculoSelect(evt) {
         feature = evt.feature;
     }
 
-    var muniRegLast = feature.attributes.muniRegLast;
+    var vehiculoLast = feature.attributes.vehiculoLast;
     var companyLast = feature.attributes.companyLast;
     var dateTimeLast = feature.attributes.dateTimeLast;
     var speedLast = feature.attributes.speedLast;
@@ -414,7 +413,7 @@ function onVehiculoSelect(evt) {
     var contenidoAlternativo =
             "<section>" +
             "<b>Empresa: </b>" + companyLast + "<br>" +
-            "<b>Vehiculo: </b>" + muniRegLast + "<br>" +
+            "<b>Vehiculo: </b>" + vehiculoLast + "<br>" +
             "<b>Fecha y Hora: </b>" + dateTimeLast + "<br>" +
             "<b>Velocidad: </b>" + speedLast + " Km/h<br>" +
             "<b>Dirección: </b>" + addressLast + "<br>" +
@@ -453,13 +452,10 @@ function onVehiculoUnselect(evt) {
 
 //Grafica los vehiculos luego de consultar a la BD
 function addVehiculosToCanvas(cordGrap) {
-    console.log(cordGrap);
     for (var i = 0; i < cordGrap.length; i++) {
         // Extraigo columnas
         var datosVeh = cordGrap[i];
-        var idVehicle = datosVeh.id;
-        console.log(datosVeh + 'datos_vehiculo');
-        console.log(idVehicle + 'id_vehiculo');
+        var idVehicle = datosVeh.idVehiculo;
 
         //Extracción dependiendo del Layer
         var vehicleFeature = lienzoVehicle.getFeatureById('last' + idVehicle);
@@ -467,8 +463,8 @@ function addVehiculosToCanvas(cordGrap) {
         //Crear un nuevo elemento para el taxi que no existe
         if (vehicleFeature === null) {
             // Coordenadas
-            var x = datosVeh.longitudLast;
-            var y = datosVeh.latitudLast;
+            var x = datosVeh.lon;
+            var y = datosVeh.lat;
             // Posicion lon : lat
             var point = new OpenLayers.Geometry.Point(x, y);
 
@@ -477,14 +473,15 @@ function addVehiculosToCanvas(cordGrap) {
             var dateTimeLast = new Date(datosVeh.dateTimeLast);
 
             vehicleFeature = new OpenLayers.Feature.Vector(point, {
-                iconLast: 'img/' + datosVeh.iconLast,
-                idCompanyLast: datosVeh.idCompanyLast,
-                companyLast: datosVeh.companyLast,
-                idDeviceLast: datosVeh.deviceLast,
-                muniRegLast: datosVeh.muniRegLast,
+                iconLast: 'img/' + datosVeh.icono,
+                idCompanyLast: datosVeh.idCoop,
+                companyLast: datosVeh.company,
+                idDeviceLast: datosVeh.equipo,
+                placaLast: datosVeh.placa,
+                vehiculoLast: datosVeh.nombre_vehiculo,
                 dateTimeLast: Ext.Date.format(dateTimeLast, 'Y-m-d H:i:s'),
-                speedLast: datosVeh.speedLast,
-                addressLast: datosVeh.addressLast,
+                speedLast: datosVeh.vel,
+                addressLast: datosVeh.dir,
                 favColor: 'blue',
                 align: "lt"
             });
@@ -495,32 +492,32 @@ function addVehiculosToCanvas(cordGrap) {
             lienzoVehicle.addFeatures([vehicleFeature]);
         } else {
             // Comprobar si los datos graficados estan desactualizados
-            var dateTimeLast = new Date(datosVeh.dateTimeLast);
-            if (vehicleFeature.attributes.hora !== Ext.Date.format(datosVeh.dateTimeLast, 'H:i:s')) {
+            var dateTimeLast = new Date(datosVeh.fec);
+            if (vehicleFeature.attributes.hora !== Ext.Date.format(datosVeh.fec, 'H:i:s')) {
                 var poppedup = false;
                 poppedup = vehicleFeature.attributes.poppedup;
 
                 // Nuevo punto
-                var newPoint = new OpenLayers.LonLat(datosVeh.longitudLast, datosVeh.latitudLast);
+                var newPoint = new OpenLayers.LonLat(datosVeh.lon, datosVeh.lat);
                 newPoint.transform(new OpenLayers.Projection("EPSG:4326"),
                         new OpenLayers.Projection("EPSG:900913"));
                 // Asignamos icono y Movemos el vehiculo 
-                vehicleFeature.attributes.iconLast = "img/" + datosVeh.iconLast;
+                vehicleFeature.attributes.iconLast = "img/" + datosVeh.icono;
                 vehicleFeature.move(newPoint);
 
                 if (poppedup) {
                     onVehiculoUnselect(vehicleFeature);
                     // Actualizamos Datos
                     vehicleFeature.attributes.dateTimeLast = Ext.Date.format(dateTimeLast, 'Y-m-d H:i:s');
-                    vehicleFeature.attributes.speedLast = datosVeh.speedLast;
-                    vehicleFeature.attributes.addressLast = datosVeh.addressLast;
+                    vehicleFeature.attributes.speedLast = datosVeh.vel;
+                    vehicleFeature.attributes.addressLast = datosVeh.dir;
 
                     onVehiculoSelect(vehicleFeature);
                 } else {
                     // Actualizamos Datos
                     vehicleFeature.attributes.dateTimeLast = Ext.Date.format(dateTimeLast, 'Y-m-d H:i:s');
-                    vehicleFeature.attributes.speedLast = datosVeh.speedLast;
-                    vehicleFeature.attributes.addressLast = datosVeh.addressLast;
+                    vehicleFeature.attributes.speedLast = datosVeh.vel;
+                    vehicleFeature.attributes.addressLast = datosVeh.dir;
                 }
             }
         }
@@ -1227,7 +1224,7 @@ function clearVehiclesByRoute() {
 
 function clearVehicles(records) {
     for (var i = 0; i < records.length; i++) {
-        var vehicleFeature = lienzoVehicle.getFeatureById('last' + records[i].idVehicleLast);
+        var vehicleFeature = lienzoVehicle.getFeatureById('last' + records[i].idVehiculo);
         if (vehicleFeature !== null) {
             lienzoVehicle.removeFeatures(vehicleFeature);
         }
