@@ -332,9 +332,6 @@ function loadGridGeo() {
                     limpiar_datosGeocercas();
                     panelTabMapaAdmin.add(tab);
                     panelTabMapaAdmin.setActiveTab(tab);
-                    //contenedorwinRepGeocercas.getForm().reset();
-                    //contenedorwinRepGeocercas.hide();
-                    
                 } else {
                     Ext.MessageBox.show({
                         title: 'Error...',
