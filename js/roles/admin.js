@@ -23,6 +23,19 @@ var panelTabMapaAdmin;
 var drawControls;
 var required = '<span style="color:red;font-weight:bold" data-qtip="Requerido">*</span>';
 
+var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
+var f=new Date();
+//document.write(diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear());
+
+var label = Ext.create('Ext.form.Label', {
+    text: 'hola',
+    id:'tiempo',
+    style: {
+        color: 'gray'
+    }
+});
+
 var filters = {
     ftype: 'filters',
     // encode and local configuration options defined previously for easier reuse
@@ -46,7 +59,8 @@ var spot = Ext.create('Ext.ux.Spotlight', {
 
 Ext.onReady(function() {
     var idEqpMen, nameVeh;
-
+    //Ext.getCmp('tiempo').setValue((diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear()));
+   
     Ext.apply(Ext.form.field.VTypes, {
         daterange: function(val, field) {
             var date = field.parseDate(val);
@@ -358,13 +372,13 @@ Ext.onReady(function() {
 //            {text: 'Vehiculos en Lugares', iconCls: 'icon-vehiculos_lugar', handler: function() {
 //                    ventanaVehLugares();
 //                }},
-            {text: 'Modificar usuario', iconCls: 'icon-user-edit', handler: function() {
+            {text: 'Modificar usuario', iconCls: 'icon-personal', handler: function() {
                     ventanaModificarUsuario();
                 }},
             {text: 'Cambiar contraseña', iconCls: 'icon-key', handler: function() {
                     ventanaCambiarContrasenia();
                 }},
-            {text: 'Mantenimientos', iconCls: 'icon-add-geo', handler: function() {
+            {text: 'Mantenimientos', iconCls: 'icon-mantenimiento', handler: function() {
                     ventAddMantenimientos();
                 }},
 //            {text: 'Actualizar email', iconCls: 'icon-email', handler: function() {
@@ -461,6 +475,7 @@ Ext.onReady(function() {
                         }},
                     {text: 'Simbologia', iconCls: 'icon-edit', handler: function() {
                             //ventanaSimbologia();
+                             Ext.getCmp('tiempo').setValue('hola');
                         }}
                 ]
             },
@@ -471,9 +486,9 @@ Ext.onReady(function() {
             {
                 xtype: 'label',
                 html: '<section id="panelNorte">' +
-                        '<center><strong id="name"> Bienvenido: ' + personKarview + '</strong></center>' +
-                        '<iframe src="http://free.timeanddate.com/clock/i3x5kb7x/n190/tlec4/fn12/fs18/tct/pct/ftb/bas0/bat0/th1" frameborder="0"   width= "100" height="15" allowTransparency="true"></iframe>' +
-                        '</section>'
+                        '<center><strong id="name"> ' + (diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear())+ '</strong></center>' +
+                      '</section>',
+                
             },
             {
                 xtype: 'image',
@@ -507,8 +522,8 @@ Ext.onReady(function() {
                             color: '#157fcc'
                         },
                         html: '<section id="panelNorte">' +
-                                '<center><strong id="name"><b>KARVIEW</b></strong></center>' +
-                                '<center><strong id="titulo">Sistema de Rastreo Vehicular</strong></center>' +
+                                '<center><strong id="titulo">Sistema de Monitoreo Vehicular</strong></center>' +
+                                '<strong id="subtitulo">Bienvenid@ al Sistema: ' + personKarview  + '</strong>' +
                                 '</section>'
                     }]
             },

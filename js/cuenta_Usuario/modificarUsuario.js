@@ -143,7 +143,7 @@ function ventanaModificarUsuario() {
         winusuario_usuario = Ext.create('Ext.window.Window', {
             layout: 'fit',
             title: 'Modificar usuario',
-            iconCls: 'icon-user-edit ',
+            iconCls: 'icon-personal',
             resizable: false,
             width: 450,
             height: 240,

@@ -101,7 +101,7 @@ function ventanaCambiarContrasenia() {
         winusuario = Ext.create('Ext.window.Window', {
             layout: 'fit',
             title: 'Cambiar Contraseña',
-            iconCls: 'icon-user-add',
+            iconCls: 'icon-key',
             resizable: false,
             width: 370,
             height: 230,

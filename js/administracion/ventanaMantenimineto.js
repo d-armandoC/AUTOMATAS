@@ -760,8 +760,8 @@ function ventAddMantenimientos() {
     if (!winAddVehiculos) {
         winAddVehiculos = Ext.create('Ext.window.Window', {
             layout: 'fit',
-            title: 'Administración de Empresas',
-            iconCls: 'icon-company',
+            title: 'Servicio de Mnatenimiento',
+            iconCls: 'icon-mantenimiento',
             resizable: false,
             width: 1200,
             height: 560,
