@@ -9,13 +9,12 @@ if (!$mysqli = getConectionDb()) {
     echo "{failure: true, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
     $idUser = $_SESSION["USERKARVIEW"];
-
     $consultaSql = "select id_tipo_estado_cmd, respuesta from karviewhistoricodb.comandos 
             where fecha_hora_registro =  
             (select max(fecha_hora_registro) 
             from karviewhistoricodb.comandos 
             where date(fecha_hora_registro) = date(now()) 
-            and id_usuario = 15) 
+            and id_usuario = ?) 
             and id_tipo_estado_cmd in (3, 4)";
 
     $stmt = $mysqli->prepare($consultaSql);

@@ -444,7 +444,7 @@ Ext.onReady(function() {
                                     showWinPradas();
                                 }},
                               {text: 'Reporte de Geocercas', iconCls: 'icon-report-geo', handler: function() {
-                                         ventanaReporteGeocerca();
+                                     ventanaReporteGeocerca();
                                 }},,
                             {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
                                     ventanaEventos();

@@ -15,8 +15,9 @@ if (!$mysqli = getConectionDb()) {
         //Extraer el comando relacionado
         $consultaSql = "select cmd_predefinido from karviewdb.cmd_predefinidos 
                 where id_cmd_predefinido = $cbxCmdPred";
-
         $result = $mysqli->query($consultaSql);
+        $myrow = $result->fetch_assoc();
+        $valCmd=$myrow["cmd_predefinido"];
     }
 
     $insertSql = "insert into karviewhistoricodb.comandos (id_usuario, id_equipo, comando) "

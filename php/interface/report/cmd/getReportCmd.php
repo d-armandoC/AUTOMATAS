@@ -1,42 +1,43 @@
 <?php
 
-include ('../../../dll/config.php');
+include('../../../login/isLogin.php');
+include ('../../../../dll/config.php');
 extract($_GET);
-
-$consultaSql = 
-    "SELECT U.USUARIO, CH.CMD, CH.RTA, CH.FECHA_CREACION, CH.FECHA_ENVIO, 
-    CASE CH.STD
+if (!$mysqli = getConectionDb()) {
+    echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
+} else {
+$consultaSql = "SELECT eq.equipo, us.usuario, cm.comando, cm.respuesta,cm.fecha_hora_registro,cm.fecha_hora_envio,
+ CASE cm.id_tipo_estado_cmd
         WHEN 1 THEN 'NO ENVIADO'
         WHEN 2 THEN 'SIN RESPUESTA'
         WHEN 3 THEN 'COMPLETADO'
-    END AS STD
-    FROM CMD_AT_HISTORIAL CH, USUARIOS U
-    WHERE CH.ID_USUARIO = U.ID_USUARIO
-    AND CH.ID_EQUIPO = '$cbxVeh'
-    AND CH.FECHA_CREACION BETWEEN CONCAT('$fechaIni',' ', '$horaIni') AND CONCAT('$fechaFin',' ', '$horaFin')"
+END AS estado
+FROM karviewhistoricodb.comandos cm, karviewdb.usuarios us, karviewdb.equipos eq,  karviewdb.vehiculos v where cm.id_usuario = us.id_usuario and cm.id_equipo= eq.id_equipo and cm.id_equipo=v.id_equipo and v.id_vehiculo='$cbxVeh'
+and cm.fecha_hora_registro BETWEEN CONCAT('$fechaIni',' ', '$horaIni') AND CONCAT('$fechaFin',' ', '$horaFin');"
 ;
-
-consulta($consultaSql);
-$resulset = variasFilas();
-
-$salida = "{cmd_hist: [";
-
-for ($i = 0; $i < count($resulset); $i++) {
-    $fila = $resulset[$i];
-    $salida .= "{
-            usuario:'" . utf8_encode($fila["USUARIO"]) . "',
-            comando:'" . utf8_encode($fila["CMD"]) . "',
-            respuesta:'" . utf8_encode($fila["RTA"]) . "',
-            fecha_creacion:'" . $fila["FECHA_CREACION"] . "',
-            fecha_envio:'". $fila["FECHA_ENVIO"] . "',            
-            estado:'". $fila["STD"] . "'
-        }";
-    if ($i != count($resulset) - 1) {
-        $salida .= ",";
+$result = $mysqli->query($consultaSql);
+$haveData = false;
+if ($result->num_rows > 0) {
+    $haveData = true;
+    $objJson = "cmd_hist : [";
+    while ($myrow = $result->fetch_assoc()) {
+        $objJson .= "{"
+                . "usuario:'" . utf8_encode($myrow["usuario"]) . "',"
+                . "comando:'" . utf8_encode($myrow["comando"]) . "',"
+                . "respuesta:'" . utf8_encode($myrow["respuesta"]) . "',"
+                . "fecha_creacion:'" . $myrow["fecha_hora_registro"] . "',"
+                . "fecha_envio:'" .$myrow["fecha_hora_envio"] . "',"
+                . "estado:'" . $myrow["estado"] . "'"
+                . "},";
     }
+    $objJson .="],";
 }
 
-$salida .="]}";
+if ($haveData) {
+    echo "{success: true,$objJson}";
+} else {
+    echo "{failure: true, msg: 'No hay Datos que Mostrar'}";
+}
 
-echo $salida;
-?>
+$mysqli->close();
+}

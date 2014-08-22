@@ -191,7 +191,7 @@ function ventanaCmdHistorial() {
     if (!winCmdHist) {
         winCmdHist = Ext.create('Ext.window.Window', {
             layout: 'fit',
-            title: 'Reporte de Paradas',
+            title: 'Cmd enviados',
             iconCls: 'icon-cmd-hist',
             resizable: false,
             width: 560,
@@ -212,8 +212,9 @@ function ventanaCmdHistorial() {
 
 
 function loadGridCmdHist() {
-    var empresa = contenedorwinCmdHist.down('[name=cbxEmpresas]').getValue();
+    var empresa = contenedorwinCmdHist.down('[name=cbxEmpresas]').getRawValue();
     var idEqp = contenedorwinCmdHist.down('[name=cbxVeh]').getValue();    
+    var vehiculo = contenedorwinCmdHist.down('[name=cbxVeh]').getRawValue();    
     var fi = formatoFecha(contenedorwinCmdHist.down('[name=fechaIni]').getValue());
     var ff = formatoFecha(contenedorwinCmdHist.down('[name=fechaFin]').getValue());
     var hi = formatoHora(contenedorwinCmdHist.down('[name=horaIni]').getValue());
@@ -245,6 +246,16 @@ function loadGridCmdHist() {
                 root: 'cmd_hist'
             }
         },
+//         "usuario:'" . utf8_encode($myrow["usuario"]) . "',"
+//                . "comando:'" . utf8_encode($myrow["comando"]) . "',"
+//                . "respuesta:'" . utf8_encode($myrow["respuesta"]) . "',"
+//                . "fecha_creacion:'" . $myrow["fecha_hora_registro"] . "',"
+//                . "fecha_envio:'" .$myrow["fecha_hora_envio"] . "',"
+//                . "estado:'" . $myrow["estado"] . "'"
+        
+        
+        
+        
         fields: ['usuario', 'comando', 'respuesta', 'fecha_creacion', 'fecha_envio', 'estado'],
         listeners: {
             load: function(thisObject, records, successful, eOpts) {
@@ -266,7 +277,9 @@ function loadGridCmdHist() {
                         width: '100%',
                         height: 435,
                         collapsible: true,
-                        title: '<center>Reporte de Comandos Enviados ' + idEqp + '</center>',
+                        title: '<center><span style="color:#000000">Empresa: ' +'<span style="color:#FFFF00">'+ empresa + '</center>\
+                                    <center><span style="color:#000000">Vehiculo: '+'<span style="color:#FFFF00">'+ vehiculo+' </center>\n\
+                                  <center><span style="color:#000000">Desde: '+'<span style="color:#FFFF00">' + fi + ' |<span style="color:#000000"> Hasta: '+'<span style="color:#FFFF00">' + ff + '</center> ',
                         store: store,
                         multiSelect: true,
                         columnLines: true,
@@ -282,11 +295,9 @@ function loadGridCmdHist() {
                         iconCls: 'icon-cmd-hist',
                         items: gridCmdHist
                     });
-
-                    panelMapa.add(tab);
-                    panelMapa.setActiveTab(tab);
-
-                    limpiar_datosCmdHist();
+                     panelTabMapaAdmin.add(tab);
+                   panelTabMapaAdmin.setActiveTab(tab);
+                    winCmdHist.hide();
                 } else {
                     Ext.MessageBox.show({
                         title: 'Error...',

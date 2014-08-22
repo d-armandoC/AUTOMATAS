@@ -135,17 +135,15 @@ Ext.onReady(function() {
         if (!responseExiste) {
             if (contResponse < 20) {
                 formWinCmd.submit({                            
-                    url: '../../php/administracion/divice/cmd/getResponseCmd.php',
+                    url: 'php/administracion/device/cmd/getResponseCmd.php',
                     failure: function(form, action) { 
-                        console.log(action.result.message);
-//                        response.update('<span style="color:green;">Respuesta: </span><span style="color:blue;">'+ action.result.message+'</span>');
-//                        responseExiste = false;
-//                        contResponse++;
+                        response.update('<span style="color:green;">Respuesta: </span><span style="color:blue;">'+ action.result.message+'</span>');
+                        responseExiste = false;
+                        contResponse++;
                     },
                     success: function(form, action) {
-                        console.log(action.result.message);
-//                        response.update('<span style="color:green;">Respuesta: </span><span style="color:black;">'+ action.result.message+'</span>');
-//                        responseExiste = true;
+                        response.update('<span style="color:green;">Respuesta: </span><span style="color:black;">'+ action.result.message+'</span>');
+                        responseExiste = true;
                     }                        
                 });
 

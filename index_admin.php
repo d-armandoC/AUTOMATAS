@@ -97,6 +97,7 @@
         <script type="text/javascript" src="js/interface/report/ventanaReporteMantenimientoDetallado.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaCmdHist.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaReporteParadas.js"></script>
+      
 
         <script type="text/javascript" src="js/interface/adminGeo/ventanaVerGeo.js"></script>
         <script type="text/javascript" src="js/interface/adminGeo/ventanaAgregarGeo.js"></script>
