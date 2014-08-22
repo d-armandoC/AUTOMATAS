@@ -436,13 +436,13 @@ Ext.onReady(function() {
                         text: 'Reportes',
                         iconCls: 'icon-general',
                         menu: [
-                            {text: 'Registros de Panico', iconCls: 'icon-reset', handler: function() {
-                                    showWinPanicosDaily();
-                                }},
-                            {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function() {
-//                                    ventanaExcesoVelocidad();
-                                     showWinExcesosDaily();
-                                }}
+//                            {text: 'Registros de Panico', iconCls: 'icon-reset', handler: function() {
+//                                    showWinPanicosDaily();
+//                                }},
+//                            {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function() {
+////                                    ventanaExcesoVelocidad();
+//                                     showWinExcesosDaily();
+//                                }}
                             , {text: 'Mantenimiento General', iconCls: 'icon-config', handler: function() {
                                     ventanaMantenimiento();
                                 }}
@@ -467,20 +467,21 @@ Ext.onReady(function() {
                             ventanaCmdHistorial();
                         }},
                         ]
-                    }, {text: 'Estadisticas', iconCls: 'icon-statistics', handler: function() {
-                            window.open('statistics.php');
-                        }}, '-',
-                    {text: 'Limpiar Mapa', iconCls: 'icon-limpiar-mapa', handler: function() {
-                            //  limpiarCapasAll();
-                        }},
-                    {text: 'Simbologia', iconCls: 'icon-edit', handler: function() {
-                            //ventanaSimbologia();
-                             Ext.getCmp('tiempo').setValue('hola');
-                        }}
+                    }, 
+                    
+//                    {text: 'Estadisticas', iconCls: 'icon-statistics', handler: function() {
+//                            window.open('statistics.php');
+//                        }}, '-',
+//                    {text: 'Limpiar Mapa', iconCls: 'icon-limpiar-mapa', handler: function() {
+//                            //  limpiarCapasAll();
+//                        }},
+//                    {text: 'Simbologia', iconCls: 'icon-edit', handler: function() {
+//                            ventanaSimbologia();
+//                        }}
                 ]
             },
             herraminetas,
-            monitoreo,
+//            monitoreo,
             administracion,
             salir, '->',
             {

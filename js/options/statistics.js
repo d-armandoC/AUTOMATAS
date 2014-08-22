@@ -1060,7 +1060,7 @@ Ext.onReady(function() {
         layout: 'border',
         items: [{
                 region: 'north',
-                html: '<center><h1 class="x-panel-header">GRAFICAS ESTADISTICAS K-TAXY</h1></center>'
+                html: '<center><h1 class="x-panel-header">GRAFICAS KARVIEW</h1></center>'
             }, panelCentral]
     });
     reloadStore(storeCountByDevice, 20);
