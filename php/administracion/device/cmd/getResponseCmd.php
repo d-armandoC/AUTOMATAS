@@ -8,7 +8,7 @@ extract($_POST);
 if (!$mysqli = getConectionDb()) {
     echo "{failure: true, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-    $idUser = $_SESSION["IDUSUARIOKBUS" . $site_city];
+    $idUser = $_SESSION["USERKARVIEW"];
 
     $consultaSql = "select id_tipo_estado_cmd, respuesta from karviewhistoricodb.comandos 
             where fecha_hora_registro =  

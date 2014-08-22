@@ -167,7 +167,7 @@ Ext.onReady(function() {
                 title: '<b>Registro de Mantenimineto</b>',
                 collapsible: true,
                 layout: 'hbox',
-                padding: '5 5 10 10',
+                padding: '0 0 0 10',
                 defaults: {
                     padding: '0 0 15 30',
                     baseCls: 'x-plain',
@@ -180,7 +180,7 @@ Ext.onReady(function() {
                 items: [
                     {
                         defaults: {
-                            padding: '0 0 15 0',
+                            padding: '0 0 5 0',
                             baseCls: 'x-plain',
                             layout: 'vbox',
                             defaults: {
@@ -205,7 +205,7 @@ Ext.onReady(function() {
                                         allowBlank: false,
                                         padding: '5 5 5 5',
                                         width: 300,
-                                        height: 20,
+//                                        height: 20,
                                         listeners: {
                                             select: function(combo, records, eOpts) {
                                                 var listSelected = contenedorwinEvt.down('[name=listVeh]');
@@ -232,9 +232,9 @@ Ext.onReady(function() {
                                         emptyText: 'Seleccionar Vehículo...',
                                         allowBlank: false,
                                         editable: false,
-                                        padding: '5 5 20 5',
+                                        padding: '5 5 5 5',
                                         width: 300,
-                                        height: 20,
+//                                        height: 20,
                                         listConfig: {
                                             minWidth: 350
                                         }, listeners: {
@@ -259,7 +259,7 @@ Ext.onReady(function() {
                                         editable: false,
                                         padding: '5 5 5 5',
                                         width: 300,
-                                        height: 25,
+//                                        height: 25,
                                         listConfig: {
                                             minWidth: 350
                                         }
@@ -293,7 +293,7 @@ Ext.onReady(function() {
                                 xtype: 'fieldset',
                                 flex: 2,
                                 title: 'Elegir Tipo de Servicio',
-                                padding: '25 25 5 50',
+                                padding: '5 5 5 5',
                                 defaultType: 'radio',
                                 layout: 'anchor',
                                 defaults: {
@@ -302,7 +302,7 @@ Ext.onReady(function() {
                                 },
                                 items: [
                                     {
-                                        fieldLabel: 'Tipo de Servicio',
+                                        fieldLabel: 'Tipo',
                                         boxLabel: 'Manteninimiento',
                                         id: 's1',
                                         name: 'valorTipoServicio',
@@ -363,7 +363,7 @@ Ext.onReady(function() {
                 collapsed: true,
                 collapsible: true,
                 layout: 'vbox',
-                padding: '5 5 5 5',
+                padding: '2 2 2 2',
                 listeners: {
                     'beforeexpand': function() {
                         Ext.getCmp('fsreparacion').collapse( );
@@ -432,7 +432,7 @@ Ext.onReady(function() {
                                         fieldLabel: '<i>Elegir Tiempo en Dias   </i>',
                                         name: 'mdias',
                                         vtype: 'digitos',
-                                        padding: '7 0 0 80',
+                                        padding: '0 0 0 80',
                                         id: 'mdias',
                                         emptyText: 'Tiempo',
                                         width: 165
@@ -490,7 +490,7 @@ Ext.onReady(function() {
                                 items: [
                                     {
                                         fieldLabel: 'Fecha ',
-                                        padding: '0 0 15 0',
+                                        padding: '0 0 5 0',
                                         name: 'mfecha',
                                         id: 'mfecha',
                                         xtype: 'datefield',
@@ -501,7 +501,7 @@ Ext.onReady(function() {
                                     {
                                         xtype: 'textarea',
                                         id: 'mobservacion',
-                                        padding: '0 0 15 0',
+                                        padding: '0 0 5 0',
                                         fieldLabel: 'Observación',
                                         labelWidth: 90,
                                         width: '100%',
@@ -764,7 +764,7 @@ function ventAddMantenimientos() {
             iconCls: 'icon-company',
             resizable: false,
             width: 1200,
-            height: 550,
+            height: 560,
             closeAction: 'hide',
             plain: false,
             items: [{

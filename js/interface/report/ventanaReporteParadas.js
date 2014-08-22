@@ -8,23 +8,21 @@ var personaParadas;
 var gridViewDataParadas;
 var storeViewExcesosParadas;
 var storeDataParada;
-var empresaParada = 1;
+var idEmpresa = 1;
 var cbxEmpresasParada;
+var modal;
 Ext.onReady(function() {
     storeViewParadas = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
         proxy: {
             type: 'ajax',
-            url: 'php/interface/report/getREporteMantenimientoDetallado.php',
+            url: 'php/interface/report/getReportParadasDetallados.php',
             reader: {
                 type: 'json',
                 root: 'data'
             }
         },
-        fields: ['placa', 
-            'marca', 
-            'estendar', 
-            'idTipoServicio']
+        fields: ['empresa', 'vehiculo', 'placa', 'latitud','longitud','fecha','hora','velocidad','bateria','gsm','gps','ign','sky_evento']
     });
 
     cbxEmpresasParada = Ext.create('Ext.form.ComboBox', {
@@ -40,7 +38,7 @@ Ext.onReady(function() {
         value: 1,
         listeners: {
             select: function(combo, records, eOpts) {
-                empresaParada = records[0].data.id;
+                idEmpresa = records[0].data.id;
             }
         }
     });
@@ -110,18 +108,18 @@ Ext.onReady(function() {
                         vertical: true,
                         items: [
                             {boxLabel: 'General ', name: 'rb', inputValue: '1', checked: true},
-                            {boxLabel: 'Por Cooperativa', name: 'rb', inputValue: '2'},
+                            {boxLabel: 'Por Empresa', name: 'rb', inputValue: '2'},
                         ],
                         listeners: {
                             change: function(field, newValue, oldValue) {
                                 switch (parseInt(newValue['rb'])) {
                                     case 1:
-                                        empresaParada = 1;
+                                        idEmpresa = 0;
                                         cbxEmpresasParada.disable();
                                         break;
                                     case 2:
                                         cbxEmpresasParada.enable();
-                                        empresaParada = cbxEmpresasParada.getValue();
+                                        idEmpresa = cbxEmpresasParada.getValue();
                                         break;
                                 }
                             }
@@ -137,63 +135,39 @@ Ext.onReady(function() {
                     dateFin,
                     panelButtons,
                 ]
-            }, {
-                xtype: 'fieldset',
-                title: 'Opciones de Reporte',
-                width: '100%',
-                layout: 'anchor',
-                margin: '10 0 0 0',
-                defaults: {
-                    anchor: '100%',
-                    padding: '0 0 0 50'
-                },
-                items: [{
-                        xtype: 'checkboxgroup',
-                        items: [{
-                                checked: true,
-                                boxLabel: 'Detallado',
-                                name: 'isDetallado'
-                            }, {
-                                boxLabel: ' General',
-                                name: 'isGeneral'
-                            }]
-                    }]
-            }],
+            }
+        ],
         buttons: [{
                 text: 'Obtener',
                 iconCls: 'icon-obtener',
                 handler: function() {
-                    var isDetallado = this.up('form').down('[name=isDetallado]').getValue();
-                    var isGeneral = this.up('form').down('[name=isGeneral]').getValue();
                     fechaInicio = dateIni.getRawValue();
                     fechaFin = dateFin.getRawValue();
                     var form = formularioParadas.getForm();
                     if (form.isValid()) {
-                        if (isDetallado) {
-                            console.log('Detallado');
                             form.submit({
-                                url: 'php/interface/report/getObtenerReportGeneralDetallado.php',
+                                url: 'php/interface/report/getReportParadasCantidad.php',
                                 waitTitle: 'Procesando...',
                                 waitMsg: 'Obteniendo Información',
-//                                params: {
-//                                    idCompanyExcesos: empresaMantenimiento,
-//                                },
+                                params: {
+                                    idEmpresas:idEmpresa
+                                },
                                 success: function(form, action) {
-                                    console.log(action.result.countByMantenimiento);
+                                    console.log(action.result.countByParadas);
                                     personaParadas;
                                     gridViewDataParadas;
                                     var storeDataReporteDetallado = Ext.create('Ext.data.JsonStore', {
-                                        data: action.result.countByMantenimiento,
+                                        data: action.result.countByParadas,
                                         proxy: {
                                             type: 'ajax',
                                             reader: 'array'
                                         },
-                                        fields: ['id_vehiculo', 'empresa', 'vehiculo', 'total']
+                                        fields: ['id_empresa','id_vehiculo','empresa','vehiculo','equipo','placa', 'totalEventos']
                                     });
                                     var gridDataMantenimiento = Ext.create('Ext.grid.Panel', {
                                         region: 'west',
                                         frame: true,
-                                        width: '40%',
+                                        width: '48%',
                                         title: '<center>Mantenimientos Totales: ' + '<br>Desde: ' + fechaInicio + ' | Hasta: ' + fechaFin + '</center>',
                                         store: storeDataReporteDetallado,
                                         features: [filters],
@@ -205,7 +179,9 @@ Ext.onReady(function() {
                                             Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
                                             {text: 'Empresa', width: 150, dataIndex: 'empresa', align: 'center'},
                                             {text: 'Vehiculo', width: 100, dataIndex: 'vehiculo', align: 'center'},
-                                            {text: 'Mantenimientos', width: 100, dataIndex: 'total', align: 'center'},
+                                            {text: 'Equipo', width: 100, dataIndex: 'equipo', align: 'center'},
+                                            {text: 'Placa', width: 100, dataIndex: 'placa', align: 'center'},
+                                            {text: 'Cantidad Eventos', width: 100, dataIndex: 'totalEventos', align: 'center'}
                                         ],
                                         tbar: [{
                                                 xtype: 'button',
@@ -292,7 +268,7 @@ Ext.onReady(function() {
                                     gridViewDataParadas = Ext.create('Ext.grid.Panel', {
                                         region: 'center',
                                         frame: true,
-                                        width: '60%',
+                                        width: '52%',
                                         title: '<center>Servicios Mantenimientos Detallado: ',
                                         store: storeViewParadas,
                                         features: [filters],
@@ -301,11 +277,21 @@ Ext.onReady(function() {
                                             emptyText: 'No hay datos que Mostrar'
                                         },
                                         columns: [
+                                            //fields: ['empresa', 'vehiculo', 'placa', 'latitud','longitud','fecha','hora','velocidad','bateria','gsm','gps','ign','sky_evento']
                                             Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                            {text: 'Placa', width: 130, dataIndex: 'placa', align: 'center'},
-                                            {text: 'Marca', width: 200, dataIndex: 'marca', align: 'center'},
-                                            {text: 'Estandar', width: 200, dataIndex: 'estandar', align: 'center'},
-                                            {text: 'Tipo Servicio', width: 200, dataIndex: 'idTipoServicio', align: 'center', renderer: formatTipoServicio}
+                                            {text: 'Empresa', width: 130, dataIndex: 'empresa', align: 'center'},
+                                            {text: 'Vehiculo', width: 200, dataIndex: 'vehiculo', align: 'center'},
+                                            {text: 'Placa', width: 200, dataIndex: 'placa', align: 'center'},
+                                            {text: 'Latitud', width: 200, dataIndex: 'latitud', align: 'center'},
+                                            {text: 'Longitud', width: 200, dataIndex: 'longitud', align: 'center'},
+                                            {text: 'Fecha', width: 200, dataIndex: 'fecha', align: 'center'},
+                                            {text: 'Hora', width: 200, dataIndex: 'hora', align: 'center'},
+                                            {text: 'Velocidad', width: 200, dataIndex: 'velocidad', align: 'center'},
+                                            {text: 'Bateria', width: 200, dataIndex: 'bateria', align: 'center'},
+                                            {text: 'GSM', width: 200, dataIndex: 'gsm', align: 'center'},
+                                            {text: 'GPS', width: 200, dataIndex: 'gps', align: 'center'},
+                                            {text: 'IGN', width: 200, dataIndex: 'ign', align: 'center'},
+                                            {text: 'Evento', width: 200, dataIndex: 'sky_evento', align: 'center'}
                                         ],
                                         tbar: [{
                                                 xtype: 'button',
@@ -392,132 +378,6 @@ Ext.onReady(function() {
                                     });
                                 }
                             });
-                        }
-                    }
-                    if (isGeneral) {
-                        form.submit({
-                            url: 'php/interface/report/getReporteGeneralVelocidad.php',
-                            waitTitle: 'Procesando...',
-                            waitMsg: 'Obteniendo Información',
-                            params: {
-                                idCompanyExcesosDT: empresaParada,
-                                fechaIniExcesos: dateIni,
-                                fechaFinExcesos: dateFin
-                            },
-                            success: function(form, action) {
-                                storeViewExcesosParadas = Ext.create('Ext.data.JsonStore', {
-                                    data: action.result.data,
-                                    proxy: {
-                                        type: 'ajax',
-                                        reader: 'array'
-                                    },
-                                    fields: ['vehiculo',
-                                        'persona',
-                                        'empresa',
-                                        'placa:',
-                                        'totalCant',
-                                        'totalVel', 'promedio']
-                                });
-                                banderaParadas = 1;
-                                gridViewDataParadas = Ext.create('Ext.grid.Panel', {
-                                    region: 'center',
-                                    frame: true,
-                                    width: '100%',
-                                    title: '<center>Reporte Excesos de Velocidad Totales: ' + '<br>Desde: ' + fechaInicio + ' | Hasta: ' + fechaFin + '</center>',
-                                    store: storeViewExcesosParadas,
-                                    features: [filters],
-                                    multiSelect: true,
-                                    viewConfig: {
-                                        emptyText: 'No hay datos que Mostrar'
-                                    },
-                                    columns: [
-                                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                        {text: 'Empresa', width: 250, dataIndex: 'empresa', align: 'center'},
-                                        {text: 'Persona', width: 300, dataIndex: 'persona', align: 'center'},
-                                        {text: 'Placa', width: 150, dataIndex: 'placa', align: 'center'},
-                                        {text: 'Cantidad Excesos', width: 150, dataIndex: 'totalCant', align: 'center'},
-                                        {text: 'Total Velocidad', width: 150, dataIndex: 'totalVel', align: 'center'},
-                                        {text: 'Velocidad Promedio', width: 150, dataIndex: 'promedio', align: 'center'}
-
-                                    ],
-                                    tbar: [{
-                                            xtype: 'button',
-                                            iconCls: 'icon-excel',
-                                            text: 'Exportaraaaaaaaaaaaaaa a Excel',
-                                            handler: function() {
-                                                if (banderaParadas === 1) {
-                                                    if (storeViewExcesosParadas.getCount() > 0) {
-                                                        var a = document.createElement('a');
-//getting data from our div that contains the HTML table
-                                                        var data_type = 'data:application/vnd.ms-excel';
-//var table_div = document.getElementById('exportar');
-//var table_html = table_div.outerHTML.replace(/ /g, '%20');
-                                                        var tiLetra = 'Calibri';
-                                                        var table_div = "<meta charset='UTF-4'><body>" +
-                                                                "<font face='" + tiLetra + "'><table>" +
-                                                                "<tr><th colspan='7'>EXCESOS DE VELOCIDAD GENERALES" + "</th></tr>" +
-                                                                "<tr><th colspan='7'>DESDE " + fechaInicio + " HASTA " + fechaFin + "</th></tr>" +
-                                                                "<tr></tr>";
-                                                        table_div += "<tr>";
-                                                        table_div += "<th align=left>EMPRESA</th>";
-                                                        table_div += "<th align=left>PERSONA </th>";
-                                                        table_div += "<th align=left>PLACA</th>";
-                                                        table_div += "<th align=left>CANTIDAD DE EXCESOS VELOCIDADES</th>";
-                                                        table_div += "<th align=left>CANTIDAD DE VELOCIDADES</th>";
-                                                        table_div += "<th align=left>VELOCIDAD PROMEDIO</th>";
-                                                        table_div += "</tr>";
-                                                        for (var i = 0; i < storeViewExcesosParadas.data.length; i++) {
-                                                            table_div += "<tr>";
-                                                            table_div += "<td align=lef>" + storeViewExcesosParadas.data.items[i].data.empresa + "</td>";
-                                                            table_div += "<td align=lef>" + storeViewExcesosParadas.data.items[i].data.persona + "</td>";
-                                                            table_div += "<td align=lef>" + storeViewExcesosParadas.data.items[i].data.placa + "</td>";
-                                                            table_div += "<td align=lef>" + storeViewExcesosParadas.data.items[i].data.totalCant + "</td>";
-                                                            table_div += "<td align=lef>" + storeViewExcesosParadas.data.items[i].data.totalVel + "</td>";
-                                                            table_div += "<td align=lef>" + storeViewExcesosParadas.data.items[i].data.promedio + "</td>";
-
-                                                            table_div += "</tr>";
-                                                        }
-                                                        table_div += "</table></font></body>";
-                                                        var table_html = table_div.replace(/ /g, '%20');
-                                                        a.href = data_type + ', ' + table_html;
-//setting the file name
-                                                        a.download = 'Excesos de Velocidad General' + '.xls';
-//triggering the function
-                                                        a.click();
-                                                    }
-                                                } else {
-                                                    Ext.MessageBox.show({
-                                                        title: 'Error...',
-                                                        msg: 'No hay datos en la Lista a Exportar',
-                                                        buttons: Ext.MessageBox.OK,
-                                                        icon: Ext.MessageBox.ERROR
-                                                    });
-                                                }
-                                            }
-                                        }]
-                                });
-                                var tabExcesos1 = Ext.create('Ext.container.Container', {
-                                    title: 'Excesos de Velocidad Generales',
-                                    closable: true,
-                                    iconCls: 'icon-servicios',
-                                    layout: 'border',
-                                    fullscreen: true,
-                                    height: 485,
-                                    width: 2000,
-                                    region: 'center',
-                                    items: [gridViewDataParadas]
-                                });
-                                panelMapaAdmin.add(tabExcesos1);
-                                panelMapaAdmin.setActiveTab(tabExcesos1);
-                                Ventanaparadas.hide();
-                            }, failure: function(form, action) {
-                                Ext.MessageBox.show({
-                                    title: 'Información',
-                                    msg: action.result.message,
-                                    buttons: Ext.MessageBox.OK,
-                                    icon: Ext.MessageBox.INFO
-                                });
-                            }});
                     }
 //                    else {
 //                        Ext.MessageBox.show({
@@ -546,7 +406,7 @@ function showWinPradas() {
             iconCls: 'icon-unlock',
             resizable: false,
             width: 350,
-            height: 350,
+            height: 300,
             closeAction: 'hide',
             plain: false,
             items: formularioParadas
