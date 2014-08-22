@@ -534,7 +534,7 @@ Ext.onReady(function() {
                     {iconCls: 'icon-update', itemId: 'updateVeh', text: '<b>Actualizar</b>', scope: this, tooltip: 'Actualizar Datos', handler: onUpdateVeh},
                     {iconCls: 'icon-car', itemId: 'createVeh', text: '<b>Crear</b>', scope: this, tooltip: 'Crear Vehiculo', handler: onCreateVeh},
                     {iconCls: 'icon-delete', text: '<b>Eliminar</b>', itemId: 'deleteVeh', scope: this, tooltip: 'Eliminar Vehiculo', handler: onDeleteClickVeh},
-                    {iconCls: 'icon-limpiar-form', text: '<b>Limpiar</b>', scope: this, tooltip: 'Limpiar Campos', handler: onResetVeh},
+                    {iconCls: 'icon-limpiar', text: '<b>Limpiar</b>', scope: this, tooltip: 'Limpiar Campos', handler: onResetVeh},
                     {iconCls: 'icon-cancelar', text: '<b>Cancelar</b>', tooltip: 'Cancelar', scope: this, handler: clearWinVeh}
                 ]
             }]

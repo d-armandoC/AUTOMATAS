@@ -219,12 +219,12 @@ Ext.onReady(function() {
                     }, {
                         iconCls: 'icon-delete',
                         text: 'Eliminar',
-                        disabled: true,
+                        disabled:true,
                         itemId: 'delete',
                         tooltip: 'Eliminar Usuario',
                         handler: onDeleteCompany
                     }, {
-                        iconCls: 'icon-limpiar-form',
+                        iconCls: 'icon-limpiar',
                         tooltip: 'Limpiar Campos',
                         handler: onResetCompany
                     }, {
@@ -242,7 +242,7 @@ function showWinAdminCompany() {
         winAdminCompany = Ext.create('Ext.window.Window', {
             layout: 'fit',
             title: 'Administración de Empresas',
-            iconCls: 'icon-company',
+            iconCls: 'icon-central',
             resizable: false,
             width: 700,
             height: 360,
@@ -318,8 +318,9 @@ function onDeleteCompany() {
         if (choice === 'yes') {
             var selection = gridAdminCompany.getView().getSelectionModel().getSelection()[0];
             if (selection) {
-                gridAdminCompany.store.remove(selection);
-                formAdminUser.down('#delete').disable();
+                Ext.example.msg("Atención", 'Para hacer esta Operacion Consulte con el Administrador ');
+//                gridAdminCompany.store.remove(selection);
+//                formAdminUser.down('#delete').disable();
             }
         }
     });

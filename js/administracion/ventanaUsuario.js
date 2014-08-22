@@ -338,7 +338,7 @@ Ext.onReady(function() {
                     {iconCls: 'icon-update', itemId: 'updateUser', text: '<b>Actualizar</b>', scope: this, tooltip: 'Actualizar Datos', handler: onUpdateUser},
                     {iconCls: 'icon-user-add', itemId: 'createUser', text: '<b>Crear</b>', scope: this, tooltip: 'Crear Usuario', handler: onCreateUser},
                     {iconCls: 'icon-delete', text: '<b>Eliminar</b>', itemId: 'deleteUser', scope: this, tooltip: 'Eliminar Usuario', handler: onDeleteClickUser},
-                    {iconCls: 'icon-limpiar-form', scope: this, tooltip: 'Limpiar Campos', handler: onResetUser},
+                    {iconCls: 'icon-limpiar', scope: this, tooltip: 'Limpiar Campos', handler: onResetUser},
                     {iconCls: 'icon-cancelar', tooltip: 'Cancelar', scope: this, handler: clearWinUser}
                 ]
             }]

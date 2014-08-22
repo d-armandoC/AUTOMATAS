@@ -236,7 +236,7 @@ Ext.onReady(function() {
                         tooltip: 'Eliminar Usuario',
                         handler: onDeleteDevice
                     }, {
-                        iconCls: 'icon-limpiar-form',
+                        iconCls: 'icon-limpiar',
                         //text: 'Limpiar',
                         tooltip: 'Limpiar Campos',
                         handler: onResetDevice
