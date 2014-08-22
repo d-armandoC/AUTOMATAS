@@ -481,7 +481,7 @@ Ext.onReady(function() {
                 ]
             },
             herraminetas,
-//            monitoreo,
+            monitoreo,
             administracion,
             salir, '->',
             {

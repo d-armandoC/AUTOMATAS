@@ -73,7 +73,7 @@ Ext.onReady(function() {
             }
         },
         fields: ['empresa', 'idEquipo', 'vehiculo', 'fhCon', 'fhDes', 'tmpcon', 'tmpdes', 'bateria', 'estado',
-            {name: 'fechaEstado', type: 'string'}, 'gsm', 'gps2', 'vel', 'activo', 'ign', 'taximetro', 'panico']/*,
+            {name: 'fechaEstado', type: 'string'}, 'gsm', 'gps2', 'vel', 'ign', 'taximetro', 'panico']/*,
         groupField: 'empresa'*/
     });
 
@@ -89,7 +89,7 @@ Ext.onReady(function() {
             }
         },
         fields: ['empresa', 'idEquipo', {name: 'vehiculo', type: 'int'}, 'fhCon', 'fhDes', 'tmpcon', 'tmpdes', 'bateria', 'estado',
-            {name: 'fechaEstado', type: 'string'}, 'gsm', 'gps2', 'vel', 'activo', 'ign', 'taximetro', 'panico']
+            {name: 'equipo', type: 'string'},{name: 'fechaEstado', type: 'string'}, 'gsm', 'gps2', 'vel', 'activo', 'ign', 'taximetro', 'panico']
     });
 
     var storeStateEmp = Ext.create('Ext.data.JsonStore', {
@@ -154,23 +154,22 @@ Ext.onReady(function() {
         columns: [
             Ext.create('Ext.grid.RowNumberer', {text: '<b>Nº</b>', width: 35, align: 'center'}),
             {text: '<b>Empresa</b>', width: 100, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}, align: 'center'},
-            {text: '<b>Equipo</b>', width: 60, dataIndex: 'idEquipo', filter: {type: 'string'}, align: 'center'},
-            {text: '<b>Vehículo</b>', width: 60, dataIndex: 'vehiculo', align: 'center'},
+            {text: '<b>Equipo</b>', width: 65, dataIndex: 'equipo', filter: {type: 'string'}, align: 'center'},
+            {text: '<b>Vehículo</b>', width: 95, dataIndex: 'vehiculo', align: 'center'},
             {text: '<b>Fecha Conexión</b>', width: 140, dataIndex: 'fhCon', align: 'center'},
             {text: '<b>Fecha Ult Trama</b>', width: 140, dataIndex: 'fhDes', align: 'center'},
-            {text: '<b>Tmp Conex.</b>', width: 70, dataIndex: 'tmpcon', align: 'center', filter: {type: 'numeric'}},
+            {text: '<b>Tmp Conex.</b>', width: 95, dataIndex: 'tmpcon', align: 'center', filter: {type: 'numeric'}},
             {text: '<b>Estado</b>', width: 100, dataIndex: 'tmpdes', renderer: formatStateConect, align: 'center'},
-            {text: '<b>Tmp Desc.</b>', width: 60, dataIndex: 'tmpdes', align: 'center', renderer: formatTmpDes, filter: {type: 'numeric'}},
-            {text: '<b>Bateria</b>', width: 50, dataIndex: 'bateria', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>IGN</b>', width: 50, dataIndex: 'ign', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>GSM</b>', width: 50, dataIndex: 'gsm', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>GPS2</b>', width: 50, dataIndex: 'gps2', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>Vel (Km/h)</b>', dataIndex: 'vel', align: 'center', width: 75, renderer: formatSpeed, filter: {type: 'numeric'}},
-            {text: '<b>Activo</b>', width: 50, dataIndex: 'activo', renderer: formatLock, align: 'center'},
-            {text: '<b>Taxímetro</b>', width: 90, dataIndex: 'taximetro', renderer: formatStateTaxy, align: 'center', filterable: true},
-            {text: '<b>Pánico</b>', width: 90, dataIndex: 'panico', renderer: formatPanic, align: 'center', filterable: true},
-            {text: '<b>Estado</b>', width: 100, dataIndex: 'estado', filter: {type: 'string'}},
-            {text: '<b>Fecha Estado</b>', width: 100, dataIndex: 'fechaEstado', align: 'center'}
+            {text: '<b>Tmp Desc.</b>', width: 85, dataIndex: 'tmpdes', align: 'center', renderer: formatTmpDes, filter: {type: 'numeric'}},
+            {text: '<b>Bateria</b>', width: 75, dataIndex: 'bateria', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
+            {text: '<b>IGN</b>', width: 65, dataIndex: 'ign', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
+            {text: '<b>GSM</b>', width: 65, dataIndex: 'gsm', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
+            {text: '<b>GPS</b>', width: 65, dataIndex: 'gps2', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
+            {text: '<b>Vel (Km/h)</b>', dataIndex: 'vel', align: 'center', width: 100, renderer: formatSpeed, filter: {type: 'numeric'}},
+            {text: '<b>Activo</b>', width: 65, dataIndex: 'activo', renderer: formatLock, align: 'center'},
+//            {text: '<b>Taxímetro</b>', width: 100, dataIndex: 'taximetro', renderer: formatStateTaxy, align: 'center', filterable: true},
+            {text: '<b>Pánico</b>', width: 100, dataIndex: 'panico', renderer: formatPanic, align: 'center', filterable: true},
+            {text: '<b>Fecha Estado</b>', width: 150, dataIndex: 'fechaEstado', align: 'center'}
         ],
         listeners: {
             itemclick: function(thisObj, record, item, index, e, eOpts) {

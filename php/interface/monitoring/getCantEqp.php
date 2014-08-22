@@ -6,38 +6,35 @@ include ('../../../dll/config.php');
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-    $idRol = $_SESSION["IDROLKARVIEW"];
+    $idRol = 3;
     if ($idRol == 3) {
-        $consultaSql = "select d.desco, t.total, e.empresa. "
-            . "from (select count(*) as desco, v.id_empresa "
-                . "from estado_eqp ee, vehiculos v "
-                . "where ee.id_equipo = v.id_equipo "
-                . "and timestampdiff(minute, concat(ee.fecha_ult_dato, ' ', ee.hora_ult_dato), now()) > 3 "
-                . "group by v.id_empresa) as d, "
-                . "(select count(*) as total, v.id_empresa "
-                . "from estado_eqp ee, vehiculos v "
-                . "where ee.id_equipo = v.id_equipo "
-                . "group by v.id_empresa) as t, empresas e "
-            . "where d.id_empresa = t.id_empresa "
-            . "and t.id_empresa = e.id_empresa "
-            . "and e.id_ciudad <> 2 "
-            . "order by e.empresa"
-        ;
+        $consultaSql = "select d.desco, t.total, e.empresa
+            from (select count(*) as desco, v.id_empresa 
+                from estado_eqp ee, vehiculos v 
+                where ee.id_equipo = v.id_equipo 
+                and timestampdiff(minute, concat(ee.fecha_ult_dato, ' ', ee.hora_ult_dato), now()) > 3 
+                group by v.id_empresa) as d, 
+                (select count(*) as total, v.id_empresa 
+                from estado_eqp ee, vehiculos v 
+                where ee.id_equipo = v.id_equipo 
+                group by v.id_empresa) as t, empresas e 
+            where d.id_empresa = t.id_empresa 
+            and t.id_empresa = e.id_empresa 
+             order by e.empresa";
     } else {
-        $consultaSql = "select d.desco, t.total, e.empresa "
-            . "from (select count(*) as desco, v.id_empresa "
-                . "from estado_eqp ee, vehiculos v "
-                . "where ee.id_equipo = v.id_equipo "
-                . "and timestampdiff(minute, concat(ee.fecha_ult_dato, ' ', ee.hora_ult_dato), now()) > 3 "
-                . "group by v.id_empresa) as d, "
-                . "(select count(*) as total, v.id_empresa "
-                . "from estado_eqp ee, vehiculos v "
-                . "where ee.id_equipo = v.id_equipo "
-                . "group by v.id_empresa) as t, empresas e "
-            . "where d.id_empresa = t.id_empresa "
-            . "and t.id_empresa = e.id_empresa "
-            . "order by e.empresa"
-        ;
+        $consultaSql = "select d.desco, t.total, e.empresa 
+            from (select count(*) as desco, v.id_empresa 
+                from estado_eqp ee, vehiculos v 
+                where ee.id_equipo = v.id_equipo 
+                and timestampdiff(minute, concat(ee.fecha_ult_dato, ' ', ee.hora_ult_dato), now()) > 3 
+                group by v.id_empresa) as d,
+                (select count(*) as total, v.id_empresa 
+                from estado_eqp ee, vehiculos v 
+                where ee.id_equipo = v.id_equipo 
+                group by v.id_empresa) as t, empresas e 
+            where d.id_empresa = t.id_empresa 
+            and t.id_empresa = e.id_empresa 
+            order by e.empresa";
     }
 
     $result = $mysqli->query($consultaSql);
