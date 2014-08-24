@@ -50,7 +50,7 @@ if (!$mysqli = getConectionDb()) {
                 tmpcon:" . $myrow["conex"] . ",
                 tmpdes:" . $myrow["deconexion"] . ",
                 bateria:" . $myrow["bateria"] . ",
-                estado:'" . utf8_encode($myrow["comentario"]) . "',
+                comentario:'" . utf8_encode($myrow["comentario"]) . "',
                 fechaEstado:'" . $myrow["fecha_hora_comentario"] . "',
                 gsm:" . $myrow["gsm"] . ",
                 gps2:" . $myrow["gps"] . ",

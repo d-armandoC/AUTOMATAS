@@ -92,16 +92,15 @@ function loadMap() {
                 fontWeight: "bold",
                 labelAlign: "${align}",
             });
-
             var styleRoute = new OpenLayers.StyleMap({
                 fillOpacity: 0.7,
                 pointRadius: 8,
-                idPunto: "${idPunto}",
+                idPunto: "${idTravel}",
                 geo: '${geo}',
                 punto: "${punto}",
                 ordPt: "${ordPt}",
-                label: "${idPunto}",
-                dir: "${dir}",
+                label: "${idTravel}",
+                dir: "${direccion}",
                 fontColor: "white",
                 fillColor: "${color}", //#003DF5
                 strokeColor: "#FFFFFF",
@@ -153,16 +152,20 @@ function loadMap() {
                 eventListeners: {
                     featureselected: function(evt) {
                         var feature = evt.feature;
-
-                        var punto = feature.attributes.punto;
-                        var geo = feature.attributes.geo;
-                        var dir = feature.attributes.dir;
-
+                        var idTravel = feature.attributes.idTravel;
+                        var direccion = feature.attributes.direccion;
+                        var velocidad = feature.attributes.velocidad;
+                        var latitud = feature.attributes.latitud;
+                        var longitud = feature.attributes.longitud;
+                        var evento = feature.attributes.evenvto;
                         var contenidoAlternativo =
                                 "<section>" +
-                                "<b>Punto: </b>" + punto.toString() + "</br>" +
-                                "<b>Geocerca: </b>" + geo.toString() + "</br>" +
-                                "<b>Dirección: </b>" + dir.toString() + "" +
+                                "<b>Id: </b>" + idTravel.toString() + "<br>" +
+                                "<b>Velocidad: </b>" + velocidad.toString() + "</br>" +
+                                "<b>Latitud: </b>" + latitud.toString() + "</br>" +
+                                "<b>Longitud: </b>" + longitud.toString() + "</br>" +
+                                "<b>Dirección: </b>" + direccion.toString() + "</br>" +
+                                "<b>Evento: </b>" + evento.toString() + "</br>" +
                                 "</section>";
 
                         var popup = new OpenLayers.Popup.FramedCloud("popup",
@@ -881,11 +884,47 @@ function drawLineRoute(json, idRuta) {
         });
     }
 }
+////////////////
+function drawRutaMapa(json) {
+    var puntosRec = new Array();
+    for (var i = 0; i < json.length; i++) {
+        var dataRec = json[i];
+        var pt= new OpenLayers.Geometry.Point(dataRec.longitud, dataRec.latitud);
+        pt.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+        puntosRec.push(pt);
+    }
+    if (puntosRec.length > 0) {
+        var ruta = new OpenLayers.Geometry.LineString(puntosRec);
+        //Estilo de Linea de Recorrido
+        var style = {
+            strokeColor: '#190707',
+            strokeOpacity: 1,
+            strokeWidth: 2
+        };
+
+        var lineFeature = lienzoLineTravel.getFeatureById("lineTravel");
+        if (lineFeature !== null) {
+            lineFeature.destroy();
+        }
+
+        lineFeature = new OpenLayers.Feature.Vector(ruta, null, style);
+        lineFeature.id = "lineTravel";
+        lienzoLineTravel.addFeatures([lineFeature]);
+    } else {
+        Ext.MessageBox.show({
+            title: 'Error',
+            msg: 'Ups... Datos no encontrados',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.ERROR
+        });
+    }
+}
+
 
 function drawLineTravel(json, isSkp) {
 
+    
     var puntosRec = new Array();
-
     for (var i = 0; i < json.length; i++) {
         var dataRec = json[i];
         var pt;
@@ -968,35 +1007,36 @@ function drawLineRouteManual(json) {
 
 function drawPointsRoute(coordPuntos, idRuta) {
     var features = new Array();
-
-    for (var i = 0; i < coordPuntos.length; i++) {
+    var i=0 ;
+    for ( i = 0; i < coordPuntos.length; i++) {
         var dataRuta = coordPuntos[i];
-
-        var pt = new OpenLayers.Geometry.Point(dataRuta.longitudPoint, dataRuta.latitudPoint);
+         
+        var pt = new OpenLayers.Geometry.Point(dataRuta.longitud, dataRuta.latitud);
         pt.transform(new OpenLayers.Projection("EPSG:4326"),
                 new OpenLayers.Projection("EPSG:900913"));
-
+         console.log(dataRuta);
         var puntoMap = new OpenLayers.Feature.Vector(pt, {
-            idPunto: dataRuta.idPoint,
-            geo: dataRuta.geoSkpPoint,
-            punto: dataRuta.pointPoint,
-            ordPt: dataRuta.orderPoint,
-            dir: dataRuta.addressPoint,
-            color: dataRuta.colorPoint,
+            idTravel: i,
+            empresa: dataRuta.company,
+            direccion: dataRuta.direccion,
+            velocidad: dataRuta.velocidad,
+            latitud: dataRuta.latitud,
+            longitud: dataRuta.longitud,
+            evenvto:dataRuta.evento,
+            color: dataRuta.color,
             poppedup: false
         });
-
-        puntoMap.id = 'route' + idRuta + 'point' + dataRuta.idPoint;
+        puntoMap.id = 'route'+i;
 
         features.push(puntoMap);
     }
-
+    
     lienzoPointRoute.addFeatures(features);
-    for (var i = 0; i < showRouteMap.length; i++) {
-        if (showRouteMap[i][0] === idRuta) {
-            showRouteMap[i][2] = features;
-        }
-    }
+//    for (var i = 0; i < showRouteMap.length; i++) {
+//        if (showRouteMap[i][0] === idRuta) {
+//            showRouteMap[i][2] = features;
+//        }
+//    }
 }
 
 function drawPointsTravel(coordPuntos, isSkp) {

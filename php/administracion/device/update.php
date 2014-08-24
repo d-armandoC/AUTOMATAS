@@ -7,6 +7,7 @@ if (!$mysqli = getConectionDb()) {
 } else {
     $requestBody = file_get_contents('php://input');
     $json = json_decode($requestBody, true);
+    
     $setIdTypeDevice = $setDevice = $setSerial = $setNumberChip = $setImeiChip = "";
 
     if (isset($json["idTypeDevice"])) {

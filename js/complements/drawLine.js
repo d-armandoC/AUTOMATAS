@@ -7,9 +7,7 @@
 
 function dibujarTrazadoHistorico(json){
     iconosInicioFin(json);
-    
     var puntosRuta = new Array();
-
     for (i = 0; i < json.length; i++ ) {
         var dataRuta = json[i];
         

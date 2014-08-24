@@ -224,11 +224,14 @@ Ext.onReady(function() {
                                 },
                                 success: function(form, action) {
                                     var resultado = action.result;
-
                                     if (trazar_ruta) {
-                                        limpiarCapasHistorico();
-                                        dibujarTrazadoHistorico(resultado.puntos);
-                                        lienzosRecorridoHistorico(cbxVehBD.getValue(), resultado.puntos);
+                                        clearLienzoTravel();
+                                        drawRutaMapa(resultado.puntos);
+                                        drawPointsRoute(resultado.puntos, "Puntos");
+                                        
+                                       // limpiarCapasHistorico();
+                                        //dibujarTrazadoHistorico(resultado.puntos);
+                                       // lienzosRecorridoHistorico(cbxVehBD.getValue(), resultado.puntos);
                                     }
 
                                     if (reporte_ruta) {
@@ -376,8 +379,9 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
         columns: columnFlags,
         listeners: {
             itemcontextmenu: function(thisObj, record, item, index, e, eOpts) {
-                panelMapa.setActiveTab('panelMapaTab');
-                localizarDireccion(record.data.longitud, record.data.latitud, 17);
+                panelTabMapaAdmin.setActiveTab('panelMapaTab');
+                console.log(record);
+               // localizarDireccion(record.data.longitud, record.data.latitud, 17);
             }
         }
     });
@@ -390,6 +394,6 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
         items: gridFlags
     });
 
-    panelMapa.add(tab);
-    panelMapa.setActiveTab(tab);
+    panelTabMapaAdmin.add(tab);
+    panelTabMapaAdmin.setActiveTab(tab);
 }

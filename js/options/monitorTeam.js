@@ -19,7 +19,7 @@ Ext.require([
 
 var refresh = false;
 var timeRefresh = 15;
-
+var bandera=false;
 Ext.onReady(function() {
 
     Ext.tip.QuickTipManager.init();
@@ -72,8 +72,8 @@ Ext.onReady(function() {
                 root: 'stateEqp'
             }
         },
-        fields: ['empresa', 'idEquipo', 'vehiculo', 'fhCon', 'fhDes', 'tmpcon', 'tmpdes', 'bateria', 'estado',
-            {name: 'fechaEstado', type: 'string'}, 'gsm', 'gps2', 'vel', 'ign', 'taximetro', 'panico']/*,
+        fields: ['empresa', 'idEquipo', 'vehiculo', 'fhCon', 'fhDes', 'tmpcon', 'tmpdes', 'bateria', 'comentario',
+            'fechaEstado', 'gsm', 'gps2', 'vel', 'ign', 'taximetro', 'panico',{name: 'equipo', type: 'string'}]/*,
         groupField: 'empresa'*/
     });
 
@@ -139,13 +139,8 @@ Ext.onReady(function() {
         store: storeStateEqp,
         iconCls: 'icon-skp',
         columnLines: true,
-        features: [/*{
-                id: 'group-skp',
-                ftype: 'groupingsummary',
-                groupHeaderTpl: '{name}',
-                hideGroupedHeader: true,
-                enableGroupingMenu: false
-            },*/ filters],
+        multiSelect: true,
+        features: [filters],
         viewConfig: {
             emptyText: '<center>No hay datos que Mostrar</center>',
             loadMask: false,
@@ -167,14 +162,15 @@ Ext.onReady(function() {
             {text: '<b>GPS</b>', width: 65, dataIndex: 'gps2', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
             {text: '<b>Vel (Km/h)</b>', dataIndex: 'vel', align: 'center', width: 100, renderer: formatSpeed, filter: {type: 'numeric'}},
             {text: '<b>Activo</b>', width: 65, dataIndex: 'activo', renderer: formatLock, align: 'center'},
-//            {text: '<b>Taxímetro</b>', width: 100, dataIndex: 'taximetro', renderer: formatStateTaxy, align: 'center', filterable: true},
+            {text: '<b>Comentario</b>', width: 100, dataIndex: 'comentario', align: 'center', filterable: true},
             {text: '<b>Pánico</b>', width: 100, dataIndex: 'panico', renderer: formatPanic, align: 'center', filterable: true},
-            {text: '<b>Fecha Estado</b>', width: 150, dataIndex: 'fechaEstado', align: 'center'}
+            {text: '<b>Fecha Comentario</b>', width: 150, dataIndex: 'fechaEstado', align: 'center'}
         ],
         listeners: {
             itemclick: function(thisObj, record, item, index, e, eOpts) {
-                panelEste.down('[name=equipo]').setValue(record.data.idEquipo);
-                panelEste.down('[name=estado]').setValue(record.data.estado);
+                bandera=true;
+                panelEste.down('[name=equipo]').setValue(record.data.equipo);
+                panelEste.down('[name=comentario]').setValue(record.data.comentario);
                 panelEste.down('[name=date]').setValue(record.data.fechaEstado);
             }
         }
@@ -216,6 +212,7 @@ Ext.onReady(function() {
         ],
         listeners: {
             itemclick: function(thisObj, record, item, index, e, eOpts) {
+                bandera=true;
                 panelEste.down('[name=equipo]').setValue(record.data.idEquipo);
                 panelEste.down('[name=estado]').setValue(record.data.estado);
                 panelEste.down('[name=date]').setValue(record.data.fechaEstado);
@@ -242,9 +239,9 @@ Ext.onReady(function() {
                     width: 300
                 },
                 items: [
-                    {xtype: 'textfield', fieldLabel: '<b>Equipo</b>', name: 'equipo', allowBlank: false},
-                    {xtype: 'textarea', fieldLabel: '<b>Estado</b>', name: 'estado'},
-                    {xtype: 'datefield', fieldLabel: '<b>Fecha</b>', name: 'date', format: 'Y-m-d'}
+                    {xtype: 'textfield', fieldLabel: '<b>Equipo</b>', name: 'equipo', editable: false},
+                    {xtype: 'textarea', fieldLabel: '<b>Comnetario</b>', name: 'comentario'},
+                    {xtype: 'textfield', fieldLabel: '<b>Fecha</b>', name: 'date',editable: false}
                 ],
                 dockedItems: [{
                         xtype: 'toolbar',
@@ -254,14 +251,15 @@ Ext.onReady(function() {
                                 text: 'Vitacora',
                                 iconCls: 'icon-vita-eqp',
                                 handler: function() {
-                                    var form = this.up('form').getForm();
-                                    window.loadTask.delay(500, function() {
+                                     var form = this.up('form').getForm();
+                                    if(bandera){
+                                        bandera=false;
                                         if (form.isValid()) {
                                             form.submit({
                                                 url: 'php/interface/monitoring/getVitacoraEqp.php',
                                                 failure: function(form, action) {
                                                     Ext.MessageBox.show({
-                                                        title: 'Error...',
+                                                        title: 'Atencion...',
                                                         msg: action.result.msg,
                                                         buttons: Ext.MessageBox.OK,
                                                         icon: Ext.MessageBox.ERROR
@@ -304,7 +302,19 @@ Ext.onReady(function() {
                                                 }
                                             });
                                         }
-                                    });
+                                        
+                                    }else{
+                                         Ext.MessageBox.show({
+                                                        title: 'Atencion...',
+                                                        msg: 'Debe elegir una Fila',
+                                                        buttons: Ext.MessageBox.OK,
+                                                        icon: 'icon-cancelar'
+                                                    });
+                                        
+                                    }
+                                   
+                                        
+                                    ;
                                 }
                             }, '->', {
                                 iconCls: 'icon-skp',
@@ -432,13 +442,13 @@ Ext.onReady(function() {
                                         }
                                     });
                                 }
-                            }, '-', {
+                            }, '-', 
+                            {
                                 text: '<b>Asignar</b>',
                                 tooltip: '<b>Asignar Estado</b>',
                                 iconCls: 'icon-check',
                                 handler: function() {
                                     var form = this.up('form').getForm();
-                                    window.loadTask.delay(500, function() {
                                         if (form.isValid()) {
                                             form.submit({
                                                 url: 'php/interface/monitoring/setState.php',
@@ -459,7 +469,7 @@ Ext.onReady(function() {
                                                 }
                                             });
                                         }
-                                    });
+                                    
                                 }
                             }]
                     }]
