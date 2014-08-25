@@ -454,6 +454,9 @@ Ext.onReady(function() {
                                     ventanaBanderas();
                                 }}
                             ,
+                            {text: 'Consume de Combustible', iconCls: 'icon-flota', handler: function() {
+                                    ventanaConsumoCombustibles();
+                                }},
                              {text: 'Reporte de Paradas', iconCls: 'icon-unlock', handler: function() {
                                     showWinPradas();
                                 }},
@@ -814,7 +817,8 @@ Ext.onReady(function() {
         frame: true,
         deferreRender: false,
         activeTab: 0,
-        items: [{
+        items: [
+            {
                 title: 'Mapa',
                 id: 'panelMapaTab',
                 iconCls: 'icon-mapa',

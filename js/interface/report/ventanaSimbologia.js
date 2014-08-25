@@ -79,6 +79,7 @@ function ventanaSimbologia() {
             listeners : {
                 close : function(panel, eOpts) {
                     limpiar_datosSim();
+                    contenedorWinSim.getForm().reset();
                 }
             }
         });

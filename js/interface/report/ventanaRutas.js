@@ -200,12 +200,10 @@ Ext.onReady(function() {
                             success: function(form, action) {
                                 Ext.MessageBox.hide();
                                 var resultado = Ext.JSON.decode(action.response.responseText);
-
                                 limpiarCapasHistorico();
                                 dibujarTrazadoHistorico(resultado.datos.coordenadas);
                                 lienzosRecorridoHistorico(cbxBusesBD.getValue(), resultado.datos.coordenadas);
                                 cargarTablaHistorico();
-
                                 limpiar_datos();
                             }
                         });

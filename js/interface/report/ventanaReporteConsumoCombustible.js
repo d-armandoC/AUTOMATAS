@@ -1,9 +1,9 @@
-var contenedorWinBan;
-var winBan;
+var contenedorVentanaConsCombus;
+var VentanaCombustibles;
 
 Ext.onReady(function() {
 
-    var cbxEmpresasBD = Ext.create('Ext.form.ComboBox', {
+    var cbxEmpresasCombustibles = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Cooperativa:',
         name: 'cbxEmpresas',
         store: storeEmpresas,
@@ -15,8 +15,8 @@ Ext.onReady(function() {
         allowBlank: false,
         listeners: {
             select: function(combo, records, eOpts) {
-                cbxVehBD.enable();
-                cbxVehBD.clearValue();
+                cbxVehuclosCombustibles.enable();
+                cbxVehuclosCombustibles.clearValue();
 
                 storeVeh.load({
                     params: {
@@ -27,7 +27,7 @@ Ext.onReady(function() {
         }
     });
 
-    var cbxVehBD = Ext.create('Ext.form.ComboBox', {
+    var cbxVehuclosCombustibles = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Vehículos',
         name: 'cbxVeh',
         store: storeVeh,
@@ -43,7 +43,7 @@ Ext.onReady(function() {
         }
     });
 
-    var dateIni = Ext.create('Ext.form.field.Date', {
+    var fechaInicioCombst = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
         id: 'fechaIniBan',
@@ -57,7 +57,7 @@ Ext.onReady(function() {
         }
     });
 
-    var dateFin = Ext.create('Ext.form.field.Date', {
+    var fechaFinCombust = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Hasta el',
         format: 'Y-m-d',
         id: 'fechaFinBan',
@@ -68,7 +68,7 @@ Ext.onReady(function() {
         emptyText: 'Fecha Final...'
     });
 
-    var timeIni = Ext.create('Ext.form.field.Time', {
+    var horaInicialCombus = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
         name: 'horaIni',
         format: 'H:i',
@@ -76,7 +76,7 @@ Ext.onReady(function() {
         emptyText: 'Hora Inicial...'
     });
 
-    var timeFin = Ext.create('Ext.form.field.Time', {
+    var horaFinCombus = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Hasta las',
         name: 'horaFin',
         format: 'H:i',
@@ -84,21 +84,21 @@ Ext.onReady(function() {
         emptyText: 'Hora Final...'
     });
 
-    var today = Ext.create('Ext.button.Button', {
+    var hoyCombs = Ext.create('Ext.button.Button', {
         text: 'Hoy',
         iconCls: 'icon-today',
         handler: function() {
             var nowDate = new Date();
 
             dateIni.setValue(formatoFecha(nowDate));
-            dateFin.setValue(formatoFecha(nowDate));
+            fechaFinCombust.setValue(formatoFecha(nowDate));
 
-            timeIni.setValue('00:01');
-            timeFin.setValue('23:59');
+            horaInicialCombus.setValue('00:01');
+            horaFinCombus.setValue('23:59');
         }
     });
 
-    var yesterday = Ext.create('Ext.button.Button', {
+    var hayerCombs = Ext.create('Ext.button.Button', {
         text: 'Ayer',
         iconCls: 'icon-yesterday',
         handler: function() {
@@ -115,28 +115,28 @@ Ext.onReady(function() {
             nowDate.setMinutes(nowDate.getMinutes() + 10);
 
             dateIni.setValue(año + "-" + mes + "-" + dia);
-            dateFin.setValue(año + "-" + mes + "-" + dia);
+            fechaFinCombust.setValue(año + "-" + mes + "-" + dia);
 
-            timeIni.setValue('00:01');
-            timeFin.setValue('23:59');
+            horaInicialCombus.setValue('00:01');
+            horaFinCombus.setValue('23:59');
         }
     });
 
-    var panelBotones = Ext.create('Ext.form.Panel', {
+    var panelBotonesCombs = Ext.create('Ext.form.Panel', {
         layout: 'column',
         baseCls: 'x-plain',
         items: [{
                 baseCls: 'x-plain',
                 bodyStyle: 'padding:0 5px 0 0',
-                items: [today]
+                items: [hoyCombs]
             }, {
                 baseCls: 'x-plain',
                 bodyStyle: 'padding:0 5px 0 0',
-                items: [yesterday]
+                items: [hayerCombs]
             }]
     });
 
-    contenedorWinBan = Ext.create('Ext.form.Panel', {
+    contenedorVentanaConsCombus = Ext.create('Ext.form.Panel', {
          frame: false,
         padding: '5 5 5 5',
         fieldDefaults: {
@@ -151,21 +151,21 @@ Ext.onReady(function() {
                         columnWidth: .5,
                         baseCls: 'x-plain',
                         items: [
-                            cbxEmpresasBD,
-                            dateIni,
-                            timeIni
+                            cbxEmpresasCombustibles,
+                            fechaInicioCombst,
+                            horaInicialCombus
                         ]
                     }, {
                         columnWidth: .5,
                         baseCls: 'x-plain',
                         items: [
-                            cbxVehBD,
-                            dateFin,
-                            timeFin
+                            cbxVehuclosCombustibles,
+                            fechaFinCombust,
+                            horaFinCombus
                         ]
                     }]
             },
-            panelBotones, {
+            panelBotonesCombs, {
                 xtype: 'fieldset',
                 title: 'Opciones de Reporte',
                 collapsible: true,
@@ -179,11 +179,11 @@ Ext.onReady(function() {
                         items: [{
                                 checked: true,
                                 boxLabel: 'Trazar Ruta',
-                                name: 'trazar_ruta',
+                                name: 'trazar_ruta_combustible',
                                 inputValue: 'trazar'
                             }, {
                                 boxLabel: 'Reporte Ruta',
-                                name: 'reporte_ruta',
+                                name: 'reporte_ruta_combustible',
                                 inputValue: 'reporte'
                             }]
                     }]
@@ -197,17 +197,17 @@ Ext.onReady(function() {
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
                 handler: function() {
-                    if (contenedorWinBan.getForm().isValid()) {
-                        var trazar_ruta = this.up('form').down('[name=trazar_ruta]').getValue();
-                        var reporte_ruta = this.up('form').down('[name=reporte_ruta]').getValue();
+                    if (contenedorVentanaConsCombus.getForm().isValid()) {
+                        var trazar_ruta = this.up('form').down('[name=trazar_ruta_combustible]').getValue();
+                        var reporte_ruta = this.up('form').down('[name=reporte_ruta_combustible]').getValue();
                         if (trazar_ruta || reporte_ruta) {
 
-                            contenedorWinBan.getForm().submit({
+                            contenedorVentanaConsCombus.getForm().submit({
                                 url: 'php/interface/report/getDataFlags.php',
                                 method: 'POST',
                                 waitMsg: 'Comprobando Datos...',
                                 params: {
-                                    nameVeh: cbxVehBD.getRawValue()
+                                    nameVeh: cbxVehuclosCombustibles.getRawValue()
                                 },
                                 failure: function(form, action) {
                                     switch (action.failureType) {
@@ -226,29 +226,28 @@ Ext.onReady(function() {
                                     var resultado = action.result;
                                     if (trazar_ruta) {
                                         clearLienzoTravel();
-                                        drawPointsRoute(resultado.puntos, "Puntos");
                                         drawRutaMapa(resultado.puntos);
-                                        
-                                        
+                                        drawPointsRoute(resultado.puntos, "Puntos");
+                                        obtenergastoPorGalones(resultado.puntos);
                                        // limpiarCapasHistorico();
-                                        //dibujarTrazadoHistorico(resultado.puntos);
-                                       // lienzosRecorridoHistorico(cbxVehBD.getValue(), resultado.puntos);
+                                       // dibujarTrazadoHistorico(resultado.puntos);
+                                       //lienzosRecorridoHistorico(cbxVehBD.getValue(), resultado.puntos);
                                     }
 
                                     if (reporte_ruta) {
                                         loadGridFlags(
                                                 resultado.puntos,
-                                                cbxEmpresasBD.getValue(),
-                                                cbxVehBD.getValue(),
-                                                formatoFecha(dateIni.getValue()),
-                                                formatoFecha(dateFin.getValue()),
-                                                formatoHora(timeIni.getValue()),
-                                                formatoHora(timeFin.getValue()),
-                                                cbxVehBD.getRawValue()
+                                                cbxEmpresasCombustibles.getValue(),
+                                                cbxVehuclosCombustibles.getValue(),
+                                                formatoFecha(fechaInicioCombst.getValue()),
+                                                formatoFecha(fechaFinCombust.getValue()),
+                                                formatoHora(horaInicialCombus.getValue()),
+                                                formatoHora(horaFinCombus.getValue()),
+                                                cbxVehuclosCombustibles.getRawValue()
                                                 );
                                     }
 
-                                    winBan.hide();
+                                    VentanaCombustibles.hide();
                                 }
                             });
                         } else {
@@ -265,40 +264,40 @@ Ext.onReady(function() {
                 text: 'Cancelar',
                 iconCls: 'icon-cancelar',
                 handler: function() {
-                    winBan.hide();
+                    VentanaCombustibles.hide();
                 }
             }]
     });
 });
 
-function ventanaBanderas() {
-    if (!winBan) {
-        winBan = Ext.create('Ext.window.Window', {
+function ventanaConsumoCombustibles() {
+    if (!VentanaCombustibles) {
+        VentanaCombustibles = Ext.create('Ext.window.Window', {
             layout: 'fit',
-            title: 'Todas las Banderas',
-            iconCls: 'icon-all-flags',
+            title: 'Consumo de Combustible',
+            iconCls: 'icon-flota',
             resizable: false,
                 width: 560,
             height: 300,
             closeAction: 'hide',
             plain: false,
-            items: [contenedorWinBan]
+            items: [contenedorVentanaConsCombus]
         });
     }
-    contenedorWinBan.getForm().reset();
-    contenedorWinBan.down('[name=cbxVeh]').disable();
+    contenedorVentanaConsCombus.getForm().reset();
+    contenedorVentanaConsCombus.down('[name=cbxVeh]').disable();
 
     var nowDate = new Date();
-    contenedorWinBan.down('[name=fechaIni]').setValue(formatoFecha(nowDate));
-    contenedorWinBan.down('[name=fechaFin]').setValue(formatoFecha(nowDate));
-    contenedorWinBan.down('[name=horaIni]').setValue('00:01');
-    contenedorWinBan.down('[name=horaFin]').setValue('23:59');
+    contenedorVentanaConsCombus.down('[name=fechaIni]').setValue(formatoFecha(nowDate));
+    contenedorVentanaConsCombus.down('[name=fechaFin]').setValue(formatoFecha(nowDate));
+    contenedorVentanaConsCombus.down('[name=horaIni]').setValue('00:01');
+    contenedorVentanaConsCombus.down('[name=horaFin]').setValue('23:59');
 
-    winBan.show();
+    VentanaCombustibles.show();
 }
 
 function ventanaBanderasClick(coop, eqp) {
-    ventanaBanderas();
+    ventanaConsumoCombustibles();
     storeEmpresas.load({
         params: {
             idEmpresa: coop,
@@ -306,8 +305,8 @@ function ventanaBanderasClick(coop, eqp) {
         }
     });
 
-    contenedorWinBan.down('[name=cbxEmpresas]').setValue(coop);
-    contenedorWinBan.down('[name=cbxVeh]').enable();
+    contenedorVentanaConsCombus.down('[name=cbxEmpresas]').setValue(coop);
+    contenedorVentanaConsCombus.down('[name=cbxVeh]').enable();
 
     storeVeh.load({
         params: {
@@ -315,7 +314,7 @@ function ventanaBanderasClick(coop, eqp) {
         }
     });
 
-    contenedorWinBan.down('[name=cbxVeh]').setValue(eqp);
+    contenedorVentanaConsCombus.down('[name=cbxVeh]').setValue(eqp);
 }
 ;
 
@@ -368,8 +367,8 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
 
     var gridFlags = Ext.create('Ext.grid.Panel', {
         region: 'center',
-        title: '<center>Recorridos Historico: ' + vehiculo + '<br>Desde: '+fi+' '+hi+' | Hasta: '+ff+' '+hf+'</center>',
-        store: storeFlags,
+        title: '<center>Combustible:</center>',
+//        store: storeFlags,
         columnLines: true,
          autoScroll: true,
         height: 435,
@@ -386,15 +385,52 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
             }
         }
     });
+    var hol='que tal';
+    var hol1='que tal';
+    
+             var contenedorWi = Ext.create('Ext.form.Panel', {
+                frame: true,                
+                bodyStyle:'padding:5px 5px 5px',
+                autoScroll:true,                                
+                items: [{
+                    html : '<TABLE id="tablestados">'+
+                '<TR class="alt"> ' +
+                '   <TD> <IMG SRC="img/inicio.png"></TD> ' +
+                '   <TD align="CENTER">'+hol+'</TD> ' +'<TD align="CENTER">'+hol+'</TD> '+
+                '</TR> ' +
 
+                '<TR> ' +
+                '   <TD> <IMG SRC="img/fin.png"></TD> ' +
+                '   <TD align="CENTER">'+hol1+'</TD> ' +' <TD align="CENTER">'+hol1+'</TD> ' +
+                '</TR> ' +
+            ' </TABLE>'                    
+                }]     
+            });
+  
     var tab = Ext.create('Ext.container.Container', {
-        title: 'Reporte General '+idEmp+'-'+idEqp,
-        closable: true,
-        iconCls: 'icon-all-flags',
+        title: 'Reporte de Excesos de Velocidad',
+        fullscreen: true,
         layout: 'border',
-        items: gridFlags
+        margin: '3 3 3 3',
+        frame: true,
+        iconCls: 'icon-reset',
+        items: [   {
+                id: 'panel-map',
+                name: 'map',
+                layout: 'border',
+                region: 'center',
+                title: 'Mapa',
+                iconCls: 'icon-map',
+                html: '<div id="map"></div>'
+            },contenedorWi]
     });
 
     panelTabMapaAdmin.add(tab);
     panelTabMapaAdmin.setActiveTab(tab);
+   
+     
+            
+        
+  
 }
+

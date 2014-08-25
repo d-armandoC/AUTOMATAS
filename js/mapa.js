@@ -72,7 +72,7 @@ function loadMap() {
 //                }
             }
             );
-    
+
             var styleVehicle = new OpenLayers.StyleMap({
                 externalGraphic: "${iconLast}",
                 graphicWidth: 16,
@@ -886,10 +886,11 @@ function drawLineRoute(json, idRuta) {
 }
 ////////////////
 function drawRutaMapa(json) {
+    iconosInicioFin(json);
     var puntosRec = new Array();
     for (var i = 0; i < json.length; i++) {
         var dataRec = json[i];
-        var pt= new OpenLayers.Geometry.Point(dataRec.longitud, dataRec.latitud);
+        var pt = new OpenLayers.Geometry.Point(dataRec.longitud, dataRec.latitud);
         pt.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
         puntosRec.push(pt);
     }
@@ -923,7 +924,7 @@ function drawRutaMapa(json) {
 
 function drawLineTravel(json, isSkp) {
 
-    
+
     var puntosRec = new Array();
     for (var i = 0; i < json.length; i++) {
         var dataRec = json[i];
@@ -1006,15 +1007,15 @@ function drawLineRouteManual(json) {
 }
 
 function drawPointsRoute(coordPuntos, idRuta) {
+    
     var features = new Array();
-    var i=0 ;
-    for ( i = 0; i < coordPuntos.length; i++) {
+    var i = 1;
+    for (i = 1; i < coordPuntos.length; i++) {
         var dataRuta = coordPuntos[i];
-         
+
         var pt = new OpenLayers.Geometry.Point(dataRuta.longitud, dataRuta.latitud);
         pt.transform(new OpenLayers.Projection("EPSG:4326"),
                 new OpenLayers.Projection("EPSG:900913"));
-         console.log(dataRuta);
         var puntoMap = new OpenLayers.Feature.Vector(pt, {
             idTravel: i,
             empresa: dataRuta.company,
@@ -1022,15 +1023,15 @@ function drawPointsRoute(coordPuntos, idRuta) {
             velocidad: dataRuta.velocidad,
             latitud: dataRuta.latitud,
             longitud: dataRuta.longitud,
-            evenvto:dataRuta.evento,
+            evenvto: dataRuta.evento,
             color: dataRuta.color,
             poppedup: false
         });
-        puntoMap.id = 'route'+i;
+        puntoMap.id = 'route' + i;
 
         features.push(puntoMap);
     }
-    
+
     lienzoPointRoute.addFeatures(features);
 //    for (var i = 0; i < showRouteMap.length; i++) {
 //        if (showRouteMap[i][0] === idRuta) {
@@ -1038,6 +1039,41 @@ function drawPointsRoute(coordPuntos, idRuta) {
 //        }
 //    }
 }
+
+function iconosInicioFin(json) {
+    //punto Inicial y Final
+    var size = new OpenLayers.Size(32, 32);
+    var iconIni = new OpenLayers.Icon(
+            'img/inicio.png',
+            size, null, 0);
+
+    var iconFin = new OpenLayers.Icon(
+            'img/fin.png',
+            size, null, 0);
+
+    markerInicioFin.clearMarkers();
+
+    var filIni = json[0];
+
+    var pInicio = new OpenLayers.LonLat(filIni.longitud, filIni.latitud);
+    pInicio.transform(new OpenLayers.Projection("EPSG:4326"),
+            new OpenLayers.Projection("EPSG:900913"));
+
+    centrarMapa(pInicio.lon, pInicio.lat, 13);
+
+    markerInicioFin.addMarker(new OpenLayers.Marker(pInicio, iconIni));
+
+    var filFin = json[json.length - 1];
+
+    var pFin = new OpenLayers.LonLat(filFin.longitud, filFin.latitud);
+    pFin.transform(new OpenLayers.Projection("EPSG:4326"),
+            new OpenLayers.Projection("EPSG:900913"));
+
+    markerInicioFin.addMarker(new OpenLayers.Marker(pFin, iconFin));
+}
+
+
+
 
 function drawPointsTravel(coordPuntos, isSkp) {
 
