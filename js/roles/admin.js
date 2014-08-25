@@ -454,9 +454,9 @@ Ext.onReady(function() {
                                     ventanaBanderas();
                                 }}
                             ,
-                            {text: 'Consume de Combustible', iconCls: 'icon-flota', handler: function() {
-                                    ventanaConsumoCombustibles();
-                                }},
+//                            {text: 'Consume de Combustible', iconCls: 'icon-flota', handler: function() {
+//                                   // ventanaConsumoCombustibles();
+//                                }},
                              {text: 'Reporte de Paradas', iconCls: 'icon-unlock', handler: function() {
                                     showWinPradas();
                                 }},
@@ -823,7 +823,8 @@ Ext.onReady(function() {
                 id: 'panelMapaTab',
                 iconCls: 'icon-mapa',
                 html: '<div id="map"></div>'
-            }]
+            }
+        ]
     });
 
     storeEventos = Ext.create('Ext.data.JsonStore', {

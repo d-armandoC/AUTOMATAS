@@ -1,6 +1,42 @@
+
 Ext.Loader.setConfig({
     enabled: true
 });
+var refresh = false;
+var timeRefresh = 15;
+var bandera=false;
+var labelDatos = Ext.create('Ext.form.Label', {
+    text: 'DATOS:',
+    style: {
+        color: '#000000',
+    }
+});
+var labelRegistro = Ext.create('Ext.form.Label', {
+    text: '',
+    style: {
+        color: 'black'
+    }
+});
+var labelEquipo = Ext.create('Ext.form.Label', {
+    text: '',
+    style: {
+        color: 'black'
+    }
+});
+var labelFecha = Ext.create('Ext.form.Label', {
+    text: '',
+    style: {
+        color: 'black'
+    }
+});
+var labelUsuario = Ext.create('Ext.form.Label', {
+    text: '',
+    margin: '0 0 8 0',
+    style: {
+        color: 'black'
+    }
+});
+var winReporte;
 Ext.Loader.setPath('Ext.ux', 'extjs-docs-5.0.0/extjs-build/build/examples/ux');
 Ext.require([
     'Ext.grid.*',
@@ -14,16 +50,863 @@ Ext.require([
     'Ext.ux.ajax.SimManager',
     'Ext.ux.grid.FiltersFeature',
     'Ext.selection.CellModel',
-    'Ext.ux.CheckColumn'
+    'Ext.ux.CheckColumn',
+    'Ext.ToolTip',
+    'Ext.Component'
 ]);
-
+var cantidadMegas;
+var tabla = '';
+var mensajeTabla = '';
+var cantidadPrecio;
+var storeStateEqp;
+var storeStateEqpUdp;
+var idEquipo;
+var idEquipo1;
+var IdVehiculo;
+var estadoVeh = '';
+var estadoEqui = '';
+var val = 1;
+var mensaje = '';
+var mensajeEqui = '';
+var fechaV = '';
+var fechaE = '';
+var usuarioV = '';
+var usuarioE = '';
+var gridStateEqpSKP;
+var gridStateEqpSKPPasivos;
+Ext.Loader.setConfig({
+    enabled: true
+});
+var storeDataInvalid;
 var refresh = false;
 var timeRefresh = 15;
-var bandera=false;
+var equipo;
+var estado;
+var fechaEstado;
+var panelOeste;
+var panelMapa;
+var tabPanelReports;
 Ext.onReady(function() {
+    Ext.apply(Ext.form.field.VTypes, {
+        campos: function(val, field) {
+            if (!/^[-0-9.A-Z.a-z.áéíóúñÑÁÉÍÓÚ\s*]{3,250}$/.test(val)) {
+                return  false;
+            }
+            return true;
+        },
+        camposText: 'Solo carateres alfa numéricos',
+    });
+    var filters = {
+        ftype: 'filters',
+        // encode and local configuration options defined previously for easier reuse
+        encode: false, // json encode the filter query
+        local: true, // defaults to false (remote filtering)
 
-    Ext.tip.QuickTipManager.init();
+        // Filters are most naturally placed in the column definition, but can also be
+        // added here.
+        filters: [{
+                type: 'boolean',
+                dataIndex: 'visible'
+            }]
+    };
+    var storeStateEqp = Ext.create('Ext.data.JsonStore', {
+        autoDestroy: true,
+        autoLoad: true,
+        proxy: {
+            type: 'ajax',
+            url: 'php/interface/monitoring/getStateEqp.php',
+            reader: {
+                type: 'json',
+                root: 'stateEqp'
+            }
+        },
+        fields: ['activo', 'id_vehiculo', 'empresa', 'idEquipo', 'vehiculo', 'fhCon', 'fhDes', 'tmpcon', 'tmpdes', 'bateria', 'comentario',
+            'fechaEstado', 'gsm', 'gps2', 'vel', 'ign', 'taximetro', 'panico', {name: 'equipo', type: 'string'}, 'estadoE', 'estadoV', 'fecha_hora_estadoE', 'fecha_hora_estadoV']/*,
+             groupField: 'empresa'*/
+    });
+    //para pasivos
+    //
+    var storeStateEqpPasivos = Ext.create('Ext.data.JsonStore', {
+        autoDestroy: true,
+        autoLoad: true,
+        proxy: {
+            type: 'ajax',
+            url: 'php/interface/monitoring/getStateEqpPasivos.php',
+            reader: {
+                type: 'json',
+                root: 'stateEqpPasivos'
+            }
+        },
+        fields: ['activo', 'id_vehiculo', 'empresa', 'idEquipo', 'vehiculo', 'fhCon', 'fhDes', 'tmpcon', 'tmpdes', 'bateria', 'comentario',
+            'fechaEstado', 'gsm', 'gps2', 'vel', 'ign', 'taximetro', 'panico', {name: 'equipo', type: 'string'}, 'estadoE', 'estadoV', 'fecha_hora_estadoE', 'fecha_hora_estadoV']/*,
+             groupField: 'empresa'*/
+    });
 
+//    storeStateEqpUdp = Ext.create('Ext.data.JsonStore', {
+//        //autoDestroy : true,
+//        autoLoad: true,
+//        proxy: {
+//            type: 'ajax',
+//            url: 'php/gui/monitoreo/getStateEqpUdp.php',
+//            reader: {
+//                type: 'json',
+//                root: 'stateUdp'
+//            },
+//        },
+//        fields: ['id_equipo', 'id_vehiculo', 'reg_municipal', 'estadoE', 'estadoV', 'fecha_hora_estadoE', 'fecha_hora_estadoV', 'empresaUdp', 'equipoUdp', 'fecha_hora_ult_datoUdp', 'tmpdes', 'encabezadoUdp', 'rutaEqpUdp', 'puntoEqpUdp', 'estadoUdp', 'displayUdp', 'estadoMecanicoUdp', 'stadoUdp', 'latitudUdp', 'longitudUdp', 'velocidadUdp']
+//    });
+//
+
+    storeDataInvalid = Ext.create('Ext.data.JsonStore', {
+        //autoDestroy : true,
+        autoLoad: true,
+        proxy: {
+            type: 'ajax',
+            url: 'php/interface/monitoring/getDataInvalid.php',
+            reader: {
+                type: 'json',
+                root: 'dataInvalid'
+            }
+        },
+        fields: ['descripcionDI', 'fecha_hora_regDI', 'equipoDI', 'megasDI', 'precioDI', 'tramaDI', 'excepcionDI']
+//
+        , listeners: {///El Load  Obtiene los datos en arreglo 
+            load: function(thisObj, records, successful, eOpts) {
+//                console.log(records);
+                var cantidadMegas = 0;
+                var cantidadPrecio = 0;
+                for (var i = 0; i < records.length; i++) {
+                    cantidadMegas = cantidadMegas + records[i].data.megasDI;
+                    cantidadPrecio = cantidadPrecio + records[i].data.precioDI;
+//                    console.log(records.data.megasDI);
+                }
+
+
+                Ext.getCmp('form-info').setTitle('Datos Inválidos de Equipos:  ' + cantidadMegas.toFixed(4) + ' Mb');
+            }
+
+        }
+    });
+    var storeCantEqp = Ext.create('Ext.data.JsonStore', {
+        autoDestroy: true,
+        autoLoad: true,
+        proxy: {
+            type: 'ajax',
+            url: 'php/interface/monitoring/getCantEqp.php',
+            reader: {
+                type: 'json',
+                root: 'cantEqp'
+            },
+        },
+        fields: ['conect', 'desco', 'total', 'empresa']
+    });
+//    var storeCantUdp = Ext.create('Ext.data.JsonStore', {
+//        autoDestroy: true,
+//        autoLoad: true,
+//        proxy: {
+//            type: 'ajax',
+//            url: 'php/gui/monitoreo/getCantUdp.php',
+//            reader: {
+//                type: 'json',
+//                root: 'cantUdp'
+//            },
+//        },
+//        fields: ['conect', 'desco', 'total', 'empresa']
+//    });
+//
+
+    var storeUserConect = Ext.create('Ext.data.JsonStore', {
+        autoDestroy: true,
+        autoLoad: true,
+        proxy: {
+            type: 'ajax',
+            url: 'php/interface/monitoring/getUserConect.php',
+            reader: {
+                type: 'json',
+                root: 'userConect'
+            }
+        },
+        fields: ['usuarioConect', 'rolConect', 'empresaConect', 'fechaHoraConect', 'conectadoConect', 'ipConect', 'longitudConect', 'latitudConect'
+        ]
+    });
+//    var storeVeh = Ext.create('Ext.data.JsonStore', {
+//        autoDestroy: true,
+//        proxy: {
+//            type: 'ajax',
+//            url: 'php/gui/combobox/comboBusesOutReten.php',
+//            reader: {
+//                type: 'json',
+//                root: 'buses'
+//            }
+//        },
+//        fields: [{name: 'value', mapping: 'id'}, {name: 'text', mapping: 'nombre'}]
+//    });
+//    var storeVehReten = Ext.create('Ext.data.JsonStore', {
+//        autoDestroy: true,
+//        autoLoad: true,
+//        proxy: {
+//            type: 'ajax',
+//            url: 'php/gui/combobox/comboBusesInReten.php',
+//            reader: {
+//                type: 'json',
+//                root: 'buses'
+//            }
+//        },
+//        fields: ['empresaReten', 'regReten', 'equipoReten', 'fechaEntrada', 'fechaSalida']
+//    });
+
+    var ActionVista = Ext.create('Ext.Action', {
+        iconCls: 'icon-info', // Use a URL in the icon config
+        text: 'Mostrar Información',
+        disabled: false,
+        handler: function(widget, event) {
+            var rec = gridStateEqpSKP.getSelectionModel().getSelection()[0];
+            if (rec) {
+                winReporte.show();
+            } else {
+                var rec = gridStateEqpSKPPasivosP.getSelectionModel().getSelection()[0];
+                winReporte.show();
+            }
+        }
+    });
+    var contextMenu = Ext.create('Ext.menu.Menu', {
+        items: [
+            ActionVista
+        ]
+    });
+    gridStateEqpSKP = Ext.create('Ext.grid.Panel', {
+        region: 'center',
+        title: '<b>Estado de Equipos</b>',
+        store: storeStateEqp,
+        iconCls: 'icon-skp',
+        columnLines: true,
+        multiSelect: true,
+        features: [filters],
+        viewConfig: {
+            emptyText: '<center>No hay datos que Mostrar</center>',
+            loadMask: false,
+            preserveScrollOnRefresh: true,
+            listeners: {
+                itemcontextmenu: function(view, rec, node, index, e) {
+                    e.stopEvent();
+                    contextMenu.showAt(e.getXY());
+                    return false;
+                }
+            }
+        },
+        tools: [{
+                type: 'refresh',
+                tooltip: 'Refrescar Datos',
+                handler: function(event, toolEl, panelHeader) {
+                    storeStateEqp.reload();
+                }
+            }],
+        columns: [
+            Ext.create('Ext.grid.RowNumberer', {text: '<b>Nº</b>', width: 35, align: 'center'}),
+//            {text: '<b>Empresa</b>', width: 100, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}, align: 'center'},
+            {text: '<b>Equipo</b>', width: 65, dataIndex: 'equipo', filter: {type: 'string'}, align: 'center'},
+            {text: '<b>Vehículo</b>', width: 95, dataIndex: 'vehiculo', align: 'center'},
+            {text: '<b>Fecha Conexión</b>', width: 140, dataIndex: 'fhCon', align: 'center'},
+            {text: '<b>Fecha Ult Trama</b>', width: 140, dataIndex: 'fhDes', align: 'center'},
+            {text: '<b>Tmp Conex.</b>', width: 95, dataIndex: 'tmpcon', align: 'center', filter: {type: 'numeric'}},
+            {text: '<b>Estado</b>', width: 100, dataIndex: 'tmpdes', renderer: formatStateConect, align: 'center'},
+            {text: '<b>Tmp Desc.</b>', width: 85, dataIndex: 'tmpdes', align: 'center', renderer: formatTmpDes, filter: {type: 'numeric'}},
+            {text: '<b>Bateria</b>', width: 75, dataIndex: 'bateria', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
+            {text: '<b>IGN</b>', width: 65, dataIndex: 'ign', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
+            {text: '<b>GSM</b>', width: 65, dataIndex: 'gsm', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
+            {text: '<b>GPS</b>', width: 65, dataIndex: 'gps2', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
+            {text: '<b>Velocidad (Km/h)</b>', dataIndex: 'vel', align: 'center', width: 100, renderer: formatSpeed, filter: {type: 'numeric'}},
+            {text: '<b>Activo</b>', width: 65, dataIndex: 'activo', renderer: formatLock, align: 'center'},
+            {text: '<b>Comentario Vehículo</b>', width: 100, dataIndex: 'comentarioV', align: 'center', filterable: true},
+            {text: '<b>Comentario Equipo</b>', width: 100, dataIndex: 'comentarioE', align: 'center', filterable: true},
+            {text: '<b>Pánico</b>', width: 100, dataIndex: 'panico', renderer: formatPanic, align: 'center', filterable: true},
+//            {text: '<b>Fecha Comentario</b>', width: 150, dataIndex: 'fechaEstado', align: 'center'}
+        ],
+        listeners: {
+            selectionchange: function(sm, selections) {
+                if (selections.length) {
+                    ActionVista.enable();
+                } else {
+                    ActionVista.disable();
+                }
+            },
+            activate: function(este, eOpts) {
+                panelOeste.show();
+            },
+            itemdblclick: function(thisObj, record, item, index, e, eOpts) {
+//                gridStateEqpSKP.tooltip.body.update("Click tDerecho para ver información");
+                winReporte.hide();
+            },
+            itemclick: function(thisObj, record, item, index, e, eOpts) {
+                tabla = "<div style=' margin:auto ;padding:1em '>"
+                        + "<table>"
+//                        + "<tr><td>&nbsp</td><td><b>Empresa:" + '<td> </td>' + '<td>' + record.data.equipo + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Equipo:" + '<td> </td>' + '<td>' + record.data.equipo + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Vehículo:" + '<td> </td>' + '<td>' + record.data.vehiculo + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Fecha Conexión:" + '<td> </td>' + '<td>' + record.data.fhCon + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Fecha Ult.Trama:" + '<td> </td>' + '<td>' + record.data.fhDes + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Tiempo Conexión:" + '<td> </td>' + '<td>' + record.data.tmpcon + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Estado:" + '<td> </td>' + '<td>' + formatStateConect(record.data.tmpdes) + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Tiempo Desconectado:" + '<td> </td>' + '<td>' + formatTmpDes(record.data.tmpdes) + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Batería:" + '<td> </td>' + '<td>' + formatBatIgnGsmGps2(record.data.bateria) + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>GSM:" + '<td> </td>' + '<td>' + formatBatIgnGsmGps2(record.data.gsm) + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>GPS:" + '<td> </td>' + '<td>' + formatBatIgnGsmGps2(record.data.gps2) + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>IGN:" + '<td> </td>' + '<td>' + formatBatIgnGsmGps2(record.data.ign) + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Velocidad:" + '<td> </td>' + '<td>' + record.data.vel + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Activo:" + '<td> </td>' + '<td>' + formatLock(record.data.activo) + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Comentario Vehículo:" + '<td> </td>' + '<td>' + record.data.comentario + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Comentario Equipo:" + '<td> </td>' + '<td>' + record.data.comentario + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Pánico:" + '<td> </td>' + '<td>' + formatPanic(record.data.panico) + "</td></tr>"
+                        + "</table>"
+                        + "<br/>"
+                        + "</div>";
+                panelOeste.down('#bloquear').enable();
+                panelOeste.down('#desbloquear').disable();
+                Ext.getCmp('contenedoresg').update(tabla);
+                labelFecha.setText('');
+                labelUsuario.setText('');
+                mensaje = 'Vehículo: ' + record.data.vehiculo;
+                mensajeEqui = 'Equipo: ' + record.data.equipo;
+                estadoEqui = record.data.estadoE;
+                estadoVeh = record.data.estadoV;
+                idEquipo = record.data.idEquipo;
+                idEquipo1 = record.data.idEquipo;
+                IdVehiculo = record.data.id_vehiculo;
+                usuarioE = 'Modificado por: ' + record.data.usuarioE;
+                usuarioV = 'Modificado por: ' + record.data.usuarioV;
+                labelRegistro.setText(mensaje);
+                labelEquipo.setText(mensajeEqui);
+                fechaE = 'Fecha de Modificación: ' + record.data.fecha_hora_estadoE;
+                fechaV = 'Fecha de Modificación: ' + record.data.fecha_hora_estadoV;
+                panelOeste.down('#b1').enable();
+                panelOeste.down('#b2').enable();
+                if (val === 1) {
+                    panelOeste.down('[name=stadoEqp]').setValue(estadoVeh);
+                    labelFecha.setText(fechaV);
+                    labelUsuario.setText(usuarioV);
+                } else {
+                    panelOeste.down('[name=stadoEqp]').setValue(estadoEqui);
+                    labelFecha.setText(fechaE);
+                    labelUsuario.setText(usuarioE);
+                }
+            }
+        },
+//        renderTo: Ext.getBody()
+    });
+    var view = gridStateEqpSKP.getView();
+    var tip = Ext.create('Ext.tip.ToolTip', {
+        // The overall target element.
+        target: view.el,
+        // Each grid row causes its own separate show and hide.
+        delegate: view.itemSelector,
+        // Moving within the row should not hide the tip.
+        trackMouse: true,
+        // Render immediately so that tip.body can be referenced prior to the first show.
+//        renderTo: Ext.getBody(),
+        listeners: {
+            // Change content dynamically depending on which element triggered the show.
+            beforeshow: function updateTipBody(tip) {
+                tip.update('Dar click derecho ');
+            }
+        }
+    });
+
+    ///equiposPsivos
+    //
+
+
+    gridStateEqpSKPPasivos = Ext.create('Ext.grid.Panel', {
+        region: 'center',
+        title: '<b>Equipos Pasivos</b>',
+        store: storeStateEqpPasivos,
+        iconCls: 'icon-reten',
+        columnLines: true,
+        multiSelect: true,
+        features: [filters],
+        viewConfig: {
+            emptyText: '<center>No hay datos que Mostrar</center>',
+            loadMask: false,
+            preserveScrollOnRefresh: true,
+            listeners: {
+                itemcontextmenu: function(view, rec, node, index, e) {
+                    e.stopEvent();
+                    contextMenu.showAt(e.getXY());
+                    return false;
+                }
+            }
+        },
+        tools: [{
+                type: 'refresh',
+                tooltip: 'Refrescar Datos',
+                handler: function(event, toolEl, panelHeader) {
+                    storeStateEqpPasivos.reload();
+                }
+            }],
+        columns: [
+            Ext.create('Ext.grid.RowNumberer', {text: '<b>Nº</b>', width: 35, align: 'center'}),
+//            {text: '<b>Empresa</b>', width: 100, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}, align: 'center'},
+            {text: '<b>Equipo</b>', width: 65, dataIndex: 'equipo', filter: {type: 'string'}, align: 'center'},
+            {text: '<b>Vehículo</b>', width: 95, dataIndex: 'vehiculo', align: 'center'},
+            {text: '<b>Fecha Conexión</b>', width: 140, dataIndex: 'fhCon', align: 'center'},
+            {text: '<b>Fecha Ult Trama</b>', width: 140, dataIndex: 'fhDes', align: 'center'},
+            {text: '<b>Tmp Conex.</b>', width: 95, dataIndex: 'tmpcon', align: 'center', filter: {type: 'numeric'}},
+            {text: '<b>Estado</b>', width: 100, dataIndex: 'tmpdes', renderer: formatStateConect, align: 'center'},
+            {text: '<b>Tmp Desc.</b>', width: 85, dataIndex: 'tmpdes', align: 'center', renderer: formatTmpDes, filter: {type: 'numeric'}},
+            {text: '<b>Bateria</b>', width: 75, dataIndex: 'bateria', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
+            {text: '<b>IGN</b>', width: 65, dataIndex: 'ign', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
+            {text: '<b>GSM</b>', width: 65, dataIndex: 'gsm', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
+            {text: '<b>GPS</b>', width: 65, dataIndex: 'gps2', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
+            {text: '<b>Velocidad (Km/h)</b>', dataIndex: 'vel', align: 'center', width: 100, renderer: formatSpeed, filter: {type: 'numeric'}},
+            {text: '<b>Activo</b>', width: 65, dataIndex: 'activo', renderer: formatLock, align: 'center'},
+            {text: '<b>Comentario Vehículo</b>', width: 100, dataIndex: 'comentarioV', align: 'center', filterable: true},
+            {text: '<b>Comentario Equipo</b>', width: 100, dataIndex: 'comentarioE', align: 'center', filterable: true},
+            {text: '<b>Pánico</b>', width: 100, dataIndex: 'panico', renderer: formatPanic, align: 'center', filterable: true},
+//            {text: '<b>Fecha Comentario</b>', width: 150, dataIndex: 'fechaEstado', align: 'center'}
+        ],
+        listeners: {
+            selectionchange: function(sm, selections) {
+                if (selections.length) {
+                    ActionVista.enable();
+                } else {
+                    ActionVista.disable();
+                }
+            },
+            activate: function(este, eOpts) {
+                panelOeste.show();
+            },
+            itemdblclick: function(thisObj, record, item, index, e, eOpts) {
+//                gridStateEqpSKP.tooltip.body.update("Click tDerecho para ver información");
+                winReporte.hide();
+            },
+            itemclick: function(thisObj, record, item, index, e, eOpts) {
+                tabla = "<div style=' margin:auto ;padding:1em '>"
+                        + "<table>"
+//                        + "<tr><td>&nbsp</td><td><b>Empresa:" + '<td> </td>' + '<td>' + record.data.equipo + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Equipo:" + '<td> </td>' + '<td>' + record.data.equipo + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Vehículo:" + '<td> </td>' + '<td>' + record.data.vehiculo + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Fecha Conexión:" + '<td> </td>' + '<td>' + record.data.fhCon + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Fecha Ult.Trama:" + '<td> </td>' + '<td>' + record.data.fhDes + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Tiempo Conexión:" + '<td> </td>' + '<td>' + record.data.tmpcon + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Estado:" + '<td> </td>' + '<td>' + formatStateConect(record.data.tmpdes) + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Tiempo Desconectado:" + '<td> </td>' + '<td>' + formatTmpDes(record.data.tmpdes) + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Batería:" + '<td> </td>' + '<td>' + formatBatIgnGsmGps2(record.data.bateria) + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>GSM:" + '<td> </td>' + '<td>' + formatBatIgnGsmGps2(record.data.gsm) + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>GPS:" + '<td> </td>' + '<td>' + formatBatIgnGsmGps2(record.data.gps2) + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>IGN:" + '<td> </td>' + '<td>' + formatBatIgnGsmGps2(record.data.ign) + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Velocidad:" + '<td> </td>' + '<td>' + record.data.vel + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Activo:" + '<td> </td>' + '<td>' + formatLock(record.data.activo) + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Comentario Vehículo:" + '<td> </td>' + '<td>' + record.data.comentario + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Comentario Equipo:" + '<td> </td>' + '<td>' + record.data.comentario + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Pánico:" + '<td> </td>' + '<td>' + formatPanic(record.data.panico) + "</td></tr>"
+                        + "</table>"
+                        + "<br/>"
+                        + "</div>";
+                panelOeste.down('#bloquear').disable();
+                panelOeste.down('#desbloquear').enable();
+                Ext.getCmp('contenedoresg').update(tabla);
+                labelFecha.setText('');
+                labelUsuario.setText('');
+                mensaje = 'Vehículo: ' + record.data.vehiculo;
+                mensajeEqui = 'Equipo: ' + record.data.equipo;
+                estadoEqui = record.data.estadoE;
+                estadoVeh = record.data.estadoV;
+                idEquipo = record.data.idEquipo;
+                idEquipo1 = record.data.idEquipo;
+                IdVehiculo = record.data.id_vehiculo;
+                usuarioE = 'Modificado por: ' + record.data.usuarioE;
+                usuarioV = 'Modificado por: ' + record.data.usuarioV;
+                labelRegistro.setText(mensaje);
+                labelEquipo.setText(mensajeEqui);
+                fechaE = 'Fecha de Modificación: ' + record.data.fecha_hora_estadoE;
+                fechaV = 'Fecha de Modificación: ' + record.data.fecha_hora_estadoV;
+                panelOeste.down('#b1').enable();
+                panelOeste.down('#b2').enable();
+                if (val === 1) {
+                    panelOeste.down('[name=stadoEqp]').setValue(estadoVeh);
+                    labelFecha.setText(fechaV);
+                    labelUsuario.setText(usuarioV);
+                } else {
+                    panelOeste.down('[name=stadoEqp]').setValue(estadoEqui);
+                    labelFecha.setText(fechaE);
+                    labelUsuario.setText(usuarioE);
+                }
+            }
+        },
+//        renderTo: Ext.getBody()
+    });
+//    var gridStateEqpUdp = Ext.create('Ext.grid.Panel', {
+//        region: 'center',
+//        title: '<center>Estado de Equipos Fastracks</center>',
+//        iconCls: 'icon-fastrack',
+//        store: storeStateEqpUdp,
+//        columnLines: true,
+//        features: [filters],
+//        viewConfig: {
+//            emptyText: '<center>No hay datos que Mostrar</center>',
+//            loadMask: false,
+//            preserveScrollOnRefresh: true,
+//            listeners: {
+//                itemcontextmenu: function(view, rec, node, index, e) {
+//                    e.stopEvent();
+//                    contextMenu.showAt(e.getXY());
+//                    return false;
+//                }
+//            }
+//        },
+//        tools: [{
+//                type: 'refresh',
+//                tooltip: 'Refrescar Datos',
+//                handler: function(event, toolEl, panelHeader) {
+//                    storeStateEqpUdp.reload();
+//                }
+//            }],
+//        columns: [
+//            Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
+////            {text: 'Empresa', width: 150, dataIndex: 'empresaUdp', renderer: formatCompany, filter: {type: 'list', store: storeCompanyList}, align: 'center'},
+//            {text: 'Equipo', width: 100, dataIndex: 'equipoUdp', align: 'center', filter: {type: 'string'}},
+//            {text: 'Reg_Municipal', width: 150, dataIndex: 'reg_municipal', filter: {type: 'string'}, align: 'center'},
+//            {text: 'Fecha Ult Trama', width: 140, dataIndex: 'fecha_hora_ult_datoUdp', align: 'center'},
+//            {text: 'Estado', width: 100, dataIndex: 'tmpdes', align: 'center', renderer: formatStateConectFastrack},
+//            {text: 'Tiempo<br> Desconectado', width: 150, dataIndex: 'tmpdes', align: 'center', renderer: formatTmpDesFast},
+//            {text: 'Encabezado', width: 350, dataIndex: 'encabezadoUdp', align: 'center'},
+//            {text: 'Ruta', width: 200, dataIndex: 'rutaEqpUdp', align: 'center'},
+//            {text: 'Punto', width: 100, dataIndex: 'puntoEqpUdp', align: 'center'},
+//            {text: 'Estado', width: 100, dataIndex: 'estadoUdp', align: 'center'},
+//            {text: 'Display', width: 350, dataIndex: 'displayUdp', align: 'center'},
+//            {text: 'Estado Mecanico', width: 200, dataIndex: 'estadoMecanicoUdp', align: 'center'},
+//            {text: 'Estado Reten', width: 150, dataIndex: 'stadoUdp', align: 'center', renderer: formatReten},
+////            {text: 'Latitud', width: 150, dataIndex: 'latitudUdp', align: 'center'},
+////            {text: 'Longitud', width: 150, dataIndex: 'longitudUdp', align: 'center'},
+//            {text: 'Velocidad', width: 100, dataIndex: 'velocidadUdp', align: 'center'},
+////            {text: 'Fecha Estado Vehiculo', width: 150, dataIndex: 'fecha_hora_estadoV', align: 'center'},
+////            {text: 'Fecha Estado <br>Equipo', width: 150, dataIndex: 'fecha_hora_estadoE', align: 'center'},
+//            {text: 'Comentario <br> Vehículo', width: 200, dataIndex: 'estadoV', align: 'center'},
+//            {text: 'Comentario <br> Equipo', width: 200, dataIndex: 'estadoE', align: 'center'}
+//
+//        ],
+//        listeners: {
+//            selectionchange: function(sm, selections) {
+//                if (selections.length) {
+//                    ActionVista.enable();
+//                } else {
+//                    ActionVista.disable();
+//                }
+//            },
+//            activate: function(este, eOpts) {
+//                panelOeste.show();
+//            },
+//            itemdblclick: function(thisObj, record, item, index, e, eOpts) {
+////                gridStateEqpSKP.tooltip.body.update("Click tDerecho para ver información");
+//                winReporte.hide();
+//            },
+//            itemclick: function(thisObj, record, item, index, e, eOpts) {
+//                tabla = "<div style=' margin:auto ;padding:1em '>"
+//                        + "<table>"
+//                        + "<tr><td>&nbsp</td><td><b>Empresa:" + '<td> </td>' + '<td>' + record.data.empresaUdp + "</td></tr>"
+//                        + "<tr><td>&nbsp</td><td><b>Equipo:" + '<td> </td>' + '<td>' + record.data.equipoUdp + "</td></tr>"
+//                        + "<tr><td>&nbsp</td><td><b>Reg. Municipal:" + '<td> </td>' + '<td>' + record.data.reg_municipal + "</td></tr>"
+//                        + "<tr><td>&nbsp</td><td><b>Fecha Ult.Trama:" + '<td> </td>' + '<td>' + record.data.fecha_hora_ult_datoUdp + "</td></tr>"
+//                        + "<tr><td>&nbsp</td><td><b>Estado:" + '<td> </td>' + '<td>' + formatStateConectFastrack(record.data.tmpdes) + "</td></tr>"
+//                        + "<tr><td>&nbsp</td><td><b>Tiempo Desconectado:" + '<td> </td>' + '<td>' + formatTmpDesFast(record.data.tmpdes) + "</td></tr>"
+//                        + "<tr><td>&nbsp</td><td><b>Encabezado:" + '<td> </td>' + '<td>' + record.data.encabezadoUdp + "</td></tr>"
+//                        + "<tr><td>&nbsp</td><td><b>Ruta:" + '<td> </td>' + '<td>' + record.data.rutaEqpUdp + "</td></tr>"
+//                        + "<tr><td>&nbsp</td><td><b>Punto:" + '<td> </td>' + '<td>' + record.data.puntoEqpUdp + "</td></tr>"
+//                        + "<tr><td>&nbsp</td><td><b>Estado:" + '<td> </td>' + '<td>' + record.data.estadoUdp + "</td></tr>"
+//                        + "<tr><td>&nbsp</td><td><b>Display:" + '<td> </td>' + '<td>' + record.data.displayUdp + "</td></tr>"
+//                        + "<tr><td>&nbsp</td><td><b>Estado Mecánico:" + '<td> </td>' + '<td>' + record.data.estadoMecanicoUdp + "</td></tr>"
+//                        + "<tr><td>&nbsp</td><td><b>Estado Reten:" + '<td> </td>' + '<td>' + formatReten(record.data.stadoUdp) + "</td></tr>"
+//                        + "<tr><td>&nbsp</td><td><b>Velocidad:" + '<td> </td>' + '<td>' + record.data.velocidadUdp + "</td></tr>"
+//                        + "<tr><td>&nbsp</td><td><b>Comentario Bus:" + '<td> </td>' + '<td>' + record.data.estadoV + "</td></tr>"
+//                        + "<tr><td>&nbsp</td><td><b>Comentario Equipo:" + '<td> </td>' + '<td>' + record.data.estadoE + "</td></tr>"
+//
+//                        + "</table>"
+//                        + "<br/>"
+//                        + "</div>";
+//                Ext.getCmp('contenedoresg').update(tabla);
+//                labelFecha.setText('');
+//                labelUsuario.setText('');
+//                estadoEqui = record.data.estadoE;
+//                estadoVeh = record.data.estadoV;
+//                mensaje = 'Reg.Municipal:\t ' + record.data.reg_municipal;
+//                mensajeEqui = ' Equipo:' + record.data.equipoUdp;
+//                fechaEstado = record.data.fecha_hora_estadoUdp;
+//                idEquipo = record.data.id_equipo;
+//                IdVehiculo = record.data.id_vehiculo;
+//                labelRegistro.setText(mensaje);
+//                labelEquipo.setText(mensajeEqui);
+//                usuarioE = 'Modificado por: ' + record.data.usuarioE;
+//                usuarioV = 'Modificado por: ' + record.data.usuarioV;
+//                fechaE = 'Fecha de Modificación: ' + record.data.fecha_hora_estadoE;
+//                fechaV = 'Fecha de Modificación: ' + record.data.fecha_hora_estadoV;
+//                panelOeste.down('#b1').enable();
+//                panelOeste.down('#b2').enable();
+//
+//                if (val === 1) {
+//                    panelOeste.down('[name=stadoEqp]').setValue(estadoVeh);
+//                    labelFecha.setText(fechaV);
+//                    labelUsuario.setText(usuarioV);
+//                } else {
+//                    panelOeste.down('[name=stadoEqp]').setValue(estadoEqui);
+//                    labelFecha.setText(fechaE);
+//                    labelUsuario.setText(usuarioE);
+//                }
+//
+//            }
+//
+//
+//
+//        }
+//    });
+    var gridDataInvalid = Ext.create('Ext.grid.Panel', {
+        region: 'center',
+        id: 'form-info',
+        title: 'Datos Inválidos de Equipos:0000Mb ',
+        iconCls: 'icon-feed-error',
+        store: storeDataInvalid,
+        columnLines: true,
+        features: [filters],
+        viewConfig: {
+            emptyText: '<center>No hay datos que Mostrar</center>',
+            loadMask: false,
+            preserveScrollOnRefresh: true
+        },
+        tools: [{
+                type: 'refresh',
+                tooltip: 'Refrescar Datos',
+                handler: function(event, toolEl, panelHeader) {
+                    storeDataInvalid.reload();
+                }
+            }],
+        columns: [
+            Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
+            {text: 'Descripción', width: 200, dataIndex: 'descripcionDI', filter: {type: 'string'}, align: 'center'},
+            {text: 'Fecha y Hora de Registro', width: 200, dataIndex: 'fecha_hora_regDI', align: 'center'},
+            {text: 'Equipo', width: 150, dataIndex: 'equipoDI', filter: {type: 'string'}, align: 'center'},
+            {text: 'Trama', width: 240, dataIndex: 'tramaDI', align: 'center'}, {text: 'Excepcion', width: 240, dataIndex: 'excepcionDI', align: 'center'}, {text: 'Tamaño/Mb', width: 100, dataIndex: 'megasDI', align: 'center'}, {text: 'Precio/Mb', width: 100, dataIndex: 'precioDI', align: 'center'},
+        ], listeners: {
+            activate: function(este, eOpts) {
+                panelOeste.hide();
+                winReporte.hide();
+
+            }}
+
+    });
+//
+//
+//    var storeAuxVehicle = Ext.create('Ext.data.Store', {
+//        autoDestroy: true,
+//        proxy: {
+//            type: 'ajax',
+//            url: 'php/gui/combobox/comboBusesOutReten.php',
+//            reader: {
+//                type: 'json',
+//                root: 'data'
+//            }
+//        },
+//        fields: [
+//            {name: 'id', type: 'int'},
+//            {name: 'text', type: 'string'}]
+//    });
+//
+//    var gridReten = Ext.create('Ext.grid.Panel', {
+//        title: '<center>En Reten</center>',
+//        store: storeVehReten,
+//        frame: true,
+//        height: 250,
+//        columns: [{text: 'Empresa', flex: 5, dataIndex: 'empresaReten', renderer: formatCompany, filter: {type: 'list', store: storeCompanyList}, align: 'center'},
+//            {text: 'Reg.Municipal', flex: 5, dataIndex: 'regReten', align: 'center'},
+//            {text: 'Ingreso a Reten', flex: 5, dataIndex: 'fechaEntrada', align: 'center'},
+//            {text: 'Salida de Reten', flex: 5, dataIndex: 'fechaSalida', align: 'center'}
+//        ],
+//        viewConfig: {
+//            emptyText: '<center>No hay datos que Mostrar</center>',
+//            loadMask: false,
+//            preserveScrollOnRefresh: true
+//        }
+//
+//    });
+//    var panelGridReten = Ext.create('Ext.form.Panel', {
+//        bodyStyle: 'background-color: #DFE8F6',
+//        border: false,
+//        items: [gridReten]
+//    });
+//    var panelReten = Ext.create('Ext.form.Panel', {
+//        title: 'Reten',
+//        iconCls: 'icon-reten',
+//        bodyStyle: 'padding: 15px; background-color: #DFE8F6',
+//        tbar: [{
+//                xtype: 'combobox',
+//                fieldLabel: '<b>Cooperativa</b>',
+//                width: 300,
+//                name: 'cbxEmpresas',
+//                store: storeAuxCompany,
+//                valueField: 'id',
+//                displayField: 'text',
+//                queryMode: 'local',
+//                editable: false,
+//                allowBlank: false,
+//                emptyText: 'Escoja la Cooperativa...',
+//                listeners: {
+//                    select: function(combo, records, eOpts) {
+//                        storeAuxVehicle.removeAll();
+//                        var listSelected = this.up('form').down('[name=listVeh]');
+//                        listSelected.fromField.store.removeAll();
+//                        listSelected.clearValue();
+//                        storeAuxVehicle.load({
+//                            params: {
+//                                idCompany: records[0].data.id
+//                            }
+//                        });
+//                    }
+//
+//                }
+//            }, {
+//                xtype: 'combobox',
+//                fieldLabel: '<b>Dias en Reten</b>',
+//                name: 'cbxTiempoSal',
+//                triggerAction: 'all',
+//                store: [
+//                    [1, '1 Día'],
+//                    [2, '2 Dias'],
+//                    [3, '3 Dias'],
+//                    [4, '4 Dias'],
+//                    [5, '5 Dias']
+//                ],
+//                emptyText: 'Escoger Opcion...',
+//                editable: false,
+//                allowBlank: false
+//            }],
+//        items: [{
+//                xtype: 'form',
+//                name: 'f1',
+//                frame: true,
+//                height: 300,
+//                bodyPadding: '0 20px 0 0',
+//                layout: 'fit',
+//                baseCls: 'x-plain',
+//                items: [{
+//                        xtype: 'itemselector',
+//                        name: 'listVeh',
+//                        store: storeAuxVehicle,
+//                        displayField: 'text',
+//                        valueField: 'id',
+//                        allowBlank: false,
+//                        msgTarget: 'side',
+//                        fromTitle: 'Vehículos',
+//                        toTitle: 'Seleccionados'
+//                    }],
+//                buttons: [{
+//                        text: '<font size=2><b>Poner en Reten</b></font>',
+//                        iconCls: 'icon-in-reten',
+//                        handler: function() {
+//                            var form = panelReten.getForm();
+//                            if (form.isValid()) {
+//                                form.submit({
+//                                    url: 'php/gui/monitoreo/sendToReten.php',
+//                                    params: {
+//                                        estado: 1
+//                                    },
+//                                    failure: function(form, action) {
+//                                        Ext.example.msg("Mensaje", "Vehículos Puestos en Reten Correctamente...");
+////                                        Ext.MessageBox.show({
+////                                            title: 'Exito',
+////                                            msg: 'Vehículos Puestos en Reten Correctamente...',
+////                                            buttons: Ext.MessageBox.ERROR,
+////                                            icon: Ext.MessageBox.ERROR
+//                                        //                                        });
+//                                        form.reset();
+//                                        storeVehReten.reload();
+//                                        storeStateEqp.reload();
+//                                        storeStateEqpUdp.reload();
+//                                    },
+//                                    success: function(form, action) {
+//                                        Ext.example.msg("Mensaje", "Vehículos Puestos en Reten Correctamente...");
+//                                        form.reset();
+//                                        storeVehReten.reload();
+//                                        storeStateEqp.reload();
+//                                        storeStateEqpUdp.reload();
+//                                    }
+//                                });
+//                            } else {
+//                                Ext.example.msg("Error", "Debe ingresar los Datos");
+//                            }
+//                        }
+//                    }]}, panelGridReten], listeners: {
+//            activate: function(este, eOpts) {
+//                panelOeste.hide();
+//                winReporte.hide();
+//
+//
+//            }}
+//    });
+    var panelCentral = Ext.create('Ext.tab.Panel', {
+        region: 'center',
+        deferreRender: false,
+        activeTab: 0,
+        items: [gridStateEqpSKP, gridStateEqpSKPPasivos, gridDataInvalid],
+    });
+    tabPanelReports = Ext.create('Ext.tab.Panel', {
+        region: 'south',
+        height: '45%',
+        activeTab: 2,
+        items: [{
+                region: 'center',
+                xtype: 'grid',
+                iconCls: 'icon-cantidad',
+                title: 'Cantidad de Equipos',
+                columnLines: true,
+                store: storeCantEqp,
+                columns: [
+                    {text: 'Empresa', width: 150, dataIndex: 'empresa', renderer: formatCompany},
+                    {text: 'Conectados', width: 100, dataIndex: 'conect', align: 'center'},
+                    {text: 'Desconectados', width: 150, dataIndex: 'desco', align: 'center'},
+                    {text: 'Total', width: 100, dataIndex: 'total', align: 'center'}
+                ],
+                viewConfig: {
+                    emptyText: '<center>No hay datos que Mostrar</center>',
+                    loadMask: false
+                }
+            },
+            {
+                xtype: 'grid',
+                height: '30%',
+                iconCls: 'icon-user',
+                title: 'Conectados',
+                columnLines: true,
+                store: storeUserConect,
+                columns: [
+                    {text: 'Usuario', width: 150, dataIndex: 'usuarioConect', align: 'center'},
+                    {text: 'Rol', width: 125, dataIndex: 'rolConect', align: 'center'},
+                    {text: 'Empresa', width: 150, dataIndex: 'empresaConect', renderer: formatCompany, align: 'center'},
+                    {text: 'Fecha y Hora', width: 150, dataIndex: 'fechaHoraConect', align: 'center'},
+                    {text: 'Estado', width: 100, dataIndex: 'conectadoConect', renderer: formatStateUser, align: 'center'},
+                    {text: 'Ip', width: 100, dataIndex: 'ipConect', align: 'center'}
+                ],
+                viewConfig: {
+                    emptyText: '<center>No hay datos que Mostrar</center>',
+                    loadMask: false
+                },
+                listeners: {
+                    select: function(thisObject, record, item, index, e, eOpts) {
+                        var lon = record.data.longitudConect;
+                        var lat = record.data.latitudConect;
+                        if (lon !== "0" && lon !== "") {
+                            tabPanelReports.setActiveTab(2);
+                            localizarDireccion(lon, lat, 17);
+                        } else {
+                            Ext.example.msg("Error", "El Usuario no Tiene Coordenadas Correctas");
+                        }
+                    }
+                }
+            },
+            Ext.create('Ext.form.Panel', {
+                title: 'Mapa',
+                frame: true,
+                iconCls: 'icon-mapa',
+                html: '<div id="map"></div>'
+            })
+        ]
+    });
     var menuRefresh = Ext.create('Ext.menu.Menu', {
         width: 100,
         margin: '0 0 10 0',
@@ -46,504 +929,416 @@ Ext.onReady(function() {
             }
         }
     });
-
-    var filters = {
-        ftype: 'filters',
-        // encode and local configuration options defined previously for easier reuse
-        encode: false, // json encode the filter query
-        local: true, // defaults to false (remote filtering)
-
-        // Filters are most naturally placed in the column definition, but can also be
-        // added here.
-        filters: [{
-                type: 'boolean',
-                dataIndex: 'visible'
-            }]
-    };
-
-    var storeStateEqp = Ext.create('Ext.data.JsonStore', {
-        autoDestroy: true,
-        autoLoad: true,
-        proxy: {
-            type: 'ajax',
-            url: 'php/interface/monitoring/getStateEqp.php',
-            reader: {
-                type: 'json',
-                root: 'stateEqp'
-            }
-        },
-        fields: ['empresa', 'idEquipo', 'vehiculo', 'fhCon', 'fhDes', 'tmpcon', 'tmpdes', 'bateria', 'comentario',
-            'fechaEstado', 'gsm', 'gps2', 'vel', 'ign', 'taximetro', 'panico',{name: 'equipo', type: 'string'}]/*,
-        groupField: 'empresa'*/
+    estado = Ext.create('Ext.form.field.TextArea', {
+        fieldLabel: '<b>Comentario</b>',
+        name: 'stadoEqp',
+        vtype: 'campos',
+        width: 350,
+        height: 70
     });
-
-    var storeProblemEqp = Ext.create('Ext.data.JsonStore', {
-        autoDestroy: true,
-        autoLoad: true,
-        proxy: {
-            type: 'ajax',
-            url: 'php/interface/monitoring/getProblemEqp.php',
-            reader: {
-                type: 'json',
-                root: 'problemEqp'
-            }
-        },
-        fields: ['empresa', 'idEquipo', {name: 'vehiculo', type: 'int'}, 'fhCon', 'fhDes', 'tmpcon', 'tmpdes', 'bateria', 'estado',
-            {name: 'equipo', type: 'string'},{name: 'fechaEstado', type: 'string'}, 'gsm', 'gps2', 'vel', 'activo', 'ign', 'taximetro', 'panico']
-    });
-
-    var storeStateEmp = Ext.create('Ext.data.JsonStore', {
-        autoDestroy: true,
-        autoLoad: true,
-        proxy: {
-            type: 'ajax',
-            url: 'php/interface/monitoring/getStateEmp.php',
-            reader: {
-                type: 'json',
-                root: 'stateEmp'
-            }
-        },
-        fields: ['empresa', 'ip', 'min_atras', 'ini_conex']
-    });
-
-    var storeEmpresasList = Ext.create('Ext.data.Store', {
-        autoDestroy: true,
-        autoLoad: true,
-        proxy: {
-            type: 'ajax',
-            url: 'php/listFilters/listEmpresas.php',
-            reader: {
-                type: 'array'
-            }
-        },
-        fields: ['id', 'text']
-    });
-
-    var storeCantEqp = Ext.create('Ext.data.JsonStore', {
-        autoDestroy: true,
-        autoLoad: true,
-        proxy: {
-            type: 'ajax',
-            url: 'php/interface/monitoring/getCantEqp.php',
-            reader: {
-                type: 'json',
-                root: 'cantEqp'
-            }
-        },
-        fields: ['conect', 'desco', 'total', 'empresa']
-    });
-
-    var gridStateEqpSKP = Ext.create('Ext.grid.Panel', {
-        region: 'center',
-        title: '<b>Estado de Equipos</b>',
-        store: storeStateEqp,
-        iconCls: 'icon-skp',
-        columnLines: true,
-        multiSelect: true,
-        features: [filters],
-        viewConfig: {
-            emptyText: '<center>No hay datos que Mostrar</center>',
-            loadMask: false,
-            preserveScrollOnRefresh: true
-        },
-        columns: [
-            Ext.create('Ext.grid.RowNumberer', {text: '<b>Nº</b>', width: 35, align: 'center'}),
-            {text: '<b>Empresa</b>', width: 100, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}, align: 'center'},
-            {text: '<b>Equipo</b>', width: 65, dataIndex: 'equipo', filter: {type: 'string'}, align: 'center'},
-            {text: '<b>Vehículo</b>', width: 95, dataIndex: 'vehiculo', align: 'center'},
-            {text: '<b>Fecha Conexión</b>', width: 140, dataIndex: 'fhCon', align: 'center'},
-            {text: '<b>Fecha Ult Trama</b>', width: 140, dataIndex: 'fhDes', align: 'center'},
-            {text: '<b>Tmp Conex.</b>', width: 95, dataIndex: 'tmpcon', align: 'center', filter: {type: 'numeric'}},
-            {text: '<b>Estado</b>', width: 100, dataIndex: 'tmpdes', renderer: formatStateConect, align: 'center'},
-            {text: '<b>Tmp Desc.</b>', width: 85, dataIndex: 'tmpdes', align: 'center', renderer: formatTmpDes, filter: {type: 'numeric'}},
-            {text: '<b>Bateria</b>', width: 75, dataIndex: 'bateria', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>IGN</b>', width: 65, dataIndex: 'ign', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>GSM</b>', width: 65, dataIndex: 'gsm', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>GPS</b>', width: 65, dataIndex: 'gps2', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>Vel (Km/h)</b>', dataIndex: 'vel', align: 'center', width: 100, renderer: formatSpeed, filter: {type: 'numeric'}},
-            {text: '<b>Activo</b>', width: 65, dataIndex: 'activo', renderer: formatLock, align: 'center'},
-            {text: '<b>Comentario</b>', width: 100, dataIndex: 'comentario', align: 'center', filterable: true},
-            {text: '<b>Pánico</b>', width: 100, dataIndex: 'panico', renderer: formatPanic, align: 'center', filterable: true},
-            {text: '<b>Fecha Comentario</b>', width: 150, dataIndex: 'fechaEstado', align: 'center'}
-        ],
-        listeners: {
-            itemclick: function(thisObj, record, item, index, e, eOpts) {
-                bandera=true;
-                panelEste.down('[name=equipo]').setValue(record.data.equipo);
-                panelEste.down('[name=comentario]').setValue(record.data.comentario);
-                panelEste.down('[name=date]').setValue(record.data.fechaEstado);
-            }
-        }
-    });
-
-    var gridProblemEqpSKP = Ext.create('Ext.grid.Panel', {
-        region: 'center',
-        title: '<b>Equipos Pasivos</b>',
-        store: storeProblemEqp,
-        iconCls: 'icon-problem',
-        multiSelect: true,
-        columnLines: true,
-        features: [filters],
-        viewConfig: {
-            emptyText: '<center>No hay datos que Mostrar</center>',
-            loadMask: false,
-            preserveScrollOnRefresh: true
-        },
-        columns: [
-            Ext.create('Ext.grid.RowNumberer', {text: '<b>Nº</b>', width: 35, align: 'center'}),
-            {text: '<b>Empresa</b>', width: 100, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}, align: 'center'},
-            {text: '<b>Equipo</b>', width: 60, dataIndex: 'idEquipo', filter: {type: 'string'}, align: 'center'},
-            {text: '<b>Vehículo</b>', width: 60, dataIndex: 'vehiculo', filter: {type: 'numeric'}, align: 'center'},
-            {text: '<b>Fecha Conexión</b>', width: 140, dataIndex: 'fhCon', align: 'center'},
-            {text: '<b>Fecha Ult Trama</b>', width: 140, dataIndex: 'fhDes', align: 'center'},
-            {text: '<b>Tmp Conex.</b>', width: 70, dataIndex: 'tmpcon', align: 'center', filter: {type: 'numeric'}},
-            {text: '<b>Estado</b>', width: 100, dataIndex: 'tmpdes', renderer: formatStateConect, align: 'center'},
-            {text: '<b>Tmp Desc.</b>', width: 60, dataIndex: 'tmpdes', align: 'center', renderer: formatTmpDes, filter: {type: 'numeric'}},
-            {text: '<b>Bateria</b>', width: 50, dataIndex: 'bateria', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>IGN</b>', width: 50, dataIndex: 'ign', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>GSM</b>', width: 50, dataIndex: 'gsm', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>GPS2</b>', width: 50, dataIndex: 'gps2', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>Vel (Km/h)</b>', dataIndex: 'vel', align: 'center', width: 75, renderer: formatSpeed, filter: {type: 'numeric'}},
-            {text: '<b>Activo</b>', width: 50, dataIndex: 'activo', renderer: formatLock, align: 'center'},
-            {text: '<b>Taxímetro</b>', width: 90, dataIndex: 'taximetro', renderer: formatStateTaxy, align: 'center', filterable: true},
-            {text: '<b>Pánico</b>', width: 90, dataIndex: 'panico', renderer: formatPanic, align: 'center', filterable: true},
-            {text: '<b>Estado</b>', width: 100, dataIndex: 'estado', filter: {type: 'string'}},
-            {text: '<b>Fecha Estado</b>', width: 100, dataIndex: 'fechaEstado', align: 'center'}
-        ],
-        listeners: {
-            itemclick: function(thisObj, record, item, index, e, eOpts) {
-                bandera=true;
-                panelEste.down('[name=equipo]').setValue(record.data.idEquipo);
-                panelEste.down('[name=estado]').setValue(record.data.estado);
-                panelEste.down('[name=date]').setValue(record.data.fechaEstado);
-            }
-        }
-    });
-
-    var panelEste = Ext.create('Ext.form.Panel', {
-        region: 'east',
-        title: '<b>Configuraciones</b>',
+    panelOeste = Ext.create('Ext.form.Panel', {region: 'east',
+        title: 'Configuración',
         iconCls: 'icon-config',
+        name: 'panelEste',
+        width: '30%',
         frame: true,
         split: true,
-        width: '28%',
         collapsible: true,
         layout: 'border',
+        tbar: ['->', {
+                xtype: 'label',
+                html: '<iframe src="http://free.timeanddate.com/clock/i3x5kb7x/n190/tlec4/fn12/fs18/tct/pct/ftb/bas0/bat0/th1" frameborder="0" width="98" height="20" allowTransparency="true"></iframe>'
+            }],
         items: [{
+                xtype: 'form',
                 region: 'north',
-                frame: true,
+                height: '55%',
+                autoScroll: true,
                 bodyPadding: 10,
-                title: '<b>Asignar Estado al Equipo</b>',
-                defaults: {
-                    labelWidth: 75,
-                    width: 300
-                },
+                title: 'Asignar Comentario al Vehiculo',
+                iconCls: 'icon-obtener',
+                tools: [{
+                        type: 'expand',
+                        tooltip: '<b>Tiempo de actualización.</b>',
+                        callback: function(owner, tool, event) {
+                            menuRefresh.showBy(tool.el);
+                        }
+                    }, {
+                        type: 'refresh',
+                        tooltip: '<b>Actualizar datos.<b>',
+                        handler: function(event, toolEl, panelHeader) {
+                            Ext.example.msg('Mensaje', 'Datos actualizados correctamente.');
+                            storeStateEqp.reload();
+//                            storeStateEqpUdp.reload();
+                            storeUserConect.reload();
+                            storeCantEqp.reload();
+                        }
+                    }],
                 items: [
-                    {xtype: 'textfield', fieldLabel: '<b>Equipo</b>', name: 'equipo', editable: false},
-                    {xtype: 'textarea', fieldLabel: '<b>Comnetario</b>', name: 'comentario'},
-                    {xtype: 'textfield', fieldLabel: '<b>Fecha</b>', name: 'date',editable: false}
+                    {
+                        xtype: 'panel',
+                        margin: '5 5 5 5',
+                        border: false,
+                        layout: 'vbox',
+                        bodyStyle: {
+                            background: '#ffc'
+                        },
+                        items: [labelDatos, labelRegistro, labelEquipo,
+                            labelFecha, labelUsuario]
+                    }
+                    ,
+                    estado,
+                    {
+                        xtype: 'radiogroup',
+                        fieldLabel: '<b>Criterios</b>',
+                        // Arrange radio buttons into two columns, distributed vertically
+                        columns: 2,
+                        vertical: true,
+                        items: [{boxLabel: 'Por Vehiculo ', name: 'rb', inputValue: '1', checked: true}, {boxLabel: 'Por Equipo', name: 'rb', inputValue: '2'},
+                        ],
+                        listeners: {
+                            change: function(field, newValue, oldValue) {
+                                switch (parseInt(newValue['rb'])) {
+                                    case 1:
+                                        idEquipo = IdVehiculo;
+                                        panelOeste.down('[name=stadoEqp]').setValue(estadoVeh);
+                                        val = 1;
+                                        labelFecha.setText(fechaV);
+                                        labelUsuario.setText(usuarioV);
+                                        break;
+                                    case 2:
+                                        panelOeste.down('[name=stadoEqp]').setValue(estadoEqui);
+                                        val = 2;
+                                        labelFecha.setText(fechaE);
+                                        labelUsuario.setText(usuarioE);
+                                        break;
+                                }
+
+                            }
+                        }
+                    }
                 ],
                 dockedItems: [{
                         xtype: 'toolbar',
                         dock: 'bottom',
                         ui: 'footer',
                         items: [{
-                                text: 'Vitacora',
+                                text: 'Vitácora',
+                                id: 'b1',
                                 iconCls: 'icon-vita-eqp',
                                 handler: function() {
-                                     var form = this.up('form').getForm();
-                                    if(bandera){
-                                        bandera=false;
-                                        if (form.isValid()) {
-                                            form.submit({
-                                                url: 'php/interface/monitoring/getVitacoraEqp.php',
-                                                failure: function(form, action) {
-                                                    Ext.MessageBox.show({
-                                                        title: 'Atencion...',
-                                                        msg: action.result.msg,
-                                                        buttons: Ext.MessageBox.OK,
-                                                        icon: Ext.MessageBox.ERROR
-                                                    });
-                                                },
-                                                success: function(form, action) {
-                                                    var storeVitacora = Ext.create('Ext.data.Store', {
-                                                        fields: ['estado', 'fechaEstado', 'fechaHoraReg', 'tecnico'],
-                                                        data: action.result.vitaStateEqp
-                                                    });
-
-                                                    var windowVitacora = Ext.create('Ext.window.Window', {
-                                                        title: 'Vitacora de Equipo: ' + panelEste.down('[name=equipo]').getValue(),
-                                                        iconCls: 'icon-vita-eqp',
-                                                        height: 400,
-                                                        width: 600,
-                                                        layout: 'form',
-                                                        items: [{
-                                                                xtype: 'grid',
-                                                                height: 300,
-                                                                border: false,
-                                                                columns: [
-                                                                    {text: '<b>Técnico</b>', width: 150, dataIndex: 'tecnico'},
-                                                                    {text: '<b>Estado</b>', flex: 1, dataIndex: 'estado'},
-                                                                    {text: '<b>Fecha Estado</b>', width: 100, dataIndex: 'fechaEstado'},
-                                                                    {text: '<b>Fecha de Registro</b>', width: 150, dataIndex: 'fechaHoraReg'}
-                                                                ],
-                                                                store: storeVitacora,
-                                                                listeners: {
-                                                                    select: function(thisObj, record, index, eOpts) {
-                                                                        windowVitacora.down('[name=estado]').setValue(record.data.estado);
-                                                                    }
+                                    var form = this.up('form').getForm();
+                                    if (form.isValid()) {
+                                        form.submit({
+                                            url: 'php/interface/monitoring/getVitacoraEqp.php',
+                                            params: {
+                                                idEquipo: idEquipo,
+                                            },
+                                            failure: function(form, action) {
+                                                Ext.example.msg("Mensaje", 'No hay registros de Estado');
+                                            },
+                                            success: function(form, action) {
+                                                var storeVitacora = Ext.create('Ext.data.Store', {
+                                                    fields: ['equipoVtc', 'estadoVtc', 'fechaHoraReg', 'tecnicoVtc'],
+                                                    data: action.result.vitaStateEqp
+                                                });
+                                                var windowVitacora = Ext.create('Ext.window.Window', {
+                                                    title: 'Vitácora:<br> ' + mensaje + '-' + mensajeEqui,
+                                                    iconCls: 'icon-vita-eqp',
+                                                    height: 430,
+                                                    width: 700,
+                                                    layout: 'form',
+                                                    items: [{
+                                                            xtype: 'grid',
+                                                            height: 250,
+                                                            border: false,
+                                                            columns: [
+                                                                Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
+                                                                //                                                        {text: '<b>Equipo</b>', width: 220, dataIndex: 'equipoVtc', aling: 'center'},
+                                                                {text: '<b>Estado</b>', width: 200, dataIndex: 'estadoVtc'},
+                                                                {text: '<b>Fecha de estado</b>', width: 200, dataIndex: 'fechaHoraReg', aling: 'center'},
+                                                                {text: '<b>Nombres del Tecnico</b>', width: 250, dataIndex: 'tecnicoVtc', aling: 'center'}
+                                                            ],
+                                                            store: storeVitacora,
+                                                            listeners: {
+                                                                select: function(thisObj, record, index, eOpts) {
+                                                                    windowVitacora.down('[name=estado]').setValue(record.data.estadoVtc);
                                                                 }
-                                                            }, {
-                                                                xtype: 'textarea',
-                                                                grow: true,
-                                                                name: 'estado'
-                                                            }]
-                                                    }).show();
-                                                }
-                                            });
-                                        }
-                                        
-                                    }else{
-                                         Ext.MessageBox.show({
-                                                        title: 'Atencion...',
-                                                        msg: 'Debe elegir una Fila',
-                                                        buttons: Ext.MessageBox.OK,
-                                                        icon: 'icon-cancelar'
-                                                    });
-                                        
+                                                            }
+                                                        }, {
+                                                            xtype: 'textarea',
+                                                            grow: true,
+                                                            //                                                    fieldLabel: '<b>Comentario</b>',
+                                                            name: 'estado'
+                                                        }, {
+                                                            xtype: 'button',
+                                                            text: 'Cerrar',
+                                                            margin: '5 5 10 5',
+                                                            iconCls: 'icon-cancel',
+                                                            handler: function() {
+                                                                windowVitacora.hide();
+                                                            }}]
+                                                }).show();
+                                            }
+                                        });
                                     }
-                                   
-                                        
-                                    ;
+
                                 }
-                            }, '->', {
-                                iconCls: 'icon-skp',
-                                tooltip: '<b>Devolver a Estado de Equipos</b>',
-                                handler: function() {
-                                    var form = this.up('form').getForm();
-                                    window.loadTask.delay(500, function() {
-                                        if (form.isValid()) {
-                                            form.submit({
-                                                url: 'php/interface/monitoring/setProblem.php',
-                                                params: {
-                                                    problem: 0
-                                                },
-                                                failure: function(form, action) {
-                                                    Ext.MessageBox.show({
-                                                        title: 'Error...',
-                                                        msg: 'No fue posible Actualizar Estado',
-                                                        buttons: Ext.MessageBox.OK,
-                                                        icon: Ext.MessageBox.ERROR
-                                                    });
-                                                },
-                                                success: function(form, action) {
-                                                    Ext.example.msg("Mensaje", 'Vehiculo devuelto a la Lista de Estados Correctamente...');
-                                                    form.reset();
-                                                    window.loadTask.delay(500, function() {
-                                                        storeStateEqp.reload();
-                                                        storeProblemEqp.reload();
-                                                    });
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            }, '-', {
-                                iconCls: 'icon-problem',
-                                tooltip: '<b>Enviar a la Lista de Eqp. Pasivos</b>',
-                                handler: function() {
-                                    var form = this.up('form').getForm();
-                                    window.loadTask.delay(500, function() {
-                                        if (form.isValid()) {
-                                            form.submit({
-                                                url: 'php/interface/monitoring/setProblem.php',
-                                                params: {
-                                                    problem: 1
-                                                },
-                                                failure: function(form, action) {
-                                                    Ext.MessageBox.show({
-                                                        title: 'Error...',
-                                                        msg: 'No fue posible Actualizar Estado',
-                                                        buttons: Ext.MessageBox.OK,
-                                                        icon: Ext.MessageBox.ERROR
-                                                    });
-                                                },
-                                                success: function(form, action) {
-                                                    Ext.example.msg("Mensaje", 'Vehiculo Enviado a Lista de Problemas Correctamente...');
-                                                    form.reset();
-                                                    window.loadTask.delay(500, function() {
-                                                        storeStateEqp.reload();
-                                                        storeProblemEqp.reload();
-                                                    });
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            }, '-', {
+                            },
+                            '->',
+//                            {
+//                                iconCls: 'icon-skp',
+//                                tooltip: '<b>Devolver a Estado de Equipos</b>',
+//                                handler: function() {
+//                                    var form = this.up('form').getForm();
+//                                    window.loadTask.delay(500, function() {
+//                                        if (form.isValid()) {
+//                                            form.submit({
+//                                                url: 'php/interface/monitoring/setProblem.php',
+//                                                params: {
+//                                                    problem: 0
+//                                                },
+//                                                failure: function(form, action) {
+//                                                    Ext.MessageBox.show({
+//                                                        title: 'Error...',
+//                                                        msg: 'No fue posible Actualizar Estado',
+//                                                        buttons: Ext.MessageBox.OK,
+//                                                        icon: Ext.MessageBox.ERROR
+//                                                    });
+//                                                },
+//                                                success: function(form, action) {
+//                                                    Ext.example.msg("Mensaje", 'Vehiculo devuelto a la Lista de Estados Correctamente...');
+//                                                    form.reset();
+//                                                    window.loadTask.delay(500, function() {
+//                                                        storeStateEqp.reload();
+//                                                        storeProblemEqp.reload();
+//                                                    });
+//                                                }
+//                                            });
+//                                        }
+//                                    });
+//                                }
+//                            }, {
+//                                iconCls: 'icon-problem',
+//                                tooltip: '<b>Enviar a la Lista de Eqp. Pasivos</b>',
+//                                handler: function() {
+//                                    var form = this.up('form').getForm();
+//                                    window.loadTask.delay(500, function() {
+//                                        if (form.isValid()) {
+//                                            form.submit({
+//                                                url: 'php/interface/monitoring/setProblem.php',
+//                                                params: {
+//                                                    problem: 1
+//                                                },
+//                                                failure: function(form, action) {
+//                                                    Ext.MessageBox.show({
+//                                                        title: 'Error...',
+//                                                        msg: 'No fue posible Actualizar Estado',
+//                                                        buttons: Ext.MessageBox.OK,
+//                                                        icon: Ext.MessageBox.ERROR
+//                                                    });
+//                                                },
+//                                                success: function(form, action) {
+//                                                    Ext.example.msg("Mensaje", 'Vehiculo Enviado a Lista de Problemas Correctamente...');
+//                                                    form.reset();
+//                                                    window.loadTask.delay(500, function() {
+//                                                        storeStateEqp.reload();
+//                                                        storeProblemEqp.reload();
+//                                                    });
+//                                                }
+//                                            });
+//                                        }
+//                                    });
+//                                }
+//                            }, 
+                            {
                                 iconCls: 'icon-unlock',
+                                id: 'desbloquear',
+                                text: 'Desbloquear',
                                 tooltip: '<b>Desbloquear Unidad</b>',
                                 handler: function() {
                                     var form = this.up('form').getForm();
-                                    window.loadTask.delay(500, function() {
-                                        if (form.isValid()) {
-                                            form.submit({
-                                                url: 'php/interface/monitoring/setBloqueo.php',
-                                                params: {
-                                                    bloqueo: 0
-                                                },
-                                                failure: function(form, action) {
-                                                    Ext.MessageBox.show({
-                                                        title: 'Error...',
-                                                        msg: 'No fue posible Actualizar Estado',
-                                                        buttons: Ext.MessageBox.OK,
-                                                        icon: Ext.MessageBox.ERROR
-                                                    });
-                                                },
-                                                success: function(form, action) {
-                                                    Ext.example.msg("Mensaje", 'Vehiculo Desbloqueado Correctamente...');
-                                                    form.reset();
-                                                    window.loadTask.delay(500, function() {
-                                                        storeStateEqp.reload();
-                                                    });
-                                                }
-                                            });
-                                        }
-                                    });
+
+                                    if (form.isValid()) {
+                                        form.submit({
+                                            url: 'php/interface/monitoring/setBloqueo.php',
+                                            params: {
+                                                bloqueo: 1,
+                                                idEquipo: idEquipo1
+                                            },
+                                            failure: function(form, action) {
+                                                Ext.MessageBox.show({
+                                                    title: 'Error...',
+                                                    msg: 'No fue posible Actualizar Estado',
+                                                    buttons: Ext.MessageBox.OK,
+                                                    icon: Ext.MessageBox.ERROR
+                                                });
+                                            },
+                                            success: function(form, action) {
+                                                Ext.example.msg("Mensaje", 'Vehiculo Desbloqueado Correctamente...');
+                                                storeStateEqpPasivos.reload();
+                                                storeStateEqp.reload();
+
+                                            }
+                                        });
+                                    }
+
                                 }
-                            }, '-', {
+                            }, {
                                 iconCls: 'icon-lock',
+                                id: 'bloquear',
+                                text: 'Bloquear',
                                 tooltip: '<b>Bloquear Unidad</b>',
                                 handler: function() {
                                     var form = this.up('form').getForm();
-                                    window.loadTask.delay(500, function() {
-                                        if (form.isValid()) {
-                                            form.submit({
-                                                url: 'php/interface/monitoring/setBloqueo.php',
-                                                params: {
-                                                    bloqueo: 1
-                                                },
-                                                failure: function(form, action) {
-                                                    Ext.MessageBox.show({
-                                                        title: 'Error...',
-                                                        msg: 'No fue posible Actualizar Estado',
-                                                        buttons: Ext.MessageBox.OK,
-                                                        icon: Ext.MessageBox.ERROR
-                                                    });
-                                                },
-                                                success: function(form, action) {
-                                                    Ext.example.msg("Mensaje", 'Vehiculo Bloqueado Correctamente...');
-                                                    form.reset();
-                                                    window.loadTask.delay(500, function() {
-                                                        storeStateEqp.reload();
-                                                    });
-                                                }
-                                            });
-                                        }
-                                    });
+
+                                    if (form.isValid()) {
+                                        form.submit({
+                                            url: 'php/interface/monitoring/setBloqueo.php',
+                                            params: {
+                                                bloqueo: 0,
+                                                idEquipo: idEquipo1
+
+                                            },
+                                            failure: function(form, action) {
+                                                Ext.MessageBox.show({
+                                                    title: 'Error...',
+                                                    msg: 'No fue posible Actualizar Estado',
+                                                    buttons: Ext.MessageBox.OK,
+                                                    icon: Ext.MessageBox.ERROR
+                                                });
+                                            },
+                                            success: function(form, action) {
+                                                Ext.example.msg("Mensaje", 'Vehiculo Bloqueado Correctamente...');
+                                                storeStateEqpPasivos.reload();
+                                                storeStateEqp.reload();
+
+                                            }
+                                        });
+                                    }
+
                                 }
-                            }, '-', 
-                            {
-                                text: '<b>Asignar</b>',
-                                tooltip: '<b>Asignar Estado</b>',
+                            }, {
+                                text: 'Asignar',
+                                id: 'b2',
                                 iconCls: 'icon-check',
                                 handler: function() {
                                     var form = this.up('form').getForm();
-                                        if (form.isValid()) {
-                                            form.submit({
-                                                url: 'php/interface/monitoring/setState.php',
-                                                failure: function(form, action) {
-                                                    Ext.MessageBox.show({
-                                                        title: 'Error...',
-                                                        msg: 'No fue posible Actualizar Estado',
-                                                        buttons: Ext.MessageBox.OK,
-                                                        icon: Ext.MessageBox.ERROR
-                                                    });
-                                                },
-                                                success: function(form, action) {
-                                                    Ext.example.msg("Mensaje", 'Estado Modificado Correctamente...');
-                                                    form.reset();
-                                                    window.loadTask.delay(500, function() {
+                                    var comentario = panelOeste.down('[name=stadoEqp]').getValue();
+                                    if (comentario !== "") {
+                                        if (comentario !== estadoEqui && comentario !== estadoVeh) {
+                                            if (form.isValid()) {
+                                                form.submit({
+                                                    url: 'php/interface/monitoring/setState.php',
+                                                    params: {
+                                                        idEquipo: idEquipo,
+                                                    },
+                                                    failure: function(form, action) {
+                                                        Ext.MessageBox.show({
+                                                            title: 'Error...',
+                                                            msg: 'No fue posible Actualizar Estado',
+                                                            buttons: Ext.MessageBox.OK,
+                                                            icon: Ext.MessageBox.ERROR
+                                                        });
+                                                    },
+                                                    success: function(form, action) {
+                                                        Ext.example.msg("Mensaje", 'Estado Modificado Correctamente');
+                                                        form.reset();
+                                                        panelOeste.down('[name=stadoEqp]').setValue('');
+                                                        labelEquipo.setText('');
+                                                        labelRegistro.setText('');
+                                                        labelFecha.setText('');
+                                                        labelUsuario.setText('');
                                                         storeStateEqp.reload();
-                                                    });
-                                                }
-                                            });
+                                                        storeStateEqpUdp.reload();
+                                                    }
+                                                });
+                                            }
+                                        } else {
+                                            Ext.example.msg("Mensaje", 'Debe ingresar un comentario diferente ');
                                         }
-                                    
+                                    } else {
+                                        Ext.example.msg("Mensaje", 'Debe ingresar un comentario');
+                                    }
                                 }
-                            }]
-                    }]
-            }, {
-                region: 'center',
-                xtype: 'grid',
-                store: storeCantEqp,
-                columns: [
-                    {text: '<b>Empresa</b>', flex: 2, dataIndex: 'empresa', renderer: formatCompany},
-                    {text: '<b>Conectados</b>', flex: 2, dataIndex: 'conect', align: 'center'},
-                    {text: '<b>Desconectados</b>', flex: 2, dataIndex: 'desco', align: 'center'},
-                    {text: '<b>Total</b>', flex: 1, dataIndex: 'total', align: 'center'}
-                ],
-                viewConfig: {
-                    emptyText: '<center>No hay datos que Mostrar</center>',
-                    loadMask: false,
-                    preserveScrollOnRefresh: true
-                }
-            }, {
-                region: 'south',
-                xtype: 'grid',
-                height: '30%',
-                store: storeStateEmp,
-                columns: [
-                    {text: '<b>Empresa</b>', width: 100, dataIndex: 'empresa', renderer: formatCompany},
-                    {text: '<b>Ini. Conex.</b>', width: 130, dataIndex: 'ini_conex'},
-                    {text: '<b>Min. Atras</b>', width: 60, dataIndex: 'min_atras'},
-                    {text: '<b>Ip</b>', flex: 100, dataIndex: 'ip'}
-                ],
-                viewConfig: {
-                    emptyText: '<center>No hay datos que Mostrar</center>',
-                    loadMask: false,
-                    preserveScrollOnRefresh: true
-                }
-            }],
-        tools: [{
-                type: 'expand',
-                tooltip: '<b>Tiempo de Recarga.</b>',
-                callback: function(owner, tool, event) {
-                    menuRefresh.showBy(tool.el);
-                }
-            }, {
-                type: 'refresh',
-                tooltip: '<b>Refrescar Datos.<b>',
-                handler: function(event, toolEl, panelHeader) {
-                    Ext.example.msg('Mensaje', 'Datos Recargados Correctamente.');
-                    window.loadTask.delay(500, function() {
-                        storeStateEqp.reload();
-                        storeStateEqpUdp.reload();
-                        storeProblemEqp.reload();
-                    });
-                }
-            }]
+                            }
+                        ]}]
+            }
+            , tabPanelReports]
     });
-
-    var panelCentral = Ext.create('Ext.tab.Panel', {
-        region: 'center',
-        deferreRender: false,
-        activeTab: 0,
-        items: [gridStateEqpSKP, gridProblemEqpSKP]
-    });
-
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
-        items: [panelCentral, panelEste]
+        items: [panelCentral, panelOeste]
     });
-
+    var tab = Ext.create('Ext.form.Panel', {
+        id: 'contenedoresg',
+        name: 'contenedoresg',
+        items: [
+            {
+                id: 'contenido2',
+                html: "",
+            }
+        ]
+        ,
+        buttons: [
+            {
+                text: 'Cerrar',
+                tooltip: 'Cerrar',
+                handler: limpiarPanelG
+            }
+        ]
+    });
+    winReporte = Ext.create('Ext.window.Window', {
+        layout: 'fit',
+        title: 'Estado de Equipos',
+        iconCls: 'icon-company',
+        resizable: false,
+        width: 400,
+        height: 500,
+        closeAction: 'hide',
+        plain: false,
+        items: tab
+    });
+    panelOeste.down('#b1').disable();
+    panelOeste.down('#b2').disable();
+    panelOeste.down('#bloquear').disable();
+    panelOeste.down('#desbloquear').disable();
     reloadStateEqpByItems(storeStateEqp);
-    reloadStateEqpByItems(storeProblemEqp);
+//    reloadStateEqpByItems(storeStateEqpUdp);
+    reloadStore(storeUserConect, 60);
     reloadStateEqpByItems(storeCantEqp);
-    reloadStore(storeStateEmp, 20);
+//    reloadStore(storeVehReten, 15);
+    reloadStore(storeDataInvalid, 60);
     checkRolSesion(idRolKarview);
+    if (idRolKarview === 1) {
+        panelOeste.setVisible(true);
+    } else {
+        panelOeste.setVisible(false);
+    }
+    setTimeout(function() {
+        tabPanelReports.setActiveTab(0);
+    }, 0);
 });
+function reloadStateEqpByItems(store) {
+    setTimeout(function() {
+        reloadStateEqpByItems(store);
+        if (refresh) {
+            store.reload();
+        }
+    }
+    , timeRefresh * 1000);
+}
+function limpiarPanelG() {
+    Ext.getCmp('contenedoresg').update('');
+    if (winReporte) {
+        winReporte.hide();
+    }
 
+}
+function addTooltip(value, metadata, record, rowIndex, colIndex, store) {
+    metadata.attr = 'ext:qtip="' + 'value' + '"';
+    return value;
+}
 function reloadStateEqpByItems(store) {
     setTimeout(function() {
         reloadStateEqpByItems(store);
@@ -561,3 +1356,33 @@ function formatStateConect(val) {
         return '<span style="color:green;">Conect</span>';
     }
 }
+
+function formatStateUser(val) {
+    if (val === 0) {
+        return '<span style="color:red;">Desconectado</span>';
+    } else {
+        return '<span style="color:green;">Conectado</span>';
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -64,37 +64,56 @@ function showError(error) {
             break;
     }
 }
-function obtenergastoPorGalones(json){
-     var lat1;
-     var lon1;
-     var lat2;
-     var lon2;
-     var k=0;
-     var kilometraje=0;
-     for (var i = 0; i < json.length-1; i++) {
+function kilometrajeRecorrido(json) {
+    var lat1;
+    var lon1;
+    var lat2;
+    var lon2;
+    var k = 0;
+    var kilometraje = 0;
+    for (var i = 0; i < json.length - 1; i++) {
         var punto1 = json[i];
-        lat1=punto1.latitud;
-        lon1=punto1.longitud;
-        var punto2 = json[i+1];
-        lat2=punto2.latitud;
-        lon2=punto2.longitud;
-        
-      k=parseFloat(Dist(lat1, lon1, lat2, lon2));
-      kilometraje=kilometraje+k;
+        lat1 = punto1.latitud;
+        lon1 = punto1.longitud;
+        var punto2 = json[i + 1];
+        lat2 = punto2.latitud;
+        lon2 = punto2.longitud;
+
+        k = parseFloat(Dist(lat1, lon1, lat2, lon2));
+        kilometraje = kilometraje + k;
     }
+    return kilometraje;
+}
+function obtenerLitros(json) {
+    var kilometraje = kilometrajeRecorrido(json);
+    var kilEstimado=100;
+    var litrosEstimadoo=7.5;
+    var litros= kilometraje*litrosEstimadoo/kilEstimado;
+    return litros;
 }
 
-function Dist(lat1, lon1, lat2, lon2){
-  rad = function(x) {return x*Math.PI/180;};
-  var R     = 6378.137;                          //Radio de la tierra en km
-  var dLat  = rad( lat2 - lat1 );
-  var dLong = rad( lon2 - lon1 );
+function obtenerGalones(json) {
+    var litros = obtenerLitros(json);
+    console.log(litros);
+    var litrosEstimado=3.78541178;
+    var galonEstimado=1;
+    var galones= litros*galonEstimado/litrosEstimado;
+    return galones;
+}
 
-  var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(rad(lat1)) * Math.cos(rad(lat2)) * Math.sin(dLong/2) * Math.sin(dLong/2);
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  var d = R * c;
-console.log(d.toFixed(3));
-  return d.toFixed(3);                      //Retorna tres decimales
+function Dist(lat1, lon1, lat2, lon2) {
+    rad = function(x) {
+        return x * Math.PI / 180;
+    };
+    var R = 6378.137;                          //Radio de la tierra en km
+    var dLat = rad(lat2 - lat1);
+    var dLong = rad(lon2 - lon1);
+
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(rad(lat1)) * Math.cos(rad(lat2)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+    console.log(d.toFixed(3));
+    return d.toFixed(3);                      //Retorna tres decimales
 
 
 }
@@ -140,7 +159,7 @@ function reloadTree(tree, titleMessenge, storeTree) {
 }
 
 function formatoFecha(date) {
- 
+
     var año = date.getFullYear();
     var mes = date.getMonth() + 1;
     if (mes < 10) {
@@ -209,7 +228,7 @@ function formatTipoEstado(val) {
             return '<span style="color:blue;"><b>Entrada</b></span>';
             break;
         case 1:
-             return '<span style="color:orange;"><b>Salida</b></span>';
+            return '<span style="color:orange;"><b>Salida</b></span>';
             break;
     }
 }
@@ -226,7 +245,7 @@ function formatTipoServicio(val) {
             return '<span style="color:blue;">Mantenimiento</span>';
             break;
         case 2:
-             return '<span style="color:orange;">Reparacion</span>';
+            return '<span style="color:orange;">Reparacion</span>';
             break;
         case 3:
             return '<span style="color:green;">Repuesto</span>';

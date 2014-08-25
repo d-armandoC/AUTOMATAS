@@ -1,6 +1,6 @@
 #icono{
-	position: absolute;	
-	bottom: 25px; right: 25px;
+    position: absolute;	
+    bottom: 25px; right: 25px;
 }
 
 .icon-check {background-image: url(../img/despachar.png) !important;}
@@ -15,3 +15,21 @@
 .icon-problem {background-image: url(../img/problem.png) !important;}
 .icon-user {background-image: url(../img/user.gif) !important;}
 .icon-donwloaded {background-image: url(../img/dowload.png) !important;}
+
+
+.icon-feed-error {background-image: url(../img/feed_error.png) !important;}
+.icon-reten{background-image: url(../img/icon_reten.png) !important;}
+.icon-in-reten{background-image: url(../img/in_reten.png) !important;}
+.icon-out-reten{background-image: url(../img/out_reten.png) !important;}
+.icon-mapa {background-image: url(../img/globe-icon.png) !important;}
+.icon-localizame {background-image: url(../img/localizame.png) !important;}
+.icon-config {background-image: url(../img/cog.gif) !important;}
+.icon-obtener {background-image: url(../img/obtener.png) !important;}
+.icon-cantidad {background-image: url(../img/table_refresh.png) !important;}
+.icon-cancel {background-image: url(../img/cross.gif) !important;}
+
+
+/*Estilos para Papeletas*/
+
+
+.icon-info {background-image: url(../img/info.png) !important;}

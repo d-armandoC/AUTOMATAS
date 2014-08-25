@@ -18,7 +18,7 @@ if (!$mysqli = getConectionDb()) {
             b.longitud,b.velocidad,b.rumbo,b.g1,b.g2,b.sal,b.bateria,b.v1,b.v2,b.gsm,b.gps,b.ign,b.direccion 
             from ultimo_dato_skps b,equipos e,vehiculos v, empresas em, sky_eventos se 
             where b.id_equipo=e.id_equipo   and e.id_equipo=v.id_equipo 
-            and v.id_empresa=em.id_empresa and b.estado=1 and b.id_sky_evento=se.id_sky_evento 
+            and v.id_empresa=em.id_empresa and b.estado=0 and b.id_sky_evento=se.id_sky_evento 
             ORDER BY em.empresa, v.vehiculo";
     }
     if ($idRol == 2) {
@@ -29,7 +29,7 @@ if (!$mysqli = getConectionDb()) {
             b.fecha_hora_conex,b.fecha_hora_ult_dato,se.sky_evento,b.latitud,
             b.longitud,b.velocidad,b.rumbo,b.g1,b.g2,b.sal,b.bateria,b.v1,b.v2,b.gsm,b.gps,b.ign,b.direccion 
             from ultimo_dato_skps b,equipos e,vehiculos v, empresas em, sky_eventos se 
-            where b.id_equipo=e.id_equipo and b.estado=1 and e.id_equipo=v.id_equipo 
+            where b.id_equipo=e.id_equipo and b.estado=0 and e.id_equipo=v.id_equipo 
             and v.id_empresa=em.id_empresa and b.id_sky_evento=se.id_sky_evento  and v.id_empresa='$idEmpresa'
             ORDER BY em.empresa, v.vehiculo"
         ;
@@ -38,7 +38,7 @@ if (!$mysqli = getConectionDb()) {
     $result = $mysqli->query($consultaSql);
     if ($result->num_rows > 0) {
 
-        $objJson = "{stateEqp : [";
+        $objJson = "{stateEqpPasivos : [";
         while ($myrow = $result->fetch_assoc()) {
             $usuarioE = $myrow["usuarioEquipo"];
             $usuarioV = $myrow["usuarioVehiculo"];
@@ -73,7 +73,7 @@ if (!$mysqli = getConectionDb()) {
                 gps2:" . $myrow["gps"] . ",
                 vel:" . $myrow["velocidad"] . ",
                 ign:" . $myrow["ign"] . ",
-                activo:" . 1 . ",
+                activo:" . 0 . ",
                 taximetro:" . $myrow["g1"] . ",
                 panico:" . $myrow["g2"] . "
             },";

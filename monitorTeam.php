@@ -63,6 +63,10 @@
         
         <script type="text/javascript" src="js/requerid/functions.js"></script>
         <script type="text/javascript" src="js/options/monitorTeam.js"></script>
+        
+         <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
+        <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
+        <script type="text/javascript" src="js/mapaMonitor.js"></script>
     </head>
     <body oncontextmenu = "return false">        
         <header></header>
