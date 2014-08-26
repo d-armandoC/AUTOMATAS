@@ -302,12 +302,17 @@ Ext.onReady(function() {
             //monitoreo,
             administracion,
             salir, '->', {
+                xtype: 'label',
+                html: '<section id="panelNorte">' +
+                        '<center><strong id="name"> ' + (diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear()) + '</strong></center>' +
+                        '</section>'
+            }, {
                 xtype: 'image',
                 src: getNavigator(),
                 width: 16,
                 height: 16,
                 margin: '0 5 0 0'
-            }
+            },
         ]
     });
 
@@ -322,7 +327,7 @@ Ext.onReady(function() {
                 },
                 items: [{
                         xtype: 'label',
-                        html: '<a href="http://www.kradac.com" target="_blank"><img src="img/k-taxy.png" width="250" height="64"></a>'
+                        html: '<a href="http://www.kradac.com" target="_blank"><img src="img/logo.png" width="250" height="64"></a>'
                     }, {
                         xtype: 'label',
                         padding: '15 0 0 0',
@@ -343,7 +348,7 @@ Ext.onReady(function() {
         title: 'Buscar Vehiculo',
         iconCls: 'icon-car',
         width: 300,
-        height: 125,
+        height: 150,
         closeAction: 'hide',
         plain: false,
         items: [{
@@ -398,7 +403,6 @@ Ext.onReady(function() {
                             if (this.up('form').getForm().isValid()) {
                                 var capa = this.up('form').down('[name=cbxEmpresas]').getValue();
                                 var idEqpCoop = this.up('form').down('[name=cbxVeh]').getValue();
-
                                 buscarEnMapa(capa, idEqpCoop);
                             } else {
                                 Ext.example.msg('Error', 'Escoja un Vehiculo');
@@ -411,7 +415,7 @@ Ext.onReady(function() {
     var panelEste = Ext.create('Ext.form.Panel', {
         region: 'west',
         id: 'west_panel',
-        title: 'Facetas Karview',
+        title: 'Facetas_Karview',
         iconCls: 'icon-facetas',
         frame: true,
         width: 240,
@@ -431,8 +435,8 @@ Ext.onReady(function() {
                 iconCls: 'icon-tree-company',
                 store: storeTreeVehTaxis,
                 columns: [
-                    {xtype: 'treecolumn', text: 'Central', flex: 4, sortable: true, dataIndex: 'text'}/*,
-                     {text: 'Estado', flex: 1, dataIndex: 'estado', sortable: true, renderer: formatState}*/
+                    {xtype: 'treecolumn', text: 'Central', flex: 4, sortable: true, dataIndex: 'text'},
+//                     {text: 'Estado', flex: 1, dataIndex: 'estado', sortable: true, renderer: formatState}
                 ],
                 tools: [{
                         type: 'help',
@@ -443,17 +447,19 @@ Ext.onReady(function() {
                         type: 'refresh',
                         itemId: 'refresh_taxis',
                         tooltip: 'Recargar Datos',
-                        //hidden: true,
                         handler: function() {
                             var tree = Ext.getCmp('veh-taxis-tree');
+                            tree.body.mask('Loading', 'x-mask-loading');
                             reloadTree(tree, 'Vehiculos', storeTreeVehTaxis);
+                            Ext.example.msg('Vehiculos', 'Recargado');
+                            tree.body.unmask();
                         }
                     }, {
                         type: 'search',
                         tooltip: 'Buscar Vehiculo',
                         handler: function(event, target, owner, tool) {
                             // do search                    
-                            //owner.child('#refresh_taxis').show();
+                            owner.child('#refresh_taxis').show();
                             winSearchVeh.showAt(event.getXY());
                         }
                     }],
@@ -463,26 +469,113 @@ Ext.onReady(function() {
                 },
                 listeners: {
                     itemclick: function(thisObject, record, item, index, e, eOpts) {
-                        var aux = record.internalId;
-
-                        var capa = aux.split('_')[0];
-                        var idEqpCoop = aux.split('_')[1];
-
-                        buscarEnMapa(capa, idEqpCoop);
-                    },
-                    itemcontextmenu: function(thisObject, record, item, index, e, eOpts) {
-                        idEqpMen = record.internalId;
-                        nameVeh = record.data.text;
-                        if (idEqpMen.indexOf('ext-record') === -1) {
-                            menuContext.showAt(e.getXY());
-                        } else {
-                            idEqpMen = '';
-                            nameVeh = '';
+                        if (connectionMap()) {
+                            var id = record.internalId;
+//                            if (id.indexOf('_') !== -1) {
+                            var aux = record.id.split('_');
+                            var idEmpresa = parseInt(aux[0]);
+                            var idVehicle = 'last' + aux[1];
+                            buscarEnMapa(idEmpresa, idVehicle);
+                            panelTabMapaAdmin.setActiveTab(0);
+//                            };
                         }
                     }
+//                    itemclick: function(thisObject, record, item, index, e, eOpts) {
+//                        var aux = record.internalId;
+//
+//                        var capa = aux.split('_')[0];
+//                        var idEqpCoop = aux.split('_')[1];
+//
+//                        buscarEnMapa(capa, idEqpCoop);
+//                    },
+//                    itemcontextmenu: function(thisObject, record, item, index, e, eOpts) {
+//                        idEqpMen = record.internalId;
+//                        nameVeh = record.data.text;
+//                        if (idEqpMen.indexOf('ext-record') === -1) {
+//                            menuContext.showAt(e.getXY());
+//                        } else {
+//                            idEqpMen = '';
+//                            nameVeh = '';
+//                        }
+//                    }
                 }
             }]
     });
+//    var panelEste = Ext.create('Ext.form.Panel', {
+//        region: 'west',
+//        id: 'west_panel',
+//        title: 'Facetas Karview',
+//        iconCls: 'icon-facetas',
+//        frame: true,
+//        width: 240,
+//        split: true,
+//        collapsible: true,
+//        layout: 'accordion',
+//        border: false,
+//        layoutConfig: {
+//            animate: false
+//        },
+//        items: [{
+//                xtype: 'treepanel',
+//                id: 'veh-taxis-tree',
+//                rootVisible: false,
+//                title: 'Empresas',
+//                autoScroll: true,
+//                iconCls: 'icon-tree-company',
+//                store: storeTreeVehTaxis,
+//                columns: [
+//                    {xtype: 'treecolumn', text: 'Central', flex: 4, sortable: true, dataIndex: 'text'}/*,
+//                     {text: 'Estado', flex: 1, dataIndex: 'estado', sortable: true, renderer: formatState}*/
+//                ],
+//                tools: [{
+//                        type: 'help',
+//                        handler: function() {
+//                            // show help here
+//                        }
+//                    }, {
+//                        type: 'refresh',
+//                        itemId: 'refresh_taxis',
+//                        tooltip: 'Recargar Datos',
+//                        //hidden: true,
+//                        handler: function() {
+//                            var tree = Ext.getCmp('veh-taxis-tree');
+//                            reloadTree(tree, 'Vehiculos', storeTreeVehTaxis);
+//                        }
+//                    }, {
+//                        type: 'search',
+//                        tooltip: 'Buscar Vehiculo',
+//                        handler: function(event, target, owner, tool) {
+//                            // do search                    
+//                            //owner.child('#refresh_taxis').show();
+//                            winSearchVeh.showAt(event.getXY());
+//                        }
+//                    }],
+//                root: {
+//                    dataIndex: 'text',
+//                    expanded: true
+//                },
+//                listeners: {
+//                    itemclick: function(thisObject, record, item, index, e, eOpts) {
+//                        var aux = record.internalId;
+//
+//                        var capa = aux.split('_')[0];
+//                        var idEqpCoop = aux.split('_')[1];
+//
+//                        buscarEnMapa(capa, idEqpCoop);
+//                    },
+//                    itemcontextmenu: function(thisObject, record, item, index, e, eOpts) {
+//                        idEqpMen = record.internalId;
+//                        nameVeh = record.data.text;
+//                        if (idEqpMen.indexOf('ext-record') === -1) {
+//                            menuContext.showAt(e.getXY());
+//                        } else {
+//                            idEqpMen = '';
+//                            nameVeh = '';
+//                        }
+//                    }
+//                }
+//            }]
+//    });
 
     var menuContext = Ext.create('Ext.menu.Menu', {
         items: [
@@ -575,14 +668,14 @@ Ext.onReady(function() {
                         return '<b>{pais} , {ciudad}:</b><br>{barrio} , {avenidaP} , {avenidaS}';
                     }
                 },
-                listeners: {
-                    select: function(thisObject, record, eOpts) {
-                        var longitud = record[0].data.longitud;
-                        var latitud = record[0].data.latitud;
-                        var zoom = 18;
-                        localizarDireccion(longitud, latitud, zoom);
-                    }
-                },
+//                listeners: {
+//                    select: function(thisObject, record, eOpts) {
+//                        var longitud = record[0].data.longitud;
+//                        var latitud = record[0].data.latitud;
+//                        var zoom = 18;
+//                        localizarDireccion(longitud, latitud, zoom);
+//                    }
+//                },
                 pageSize: 10
             }, {
                 xtype: 'button',
@@ -590,7 +683,9 @@ Ext.onReady(function() {
                 tooltip: 'Ubicar mi Posición',
                 handler: function() {
                     getLocation();
+                    panelMapa.setActiveTab(0);
                 }
+
             }, {
                 xtype: 'splitbutton',
                 text: 'Cooperativas',
@@ -671,7 +766,7 @@ Ext.onReady(function() {
         layout: 'border',
         items: [panelMenu, panelEste, panelCentral]
     });
-  
-  storeEmpresas.load();
-loadMap();
+
+    storeEmpresas.load();
+    loadMap();
 });

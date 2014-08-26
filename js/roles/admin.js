@@ -282,9 +282,6 @@ Ext.onReady(function() {
     menuCoop = Ext.create('Ext.menu.Menu', {
         items: [],
         listeners: {
-//           activate: function(este, eOpts) {
-//               bandera=1;
-//            },
             click: function(menu, item, e, eOpts) {
                 for (var i = 0; i < showCoopMap.length; i++) {
                     if (showCoopMap[i][0] === item.getItemId()) {
@@ -442,10 +439,10 @@ Ext.onReady(function() {
 //                            {text: 'Registros de Panico', iconCls: 'icon-reset', handler: function() {
 //                                    showWinPanicosDaily();
 //                                }},
-//                            {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function() {
-////                                    ventanaExcesoVelocidad();
-//                                     showWinExcesosDaily();
-//                                }}
+                            {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function() {
+//                                    ventanaExcesoVelocidad();
+                                     showWinExcesosDaily();
+                                }}
                             , {text: 'Mantenimiento General', iconCls: 'icon-config', handler: function() {
                                     ventanaMantenimiento();
                                 }}
@@ -493,7 +490,7 @@ Ext.onReady(function() {
                 xtype: 'label',
                 html: '<section id="panelNorte">' +
                         '<center><strong id="name"> ' + (diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear()) + '</strong></center>' +
-                        '</section>',
+                        '</section>'
             },
             {
                 xtype: 'image',
@@ -527,7 +524,7 @@ Ext.onReady(function() {
                             color: '#157fcc'
                         },
                         html: '<section id="panelNorte">' +
-                                '<center><strong id="titulo">Sistema de Monitoreo Vehicular</strong></center>' +
+                                '<center><strong id="titulo">Sistema de Rastreo Vehicular</strong></center>' +
                                 '<strong id="subtitulo">Bienvenid@ al Sistema: ' + personKarview + '</strong>' +
                                 '</section>'
                     }]

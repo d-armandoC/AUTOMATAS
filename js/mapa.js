@@ -586,6 +586,8 @@ function graficarEstaciones(datos) {
 }
 
 function buscarEnMapa(idCompany, idVehicle) {
+    console.log(idCompany);
+    console.log(idVehicle);
     var lienzoP = map.getLayer('vehicleLayer');
     if (lienzoP === null) {
         Ext.MessageBox.show({
@@ -600,6 +602,7 @@ function buscarEnMapa(idCompany, idVehicle) {
             var objeto = lienzoP.getFeatureById(idVehicle);
             if (objeto === null) {
                 var cmp = menuCoop.down("[itemId=" + idCompany + "]");
+                console.log(cmp);
                 if (cmp === undefined) {
                     Ext.MessageBox.show({
                         title: 'Información',
