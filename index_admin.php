@@ -5,13 +5,9 @@
       header("Location: index.php");
     } else {
         if ($_SESSION["IDROLKARVIEW"] == 2) {
-            header("Location: index_central.php");
+            header("Location: index_empresas.php");
         } else if ($_SESSION["IDROLKARVIEW"] == 3) {
-            header("Location: index_municipio.php");
-        } else if ($_SESSION["IDROLKARVIEW"] == 4) {
             header("Location: index_propietario.php");
-        } else if ($_SESSION["IDROLKARVIEW"] == 6) {
-            header("Location: index_usuarios.php");
         }
     }
 ?>
@@ -35,8 +31,6 @@
        
        <script type="text/javascript" src="extjs-docs-5.0.0/extjs-build/build/packages/ext-charts/build/ext-charts.js"></script>
        
-<!--        <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
-        <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>-->
 
         <script type="text/javascript">
             <?php            
@@ -50,7 +44,6 @@
         </script>
         <script type="text/javascript" src="js/requerid/functions.js"></script>
         <script type="text/javascript" src="js/roles/admin.js"></script>
-<!--        <script type="text/javascript" src="js/mapa.js"></script>-->
 
         <script type="text/javascript" src="js/complements/loadLayer.js"></script>        
         <script type="text/javascript" src="js/complements/drawLine.js"></script>

@@ -11,10 +11,8 @@ if (!$mysqli = getConectionDb()) {
     $idPersona = $_SESSION["IDPERSONKARVIEW"];
     $idRol = $_SESSION["IDROLKARVIEW"];
 
-    if ($idRol == 4) {
-
-
-        $consultaSql = "SELECT v.id_vehiculo,v.id_equipo, v.vehiculo, v.reg_municipal, v.placa, concat(p.apellidos, ' ', p.nombres) as persona
+    if ($idRol == 3) {
+        $consultaSql = "SELECT v.id_vehiculo,v.id_equipo, v.vehiculo, v.placa, concat(p.apellidos, ' ', p.nombres) as persona
             FROM vehiculos v, personas p
             where v.id_persona = p.id_persona
             and v.id_vehiculo = 

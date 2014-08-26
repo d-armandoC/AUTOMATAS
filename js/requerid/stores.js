@@ -3,7 +3,6 @@
 var showCoopMap = new Array();
 var menuCoop;
 
-var bandera=0;
 Ext.define('vehModel', {
     extend: 'Ext.data.Model',
     fields: [

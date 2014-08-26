@@ -351,7 +351,8 @@ Ext.onReady(function() {
                 iconCls: 'icon-geocerca',
                 menu: [
                     {text: 'Administracion', iconCls: 'icon-find-geo', handler: function() {
-                            ventanaGeocerca();
+//                            ventanaGeocerca();
+                               ventanaAddGeo();
                         }},
                     {text: 'Envio Correos', iconCls: 'icon-email', handler: function() {
                             visualizarEnviosGeoCercas();
@@ -439,10 +440,10 @@ Ext.onReady(function() {
 //                            {text: 'Registros de Panico', iconCls: 'icon-reset', handler: function() {
 //                                    showWinPanicosDaily();
 //                                }},
-                            {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function() {
-//                                    ventanaExcesoVelocidad();
-                                     showWinExcesosDaily();
-                                }}
+//                            {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function() {
+////                                    ventanaExcesoVelocidad();
+//                                     showWinExcesosDaily();
+//                                }}
                             , {text: 'Mantenimiento General', iconCls: 'icon-config', handler: function() {
                                     ventanaMantenimiento();
                                 }}
@@ -462,6 +463,7 @@ Ext.onReady(function() {
                                 }},
                             {text: 'Reporte de Geocercas', iconCls: 'icon-report-geo', handler: function() {
                                     ventanaReporteGeocerca();
+//                                  
                                 }}, ,
                                     {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
                                             ventanaEventos();

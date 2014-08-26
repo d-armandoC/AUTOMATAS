@@ -63,20 +63,12 @@ if (!$mysqli = getConectionDb()) {
                             echo "<script type='text/javascript'>location.href='../../index_admin.php'</script>";
                             break;
                         case 2:
-                            $_SESSION["NAMESESIONKARVIEW"] = "index_central.php";
-                            echo "<script type='text/javascript'>location.href='../../index_central.php'</script>";
+                            $_SESSION["NAMESESIONKARVIEW"] = "index_empresas.php";
+                            echo "<script type='text/javascript'>location.href='../../index_empresas.php'</script>";
                             break;
                         case 3:
-                            $_SESSION["NAMESESIONKARVIEW"] = "index_municipio.php";
-                            echo "<script type='text/javascript'>location.href='../../index_municipio.php'</script>";
-                            break;
-                        case 4:
                             $_SESSION["NAMESESIONKARVIEW"] = "index_propietario.php";
                             echo "<script type='text/javascript'>location.href='../../index_propietario.php'</script>";
-                            break;
-                        case 6:
-                            $_SESSION["NAMESESIONKARVIEW"] = "index_usuarios.php";
-                            echo "<script type='text/javascript'>location.href='../../index_usuarios.php'</script>";
                             break;
                     }
                 } else {

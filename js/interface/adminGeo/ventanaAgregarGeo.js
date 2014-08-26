@@ -37,7 +37,6 @@ Ext.onReady(function() {
                     Object.getOwnPropertyNames(newValue).forEach(function(val, idx, array) {                    
                         if (newValue[val] == 1) {
                             trazando = 0;
-
                             lienzoGeoCercas.destroyFeatures();
                             for(var key in drawControls) {
                                 var control = drawControls[key];
