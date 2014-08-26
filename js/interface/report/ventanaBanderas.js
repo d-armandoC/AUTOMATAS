@@ -201,6 +201,10 @@ Ext.onReady(function() {
                     if (contenedorWinBan.getForm().isValid()) {
                         var trazar_ruta = this.up('form').down('[name=trazar_ruta]').getValue();
                         var reporte_ruta = this.up('form').down('[name=reporte_ruta]').getValue();
+                        var fechaInicial = this.up('form').down('[name=fechaIni]').getValue();
+                        var fechaFinal = this.up('form').down('[name=fechaFin]').getValue();
+                        
+                        
                         if (trazar_ruta || reporte_ruta) {
 
                             contenedorWinBan.getForm().submit({
@@ -229,30 +233,34 @@ Ext.onReady(function() {
                                         clearLienzoTravel();
                                         drawPointsRoute(resultado.puntos, "Puntos");
                                         drawRutaMapa(resultado.puntos);
+                                        
                                         var galones = obtenerGalones(resultado.puntos);
                                         var litros = obtenerLitros(resultado.puntos);
                                         var kilometraje = kilometrajeRecorrido(resultado.puntos);
+                                        
+                                        var velMaxima = velocidadmaxima(resultado.puntos);
+                                        var velMinima = velocidadMinimo(resultado.puntos);
+                                        var velMedia = velociadadMedia(resultado.puntos);
+                                        
+                                        var mayor60 = velociadadMayor60(resultado.puntos);
+                                        var mayor90 = velociadadMayor90(resultado.puntos);
+                                        
                                         tabpanelContain = Ext.create('Ext.form.Panel', {
+                                            closable: true,
+                                            title: '<b>Informe Tecnico</b>',
                                             autoScroll: true,
-                                            id: 'contenedoresg',
+                                            id: 'contenedor',
                                             name: 'contenedoresg',
                                             padding: '5 5 5 15',
-//                                            title: 'Reporte INformativo ',
                                             defaults: {
                                                 anchor: '100%',
-//                                                hideEmptyLabel: false
                                             },
                                             items: [
-                                                
                                                 {
                                                     xtype: 'fieldset',
-                                                    id: 'fsrepuesto',
                                                     autoHeight: true,
                                                      border:false,
-//                                                    checkboxToggle: true,
-//                                                    collapsed: true, // fieldset initially collapsed
                                                     disable: true,
-//                                                    collapsible: true,
                                                     layout: 'hbox',
                                                     padding: '5 5 5 15',
                                                           items: [
@@ -261,7 +269,7 @@ Ext.onReady(function() {
                                                             flex: 2,
                                                            title: '<b>Datos del Recorrido</b>',
                                                             padding: '5 5 5 5',
-//                                                    defaultType: 'radio',
+                                                            border:false,
                                                             layout: 'anchor',
                                                             defaults: {
                                                                 anchor: '100%',
@@ -270,12 +278,12 @@ Ext.onReady(function() {
                                                                 {
                                                                     html: '<TABLE id="tablestados">' +
                                                                             '<TR class="alt"> ' +
-                                                                            '   <TD> <IMG SRC="img/inicio.png"> <b>INICIO:</b></td>' +
-                                                                            '   <TD align="CENTER ">' + kilometraje + 'KM' + '</TD> ' +
+                                                                            '   <TD> <IMG SRC="img/inicio.png"> <b>FECHA DE NICIO:</b></td>' +
+                                                                            '   <TD align="CENTER ">' + formatoFecha(fechaInicial)+ '</TD> ' +
                                                                             '</TR> ' +
                                                                             '<TR class="alt"> ' +
-                                                                            '   <TD> <IMG SRC="img/inicio.png"> <b>FIN:</b></td>' +
-                                                                            '   <TD align="CENTER ">' + kilometraje + 'KM' + '</TD> ' +
+                                                                            '   <TD> <IMG SRC="img/inicio.png"> <b>FECHA FIN:</b></td>' +
+                                                                            '   <TD align="CENTER ">' + formatoFecha(fechaFinal )+ '</TD> ' +
                                                                             '</TR> ' +
                                                                             '<TR class="alt"> ' +
                                                                             '   <TD> <IMG SRC="img/inicio.png"> <b>DISTANCIA RECORRIDA:</b></td>' +
@@ -283,16 +291,16 @@ Ext.onReady(function() {
                                                                             '</TR> ' +
                                                                             '<TR class="alt"> ' +
                                                                             '   <TD> <IMG SRC="img/inicio.png"> <b>CONSUMO DE COMBUSTIBLE:</b></td>' +
-                                                                            '   <TD align="CENTER ">' + kilometraje + 'KM' + '</TD> ' +
+                                                                            '   <TD align="CENTER ">' + litros+'LT' +' | '+ galones+'GL'+ '</TD> ' +
                                                                             '</TR> ' +
                                                                             ' </TABLE>'
                                                                 }]},
                                                         {
                                                             xtype: 'fieldset',
                                                             flex: 2,
-                                                            title: 'Velocidades del Recorido:',
+                                                            title: '<b>Velocidades del Recorido:</b>',
                                                             padding: '5 5 5 15',
-//                                                            border:false,
+                                                            border:false,
                                                             layout: 'anchor',
                                                             defaults: {
                                                                 anchor: '100%',
@@ -302,21 +310,16 @@ Ext.onReady(function() {
                                                                 {
                                                                       html: '<TABLE id="tablestados">' +
                                                                             '<TR class="alt"> ' +
-                                                                            '   <TD> <IMG SRC="img/inicio.png"> <b>INICIO:</b></td>' +
-                                                                            '   <TD align="CENTER ">' + kilometraje + 'KM' + '</TD> ' +
+                                                                            '   <TD> <IMG SRC="img/inicio.png"> <b>MAXIMA:</b></td>' +
+                                                                            '   <TD align="CENTER ">' + velMaxima + ' KM/H' + '</TD> ' +
                                                                             '</TR> ' +
                                                                             '<TR class="alt"> ' +
-                                                                            '   <TD> <IMG SRC="img/inicio.png"> <b>FIN:</b></td>' +
-                                                                            '   <TD align="CENTER ">' + kilometraje + 'KM' + '</TD> ' +
+                                                                            '   <TD> <IMG SRC="img/inicio.png"> <b>MINIMA:</b></td>' +
+                                                                            '   <TD align="CENTER ">' + velMinima + ' KM/hH'+ '</TD> ' +
                                                                             '</TR> ' +
                                                                             '<TR class="alt"> ' +
-                                                                            '   <TD> <IMG SRC="img/inicio.png"> <b>DISTANCIA RECORRIDA:</b></td>' +
-                                                                            '   <TD align="CENTER ">' + kilometraje + 'KM' + '</TD> ' +
-                                                                            '</TR> ' +
-                                                                            '<TR class="alt"> ' +
-                                                                            '   <TD> <IMG SRC="img/inicio.png"> <b>CONSUMO DE COMBUSTIBLE:</b></td>' +
-                                                                            '   <TD align="CENTER ">' + kilometraje + 'KM' + '</TD> ' +
-                                                                            '</TR> ' +
+                                                                            '   <TD> <IMG SRC="img/inicio.png"> <b>PROMEDIO:</b></td>' +
+                                                                            '   <TD align="CENTER ">' + velMedia + ' KM/H' + '</TD> ' +
                                                                             ' </TABLE>'
                                                                 }
                                                             ]
@@ -325,72 +328,39 @@ Ext.onReady(function() {
                                                 },
                                                 {
                                                     xtype: 'fieldset',
-                                                    flex: 2,
-                                                    title: 'Velocidades del Recorido:',
-                                                    padding: '5 5 5 5',
-//                                                    defaultType: 'radio',
-                                                    layout: 'anchor',
-                                                    defaults: {
-                                                        anchor: '100%',
-                                                        hideEmptyLabel: false
-                                                    },
-                                                    items: [
+                                                    autoHeight: true,
+                                                     border:false,
+                                                    disable: true,
+                                                    layout: 'hbox',
+                                                    padding: '5 5 5 15',
+                                                          items: [
                                                         {
-                                                            html: '<TABLE id="tablestados">' +
-                                                                    '<TR class="alt"> ' +
-                                                                    '   <TD> <IMG SRC="img/inicio.png"> </td><td><b>Distancia Recorrida en Kilometros:"<td> </td> ' +
-                                                                    '   <TD align="EAST ">' + kilometraje + 'KM' + '</TD> ' +
-                                                                    '</TR> ' +
-                                                                    '<TR> ' +
-                                                                    '   <TD> <IMG SRC="img/fin.png"></TD> ' +
-                                                                    '   <TD align="EAST ">' + 'hol1' + '</TD> ' +
-                                                                    '</TR> ' +
-                                                                    ' </TABLE>'
-                                                        }
-                                                    ]
-                                                },
-                                                {
-                                                    xtype: 'fieldset',
-                                                    flex: 2,
-                                                    title: 'Excesos de Velocidad del Recorrido:',
-                                                    padding: '5 5 5 5',
-//                                                    defaultType: 'radio',
-                                                    layout: 'anchor',
-                                                    defaults: {
-                                                        anchor: '100%',
-                                                        hideEmptyLabel: false
-                                                    },
-                                                    items: [
-                                                        {
-                                                            html: '<TABLE id="tablestados">' +
-                                                                    '<TR class="alt"> ' +
-                                                                    '   <TD> <IMG SRC="img/inicio.png"> </td><td><b>Distancia Recorrida en Kilometros:"<td> </td> ' +
-                                                                    '   <TD align="EAST ">' + kilometraje + 'KM' + '</TD> ' +
-                                                                    '</TR> ' +
-                                                                    '<TR> ' +
-                                                                    '   <TD> <IMG SRC="img/fin.png"></TD> ' +
-                                                                    '   <TD align="EAST ">' + 'hol1' + '</TD> ' +
-                                                                    '</TR> ' +
-                                                                    ' </TABLE>'
-                                                        }
+                                                            xtype: 'fieldset',
+                                                            flex: 2,
+                                                           title: '<b>Excesos de Velocidad del Recorrido</b>',
+                                                            padding: '5 5 5 5',
+                                                            border:false,
+                                                            layout: 'anchor',
+                                                            defaults: {
+                                                                anchor: '100%',
+                                                                hideEmptyLabel: false
+                                                            }, items: [
+                                                                {
+                                                                    html: '<TABLE id="tablestados">' +
+                                                                            '<TR class="alt"> ' +
+                                                                            '   <TD> <IMG SRC="img/inicio.png"> <b>MAYOR A 60 KM/h:</b></td>' +
+                                                                            '   <TD align="CENTER "> ' +  mayor60+ ' ' + '</TD> ' +
+                                                                            '</TR> ' +
+                                                                            '<TR class="alt"> ' +
+                                                                            '   <TD> <IMG SRC="img/inicio.png"> <b>MAYOR A 90 KM/H:</b></td>' +
+                                                                            '   <TD align="CENTER "> ' + mayor90+ ' ' + '</TD> ' +
+                                                                            '</TR> ' +
+                                                                            ' </TABLE>'
+                                                                }]}
                                                     ]
                                                 }
-
                                             ]
-                                        })
-
-//                                        tabla = "<div style=' margin:auto ;padding:1em '>"
-//                                                + "<table>"
-//                                                + "<tr><td>&nbsp</td><td><b>Distancia Recorrida en Kilometros:" + '<td> </td>' + '<td>' + kilometraje + 'KM' + "</td></tr>"
-//                                                + "<tr><td>&nbsp</td><td><b>Litros de Gasolina Consumidos:" + '<td> </td>' + '<td>' + litros + "</td></tr>"
-//                                                + "<tr><td>&nbsp</td><td><b>Galones de Gasolina Consumidos:" + '<td> </td>' + '<td>' + galones + "</td></tr>"
-//                                                + "</table>"
-//                                                + "<br/>"
-//                                                + "</div>";
-//                                        Ext.getCmp('contenedoresg').update(tabla);
-//                                        VentanaCombustibles.hide();
-
-
+                                        });
                                     }
 
                                     if (reporte_ruta) {
@@ -510,8 +480,8 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
         {text: '<b>Id Evento</b>', width: 80, dataIndex: 'idEvento', align: 'center'},
     ];
     var gridFlags = Ext.create('Ext.grid.Panel', {
+        title: '<center>Informe Detallado</center>',
         region: 'center',
-        title: '<center>Recorridos Historico: ' + vehiculo + '<br>Desde: ' + fi + ' ' + hi + ' | Hasta: ' + ff + ' ' + hf + '</center>',
         store: storeFlags,
         columnLines: true,
         autoScroll: true,
@@ -530,19 +500,8 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
         }
     });
 
-//    var tabpanelContenedor = Ext.create('Ext.form.Panel', {
-//        id: 'contenedoresg',
-//        name: 'contenedoresg',
-//        title: 'Reporte INformativo ',
-//        items: [
-//            {
-//                id: 'contenido2',
-//                html: "",
-//            }
-//        ]
-//    });
-
     panelGrid = Ext.create('Ext.tab.Panel', {
+       title: '<center>Recorridos Historico: ' + vehiculo + '<br>Desde: ' + fi + ' ' + hi + ' | Hasta: ' + ff + ' ' + hf + '</center>',
         region: 'center',
         frame: true,
         deferreRender: false,

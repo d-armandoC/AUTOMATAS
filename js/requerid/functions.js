@@ -82,23 +82,23 @@ function kilometrajeRecorrido(json) {
         k = parseFloat(Dist(lat1, lon1, lat2, lon2));
         kilometraje = kilometraje + k;
     }
-    return kilometraje;
+    return kilometraje.toFixed(2);
 }
 function obtenerLitros(json) {
-    var kilometraje = kilometrajeRecorrido(json);
+    var kilometraje = parseFloat(kilometrajeRecorrido(json));
     var kilEstimado=100;
     var litrosEstimadoo=7.5;
     var litros= kilometraje*litrosEstimadoo/kilEstimado;
-    return litros;
+    return litros.toFixed(2);
 }
 
 function obtenerGalones(json) {
-    var litros = obtenerLitros(json);
+    var litros = parseFloat(obtenerLitros(json));
     console.log(litros);
     var litrosEstimado=3.78541178;
     var galonEstimado=1;
     var galones= litros*galonEstimado/litrosEstimado;
-    return galones;
+    return galones.toFixed(2);
 }
 
 function Dist(lat1, lon1, lat2, lon2) {
@@ -112,11 +112,66 @@ function Dist(lat1, lon1, lat2, lon2) {
     var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(rad(lat1)) * Math.cos(rad(lat2)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var d = R * c;
-    console.log(d.toFixed(3));
-    return d.toFixed(3);                      //Retorna tres decimales
-
-
+    return d.toFixed(2);                      //Retorna tres decimales
 }
+
+function velocidadmaxima(json) {
+    var maximo = json[0].velocidad;
+    for (var i = 0; i < json.length; i++) {
+        var objeto = json[i];
+        lat1 = objeto.velocidad;
+        if(objeto.velocidad>maximo){
+            maximo=objeto.velocidad;
+        }
+    }
+    return maximo;
+}
+
+function velocidadMinimo(json) {
+    var minimo = json[0].velocidad;
+    for (var i = 0; i < json.length; i++) {
+        var objeto = json[i];
+        lat1 = objeto.velocidad;
+        if(objeto.velocidad<minimo){
+            minimo=objeto.velocidad;
+        }
+    }
+    return minimo;
+}
+
+function velociadadMedia(json) {
+    var promedio = 0;
+    for (var i = 0; i < json.length; i++) {
+        var objeto = json[i];
+        promedio = promedio+objeto.velocidad;
+    }
+    return promedio/json.length;
+}
+
+function velociadadMayor60(json) {
+    var contmayor = 0;
+    for (var i = 0; i < json.length; i++) {
+        var objeto = json[i];
+        if(objeto.velocidad>60&&objeto.velocidad<90){
+           contmayor=contmayor+1;
+        }
+    }
+    return contmayor;
+}
+
+function velociadadMayor90(json) {
+    var contmayor = 0;
+    for (var i = 0; i < json.length; i++) {
+        var objeto = json[i];
+        if(objeto.velocidad>90){
+           contmayor=contmayor+1;
+        }
+    }
+    return contmayor;
+}
+
+
+
 
 
 
