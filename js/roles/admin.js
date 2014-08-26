@@ -23,14 +23,14 @@ var panelTabMapaAdmin;
 var drawControls;
 var required = '<span style="color:red;font-weight:bold" data-qtip="Requerido">*</span>';
 
-var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
-var f=new Date();
+var meses = new Array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+var diasSemana = new Array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
+var f = new Date();
 //document.write(diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear());
 
 var label = Ext.create('Ext.form.Label', {
     text: 'hola',
-    id:'tiempo',
+    id: 'tiempo',
     style: {
         color: 'gray'
     }
@@ -60,7 +60,7 @@ var spot = Ext.create('Ext.ux.Spotlight', {
 Ext.onReady(function() {
     var idEqpMen, nameVeh;
     //Ext.getCmp('tiempo').setValue((diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear()));
-   
+
     Ext.apply(Ext.form.field.VTypes, {
         daterange: function(val, field) {
             var date = field.parseDate(val);
@@ -110,7 +110,6 @@ Ext.onReady(function() {
         },
         num1Text: 'Solo carateres \n\
        numéricos',
-        
         password: function(val, field) {
             if (field.initialPassField) {
                 var pwd = field.up('form').down('#' + field.initialPassField);
@@ -160,11 +159,11 @@ Ext.onReady(function() {
         campos: function(val, field) {
             if (!/^[-0-9.A-Z.a-z./áéíóúñÑ\s*]{2,45}$/.test(val)) {
                 return false;
-               
+
             }
-             
+
             return true;
-            Ext.Msg.alert('Error','Solo carateres alfa numéricos');
+            Ext.Msg.alert('Error', 'Solo carateres alfa numéricos');
         },
         camposText: 'Solo carateres alfa numéricos<br> Tamaño min de 2 y un máx de 45 carateres',
 //para direccion
@@ -262,12 +261,12 @@ Ext.onReady(function() {
         },
         num1Text: 'Solo carateres numéricos',
 //para numeros 3-45
-        num2: function(val, field) {
-            if (!/^[0-9]{3,45}$/.test(val)) {
-                return false;
-            }
-            return true;
-        },
+                num2: function(val, field) {
+                    if (!/^[0-9]{3,45}$/.test(val)) {
+                        return false;
+                    }
+                    return true;
+                },
         num2Text: 'Solo carateres numéricos mínimo 3 y un máximo de 45',
         camposRegMun: function(val, field) {
             if (!/^[-0-9A-Za-z]{3,10}$/.test(val)) {
@@ -280,8 +279,8 @@ Ext.onReady(function() {
     });
 ////////////
     Ext.tip.QuickTipManager.init();
-  
-      menuCoop = Ext.create('Ext.menu.Menu', {
+
+    menuCoop = Ext.create('Ext.menu.Menu', {
         items: [],
         listeners: {
             click: function(menu, item, e, eOpts) {
@@ -312,8 +311,8 @@ Ext.onReady(function() {
             }
         }
     });
-  
-  
+
+
     var administracion = Ext.create('Ext.button.Button', {
         text: 'Administración',
         iconCls: 'icon-direccion',
@@ -332,7 +331,7 @@ Ext.onReady(function() {
                     {text: 'Enviar CMD', iconCls: 'icon-cmd', handler: function() {
                             ventComands();
                         }},
-                     '-',
+                    '-',
                     {text: 'Envio Correo', iconCls: 'icon-email', handler: function() {
                             ventanaEnvioMail();
                         }}
@@ -413,11 +412,12 @@ Ext.onReady(function() {
     });
 
     var salir = Ext.create('Ext.button.Button', {
+        id:'custom',
         text: 'Salir',
         scope: this,
         icon: 'img/salir.png',
         handler: function() {
-            Ext.MessageBox.confirm('Exit', 'Desea Salir del Sistema ?', function(choice) {
+                  Ext.MessageBox.confirm('SALIR', 'Desea Salir del Sistema ?', function(choice) {
                 if (choice === 'yes') {
                     window.location = 'php/login/logout.php';
                 }
@@ -457,21 +457,20 @@ Ext.onReady(function() {
 //                            {text: 'Consume de Combustible', iconCls: 'icon-flota', handler: function() {
 //                                   // ventanaConsumoCombustibles();
 //                                }},
-                             {text: 'Reporte de Paradas', iconCls: 'icon-unlock', handler: function() {
+                            {text: 'Reporte de Paradas', iconCls: 'icon-unlock', handler: function() {
                                     showWinPradas();
                                 }},
-                              {text: 'Reporte de Geocercas', iconCls: 'icon-report-geo', handler: function() {
-                                     ventanaReporteGeocerca();
-                                }},,
-                            {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
-                                    ventanaEventos();
-                                }},
+                            {text: 'Reporte de Geocercas', iconCls: 'icon-report-geo', handler: function() {
+                                    ventanaReporteGeocerca();
+                                }}, ,
+                                    {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
+                                            ventanaEventos();
+                                        }},
                             {text: 'CMD Enviados', iconCls: 'icon-cmd-hist', handler: function() {
-                            ventanaCmdHistorial();
-                        }},
+                                    ventanaCmdHistorial();
+                                }},
                         ]
-                    }, 
-                    
+                   },
 //                    {text: 'Estadisticas', iconCls: 'icon-statistics', handler: function() {
 //                            window.open('statistics.php');
 //                        }}, '-',
@@ -490,9 +489,8 @@ Ext.onReady(function() {
             {
                 xtype: 'label',
                 html: '<section id="panelNorte">' +
-                        '<center><strong id="name"> ' + (diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear())+ '</strong></center>' +
-                      '</section>',
-                
+                        '<center><strong id="name"> ' + (diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear()) + '</strong></center>' +
+                        '</section>',
             },
             {
                 xtype: 'image',
@@ -527,7 +525,7 @@ Ext.onReady(function() {
                         },
                         html: '<section id="panelNorte">' +
                                 '<center><strong id="titulo">Sistema de Monitoreo Vehicular</strong></center>' +
-                                '<strong id="subtitulo">Bienvenid@ al Sistema: ' + personKarview  + '</strong>' +
+                                '<strong id="subtitulo">Bienvenid@ al Sistema: ' + personKarview + '</strong>' +
                                 '</section>'
                     }]
             },
@@ -594,7 +592,7 @@ Ext.onReady(function() {
                             if (this.up('form').getForm().isValid()) {
                                 var capa = this.up('form').down('[name=cbxEmpresas]').getValue();
                                 var idEqpCoop = this.up('form').down('[name=cbxVeh]').getValue();
-                                 buscarEnMapa(capa, idEqpCoop);
+                                buscarEnMapa(capa, idEqpCoop);
                             } else {
                                 Ext.example.msg('Error', 'Escoja un Vehiculo');
                             }
@@ -659,15 +657,15 @@ Ext.onReady(function() {
                     expanded: true
                 },
                 listeners: {
-                        itemclick: function(thisObject, record, item, index, e, eOpts) {
+                    itemclick: function(thisObject, record, item, index, e, eOpts) {
                         if (connectionMap()) {
                             var id = record.internalId;
 //                            if (id.indexOf('_') !== -1) {
-                                var aux = record.id.split('_');
-                                var idEmpresa = parseInt(aux[0]);
-                                var idVehicle = 'last' + aux[1];
-                                buscarEnMapa(idEmpresa, idVehicle);
-                                panelTabMapaAdmin.setActiveTab(0);
+                            var aux = record.id.split('_');
+                            var idEmpresa = parseInt(aux[0]);
+                            var idVehicle = 'last' + aux[1];
+                            buscarEnMapa(idEmpresa, idVehicle);
+                            panelTabMapaAdmin.setActiveTab(0);
 //                            };
                         }
                     }
@@ -797,7 +795,7 @@ Ext.onReady(function() {
                 xtype: 'button',
                 iconCls: 'icon-geoloc',
                 tooltip: 'Ubicar mi Posición',
-                 handler: function() {
+                handler: function() {
                     getLocation();
                     panelTabMapaAdmin.setActiveTab(0);
                 }
