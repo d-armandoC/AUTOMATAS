@@ -28,7 +28,7 @@ Ext.onReady(function() {
                 root: 'data'
             }
         },
-        fields: ['fecha', 'hora', 'evento', 'latitud', 'longitud', 'velocidad']
+        fields: ['fecha', 'hora', 'velocidad', 'latitud', 'longitud']
     });
     cbxEmpresasBDExcesos = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Cooperativa',
@@ -241,12 +241,9 @@ function obtenerExcesoVelocidad() {
             waitMsg: 'Obteniendo Información',
             params: {
                 idCompanyExcesos: empresa,
-                fechaIni: dateStart,
-                fechaFin: dateFinish,
-                horaIni: timeIni1,
-                horaFin: timeFin1,
-                limiIni: limiteIni,
-                limiFin: limiteFin
+                fechaIni: dateStart, fechaFin: dateFinish,
+                horaIni: timeIni1, horaFin: timeFin1,
+                limiIni: limiteIni, limiFin: limiteFin
             },
             failure: function(form, action) {
                 Ext.MessageBox.show({
@@ -297,13 +294,18 @@ function obtenerExcesoVelocidad() {
 //Id del despacho que se esta realizando
                             var reg = record.get('idEquipoExceso');
                             var persona = record.get('personaExceso');
+                            var horaStart = timeIni1.getRawValue();
+                            var horafinish = timeFin1.getRawValue();
+                            var limiStart = limiteIni.getRawValue();
+                            var limifinish = limiteFin.getRawValue();
                             bandera = 1;
-                            gridViewDataExcesos.setTitle('<center>Vista de Excesos de Velocidad: ' + persona + ' <br> Equipo: ' + reg + ' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
+                            gridViewDataExcesos.setTitle('<center>Vista de velocidad detallado: ' + persona + ' <br> Equipo: ' + reg + ' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
                             storeViewExcesosVelocidad.load({
                                 params: {
                                     idEquipo: reg,
-                                    fechaIni: dateStart,
-                                    fechaFin: dateFinish
+                                    fechaIni: dateStart, fechaFin: dateFinish,
+                                    horaST: horaStart, horaFI: horafinish,
+                                    limiST: limiStart, limiFI: limifinish
                                 }
                             });
                         }
@@ -326,7 +328,6 @@ function obtenerExcesoVelocidad() {
                             format: '0.00'},
                         {text: 'Fecha', width: 200, dataIndex: 'fecha', align: 'center'},
                         {text: 'Hora', width: 200, dataIndex: 'hora', align: 'center'},
-                        {text: 'Evento', width: 250, dataIndex: 'evento', align: 'center'},
                         {text: 'Latitud', width: 250, dataIndex: 'latitud', align: 'center'},
                         {text: 'Longitud', width: 250, dataIndex: 'longitud', align: 'center'},
                     ],
