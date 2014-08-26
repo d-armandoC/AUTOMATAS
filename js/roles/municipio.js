@@ -1,7 +1,7 @@
 Ext.Loader.setConfig({
     enabled: true
 });
-Ext.Loader.setPath('Ext.ux', 'extjs-docs-4.2.2/extjs-build/examples/ux');
+Ext.Loader.setPath('Ext.ux', 'extjs-docs-5.0.0/extjs-build/build/examples/ux');
 Ext.require([
     'Ext.grid.*',
     'Ext.data.*',
@@ -23,6 +23,9 @@ var panelMapa;
 
 var drawControls;
 var required = '<span style="color:red;font-weight:bold" data-qtip="Requerido">*</span>';
+var meses = new Array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+var diasSemana = new Array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
+var f = new Date();
 
 var filters = {
     ftype: 'filters',
@@ -114,7 +117,6 @@ Ext.onReady(function() {
         iconCls: 'icon-config',
         scope: this,
         menu: [
-            
 //            {text: 'Usuarios', iconCls: 'icon-user', handler: function() {
 //                    ventAddUser();
 //                }},
@@ -141,14 +143,14 @@ Ext.onReady(function() {
                     ventanaEnvioMail();
                 }},
             {text: 'Mantenimientos', iconCls: 'icon-add-geo', handler: function() {
-                   // ventAddMantenimientos();
-                        Ext.MessageBox.show({
-                                title: ' IMPORTANTE',
-                                msg: 'ESTAMOS TRABAJANDO PARA UN MEJOR SERVICIO.....',
-                                icon: Ext.MessageBox.OK,
-                                buttons: Ext.Msg.OK
-                            });
-                   
+                    // ventAddMantenimientos();
+                    Ext.MessageBox.show({
+                        title: ' IMPORTANTE',
+                        msg: 'ESTAMOS TRABAJANDO PARA UN MEJOR SERVICIO.....',
+                        icon: Ext.MessageBox.OK,
+                        buttons: Ext.Msg.OK
+                    });
+
                 }}
         ]
     });
@@ -203,17 +205,17 @@ Ext.onReady(function() {
     });
 
     var monitoreo = Ext.create('Ext.button.Button', {
-            text: 'Monitoreo', iconCls: 'icon-monitoreo', handler: function() {
-                    window.open('monitorTeam.php');
-                }
-            
+        text: 'Monitoreo', iconCls: 'icon-monitoreo', handler: function() {
+            window.open('monitorTeam.php');
+        }
+
     });
 
     var salir = Ext.create('Ext.button.Button', {
         text: 'Salir',
         scope: this,
         icon: 'img/salir.png',
-          handler: function() {
+        handler: function() {
             Ext.MessageBox.confirm('Exit', 'Desea Salir del Sistema ?', function(choice) {
                 if (choice === 'yes') {
                     window.location = 'php/login/logout.php';
@@ -296,7 +298,7 @@ Ext.onReady(function() {
             },
             geocerca,
             editPosEmp,
-           // extra,
+            // extra,
             //monitoreo,
             administracion,
             salir, '->', {
@@ -605,12 +607,14 @@ Ext.onReady(function() {
         frame: true,
         deferreRender: false,
         activeTab: 0,
-        items: [{
+        items: [
+            {
                 title: 'Mapa',
                 id: 'panelMapaTab',
                 iconCls: 'icon-mapa',
                 html: '<div id="map"></div>'
-            }]
+            }
+        ]
     });
 
     storeEventos = Ext.create('Ext.data.JsonStore', {
@@ -667,6 +671,7 @@ Ext.onReady(function() {
         layout: 'border',
         items: [panelMenu, panelEste, panelCentral]
     });
-
-    storeEmpresas.load();
+  
+  storeEmpresas.load();
+loadMap();
 });

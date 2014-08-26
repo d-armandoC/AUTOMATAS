@@ -1,8 +1,9 @@
 //Modelos para Store y JsonStore
 
-var menuCoop;
 var showCoopMap = new Array();
+var menuCoop;
 
+var bandera=0;
 Ext.define('vehModel', {
     extend: 'Ext.data.Model',
     fields: [
@@ -106,8 +107,8 @@ var storeDevice = Ext.create('Ext.data.Store', {
 
 
 var storeEmpresas = Ext.create('Ext.data.Store', {
-    autoDestroy: true,
     autoLoad: true,
+    autoDestroy: true,
     proxy: {
         type: 'ajax',
         url: 'php/combobox/comboEmpresas.php',
@@ -119,18 +120,13 @@ var storeEmpresas = Ext.create('Ext.data.Store', {
     fields: ['id', 'idTipoEmpresa', 'text', 'latitud', 'longitud', 'direccion', 'telefono', 'email'],
     listeners: {
         load: function(thisObject, records, successful, eOpts) {
-            
             for (var i = 0; i < records.length; i++) {
                 var dataCoop = records[i].data;
                 showCoopMap[i] = [dataCoop.id, dataCoop.text, false];
-                
             }
             for (var i = 0; i < showCoopMap.length; i++) {
-                if (showCoopMap[i][0] >=1) {
-//                    console.log(showCoopMap[i][0]+'po1');
-//                    console.log(showCoopMap[i][1]+'po2');
-//                    console.log(showCoopMap[i][2]+'pos3');
-                    menuCoop.add({itemId: showCoopMap[i][0], text: showCoopMap[i][1], checked: showCoopMap[i][2]});
+                if (typeof menuCoop!== 'undefined') {
+                      menuCoop.add({itemId: showCoopMap[i][0], text: showCoopMap[i][1], checked: showCoopMap[i][2]});  
                 }
             }
 
@@ -318,6 +314,7 @@ var storePersonas = Ext.create('Ext.data.Store', {
 
 var storeMails = Ext.create('Ext.data.Store', {
     autoDestroy: true,
+    
     fields: ['id_persona', 'persona', 'email', 'evt1', 'evt2', 'evt3', 'evt4', 'evt5', 'evt6',
         'evt7', 'evt8', 'evt9', 'evt10', 'evt11', 'evt12', 'evt13', 'evt14', 'evt15', 'evt16', 'evt17', 'evt18'],
     proxy: {

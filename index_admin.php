@@ -48,11 +48,7 @@
                 ";
             ?>
         </script>
-         <!--Dependencias-->
         <script type="text/javascript" src="js/requerid/functions.js"></script>
-        <script type="text/javascript" src="js/requerid/stores.js"></script>
-        <!--Fin Dependencias-->
-        
         <script type="text/javascript" src="js/roles/admin.js"></script>
 <!--        <script type="text/javascript" src="js/mapa.js"></script>-->
 
@@ -116,6 +112,13 @@
         <script type="text/javascript" src="js/cuenta_Usuario/ventana_cambiar.js"></script>
        <script type="text/javascript" src="js/cuenta_Usuario/modificarUsuario.js"></script>
        <script type="text/javascript" src="js/cuenta_Usuario/actualizarEmail.js"></script>
+       
+       
+           <!--Dependencias-->
+        
+        <script type="text/javascript" src="js/requerid/stores.js"></script>
+        <!--Fin Dependencias-->
+        
     
      <!--Ayuda-->
         <!--<script type="text/javascript" src="js/gui/menu/windowAbout.js"></script>-->

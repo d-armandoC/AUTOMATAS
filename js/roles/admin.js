@@ -27,7 +27,6 @@ var meses = new Array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Ju
 var diasSemana = new Array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
 var f = new Date();
 //document.write(diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear());
-
 var label = Ext.create('Ext.form.Label', {
     text: 'hola',
     id: 'tiempo',
@@ -283,10 +282,14 @@ Ext.onReady(function() {
     menuCoop = Ext.create('Ext.menu.Menu', {
         items: [],
         listeners: {
+//           activate: function(este, eOpts) {
+//               bandera=1;
+//            },
             click: function(menu, item, e, eOpts) {
                 for (var i = 0; i < showCoopMap.length; i++) {
                     if (showCoopMap[i][0] === item.getItemId()) {
                         showCoopMap[i][2] = item.checked;
+
                         if (!item.checked) {
                             var form = Ext.create('Ext.form.Panel');
                             form.getForm().submit({
@@ -412,12 +415,12 @@ Ext.onReady(function() {
     });
 
     var salir = Ext.create('Ext.button.Button', {
-        id:'custom',
+        id: 'custom',
         text: 'Salir',
         scope: this,
         icon: 'img/salir.png',
         handler: function() {
-                  Ext.MessageBox.confirm('SALIR', 'Desea Salir del Sistema ?', function(choice) {
+            Ext.MessageBox.confirm('SALIR', 'Desea Salir del Sistema ?', function(choice) {
                 if (choice === 'yes') {
                     window.location = 'php/login/logout.php';
                 }
@@ -470,7 +473,7 @@ Ext.onReady(function() {
                                     ventanaCmdHistorial();
                                 }},
                         ]
-                   },
+                    },
 //                    {text: 'Estadisticas', iconCls: 'icon-statistics', handler: function() {
 //                            window.open('statistics.php');
 //                        }}, '-',
@@ -879,6 +882,6 @@ Ext.onReady(function() {
         layout: 'border',
         items: [panelMenu, panelEste, panelCentral]
     });
-    storeEmpresas.load();
+     storeEmpresas.load();
     loadMap();
 });

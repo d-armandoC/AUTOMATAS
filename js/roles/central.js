@@ -1,7 +1,7 @@
 Ext.Loader.setConfig({
     enabled: true
 });
-Ext.Loader.setPath('Ext.ux', 'extjs-docs-4.2.2/extjs-build/examples/ux');
+Ext.Loader.setPath('Ext.ux', 'extjs-docs-5.0.0/extjs-build/build/examples/ux');
 Ext.require([
     'Ext.grid.*',
     'Ext.data.*',
@@ -40,7 +40,7 @@ var filters = {
 Ext.onReady(function() {
     var idEqpMen, nameVeh;
 
-    Ext.apply(Ext.form.field.VTypes, {
+        Ext.apply(Ext.form.field.VTypes, {
         daterange: function(val, field) {
             var date = field.parseDate(val);
 
@@ -59,13 +59,36 @@ Ext.onReady(function() {
                 end.validate();
                 this.dateRangeMin = date;
             }
-            /*
-             * Always return true since we're only using this vtype to set the
-             * min/max allowed values (these are tested for after the vtype test)
-             */
             return true;
         },
         daterangeText: 'Start date must be less than end date',
+        placaValida: function(val, field) {
+            var partes = val.split("");
+            if (partes.length === 7) {
+                if (!/^[A-Z]{3}[0-9]{4}$/.test(val.toUpperCase())) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                if (!/^[A-Z]{3}[0-9]{3}$/.test(val.toUpperCase())) {
+                    return false;
+                } else {
+                    return true;
+                }
+
+            }
+        },
+        placaValidaText: 'Ingrese un numero de placa valido <br>\n\
+                           Ej:(LAB3532) 3 letras 4 numeros',
+        digitos: function(val, field) {
+            if (!/^[0-9]{1,45}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        num1Text: 'Solo carateres \n\
+       numéricos',
         password: function(val, field) {
             if (field.initialPassField) {
                 var pwd = field.up('form').down('#' + field.initialPassField);
@@ -73,12 +96,11 @@ Ext.onReady(function() {
             }
             return true;
         },
-        passwordText: 'Passwords do not match',
+        passwordText: 'Las Contraseñas no coinciden',
         cedulaValida: function(val, field) {
             if (val.length !== 10) {
                 return false;
             }
-
             if (val.length === 10) {
                 if (check_cedula(val)) {
                     return true;
@@ -89,14 +111,150 @@ Ext.onReady(function() {
             return true;
         },
         cedulaValidaText: 'Numero de Cedula Invalida',
-        placaValida: function(val, field) {
-            var partes = val.split("-");
-            if (partes.length === 2) {
+        numeroTelefono: function(val, field) {
+            var partes = val.split("");
+            if (partes.length === 10) {
+                if (!/^[0]{1}[9]{1}[0-9]{8}$/.test(val)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                if (!/^[0]{1}[7]{1}[0-9]{7}$/.test(val)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        },
+        numeroTelefonoText: 'Ingresar solo caracteres numéricos válidos <br>que empiezen con [09] movil tamaño de (10)dígitos<br> 0 [072] convencional tamaño de (9)dígitos ',
+        emailNuevo: function(val, field) {
+            if (!/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/.test(val)) {
                 return false;
             }
             return true;
         },
-        placaValidaText: 'No utilice interfaceones'
+        emailNuevoText: 'Dede ingresar segun el formato kradac@kradac.com <br>sin caracteres especiales',
+        campos: function(val, field) {
+            if (!/^[-0-9.A-Z.a-z./áéíóúñÑ\s*]{2,45}$/.test(val)) {
+                return false;
+
+            }
+
+            return true;
+            Ext.Msg.alert('Error', 'Solo carateres alfa numéricos');
+        },
+        camposText: 'Solo carateres alfa numéricos<br> Tamaño min de 2 y un máx de 45 carateres',
+//para direccion
+        direccion: function(val, field) {
+            if (!/^[-0-9.A-Z.a-z.áéíóúñ()\s*]{2,150}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        direccionText: 'Solo carateres alfa numéricos<br> Tamaño min de 2 y un máx de 150 carateres',
+//Metodo utilizado para controlar caracteres alfanuericos y el tamano del campo "Reg. Municipal"
+//del archivo administracion de buses (vehicle.js)
+        camposVehicleMax10: function(val, field) {
+            if (!/^[-0-9.A-Z.a-z.áéíóúñ\s*]{5,10}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        camposVehicleMax10Text: 'Solo carateres alfa numéricos<br> Tamaño min de 5 y un máx de 10 carateres',
+//Metodo utilizado para controlar caracteres alfanuericos y el tamano de los campos
+//del archivo administracion de buses (vehicle.js) que requieren un tamano de entre 2 y 45 caracteres
+        camposVehicleMax45: function(val, field) {
+            if (!/^[-0-9.A-Z.a-z.áéíóúñ\s*]{5,45}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        camposVehicleMax45Text: 'Solo carateres alfa numéricos<br> Tamaño min de 5 y un máx de 45 carateres',
+        campos1: function(val, field) {
+            if (!/^[-0-9.A-Z.a-z.áéíóúñ\s*]{2,80}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        campos1Text: 'Solo carateres alfa numéricos<br> Tamaño min de 1 y un máx de 80 carateres',
+        camposMin: function(val, field) {
+            if (!/^[0-9A-Za-zñ\s*]{2,10}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        camposMinText: 'Solo carateres alfa numéricos<br> Tamaño min de 2 y un máx de 10 carateres',
+//solo mayus
+        mayus: function(val, field) {
+            if (!/^[0-9A-Z]{1,5}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        mayusText: 'Solo carateres Mayusculas',
+//Para datos combos vehiculos y personas
+        alphanum0: function(val, field) {
+            if (!/^[0-9A-Za-záéíóúñ\s*]{3,80}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        alphanum0Text: 'Solo carateres alfa numéricos',
+        alphanum1: function(val, field) {
+            if (!/^[0-9.A-Z.a-záéíóúñ\s*]{3,30}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        alphanum1Text: 'Solo carateres alfa numéricos',
+//para puntos
+        puntos: function(val, field) {
+            if (!/^[0-9.A-Z.a-záéíóúñ/\s*]{2,45}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        puntosText: 'Solo datos numéricos,mínimo 2 y máximo de 4 numeros',
+///para rutas
+        alphanum2: function(val, field) {
+            if (!/^[0-9\s.A-Z.\sa-záéíóúñ.()-:\s*]{3,100}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        alphanum2Text: 'Solo carateres alfa numéricos',
+//para geocercas
+        geo: function(val, field) {
+            if (!/^[0-9]{2,4}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        geoText: 'Solo carateres numéricos mínimo 2 y máximo 4 numeros',
+        num1: function(val, field) {
+            if (!/^[0-9]{3,4}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        num1Text: 'Solo carateres numéricos',
+//para numeros 3-45
+                num2: function(val, field) {
+                    if (!/^[0-9]{3,45}$/.test(val)) {
+                        return false;
+                    }
+                    return true;
+                },
+        num2Text: 'Solo carateres numéricos mínimo 3 y un máximo de 45',
+        camposRegMun: function(val, field) {
+            if (!/^[-0-9A-Za-z]{3,10}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        camposRegMunText: 'Solo carateres alfa numéricos,y guiones <br> Tamaño min de 5 y un máx de 10 carateres'
+
     });
 
     Ext.tip.QuickTipManager.init();
