@@ -1,14 +1,14 @@
 var formExcesosVelocidad;
 var winExcesosVelocidad;
 var bandera = 0;
-var storeViewExcesosVelocidad;
+var storeDetalladoVelocidadPorLimite;
 var dateStart;
 var dateFinish;
 var persona;
 var gridViewDataExcesos;
 var gridViewDataExcesosTotal;
 var gridViewDataExcesosGeneral;
-var storeViewExcesosVelocidadTotal;
+var storeDataVelocidad60a90;
 var storeDataExcesosD;
 var empresa = 1;
 var cbxEmpresasBDExcesos;
@@ -16,13 +16,45 @@ var limiteIni;
 var limiteFin;
 var timeIni1;
 var timeFin1;
+//variable para los reportes
 var reporteporlimite;
+var gridVelocidad60a90;
+var gridVelocidad90a120;
+//variable para fija los valores para las consultas
+var horaStart;
+var horafinish;
+var limiStart;
+var limifinish;
 Ext.onReady(function() {
-    storeViewExcesosVelocidad = Ext.create('Ext.data.JsonStore', {
+    storeDetalladoVelocidadPorLimite = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
         proxy: {
             type: 'ajax',
-            url: 'php/interface/report/getViewExcesosVelocidad.php',
+            url: 'php/interface/report/excesoVelocidades/getViewVelocidadPorLimite.php',
+            reader: {
+                type: 'json',
+                root: 'data'
+            }
+        },
+        fields: ['fecha', 'hora', 'velocidad', 'latitud', 'longitud']
+    });
+    storeDetalladoVelocidad60a90 = Ext.create('Ext.data.JsonStore', {
+        autoDestroy: true,
+        proxy: {
+            type: 'ajax',
+            url: 'php/interface/report/excesoVelocidades/getViewVelocidad60a90.php',
+            reader: {
+                type: 'json',
+                root: 'data'
+            }
+        },
+        fields: ['fechaEcx', 'horaEcx', 'velocidadEcx', 'latitudEcx', 'longitudEcx']
+    });
+    storeDetalladoVelocidad90a120 = Ext.create('Ext.data.JsonStore', {
+        autoDestroy: true,
+        proxy: {
+            type: 'ajax',
+            url: 'php/interface/report/excesoVelocidades/getViewVelocidad90a120.php',
             reader: {
                 type: 'json',
                 root: 'data'
@@ -96,7 +128,7 @@ Ext.onReady(function() {
     });
     limiteIni = Ext.create('Ext.form.field.Number', {
         fieldLabel: 'Limite Inicial',
-        name: 'limiIni',
+        name: 'limiInifd',
         minValue: 0,
         minText: 'El valor no puede ser negativo',
         maxValue: 'limiFin',
@@ -106,7 +138,7 @@ Ext.onReady(function() {
     });
     limiteFin = Ext.create('Ext.form.field.Number', {
         fieldLabel: 'Limite Final',
-        name: 'limiFin',
+        name: 'limiFinfd',
         id: 'limiFin',
         minValue: 0,
         minText: 'El valor no puede ser negativo',
@@ -197,6 +229,10 @@ Ext.onReady(function() {
                     if (formExcesosVelocidad.getForm().isValid()) {
                         dateStart = dateIni.getRawValue();
                         dateFinish = dateFin.getRawValue();
+                        horaStart = timeIni1.getRawValue();
+                        horafinish = timeFin1.getRawValue();
+                        limiStart = limiteIni.getRawValue();
+                        limifinish = limiteFin.getRawValue();
                         obtenerExcesoVelocidad();
                     } else {
                         Ext.example.msg("Alerta", 'Llenar los campos marcados en rojo, correctamente ');
@@ -234,16 +270,17 @@ function showWinExcesosDaily() {
 }
 function obtenerExcesoVelocidad() {
     var form = formExcesosVelocidad.getForm();
+    //reporte por limites
     if (reporteporlimite === 1) {
         form.submit({
-            url: 'php/interface/report/getExcesosVelocidad.php',
+            url: 'php/interface/report/excesoVelocidades/getExcesosVelocidadPorLimite.php',
             waitTitle: 'Procesando...',
             waitMsg: 'Obteniendo Información',
             params: {
                 idCompanyExcesos: empresa,
                 fechaIni: dateStart, fechaFin: dateFinish,
                 horaIni: timeIni1, horaFin: timeFin1,
-                limiIni: limiteIni, limiFin: limiteFin
+                limiST: limiStart, limiFI: limifinish
             },
             failure: function(form, action) {
                 Ext.MessageBox.show({
@@ -254,10 +291,8 @@ function obtenerExcesoVelocidad() {
                 });
             },
             success: function(form, action) {
-                console.log(action.result.data);
-                persona;
-                gridViewDataExcesos;
-                var storeDataExcesos = Ext.create('Ext.data.JsonStore', {
+//                console.log(action.result.data);
+                var storeDataVelocidadPorLimite = Ext.create('Ext.data.JsonStore', {
                     data: action.result.data,
                     proxy: {
                         type: 'ajax',
@@ -265,20 +300,21 @@ function obtenerExcesoVelocidad() {
                     },
                     fields: ['personaExceso', 'placaExceso', 'idEquipoExceso', 'equipoExceso', 'total']
                 });
-                var gridDataExcesos = Ext.create('Ext.grid.Panel', {
-                    region: 'west',
+                var gridVelocidadPorLimite = Ext.create('Ext.grid.Panel', {
+//                    region: 'north',
                     frame: true,
-                    width: '40%',
+                    width: '100%',
+                    height: 230,
                     title: '<center>Reporte de velocidades ' + '<br>Por limites: entre ( ' + limiteIni.getRawValue() + ' - ' + limiteFin.getRawValue() + ') km</center>',
-                    store: storeDataExcesos,
+                    store: storeDataVelocidadPorLimite,
                     features: [filters],
                     multiSelect: true,
                     viewConfig: {
                         emptyText: 'No hay datos que Mostrar'
                     },
                     columns: [
-                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                        {text: 'Persona', width: 250, dataIndex: 'personaExceso', align: 'center'}, ///agrege esta linea para ver el persona q realizo el exceso de velocidad
+                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 40, align: 'center'}),
+                        {text: 'Persona', width: 290, dataIndex: 'personaExceso', align: 'center'}, ///agrege esta linea para ver el persona q realizo el exceso de velocidad
                         {text: 'Placa', width: 130, dataIndex: 'placaExceso', align: 'center'},
                         {text: 'Equipo', width: 130, dataIndex: 'equipoExceso', align: 'center'},
                         {text: 'Cantidad', width: 130, dataIndex: 'total', align: 'center'},
@@ -292,15 +328,12 @@ function obtenerExcesoVelocidad() {
                         }], listeners: {
                         itemclick: function(thisObj, record, item, index, e, eOpts) {
 //Id del despacho que se esta realizando
+                            console.log(record);
                             var reg = record.get('idEquipoExceso');
                             var persona = record.get('personaExceso');
-                            var horaStart = timeIni1.getRawValue();
-                            var horafinish = timeFin1.getRawValue();
-                            var limiStart = limiteIni.getRawValue();
-                            var limifinish = limiteFin.getRawValue();
-                            bandera = 1;
+//                            bandera = 1;
                             gridViewDataExcesos.setTitle('<center>Vista de velocidad detallado: ' + persona + ' <br> Equipo: ' + reg + ' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
-                            storeViewExcesosVelocidad.load({
+                            storeDetalladoVelocidadPorLimite.load({
                                 params: {
                                     idEquipo: reg,
                                     fechaIni: dateStart, fechaFin: dateFinish,
@@ -314,22 +347,22 @@ function obtenerExcesoVelocidad() {
                 gridViewDataExcesos = Ext.create('Ext.grid.Panel', {
                     region: 'center',
                     frame: true,
-                    width: '60%',
+                    width: '55%',
                     title: '<center>Excesos de Velocidad Totales: ',
-                    store: storeViewExcesosVelocidad,
+                    store: storeDetalladoVelocidadPorLimite,
                     features: [filters],
                     multiSelect: true,
                     viewConfig: {
                         emptyText: 'No hay datos que Mostrar'
                     },
                     columns: [
-                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                        {text: 'Velocidad', width: 130, dataIndex: 'velocidad', align: 'center', xtype: 'numbercolumn',
+                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 40, align: 'center'}),
+                        {text: 'Velocidad', width: 150, dataIndex: 'velocidadEcx', align: 'center', xtype: 'numbercolumn',
                             format: '0.00'},
-                        {text: 'Fecha', width: 200, dataIndex: 'fecha', align: 'center'},
-                        {text: 'Hora', width: 200, dataIndex: 'hora', align: 'center'},
-                        {text: 'Latitud', width: 250, dataIndex: 'latitud', align: 'center'},
-                        {text: 'Longitud', width: 250, dataIndex: 'longitud', align: 'center'},
+                        {text: 'Fecha', width: 150, dataIndex: 'fecha', align: 'center'},
+                        {text: 'Hora', width: 150, dataIndex: 'hora', align: 'center'},
+                        {text: 'Latitud', width: 200, dataIndex: 'latitud', align: 'center'},
+                        {text: 'Longitud', width: 200, dataIndex: 'longitud', align: 'center'},
                     ],
                     tbar: [{
                             xtype: 'button',
@@ -339,6 +372,21 @@ function obtenerExcesoVelocidad() {
                             }
                         }]
                 });
+
+                velocidad60a90();//llama a la funcion para realizar la consulta entre velocidades de 60 a 90 km
+                velocidad90a120();//llama a la funcion para realizar la consulta entre velocidades de 90 a 120 km
+                var gridDataExcesos = Ext.create('Ext.container.Container', {
+                    title: 'Excesos de Velocidad ',
+                    closable: true,
+                    iconCls: 'icon-exceso-vel',
+                    layout: 'vbox',
+                    fullscreen: true,
+                    height: '100%',
+                    width: '45%',
+                    region: 'west',
+                    items: [gridVelocidadPorLimite, gridVelocidad60a90, gridVelocidad90a120]
+                });
+
                 var tabExcesos = Ext.create('Ext.container.Container', {
                     title: 'Excesos de Velocidad Detallados',
                     closable: true,
@@ -359,138 +407,152 @@ function obtenerExcesoVelocidad() {
 
         });
     }
-//    if (isGeneral) {
-//        form.submit({
-//            url: 'php/interface/report/getReporteGeneralVelocidad.php',
-//            waitTitle: 'Procesando...',
-//            waitMsg: 'Obteniendo Información',
-//            params: {
-//                idCompanyExcesosDT: empresa,
-//                fechaIniExcesos: dateIni,
-//                fechaFinExcesos: dateFin
-//            },
-//            success: function(form, action) {
-//                storeViewExcesosVelocidadTotal = Ext.create('Ext.data.JsonStore', {
-//                    data: action.result.data,
-//                    proxy: {
-//                        type: 'ajax',
-//                        reader: 'array'
-//                    },
-//                    fields: ['vehiculo',
-//                        'persona',
-//                        'empresa',
-//                        'placa:',
-//                        'totalCant',
-//                        'totalVel', 'promedio']
-//                });
-//                bandera = 1;
-//                gridViewDataExcesosGeneral = Ext.create('Ext.grid.Panel', {
-//                    region: 'center',
-//                    frame: true,
-//                    width: '100%',
-//                    title: '<center>Reporte Excesos de Velocidad Totales: ' + '<br>Desde: ' + dateStart + ' | Hasta: ' + dateFinish + '</center>',
-//                    store: storeViewExcesosVelocidadTotal,
-//                    features: [filters],
-//                    multiSelect: true,
-//                    viewConfig: {
-//                        emptyText: 'No hay datos que Mostrar'
-//                    },
-//                    columns: [
-//                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-//                        {text: 'Empresa', width: 250, dataIndex: 'empresa', align: 'center'},
-//                        {text: 'Persona', width: 300, dataIndex: 'persona', align: 'center'},
-//                        {text: 'Placa', width: 150, dataIndex: 'placa', align: 'center'},
-//                        {text: 'Cantidad Excesos', width: 150, dataIndex: 'totalCant', align: 'center'},
-//                        {text: 'Total Velocidad', width: 150, dataIndex: 'totalVel', align: 'center'},
-//                        {text: 'Velocidad Promedio', width: 150, dataIndex: 'promedio', align: 'center'}
-//
-//                    ],
-//                    tbar: [{
-//                            xtype: 'button',
-//                            iconCls: 'icon-excel',
-//                            text: 'Exportar a Excel',
-//                            handler: function() {
-//                                if (bandera === 1) {
-//                                    if (storeViewExcesosVelocidadTotal.getCount() > 0) {
-//                                        var a = document.createElement('a');
-////getting data from our div that contains the HTML table
-//                                        var data_type = 'data:application/vnd.ms-excel';
-////var table_div = document.getElementById('exportar');
-////var table_html = table_div.outerHTML.replace(/ /g, '%20');
-//                                        var tiLetra = 'Calibri';
-//                                        var table_div = "<meta charset='UTF-4'><body>" +
-//                                                "<font face='" + tiLetra + "'><table>" +
-//                                                "<tr><th colspan='7'>EXCESOS DE VELOCIDAD GENERALES" + "</th></tr>" +
-//                                                "<tr><th colspan='7'>DESDE " + dateStart + " HASTA " + dateFinish + "</th></tr>" +
-//                                                "<tr></tr>";
-//                                        table_div += "<tr>";
-//                                        table_div += "<th align=left>EMPRESA</th>";
-//                                        table_div += "<th align=left>PERSONA </th>";
-//                                        table_div += "<th align=left>PLACA</th>";
-//                                        table_div += "<th align=left>CANTIDAD DE EXCESOS VELOCIDADES</th>";
-//                                        table_div += "<th align=left>CANTIDAD DE VELOCIDADES</th>";
-//                                        table_div += "<th align=left>VELOCIDAD PROMEDIO</th>";
-//                                        table_div += "</tr>";
-//                                        for (var i = 0; i < storeViewExcesosVelocidadTotal.data.length; i++) {
-//                                            table_div += "<tr>";
-//                                            table_div += "<td align=lef>" + storeViewExcesosVelocidadTotal.data.items[i].data.empresa + "</td>";
-//                                            table_div += "<td align=lef>" + storeViewExcesosVelocidadTotal.data.items[i].data.persona + "</td>";
-//                                            table_div += "<td align=lef>" + storeViewExcesosVelocidadTotal.data.items[i].data.placa + "</td>";
-//                                            table_div += "<td align=lef>" + storeViewExcesosVelocidadTotal.data.items[i].data.totalCant + "</td>";
-//                                            table_div += "<td align=lef>" + storeViewExcesosVelocidadTotal.data.items[i].data.totalVel + "</td>";
-//                                            table_div += "<td align=lef>" + storeViewExcesosVelocidadTotal.data.items[i].data.promedio + "</td>";
-//
-//                                            table_div += "</tr>";
-//                                        }
-//                                        table_div += "</table></font></body>";
-//                                        var table_html = table_div.replace(/ /g, '%20');
-//                                        a.href = data_type + ', ' + table_html;
-////setting the file name
-//                                        a.download = 'Excesos de Velocidad General' + '.xls';
-////triggering the function
-//                                        a.click();
-//                                    }
-//                                } else {
-//                                    Ext.MessageBox.show({
-//                                        title: 'Error...',
-//                                        msg: 'No hay datos en la Lista a Exportar',
-//                                        buttons: Ext.MessageBox.OK,
-//                                        icon: Ext.MessageBox.ERROR
-//                                    });
-//                                }
-//                            }
-//                        }]
-//                });
-//                var tabExcesos1 = Ext.create('Ext.container.Container', {
-//                    title: 'Excesos de Velocidad Generales',
-//                    closable: true,
-//                    iconCls: 'icon-exceso-vel',
-//                    layout: 'border',
-//                    fullscreen: true,
-//                    height: 485,
-//                    width: 2000,
-//                    region: 'center',
-//                    items: [gridViewDataExcesosGeneral]
-//                });
-//                panelMapaAdmin.add(tabExcesos1);
-//                panelMapaAdmin.setActiveTab(tabExcesos1);
-//                winExcesosVelocidad.hide();
-//            }, failure: function(form, action) {
-//                Ext.MessageBox.show({
-//                    title: 'Información',
-//                    msg: action.result.message,
-//                    buttons: Ext.MessageBox.OK,
-//                    icon: Ext.MessageBox.INFO
-//                });
-//            }});
-//    }
-////                    else {
-////                        Ext.MessageBox.show({
-////                            title: 'Información',
-////                            msg: '<center>No existen datos de Excesos de Velocidad<br> en estas fechas<center>',
-////                            buttons: Ext.MessageBox.OK,
-////                            icon: Ext.MessageBox.INFO
-////                        });
-////                    }
+
+}
+function velocidad60a90() {
+    storeDataVelocidad60a90 = Ext.create('Ext.data.JsonStore', {
+        autoDestroy: true,
+        proxy: {
+            type: 'ajax',
+            url: 'php/interface/report/excesoVelocidades/getExcesoVelocidad60a90.php',
+            reader: {
+                type: 'json',
+                root: 'data'
+            }
+        },
+        fields: ['personaExc', 'placaExc', 'idEquipoExc', 'equipoExc', 'totalExc']
+    });
+    storeDataVelocidad60a90.load({
+        params: {
+            idCompanyExcesos: empresa,
+            fechaIni: dateStart, fechaFin: dateFinish,
+            horaST: horaStart, horaFI: horafinish,
+            limiST: limiStart, limiFI: limifinish
+        }
+    });
+    gridVelocidad60a90 = Ext.create('Ext.grid.Panel', {
+        frame: true,
+        width: '100%',
+        height: 250,
+        title: '<center>Reporte de velocidades: ' + '<br>Entre ( 60 - 90) km</center>',
+        store: storeDataVelocidad60a90,
+        features: [filters],
+        multiSelect: true,
+        viewConfig: {
+            emptyText: 'No hay datos que Mostrar'
+        },
+        columns: [
+            Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 40, align: 'center'}),
+            {text: 'Persona', width: 290, dataIndex: 'personaExc', align: 'center'}, ///agrege esta linea para ver el persona q realizo el exceso de velocidad
+            {text: 'Placa', width: 130, dataIndex: 'placaExc', align: 'center'},
+            {text: 'Equipo', width: 130, dataIndex: 'equipoExc', align: 'center'},
+            {text: 'Cantidad', width: 130, dataIndex: 'totalExc', align: 'center'},
+        ],
+        tbar: [{
+                xtype: 'button',
+                iconCls: 'icon-excel',
+                text: 'Exportar a Excel',
+                handler: function() {
+                }
+            }],
+//        
+        listeners: {
+            itemclick: function(thisObj, record, item, index, e, eOpts) {
+//Id del despacho que se esta realizando
+                var reg = record.get('idEquipoExceso');
+                var persona = record.get('personaExceso');
+//                            bandera = 1;
+                gridViewDataExcesos.setTitle('<center>Vista de velocidad detallado: ' + persona + ' <br> Equipo: ' + reg + ' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
+                storeDetalladoVelocidad60a90.load({
+                    params: {
+                        idEquipo: reg,
+                        fechaIni: dateStart, fechaFin: dateFinish,
+                        horaST: horaStart, horaFI: horafinish,
+                        limiST: limiStart, limiFI: limifinish
+                    }
+                });
+            }
+        }
+    });
+     gridViewDataExcesos = Ext.create('Ext.grid.Panel', {
+                    region: 'center',
+                    frame: true,
+                    width: '55%',
+                    title: '<center>Excesos de Velocidad Totales: ',
+                    store: storeDetalladoVelocidad60a90,
+                    features: [filters],
+                    multiSelect: true,
+                    viewConfig: {
+                        emptyText: 'No hay datos que Mostrar'
+                    },
+                    columns: [
+                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 40, align: 'center'}),
+                        {text: 'Velocidad', width: 150, dataIndex: 'velocidadEcx', align: 'center', xtype: 'numbercolumn',
+                            format: '0.00'},
+                        {text: 'Fecha', width: 150, dataIndex: 'fechaEcx', align: 'center'},
+                        {text: 'Hora', width: 150, dataIndex: 'horaEcx', align: 'center'},
+                        {text: 'Latitud', width: 200, dataIndex: 'latitudEcx', align: 'center'},
+                        {text: 'Longitud', width: 200, dataIndex: 'longitudEcx', align: 'center'},
+                    ],
+                    tbar: [{
+                            xtype: 'button',
+                            iconCls: 'icon-excel',
+                            text: 'Exportar a Excel',
+                            handler: function() {
+                            }
+                        }]
+                });
+
+}
+function velocidad90a120() {
+    storeDataVelocidad90a120 = Ext.create('Ext.data.JsonStore', {
+        autoDestroy: true,
+        proxy: {
+            type: 'ajax',
+            url: 'php/interface/report/excesoVelocidades/getExcesoVelocidad90a120.php',
+            reader: {
+                type: 'json',
+                root: 'data'
+            }
+        },
+        fields: ['personaE', 'placaE', 'idEquipoE', 'equipoE', 'totalE']
+    });
+    storeDataVelocidad90a120.load({
+        params: {
+            idCompanyExcesos: empresa,
+            fechaIni: dateStart, fechaFin: dateFinish,
+            horaST: horaStart, horaFI: horafinish,
+            limiST: limiStart, limiFI: limifinish
+        }
+    });
+    gridVelocidad90a120 = Ext.create('Ext.grid.Panel', {
+        frame: true,
+        width: '100%',
+        height: 250,
+        title: '<center>Reporte de velocidades: ' + '<br>Entre ( 90 - 120) km</center>',
+        store: storeDataVelocidad90a120,
+        features: [filters],
+        multiSelect: true,
+        viewConfig: {
+            emptyText: 'No hay datos que Mostrar'
+        },
+        columns: [
+            Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 40, align: 'center'}),
+            {text: 'Persona', width: 290, dataIndex: 'personaE', align: 'center'}, ///agrege esta linea para ver el persona q realizo el exceso de velocidad
+            {text: 'Placa', width: 130, dataIndex: 'placaE', align: 'center'},
+            {text: 'Equipo', width: 130, dataIndex: 'equipoE', align: 'center'},
+            {text: 'Cantidad', width: 130, dataIndex: 'totalE', align: 'center'},
+        ],
+        tbar: [{
+                xtype: 'button',
+                iconCls: 'icon-excel',
+                text: 'Exportar a Excel',
+                handler: function() {
+                }
+            }], listeners: {
+            itemclick: function(thisObj, record, item, index, e, eOpts) {
+            }
+        }
+    });
 
 }

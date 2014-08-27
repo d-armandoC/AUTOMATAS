@@ -1,7 +1,7 @@
 <?php
 
 extract($_GET);
-include ('../../../dll/config.php');
+include ('../../../../dll/config.php');
 
 
 if (!$mysqli = getConectionDb()) {
