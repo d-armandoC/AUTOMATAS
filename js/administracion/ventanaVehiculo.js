@@ -130,7 +130,7 @@ Ext.onReady(function() {
         height: 400,
         selModel: Ext.create('Ext.selection.RowModel', {singleSelect: true}),
         features: [filters],
-         tbar: [{
+        tbar: [{
                 xtype: 'button',
                 iconCls: 'icon-excel',
                 text: 'Exportar a Excel',
@@ -160,7 +160,7 @@ Ext.onReady(function() {
                             table_div += "<th align=left>NUM.  MOTOR</th>";
                             table_div += "<th align=left>NUM. CHASIS</th>";
                             table_div += "<th align=left>AÑO</th>";
-                           
+
                             table_div += "</tr>";
                             for (var i = 0; i < gridStoreVehiculo.data.length; i++) {
 
@@ -176,7 +176,7 @@ Ext.onReady(function() {
                                 table_div += "<td align=lef>" + gridStoreVehiculo.data.items[i].data.numMotor + "</td>";
                                 table_div += "<td align=lef>" + gridStoreVehiculo.data.items[i].data.numChasis + "</td>";
                                 table_div += "<td align=lef>" + gridStoreVehiculo.data.items[i].data.year + "</td>";
-                               
+
 
                                 table_div += "</tr>";
                             }
@@ -289,7 +289,7 @@ Ext.onReady(function() {
                 layout: 'hbox',
                 //padding: '5 5 10 5',
                 defaults: {
-//                    padding: '0 15 0 0',
+                    padding: '0 15 0 0',
                     baseCls: 'x-plain',
                     layout: 'vbox',
                     //defaultType: 'textfield',
@@ -353,17 +353,14 @@ Ext.onReady(function() {
                                             {
                                                 xtype: 'combobox',
                                                 fieldLabel: '<b>Equipos Disponibles</b>',
+                                                padding: '0 0 10 0',
                                                 name: 'idEquipo',
                                                 store: store_equipo,
                                                 valueField: 'id',
                                                 displayField: 'text',
                                                 queryMode: 'local',
                                                 editable: false,
-//                                                allowBlank: false,
                                                 emptyText: 'Escoger Equipo...',
-//                                                listConfig: {
-//                                                    minWidth: 15
-//                                                },
                                                 listeners: {
                                                     select: function(combo, records, eOpts) {
                                                         store_equipo.reload();
@@ -374,11 +371,12 @@ Ext.onReady(function() {
                                             }
                                         ]
                                     }, {
-                                        columnWidth: .9,
+                                        columnWidth: .1,
                                         baseCls: 'x-plain',
                                         items: [
                                             {
                                                 xtype: 'button',
+//                                                padding: '0 10 0 0',
                                                 iconCls: 'icon-servicios',
                                                 tooltip: 'Agregar Nuevo Equipo',
                                                 handler: function() {
@@ -439,7 +437,7 @@ Ext.onReady(function() {
                                 src: 'img/uploads/vehiculos/empty.jpg',
                                 height: 100,
                                 border: 2,
-                                margin: '0 0 15 80',
+                                margin: '0 0 15 100',
                                 style: {
                                     borderColor: '#157fcc',
                                     borderStyle: 'solid'
@@ -501,7 +499,7 @@ Ext.onReady(function() {
                                 fieldLabel: '<b>Año</b>',
                                 name: 'year',
                                 emptyText: 'Año del Vehiculo...',
-                                value:1950,
+                                value: 1950,
                                 minValue: 1950,
                                 editable: false,
                                 maxValue: Ext.Date.format(new Date(), 'Y')
