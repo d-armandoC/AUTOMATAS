@@ -349,7 +349,7 @@ Ext.onReady(function() {
                 menu: [
                     {text: 'Administracion', iconCls: 'icon-find-geo', handler: function() {
 //                            ventanaGeocerca();
-                               ventanaAddGeo();
+                            ventanaAddGeo();
                         }},
                     {text: 'Envio Correos', iconCls: 'icon-email', handler: function() {
                             visualizarEnviosGeoCercas();
@@ -437,10 +437,10 @@ Ext.onReady(function() {
 //                            {text: 'Registros de Panico', iconCls: 'icon-reset', handler: function() {
 //                                    showWinPanicosDaily();
 //                                }},
-//                            {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function() {
+                            {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function() {
 ////                                    ventanaExcesoVelocidad();
-//                                     showWinExcesosDaily();
-//                                }}
+                                    showWinExcesosDaily();
+                                }}
                             , {text: 'Mantenimiento General', iconCls: 'icon-config', handler: function() {
                                     ventanaMantenimiento();
                                 }}
@@ -483,8 +483,9 @@ Ext.onReady(function() {
             },
             herraminetas,
             monitoreo,
-            administracion,
-            salir, '->',
+            administracion
+                    , '->',
+            salir,
             {
                 xtype: 'label',
                 html: '<section id="panelNorte">' +
@@ -878,6 +879,6 @@ Ext.onReady(function() {
         layout: 'border',
         items: [panelMenu, panelEste, panelCentral]
     });
-     storeEmpresas.load();
+    storeEmpresas.load();
     loadMap();
 });

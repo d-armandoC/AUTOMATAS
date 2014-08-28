@@ -4,7 +4,6 @@ var bandera = 0;
 var storeDetalladoVelocidad;
 var dateStart;
 var dateFinish;
-var persona;
 var gridViewDataExcesos;
 var gridViewDataExcesosTotal;
 var gridViewDataExcesosGeneral;
@@ -25,6 +24,8 @@ var horaStart;
 var horafinish;
 var limiStart;
 var limifinish;
+//VARIABLE PARA REORTE DETALLADO
+var persona;
 Ext.onReady(function() {
     storeDetalladoVelocidad = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
@@ -301,12 +302,80 @@ function obtenerExcesoVelocidad() {
                             iconCls: 'icon-excel',
                             text: 'Exportar a Excel',
                             handler: function() {
+                                var h1, h2, h3, h4;
+                                h1 = h2 = h3 = h4 = true;
+                                if (storeDataVelocidadPorLimite.getCount() > 0) {
+                                    if (getNavigator() === 'img/chrome.png') {
+                                        var a = document.createElement('a');
+                                        //getting data from our div that contains the HTML table
+                                        var data_type = 'data:application/vnd.ms-excel';
+                                        //var table_div = document.getElementById('exportar');
+                                        //var table_html = table_div.outerHTML.replace(/ /g, '%20');
+                                        var tiLetra = 'Calibri';
+
+                                        var table_div = "<meta charset='UTF-8'><body>" +
+                                                "<font face='" + tiLetra + "'><table>" +
+                                                "<tr><th colspan='7'>REORTE DE VELOCIDAD : </th></tr>" +
+                                                "<tr><th colspan='7'POR LIMITE: Entre" + limiteIni.getRawValue() + " - " + limiteFin.getRawValue() + ") km</th></tr>" +
+                                                "<tr></tr>";
+                                        table_div += "<tr>";
+                                        if (h1)
+                                            table_div += "<th align=left>Persona</th>";
+                                        if (h2)
+                                            table_div += "<th align=left>Placa</th>";
+                                        if (h3)
+                                            table_div += "<th align=left>Equipo</th>";
+                                        if (h4)
+                                            table_div += "<th align=left>Cantidad</th>";
+                                        table_div += "</tr>";
+
+                                        for (var i = 0; i < storeDataVelocidadPorLimite.data.length; i++) {
+                                            table_div += "<tr>";
+                                            if (h1)
+                                                table_div += "<td align=lef>" + storeDataVelocidadPorLimite.data.items[i].data.personaExceso + "</td>";
+                                            if (h2)
+                                                table_div += "<td align=lef>" + storeDataVelocidadPorLimite.data.items[i].data.placaExceso + "</td>";
+                                            if (h3)
+                                                table_div += "<td align=lef>" + storeDataVelocidadPorLimite.data.items[i].data.equipoExceso + "</td>";
+                                            if (h4)
+                                                table_div += "<td align=lef>" + storeDataVelocidadPorLimite.data.items[i].data.total + "</td>";
+                                            table_div += "</tr>";
+                                        }
+                                        ;
+
+                                        table_div += "</table></font></body>";
+
+                                        var table_html = table_div.replace(/ /g, '%20');
+
+                                        a.href = data_type + ', ' + table_html;
+                                        //setting the file name
+                                        a.download = 'VelocidadPorLImite.xls';
+                                        //triggering the function
+                                        a.click();
+
+                                    } else {
+                                        Ext.MessageBox.show({
+                                            title: 'Error',
+                                            msg: '<center>El Servicio para este navegador no esta disponible<br>Usar un navegador como Google Chrome<center>',
+                                            buttons: Ext.MessageBox.OK,
+                                            icon: Ext.MessageBox.ERROR
+                                        });
+
+                                    }
+                                } else {
+                                    Ext.MessageBox.show({
+                                        title: 'Error...',
+                                        msg: 'No hay datos en la Lista a Exportar',
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.ERROR
+                                    });
+                                }
                             }
                         }],
                     listeners: {
                         itemclick: function(thisObj, record, item, index, e, eOpts) {
                             var reg = record.get('idEquipoExceso');
-                            var persona = record.get('personaExceso');
+                            persona = record.get('personaExceso');
                             var estado = 1;
                             gridViewDataExcesos.setTitle('<center>Vista de velocidad detallado: ' + persona + ' <br> Equipo: ' + reg + ' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
                             storeDetalladoVelocidad.load({
@@ -360,6 +429,78 @@ function obtenerExcesoVelocidad() {
                             iconCls: 'icon-excel',
                             text: 'Exportar a Excel',
                             handler: function() {
+                                var h1, h2, h3, h4, h5;
+                                h1 = h2 = h3 = h4 = h5 = true;
+                                if (storeDetalladoVelocidad.getCount() > 0) {
+                                    if (getNavigator() === 'img/chrome.png') {
+                                        var a = document.createElement('a');
+                                        //getting data from our div that contains the HTML table
+                                        var data_type = 'data:application/vnd.ms-excel';
+                                        //var table_div = document.getElementById('exportar');
+                                        //var table_html = table_div.outerHTML.replace(/ /g, '%20');
+                                        var tiLetra = 'Calibri';
+
+                                        var table_div = "<meta charset='UTF-8'><body>" +
+                                                "<font face='" + tiLetra + "'><table>" +
+                                                "<tr><th colspan='7'>REPORTE DE VELOCIDAD DETALLADA : " + persona + "</th></tr>" +
+                                                "<tr><th colspan='7'POR LIMITE: Entre" + limiteIni.getRawValue() + " - " + limiteFin.getRawValue() + ") km</th></tr>" +
+                                                "<tr></tr>";
+                                        table_div += "<tr>";
+                                        if (h1)
+                                            table_div += "<th align=left>Velocidad</th>";
+                                        if (h2)
+                                            table_div += "<th align=left>Fecha</th>";
+                                        if (h3)
+                                            table_div += "<th align=left>Hora</th>";
+                                        if (h4)
+                                            table_div += "<th align=left>Latitud</th>";
+                                        if (h5)
+                                            table_div += "<th align=left>Longitud</th>";
+                                        table_div += "</tr>";
+
+                                        for (var i = 0; i < storeDetalladoVelocidad.data.length; i++) {
+                                            table_div += "<tr>";
+                                            if (h1)
+                                                table_div += "<td align=lef>" + storeDetalladoVelocidad.data.items[i].data.velocidad + "</td>";
+                                            if (h2)
+                                                table_div += "<td align=lef>" + storeDetalladoVelocidad.data.items[i].data.fecha + "</td>";
+                                            if (h3)
+                                                table_div += "<td align=lef>" + storeDetalladoVelocidad.data.items[i].data.hora + "</td>";
+                                            if (h4)
+                                                table_div += "<td align=lef>" + storeDetalladoVelocidad.data.items[i].data.latitud + "</td>";
+                                            if (h5)
+                                                table_div += "<td align=lef>" + storeDetalladoVelocidad.data.items[i].data.longitud + "</td>";
+                                            table_div += "</tr>";
+                                        }
+                                        ;
+
+                                        table_div += "</table></font></body>";
+
+                                        var table_html = table_div.replace(/ /g, '%20');
+
+                                        a.href = data_type + ', ' + table_html;
+                                        //setting the file name
+                                        a.download = 'VelocidadesDetalladas.xls';
+                                        //triggering the function
+                                        a.click();
+
+                                    } else {
+                                        Ext.MessageBox.show({
+                                            title: 'Error',
+                                            msg: '<center>El Servicio para este navegador no esta disponible<br>Usar un navegador como Google Chrome<center>',
+                                            buttons: Ext.MessageBox.OK,
+                                            icon: Ext.MessageBox.ERROR
+                                        });
+
+                                    }
+                                } else {
+                                    Ext.MessageBox.show({
+                                        title: 'Error...',
+                                        msg: 'No hay datos en la Lista a Exportar',
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.ERROR
+                                    });
+                                }
                             }
                         }]
                 });
@@ -376,13 +517,11 @@ function obtenerExcesoVelocidad() {
                 });
                 panelTabMapaAdmin.add(tabExcesos);
                 panelTabMapaAdmin.setActiveTab(tabExcesos);
-//                panelMapaAdmin.add(tabExcesos);
-//                panelMapaAdmin.setActiveTab(tabExcesos);
                 winExcesosVelocidad.hide();
             }
 
         });
-    } else {
+    } else { //reporte general
         form.submit({
             url: 'php/interface/report/excesoVelocidades/getExcesoVelocidad60a90.php',
             waitTitle: 'Procesando...',
@@ -449,8 +588,6 @@ function obtenerExcesoVelocidad() {
                 });
                 panelTabMapaAdmin.add(tabExcesos);
                 panelTabMapaAdmin.setActiveTab(tabExcesos);
-//                panelMapaAdmin.add(tabExcesos);
-//                panelMapaAdmin.setActiveTab(tabExcesos);
                 winExcesosVelocidad.hide();
             }
 
@@ -501,12 +638,80 @@ function velocidad60a90() {
                 iconCls: 'icon-excel',
                 text: 'Exportar a Excel',
                 handler: function() {
+                    var h1, h2, h3, h4;
+                    h1 = h2 = h3 = h4 = true;
+                    if (storeDataVelocidad60a90.getCount() > 0) {
+                        if (getNavigator() === 'img/chrome.png') {
+                            var a = document.createElement('a');
+                            //getting data from our div that contains the HTML table
+                            var data_type = 'data:application/vnd.ms-excel';
+                            //var table_div = document.getElementById('exportar');
+                            //var table_html = table_div.outerHTML.replace(/ /g, '%20');
+                            var tiLetra = 'Calibri';
+
+                            var table_div = "<meta charset='UTF-8'><body>" +
+                                    "<font face='" + tiLetra + "'><table>" +
+                                    "<tr><th colspan='7'>REPORTE DE VELOCIDAD : </th></tr>" +
+                                    "<tr><th colspan='7'Entre (60 - 90) km, fecha:" + dateStart + " - " + dateFinish + "</th></tr>" +
+                                    "<tr></tr>";
+                            table_div += "<tr>";
+                            if (h1)
+                                table_div += "<th align=left>Persona</th>";
+                            if (h2)
+                                table_div += "<th align=left>Placa</th>";
+                            if (h3)
+                                table_div += "<th align=left>Equipo</th>";
+                            if (h4)
+                                table_div += "<th align=left>Cantidad</th>";
+                            table_div += "</tr>";
+
+                            for (var i = 0; i < storeDataVelocidad60a90.data.length; i++) {
+                                table_div += "<tr>";
+                                if (h1)
+                                    table_div += "<td align=lef>" + storeDataVelocidad60a90.data.items[i].data.personaExc + "</td>";
+                                if (h2)
+                                    table_div += "<td align=lef>" + storeDataVelocidad60a90.data.items[i].data.placaExc + "</td>";
+                                if (h3)
+                                    table_div += "<td align=lef>" + storeDataVelocidad60a90.data.items[i].data.equipoExc + "</td>";
+                                if (h4)
+                                    table_div += "<td align=lef>" + storeDataVelocidad60a90.data.items[i].data.totalExc + "</td>";
+                                table_div += "</tr>";
+                            }
+                            ;
+
+                            table_div += "</table></font></body>";
+
+                            var table_html = table_div.replace(/ /g, '%20');
+
+                            a.href = data_type + ', ' + table_html;
+                            //setting the file name
+                            a.download = 'VelocidadesEntre60a90.xls';
+                            //triggering the function
+                            a.click();
+
+                        } else {
+                            Ext.MessageBox.show({
+                                title: 'Error',
+                                msg: '<center>El Servicio para este navegador no esta disponible<br>Usar un navegador como Google Chrome<center>',
+                                buttons: Ext.MessageBox.OK,
+                                icon: Ext.MessageBox.ERROR
+                            });
+
+                        }
+                    } else {
+                        Ext.MessageBox.show({
+                            title: 'Error...',
+                            msg: 'No hay datos en la Lista a Exportar',
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        });
+                    }
                 }
             }],
         listeners: {
             itemclick: function(thisObj, record, item, index, e, eOpts) {
                 var reg = record.get('idEquipoExc');
-                var persona = record.get('personaExceso');
+                persona = record.get('personaExceso');
                 var estado = 2;
                 gridViewDataExcesos.setTitle('<center>Vista de velocidad detallado: ' + persona + ' <br> Equipo: ' + reg + ' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
                 storeDetalladoVelocidad.load({
@@ -565,12 +770,80 @@ function velocidad90a120() {
                 iconCls: 'icon-excel',
                 text: 'Exportar a Excel',
                 handler: function() {
+                    var h1, h2, h3, h4;
+                    h1 = h2 = h3 = h4 = true;
+                    if (storeDataVelocidad90a120.getCount() > 0) {
+                        if (getNavigator() === 'img/chrome.png') {
+                            var a = document.createElement('a');
+                            //getting data from our div that contains the HTML table
+                            var data_type = 'data:application/vnd.ms-excel';
+                            //var table_div = document.getElementById('exportar');
+                            //var table_html = table_div.outerHTML.replace(/ /g, '%20');
+                            var tiLetra = 'Calibri';
+
+                            var table_div = "<meta charset='UTF-8'><body>" +
+                                    "<font face='" + tiLetra + "'><table>" +
+                                    "<tr><th colspan='7'>REPORTE DE VELOCIDAD : </th></tr>" +
+                                    "<tr><th colspan='7' Entre (90 -120)km, fecha:" + dateStart + " - " + dateFinish + "</th></tr>" +
+                                    "<tr></tr>";
+                            table_div += "<tr>";
+                            if (h1)
+                                table_div += "<th align=left>Persona</th>";
+                            if (h2)
+                                table_div += "<th align=left>Placa</th>";
+                            if (h3)
+                                table_div += "<th align=left>Equipo</th>";
+                            if (h4)
+                                table_div += "<th align=left>Cantidad</th>";
+                            table_div += "</tr>";
+
+                            for (var i = 0; i < storeDataVelocidad90a120.data.length; i++) {
+                                table_div += "<tr>";
+                                if (h1)
+                                    table_div += "<td align=lef>" + storeDataVelocidad90a120.data.items[i].data.personaE + "</td>";
+                                if (h2)
+                                    table_div += "<td align=lef>" + storeDataVelocidad90a120.data.items[i].data.placaE + "</td>";
+                                if (h3)
+                                    table_div += "<td align=lef>" + storeDataVelocidad90a120.data.items[i].data.equipoE + "</td>";
+                                if (h4)
+                                    table_div += "<td align=lef>" + storeDataVelocidad90a120.data.items[i].data.totalE + "</td>";
+                                table_div += "</tr>";
+                            }
+                            ;
+
+                            table_div += "</table></font></body>";
+
+                            var table_html = table_div.replace(/ /g, '%20');
+
+                            a.href = data_type + ', ' + table_html;
+                            //setting the file name
+                            a.download = 'VelocidadesEntre90a120.xls';
+                            //triggering the function
+                            a.click();
+
+                        } else {
+                            Ext.MessageBox.show({
+                                title: 'Error',
+                                msg: '<center>El Servicio para este navegador no esta disponible<br>Usar un navegador como Google Chrome<center>',
+                                buttons: Ext.MessageBox.OK,
+                                icon: Ext.MessageBox.ERROR
+                            });
+
+                        }
+                    } else {
+                        Ext.MessageBox.show({
+                            title: 'Error...',
+                            msg: 'No hay datos en la Lista a Exportar',
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        });
+                    }
                 }
             }],
         listeners: {
             itemclick: function(thisObj, record, item, index, e, eOpts) {
                 var reg = record.get('idEquipoE');
-                var persona = record.get('personaExceso');
+                persona = record.get('personaExceso');
                 var estado = 3;
                 gridViewDataExcesos.setTitle('<center>Vista de velocidad detallado: ' + persona + ' <br> Equipo: ' + reg + ' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
                 storeDetalladoVelocidad.load({
