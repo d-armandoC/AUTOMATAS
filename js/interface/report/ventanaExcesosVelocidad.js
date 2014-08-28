@@ -1,7 +1,7 @@
 var formExcesosVelocidad;
 var winExcesosVelocidad;
 var bandera = 0;
-var storeDetalladoVelocidadPorLimite;
+var storeDetalladoVelocidad;
 var dateStart;
 var dateFinish;
 var persona;
@@ -26,11 +26,11 @@ var horafinish;
 var limiStart;
 var limifinish;
 Ext.onReady(function() {
-    storeDetalladoVelocidadPorLimite = Ext.create('Ext.data.JsonStore', {
+    storeDetalladoVelocidad = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
         proxy: {
             type: 'ajax',
-            url: 'php/interface/report/excesoVelocidades/getViewVelocidadPorLimite.php',
+            url: 'php/interface/report/excesoVelocidades/getViewVelocidadDetallado.php',
             reader: {
                 type: 'json',
                 root: 'data'
@@ -38,30 +38,7 @@ Ext.onReady(function() {
         },
         fields: ['fecha', 'hora', 'velocidad', 'latitud', 'longitud']
     });
-    storeDetalladoVelocidad60a90 = Ext.create('Ext.data.JsonStore', {
-        autoDestroy: true,
-        proxy: {
-            type: 'ajax',
-            url: 'php/interface/report/excesoVelocidades/getViewVelocidad60a90.php',
-            reader: {
-                type: 'json',
-                root: 'data'
-            }
-        },
-        fields: ['fechaEcx', 'horaEcx', 'velocidadEcx', 'latitudEcx', 'longitudEcx']
-    });
-    storeDetalladoVelocidad90a120 = Ext.create('Ext.data.JsonStore', {
-        autoDestroy: true,
-        proxy: {
-            type: 'ajax',
-            url: 'php/interface/report/excesoVelocidades/getViewVelocidad90a120.php',
-            reader: {
-                type: 'json',
-                root: 'data'
-            }
-        },
-        fields: ['fecha', 'hora', 'velocidad', 'latitud', 'longitud']
-    });
+
     cbxEmpresasBDExcesos = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Cooperativa',
         name: 'idCompanyExcesos',
@@ -325,16 +302,16 @@ function obtenerExcesoVelocidad() {
                             text: 'Exportar a Excel',
                             handler: function() {
                             }
-                        }], listeners: {
+                        }],
+                    listeners: {
                         itemclick: function(thisObj, record, item, index, e, eOpts) {
-//Id del despacho que se esta realizando
-                            console.log(record);
                             var reg = record.get('idEquipoExceso');
                             var persona = record.get('personaExceso');
-//                            bandera = 1;
+                            var estado = 1;
                             gridViewDataExcesos.setTitle('<center>Vista de velocidad detallado: ' + persona + ' <br> Equipo: ' + reg + ' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
-                            storeDetalladoVelocidadPorLimite.load({
+                            storeDetalladoVelocidad.load({
                                 params: {
+                                    estadoR: estado,
                                     idEquipo: reg,
                                     fechaIni: dateStart, fechaFin: dateFinish,
                                     horaST: horaStart, horaFI: horafinish,
@@ -344,34 +321,7 @@ function obtenerExcesoVelocidad() {
                         }
                     }
                 });
-                gridViewDataExcesos = Ext.create('Ext.grid.Panel', {
-                    region: 'center',
-                    frame: true,
-                    width: '55%',
-                    title: '<center>Excesos de Velocidad Totales: ',
-                    store: storeDetalladoVelocidadPorLimite,
-                    features: [filters],
-                    multiSelect: true,
-                    viewConfig: {
-                        emptyText: 'No hay datos que Mostrar'
-                    },
-                    columns: [
-                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 40, align: 'center'}),
-                        {text: 'Velocidad', width: 150, dataIndex: 'velocidadEcx', align: 'center', xtype: 'numbercolumn',
-                            format: '0.00'},
-                        {text: 'Fecha', width: 150, dataIndex: 'fecha', align: 'center'},
-                        {text: 'Hora', width: 150, dataIndex: 'hora', align: 'center'},
-                        {text: 'Latitud', width: 200, dataIndex: 'latitud', align: 'center'},
-                        {text: 'Longitud', width: 200, dataIndex: 'longitud', align: 'center'},
-                    ],
-                    tbar: [{
-                            xtype: 'button',
-                            iconCls: 'icon-excel',
-                            text: 'Exportar a Excel',
-                            handler: function() {
-                            }
-                        }]
-                });
+
 
                 velocidad60a90();//llama a la funcion para realizar la consulta entre velocidades de 60 a 90 km
                 velocidad90a120();//llama a la funcion para realizar la consulta entre velocidades de 90 a 120 km
@@ -386,7 +336,106 @@ function obtenerExcesoVelocidad() {
                     region: 'west',
                     items: [gridVelocidadPorLimite, gridVelocidad60a90, gridVelocidad90a120]
                 });
+                gridViewDataExcesos = Ext.create('Ext.grid.Panel', {
+                    title: '<center>Velocidades detalladas:</center>',
+                    region: 'center',
+                    columnLines: true,
+                    autoScroll: true,
+                    height: 485,
+                    width: '55%',
+                    store: storeDetalladoVelocidad,
+                    viewConfig: {
+                        emptyText: 'No hay datos que Mostrar'
+                    },
+                    columns: [
+                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 40, align: 'center'}),
+                        {text: 'Velocidad', width: 150, dataIndex: 'velocidad', align: 'center', xtype: 'numbercolumn', format: '0.00'},
+                        {text: 'Fecha', width: 150, dataIndex: 'fecha', align: 'center'},
+                        {text: 'Hora', width: 150, dataIndex: 'hora', align: 'center'},
+                        {text: 'Latitud', width: 200, dataIndex: 'latitud', align: 'center'},
+                        {text: 'Longitud', width: 200, dataIndex: 'longitud', align: 'center'},
+                    ],
+                    tbar: [{
+                            xtype: 'button',
+                            iconCls: 'icon-excel',
+                            text: 'Exportar a Excel',
+                            handler: function() {
+                            }
+                        }]
+                });
+                var tabExcesos = Ext.create('Ext.container.Container', {
+                    title: 'Excesos de Velocidad Detallados',
+                    closable: true,
+                    iconCls: 'icon-exceso-vel',
+                    layout: 'border',
+                    fullscreen: true,
+                    height: 485,
+                    width: 2000,
+                    region: 'center',
+                    items: [gridDataExcesos, gridViewDataExcesos]
+                });
+                panelTabMapaAdmin.add(tabExcesos);
+                panelTabMapaAdmin.setActiveTab(tabExcesos);
+//                panelMapaAdmin.add(tabExcesos);
+//                panelMapaAdmin.setActiveTab(tabExcesos);
+                winExcesosVelocidad.hide();
+            }
 
+        });
+    } else {
+        form.submit({
+            url: 'php/interface/report/excesoVelocidades/getExcesoVelocidad60a90.php',
+            waitTitle: 'Procesando...',
+            waitMsg: 'Obteniendo Información',
+            failure: function(form, action) {
+                Ext.MessageBox.show({
+                    title: 'Información',
+                    msg: 'No se pudo obtener la informacion',
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO
+                });
+            },
+            success: function(form, action) {
+                velocidad60a90();//llama a la funcion para realizar la consulta entre velocidades de 60 a 90 km
+                velocidad90a120();//llama a la funcion para realizar la consulta entre velocidades de 90 a 120 km
+                var gridDataExcesos = Ext.create('Ext.container.Container', {
+                    title: 'Excesos de Velocidad ',
+                    closable: true,
+                    iconCls: 'icon-exceso-vel',
+                    layout: 'vbox',
+                    fullscreen: true,
+                    height: '100%',
+                    width: '45%',
+                    region: 'west',
+                    items: [gridVelocidad60a90, gridVelocidad90a120]
+                });
+                gridViewDataExcesos = Ext.create('Ext.grid.Panel', {
+                    title: '<center>Velocidades detalladas:</center>',
+                    region: 'center',
+                    columnLines: true,
+                    autoScroll: true,
+                    height: 485,
+                    width: '55%',
+                    store: storeDetalladoVelocidad,
+                    viewConfig: {
+                        emptyText: 'No hay datos que Mostrar'
+                    },
+                    columns: [
+                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 40, align: 'center'}),
+                        {text: 'Velocidad', width: 150, dataIndex: 'velocidad', align: 'center', xtype: 'numbercolumn', format: '0.00'},
+                        {text: 'Fecha', width: 150, dataIndex: 'fecha', align: 'center'},
+                        {text: 'Hora', width: 150, dataIndex: 'hora', align: 'center'},
+                        {text: 'Latitud', width: 200, dataIndex: 'latitud', align: 'center'},
+                        {text: 'Longitud', width: 200, dataIndex: 'longitud', align: 'center'},
+                    ],
+                    tbar: [{
+                            xtype: 'button',
+                            iconCls: 'icon-excel',
+                            text: 'Exportar a Excel',
+                            handler: function() {
+                            }
+                        }]
+                });
                 var tabExcesos = Ext.create('Ext.container.Container', {
                     title: 'Excesos de Velocidad Detallados',
                     closable: true,
@@ -427,13 +476,12 @@ function velocidad60a90() {
             idCompanyExcesos: empresa,
             fechaIni: dateStart, fechaFin: dateFinish,
             horaST: horaStart, horaFI: horafinish,
-            limiST: limiStart, limiFI: limifinish
         }
     });
     gridVelocidad60a90 = Ext.create('Ext.grid.Panel', {
         frame: true,
         width: '100%',
-        height: 250,
+        height: 280,
         title: '<center>Reporte de velocidades: ' + '<br>Entre ( 60 - 90) km</center>',
         store: storeDataVelocidad60a90,
         features: [filters],
@@ -455,53 +503,23 @@ function velocidad60a90() {
                 handler: function() {
                 }
             }],
-//        
         listeners: {
             itemclick: function(thisObj, record, item, index, e, eOpts) {
-//Id del despacho que se esta realizando
-                var reg = record.get('idEquipoExceso');
+                var reg = record.get('idEquipoExc');
                 var persona = record.get('personaExceso');
-//                            bandera = 1;
+                var estado = 2;
                 gridViewDataExcesos.setTitle('<center>Vista de velocidad detallado: ' + persona + ' <br> Equipo: ' + reg + ' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
-                storeDetalladoVelocidad60a90.load({
+                storeDetalladoVelocidad.load({
                     params: {
+                        estadoR: estado,
                         idEquipo: reg,
                         fechaIni: dateStart, fechaFin: dateFinish,
                         horaST: horaStart, horaFI: horafinish,
-                        limiST: limiStart, limiFI: limifinish
                     }
                 });
             }
         }
     });
-     gridViewDataExcesos = Ext.create('Ext.grid.Panel', {
-                    region: 'center',
-                    frame: true,
-                    width: '55%',
-                    title: '<center>Excesos de Velocidad Totales: ',
-                    store: storeDetalladoVelocidad60a90,
-                    features: [filters],
-                    multiSelect: true,
-                    viewConfig: {
-                        emptyText: 'No hay datos que Mostrar'
-                    },
-                    columns: [
-                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 40, align: 'center'}),
-                        {text: 'Velocidad', width: 150, dataIndex: 'velocidadEcx', align: 'center', xtype: 'numbercolumn',
-                            format: '0.00'},
-                        {text: 'Fecha', width: 150, dataIndex: 'fechaEcx', align: 'center'},
-                        {text: 'Hora', width: 150, dataIndex: 'horaEcx', align: 'center'},
-                        {text: 'Latitud', width: 200, dataIndex: 'latitudEcx', align: 'center'},
-                        {text: 'Longitud', width: 200, dataIndex: 'longitudEcx', align: 'center'},
-                    ],
-                    tbar: [{
-                            xtype: 'button',
-                            iconCls: 'icon-excel',
-                            text: 'Exportar a Excel',
-                            handler: function() {
-                            }
-                        }]
-                });
 
 }
 function velocidad90a120() {
@@ -522,13 +540,12 @@ function velocidad90a120() {
             idCompanyExcesos: empresa,
             fechaIni: dateStart, fechaFin: dateFinish,
             horaST: horaStart, horaFI: horafinish,
-            limiST: limiStart, limiFI: limifinish
         }
     });
     gridVelocidad90a120 = Ext.create('Ext.grid.Panel', {
         frame: true,
         width: '100%',
-        height: 250,
+        height: 280,
         title: '<center>Reporte de velocidades: ' + '<br>Entre ( 90 - 120) km</center>',
         store: storeDataVelocidad90a120,
         features: [filters],
@@ -549,8 +566,21 @@ function velocidad90a120() {
                 text: 'Exportar a Excel',
                 handler: function() {
                 }
-            }], listeners: {
+            }],
+        listeners: {
             itemclick: function(thisObj, record, item, index, e, eOpts) {
+                var reg = record.get('idEquipoE');
+                var persona = record.get('personaExceso');
+                var estado = 3;
+                gridViewDataExcesos.setTitle('<center>Vista de velocidad detallado: ' + persona + ' <br> Equipo: ' + reg + ' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
+                storeDetalladoVelocidad.load({
+                    params: {
+                        estadoR: estado,
+                        idEquipo: reg,
+                        fechaIni: dateStart, fechaFin: dateFinish,
+                        horaST: horaStart, horaFI: horafinish,
+                    }
+                });
             }
         }
     });
