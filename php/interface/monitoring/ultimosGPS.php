@@ -14,20 +14,14 @@ if (!$mysqli = getConectionDb()) {
     $idRol = $_SESSION["IDROLKARVIEW"];
 
     if ($idRol == 4) {
-        $consultaSql = "SELECT emp.empresa, eq.equipo, vh.placa, vh.vehiculo, 
-                        sky.sky_evento, udskps.velocidad, udskps.fecha_hora_ult_dato 
+        $consultaSql = "SELECT emp.id_empresa, vh.id_vehiculo,emp.empresa, eq.id_equipo,emp.empresa, eq.equipo, vh.placa, vh.vehiculo, vh.icono,
+                        sky.sky_evento, sky.id_sky_evento, udskps.velocidad, udskps.fecha_hora_ult_dato, udskps.latitud, udskps.longitud,udskps.rumbo, udskps.direccion
                         FROM karviewdb.empresas emp, karviewdb.equipos eq, karviewdb.vehiculos vh, 
                         karviewdb.sky_eventos sky, karviewdb.ultimo_dato_skps udskps
                         where udskps.id_sky_evento=sky.id_sky_evento 
                         and udskps.id_equipo= eq.id_equipo and eq.id_equipo=vh.id_equipo and vh.id_empresa=emp.id_empresa and vh.id_persona='$idPersona';"
         ;
     } else {
-//        $coopString = "";
-//        $coop = explode(",", $listCoop);
-//        for ($i = 0; $i < count($coop); $i++) {
-//            $coopString .= "'" . $coop[$i] . "',";
-//        }
-//        $coopString = substr($coopString, 0, -1);
         
         $consultaSql = "SELECT emp.id_empresa, vh.id_vehiculo ,emp.empresa, eq.id_equipo,eq.equipo, vh.placa, vh.vehiculo, vh.icono, 
                         sky.sky_evento,sky.id_sky_evento, udskps.velocidad, udskps.fecha_hora_ult_dato,udskps.latitud, udskps.longitud,udskps.rumbo, udskps.direccion
