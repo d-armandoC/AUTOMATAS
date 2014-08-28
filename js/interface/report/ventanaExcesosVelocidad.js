@@ -651,8 +651,7 @@ function velocidad60a90() {
 
                             var table_div = "<meta charset='UTF-8'><body>" +
                                     "<font face='" + tiLetra + "'><table>" +
-                                    "<tr><th colspan='7'>REPORTE DE VELOCIDAD : </th></tr>" +
-                                    "<tr><th colspan='7'Entre (60 - 90) km, fecha:" + dateStart + " - " + dateFinish + "</th></tr>" +
+                                    "<tr><th colspan='7'>REPORTE DE VELOCIDAD ENTRE (60 - 90) km,  FECHA:" + dateStart + " / " + dateFinish + "</th></tr>" +
                                     "<tr></tr>";
                             table_div += "<tr>";
                             if (h1)
@@ -783,8 +782,7 @@ function velocidad90a120() {
 
                             var table_div = "<meta charset='UTF-8'><body>" +
                                     "<font face='" + tiLetra + "'><table>" +
-                                    "<tr><th colspan='7'>REPORTE DE VELOCIDAD : </th></tr>" +
-                                    "<tr><th colspan='7' Entre (90 -120)km, fecha:" + dateStart + " - " + dateFinish + "</th></tr>" +
+                                    "<tr><th colspan='7'>REPORTE DE VELOCIDAD ENTRE (90 - 120) km,  FECHA:" + dateStart + " / " + dateFinish + "</th></tr>" +
                                     "<tr></tr>";
                             table_div += "<tr>";
                             if (h1)
