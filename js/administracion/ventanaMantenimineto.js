@@ -48,7 +48,7 @@ Ext.onReady(function() {
             //Registro Mantenimiento
             {name: 'idempresa', type: 'int'},
             {name: 'idestandar', type: 'int'},
-            {name: 'valorTipoServicio'},
+            {name: 'valorTipoServicio', type: 'int'},
             {name: 'empresa', type: 'string'},
             {name: 'propietario', type: 'string'},
             {name: 'servicio', type: 'string'},
@@ -70,7 +70,19 @@ Ext.onReady(function() {
             {name: 'repuModelo', type: 'string'},
             {name: 'repuCodigo', type: 'string'},
             {name: 'repuSerie', type: 'string'},
-            {name: 'repuEstado'}
+            {name: 'repuEstado'},
+            //Registrar servicios adicionales
+            {name: 'descripSoat', type: 'string'},
+            {name: 'fechaSoatReg', type: 'date', dateFormat: 'c'},
+            {name: 'fechaSoatVenc', type: 'date', dateFormat: 'c'},
+            
+            {name: 'descripMatricula', type: 'string'},
+            {name: 'fechaMatriculaReg', type: 'date', dateFormat: 'c'},
+            {name: 'repaFecha', type: 'date', dateFormat: 'c'},
+            
+            {name: 'descripSeguro', type: 'string'},
+            {name: 'repaFecha', type: 'date', dateFormat: 'c'},
+            {name: 'repaFecha', type: 'date', dateFormat: 'c'}
         ]
     });
     // crea los datos del store
@@ -172,30 +184,32 @@ Ext.onReady(function() {
         title: '<b>Servicio Mantenimiento</b>',
         activeRecord: null,
         bodyStyle: 'padding: 10px; background-color: #DFE8F6',
-        labelWidth: 100,
-        hight:200,
+        labelWidth: 110,
+        hight: 150,
         margins: '0 0 0 0',
         items: [
             {
                 xtype: 'fieldset',
                 title: '<b>Registro de Mantenimineto</b>',
                 collapsible: true,
-                layout: 'hbox',
-                padding: '0 0 0 10',
+                layout: 'vbox',
+//                padding: '0 0 0 10',
                 defaults: {
-                    padding: '0 0 15 30',
+//                    padding: '0 0 15 30',
                     baseCls: 'x-plain',
                     defaults: {
-                        labelWidth: 80
+                        labelWidth: 70
                     }
                 }
                 ,
                 items: [
                     {
+                        xtype: 'fieldset',
+                        layout: 'hbox',
+                        padding: '0 0 0 0',
                         defaults: {
-                            padding: '0 0 5 0',
+                            padding: '0 0 15 20',
                             baseCls: 'x-plain',
-                            layout: 'hbox',
                             defaults: {
                                 labelWidth: 80
                             }
@@ -203,7 +217,7 @@ Ext.onReady(function() {
                         items: [
                             {
                                 defaults: {
-                                    padding: '0 0 5 0',
+                                    padding: '10 0 5 0',
                                     baseCls: 'x-plain',
                                     layout: 'vbox',
                                     defaults: {
@@ -226,9 +240,7 @@ Ext.onReady(function() {
                                                 emptyText: 'Seleccionar Cooperativa...',
                                                 editable: false,
                                                 allowBlank: false,
-                                                // padding: '5 5 5 5',
                                                 width: 250,
-//                                        height: 20,
                                                 listeners: {
                                                     select: function(combo, records, eOpts) {
                                                         var listSelected = contenedorwinEvt.down('[name=listVeh]');
@@ -278,9 +290,7 @@ Ext.onReady(function() {
                                                 queryMode: 'local',
                                                 allowBlank: false,
                                                 editable: false,
-                                                // padding: '5 5 5 5',
                                                 width: 250,
-//                                        height: 25,
                                                 listConfig: {
                                                     minWidth: 350
                                                 }
@@ -307,164 +317,221 @@ Ext.onReady(function() {
                                                                 }
                                                             }
                                                         }}}},
-                                            {
-                                                xtype: 'fieldset',
-                                                flex: 0,
-                                                title: '<b>Configurar Matricula</b>',
-                                                border:true,
-                                                padding: '5 5 5 5',
-                                                defaultType: 'radio',
-                                                layout: 'anchor',
-                                                defaults: {
-                                                    anchor: '100%',
-                                                    hideEmptyLabel: false
-                                                },
-                                                items: [
-                                                    {
-                                                        xtype: 'textfield',
-                                                        fieldLabel: '<b>Matricula</b> ',
-                                                        name: 'matricula',
-                                                        id: 'matricula',
-                                                        emptyText: 'Descripción Matricula'
-                                                    },
-                                                    {
-                                                        fieldLabel: '<b>Registro</b>',
-                                                        padding: '0 0 5 0',
-                                                        name: 'fechamatriculareg',
-                                                        id: 'fechamatriculareg',
-                                                        xtype: 'datefield',
-                                                        format: 'Y-m-d',
-                                                        emptyText: 'Seleccionar Fecha...',
-                                                        listeners: {
-                                                            select: function(A, B) {
-                                                                edadDate = Ext.Date.add(Ext.getCmp('fechaSRegistro').value, Ext.Date.YEAR, 1);
-                                                                Ext.getCmp('fechaSVencimiento').reset();
-                                                                Ext.getCmp('fechaSVencimiento').setValue(edadDate);
-                                                            }
-                                                        }
-                                                    },
-                                                    {
-                                                        fieldLabel: '<b>Vencimiento</b>',
-                                                        padding: '0 0 5 0',
-                                                        name: 'fechamatriculavenc',
-                                                        id: 'fechamatriculavenc',
-                                                        xtype: 'datefield',
-                                                        format: 'Y-m-d',
-                                                        emptyText: 'Seleccionar Fecha...'
-                                                    }
-
-                                                ]
-                                            }
-                                   
-                                        ]}]}]
-
-                    },   {
-                                                xtype: 'fieldset',
-                                                flex: 0,
-                                                title: '<b>Configurar Soat</b>',
-                                                border:true,
-                                                padding: '5 5 5 5',
-                                                defaultType: 'radio',
-                                                layout: 'anchor',
-                                                defaults: {
-                                                    anchor: '100%',
-                                                    hideEmptyLabel: false
-                                                },
-                                                items: [
-                                                    {
-                                                        xtype: 'textfield',
-                                                        fieldLabel: '<b>SOAT</b> ',
-                                                        name: 'soat',
-                                                        id: 'soat',
-                                                        emptyText: 'Descripción Soat'
-                                                    },
-                                                    {
-                                                        fieldLabel: '<b>Registro</b>',
-                                                        padding: '0 0 5 0',
-                                                        name: 'fechaSRegistro',
-                                                        id: 'fechaSRegistro',
-                                                        xtype: 'datefield',
-                                                        format: 'Y-m-d',
-                                                        emptyText: 'Seleccionar Fecha...',
-                                                        listeners: {
-                                                            select: function(A, B) {
-                                                                edadDate = Ext.Date.add(Ext.getCmp('fechaSRegistro').value, Ext.Date.YEAR, 1);
-                                                                Ext.getCmp('fechaSVencimiento').reset();
-                                                                Ext.getCmp('fechaSVencimiento').setValue(edadDate);
-                                                            }
-                                                        }
-                                                    },
-                                                    {
-                                                        fieldLabel: '<b>Vencimiento</b>',
-                                                        padding: '0 0 5 0',
-                                                        name: 'fechaSVencimiento',
-                                                        id: 'fechaSVencimiento',
-                                                        xtype: 'datefield',
-                                                        format: 'Y-m-d',
-                                                        emptyText: 'Seleccionar Fecha...'
-                                                    }
-
-                                                ]
-                                            }
-                                            /////////////////
-                                            ,{
-                        items: [
+                                        ]}]},
                             {
-                                xtype: 'fieldset',
-//                                flex: 0,
-                                title: 'Elegir Tipo de Servicio',
-                                defaultType: 'radio',
-                                layout: 'anchor',
                                 items: [
                                     {
-                                        boxLabel: 'Manteninimiento',
-                                        id: 's1',
-                                        name: 'valorTipoServicio',
-                                        inputValue: '1',
-                                        listeners: {
-                                            change: function(field, newValue, oldValue) {
-                                                var r1 = Ext.getCmp('s1').value;
-                                                if (r1 === true) {
-                                                    Ext.getCmp('fsmantenimiento').toggle();
-                                                    Ext.getCmp('fsreparacion').collapse();
-                                                    Ext.getCmp('fsrepuesto').collapse();
+                                        xtype: 'fieldset',
+                                        flex: 2,
+                                        title: '<b>Elegir Tipo de Servicio</b>',
+                                        defaultType: 'radio',
+                                        layout: 'anchor',
+                                        items: [
+                                            {
+                                                boxLabel: 'Manteninimiento',
+                                                id: 's1',
+                                                name: 'valorTipoServicio',
+                                                inputValue: '1',
+                                                listeners: {
+                                                    change: function(field, newValue, oldValue) {
+                                                        var r1 = Ext.getCmp('s1').value;
+                                                        if (r1 === true) {
+                                                            Ext.getCmp('fsmantenimiento').toggle();
+                                                            Ext.getCmp('fsreparacion').collapse();
+                                                            Ext.getCmp('fsrepuesto').collapse();
+                                                        }
+                                                    }
                                                 }
-                                            }
-                                        }
-                                    }, {
-                                        boxLabel: 'Reparacion',
-                                        id: 's2',
-                                        name: 'valorTipoServicio',
-                                        inputValue: '2',
-                                        listeners: {
-                                            change: function(field, newValue, oldValue) {
-                                                var r1 = Ext.getCmp('s2').value;
-                                                if (r1 === true) {
-                                                    Ext.getCmp('fsmantenimiento').collapse();
-                                                    Ext.getCmp('fsreparacion').toggle();
-                                                    Ext.getCmp('fsrepuesto').collapse();
+                                            }, {
+                                                boxLabel: 'Reparacion',
+                                                id: 's2',
+                                                name: 'valorTipoServicio',
+                                                inputValue: '2',
+                                                listeners: {
+                                                    change: function(field, newValue, oldValue) {
+                                                        var r1 = Ext.getCmp('s2').value;
+                                                        if (r1 === true) {
+                                                            Ext.getCmp('fsmantenimiento').collapse();
+                                                            Ext.getCmp('fsreparacion').toggle();
+                                                            Ext.getCmp('fsrepuesto').collapse();
+                                                        }
+                                                    }
                                                 }
-                                            }
-                                        }
-                                    }, {
-                                        boxLabel: 'Repuesto',
-                                        id: 's3',
-                                        name: 'valorTipoServicio',
-                                        inputValue: '3',
-                                        listeners: {
-                                            change: function(field, newValue, oldValue) {
-                                                var r1 = Ext.getCmp('s3').value;
-                                                if (r1 === true) {
-                                                    Ext.getCmp('fsmantenimiento').collapse();
-                                                    Ext.getCmp('fsreparacion').collapse();
-                                                    Ext.getCmp('fsrepuesto').toggle();
+                                            }, {
+                                                boxLabel: 'Repuesto',
+                                                id: 's3',
+                                                name: 'valorTipoServicio',
+                                                inputValue: '3',
+                                                listeners: {
+                                                    change: function(field, newValue, oldValue) {
+                                                        var r1 = Ext.getCmp('s3').value;
+                                                        if (r1 === true) {
+                                                            Ext.getCmp('fsmantenimiento').collapse();
+                                                            Ext.getCmp('fsreparacion').collapse();
+                                                            Ext.getCmp('fsrepuesto').toggle();
+                                                        }
+                                                    }
                                                 }
+                                            }]
+                                    }
+                                ]
+                            },
+                            {
+                                items: [
+                                    {
+                                        xtype: 'fieldset',
+                                        title: '<b>Registrar SOAT</b>',
+                                        defaultType: 'radio',
+                                        layout: 'anchor',
+                                        padding: '0 0 0 10',
+                                        items: [
+                                            {
+                                                xtype: 'textfield',
+                                                fieldLabel: 'Descripcion',
+                                                padding: '0 10 5 0 ',
+                                                name: 'descripSoat',
+                                                id: 'descripSoat',
+                                                emptyText: 'Descripción Matricula'
+                                            },
+                                            {
+                                                fieldLabel: 'Registro',
+                                                padding: '0 0 5 0',
+                                                name: 'fechaSoatReg',
+                                                id: 'fechaSoatReg',
+                                                xtype: 'datefield',
+                                                format: 'Y-m-d',
+                                                emptyText: 'Seleccionar Fecha...',
+                                                listeners: {
+                                                    select: function() {
+                                                        edadDate = Ext.Date.add(Ext.getCmp('fechaSoatReg').value, Ext.Date.YEAR, 1);
+                                                        Ext.getCmp('fechaSoatVenc').reset();
+                                                        Ext.getCmp('fechaSoatVenc').setValue(edadDate);
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                fieldLabel: 'Vencimiento',
+                                                padding: '0 0 5 0',
+                                                name: 'fechaSoatVenc',
+                                                id: 'fechaSoatVenc',
+                                                xtype: 'datefield',
+                                                format: 'Y-m-d',
+                                                emptyText: 'Seleccionar Fecha...'
                                             }
-                                        }
-                                    }]
+
+                                        ]
+                                    }
+                                ]
                             }
                         ]
-                    }
+                    },
+                    {
+                        xtype: 'fieldset',
+                        layout: 'hbox',
+                        padding: '0 0 0 5',
+                        defaults: {
+                            padding: '0 0 15 25',
+                            baseCls: 'x-plain',
+                            defaults: {
+                                labelWidth: 80
+                            }
+                        },
+                        items: [
+                            {
+                                items: [
+                                    {
+                                        xtype: 'fieldset',
+                                        title: '<b>Registrar Matricula</b> ',
+                                        defaultType: 'radio',
+                                        layout: 'anchor',
+                                        padding: '0 10 0 10',
+                                        items: [
+                                            {
+                                                xtype: 'textfield',
+                                                padding: '0 0 5 0',
+                                                fieldLabel: 'Descripcion',
+                                                name: 'descripMatricula',
+                                                id: 'matricula',
+                                                emptyText: 'Descripción Matricula'
+                                            },
+                                            {
+                                                fieldLabel: 'Registro',
+                                                padding: '0 0 5 0',
+                                                name: 'fechaMatriculaReg',
+                                                id: 'fechaMatriculaReg',
+                                                xtype: 'datefield',
+                                                format: 'Y-m-d',
+                                                emptyText: 'Seleccionar Fecha...',
+                                                listeners: {
+                                                    select: function() {
+                                                        edadDate = Ext.Date.add(Ext.getCmp('fechaMatriculaReg').value, Ext.Date.YEAR, 1);
+                                                        Ext.getCmp('fechaMatriculaVenc').reset();
+                                                        Ext.getCmp('fechaMatriculaVenc').setValue(edadDate);
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                fieldLabel: 'Vencimiento',
+                                                padding: '0 0 5 0',
+                                                name: 'fechaMatriculaVenc',
+                                                id: 'fechaMatriculaVenc',
+                                                xtype: 'datefield',
+                                                format: 'Y-m-d',
+                                                emptyText: 'Seleccionar Fecha...'
+                                            }
+
+                                        ]
+                                    }
+                                ]
+                            }
+                            , {
+                                items: [
+                                    {
+                                        xtype: 'fieldset',
+                                        title: '<b>Registrar Seguro</b> ',
+                                        defaultType: 'radio',
+                                        layout: 'anchor',
+                                        padding: '0 0 0 15',
+                                        items: [
+                                            {
+                                                xtype: 'textfield',
+                                                padding: '0 12 5 0',
+                                                fieldLabel: 'Descripción ',
+                                                name: 'descripSeguro',
+                                                id: 'descripSeguro',
+                                                emptyText: 'Descripción Seguro'
+                                            },
+                                            {
+                                                fieldLabel: 'Registro',
+                                                padding: '0 0 5 0',
+                                                name: 'fechaSeguroReg',
+                                                id: 'fechaSeguroReg',
+                                                xtype: 'datefield',
+                                                format: 'Y-m-d',
+                                                emptyText: 'Seleccionar Fecha...',
+                                                listeners: {
+                                                    select: function() {
+                                                        edadDate = Ext.Date.add(Ext.getCmp('fechaSeguroReg').value, Ext.Date.YEAR, 1);
+                                                        Ext.getCmp('fechaSeguroVenc').reset();
+                                                        Ext.getCmp('fechaSeguroVenc').setValue(edadDate);
+                                                    }
+                                                }
+                                            },
+                                            
+                                            {
+                                                fieldLabel: 'Vencimiento',
+                                                padding: '0 0 5 0',
+                                                name: 'fechaSeguroVenc',
+                                                id: 'fechaSeguroVenc',
+                                                xtype: 'datefield',
+                                                format: 'Y-m-d',
+                                                emptyText: 'Seleccionar Fecha...'
+                                            }
+
+                                        ]
+                                    }
+                                ]
+                            }]}
                 ]
             }
             , {
