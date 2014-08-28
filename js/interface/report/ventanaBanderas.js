@@ -194,7 +194,8 @@ Ext.onReady(function() {
                 iconCls: 'icon-edit',
                 tooltip: 'Simbologia',
                 handler: ventanaSimbologia
-            }, {
+            },'->', 
+            {
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
                 handler: function() {
