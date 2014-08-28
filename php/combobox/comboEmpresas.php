@@ -13,8 +13,9 @@ if (!$mysqli = getConectionDb()) {
         $consultaSql = "select id_empresa, empresa,
                 direccion, telefono, correo from empresas 
                 order by id_empresa";
-        ;
-    }if($idRol == 2){
+        
+    }
+    else{
         $consultaSql = "select id_empresa, empresa,
                 direccion, telefono, correo 
                 from empresas 
