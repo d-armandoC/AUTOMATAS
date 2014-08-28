@@ -4,10 +4,6 @@
 $site_title = "Kradac: Karview";
 $site_icon = "img/icon_karview.png";
 
-//   $db_host = "172.16.17.214";
-//    $db_user = "kradacLoja";
-//    $db_password = "kradac";
-
 function getConectionDb() {
     /* DATOS DE MI SERVIDOR */
     $db_name = "karviewdb";
@@ -38,21 +34,3 @@ function allRows($result) {
     }
     return $vector;
 }
-
-/*
- * Example of use for allRows
-
-if (!$mysqli = getConectionDb()) {
-    echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
-} else {
-    $consultaSql = "select * from report where state = 0";
-
-    $result = allRows($mysqli->query($consultaSql));
-    $mysqli->close();
-    
-    for ($i = 0; $i < count($result); $i++) {
-        $fila = $result[$i];
-        echo $fila["id_report"]. "\n";
-    }
-    
-}*/

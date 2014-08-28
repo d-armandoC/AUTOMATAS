@@ -86,7 +86,7 @@ Ext.onReady(function() {
                     Ext.example.msg("Mensaje", operation._resultSet.message);
                     gridStoreVehiculo.reload();
                     store_equipo.reload();
-                    gridRecordsVeh.reload();
+//                    gridRecordsVeh.reload();
                     formRecordsVeh.getForm().reset();
                     onResetVeh();
                     if (operation.state) {
@@ -211,9 +211,9 @@ Ext.onReady(function() {
             selectionchange: function(thisObject, selected, eOpts) {
                 setActiveRecordVeh(selected[0] || null);
             },
-            itemmousedown: function(thisObject, record, item, index, e, eOpts) {
-                console.log('mouse sobre item');
-            }
+//            itemmousedown: function(thisObject, record, item, index, e, eOpts) {
+//                console.log('mouse sobre item');
+//            }
         }
     });
 
@@ -581,38 +581,38 @@ function ventanaAddVehiculos() {
     //Esto se asegurará de que sólo caera al contenedor
     var formPanelDropTargetElVeh = document.getElementById('panel-datos-veh');
 
-    var formPanelDropTargetVeh = Ext.create('Ext.dd.DropTarget', formPanelDropTargetElVeh, {
-        ddGroup: 'GridExample',
-        notifyEnter: function(ddSource, e, data) {
-
-            // Añadir un poco de brillo al momento de entrar al contenedor
-            formRecordsVeh.body.stopAnimation();
-            formRecordsVeh.body.highlight();
-        },
-        notifyDrop: function(ddSource, e, data) {
-
-            // Referencia el record (seleccion simple) para facilitar lectura
-            var selectedRecord = ddSource.dragData.records[0];
-
-            setActiveRecordVeh(selectedRecord || null);
-
-            // Carga los registro en el form            
-            formRecordsVeh.getForm().loadRecord(selectedRecord);
-            formImage.down('[name=labelImage]').setSrc('img/uploads/vehiculos/' + selectedRecord.data.labelImage);
-            formImage.down('[name=image]').setRawValue(selectedRecord.data.labelImage);
-            labelTecnico.setText(selectedRecord.data.cbxTecnico);
-            labelRegistro.setText(selectedRecord.data.dateTimeRegistro);
-
-            formRecordsVeh.down('#updateVeh').enable();
-            formRecordsVeh.down('#createVeh').disable();
-            formRecordsVeh.down('#deleteVeh').enable();
-
-            // Elimina el registro desde los registros. No es relamente Requerido
-            //ddSource.view.store.remove(selectedRecord);
-
-            return true;
-        }
-    });
+//    var formPanelDropTargetVeh = Ext.create('Ext.dd.DropTarget', formPanelDropTargetElVeh, {
+//        ddGroup: 'GridExample',
+//        notifyEnter: function(ddSource, e, data) {
+//
+//            // Añadir un poco de brillo al momento de entrar al contenedor
+//            formRecordsVeh.body.stopAnimation();
+//            formRecordsVeh.body.highlight();
+//        },
+//        notifyDrop: function(ddSource, e, data) {
+//
+//            // Referencia el record (seleccion simple) para facilitar lectura
+//            var selectedRecord = ddSource.dragData.records[0];
+//
+//            setActiveRecordVeh(selectedRecord || null);
+//
+//            // Carga los registro en el form            
+//            formRecordsVeh.getForm().loadRecord(selectedRecord);
+////            formImage.down('[name=labelImage]').setSrc('img/uploads/vehiculos/' + selectedRecord.data.labelImage);
+////            formImage.down('[name=image]').setRawValue(selectedRecord.data.labelImage);
+//            labelTecnico.setText(selectedRecord.data.cbxTecnico);
+//            labelRegistro.setText(selectedRecord.data.dateTimeRegistro);
+//
+//            formRecordsVeh.down('#updateVeh').enable();
+//            formRecordsVeh.down('#createVeh').disable();
+//            formRecordsVeh.down('#deleteVeh').enable();
+//
+//            // Elimina el registro desde los registros. No es relamente Requerido
+//            //ddSource.view.store.remove(selectedRecord);
+//
+//            return true;
+//        }
+//    });
 }
 
 function setActiveRecordVeh(record) {

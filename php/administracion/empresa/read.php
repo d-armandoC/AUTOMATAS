@@ -3,12 +3,24 @@
 extract($_POST);
 
 include ('../../../dll/config.php');
+include('../../login/isLogin.php');
+
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-
-    $consultaSql = "SELECT e.id_empresa,e.acronimo,e.empresa,e.direccion,e.telefono,e.correo
+    $idEmpresa = $_SESSION["IDCOMPANYKARVIEW"];
+    $idPersona = $_SESSION["IDPERSONKARVIEW"];
+    $idRol = $_SESSION["IDROLKARVIEW"];
+    
+    if($idRol==1){
+        $consultaSql = "SELECT e.id_empresa,e.acronimo,e.empresa,e.direccion,e.telefono,e.correo
     FROM empresas e ";
+    }elseif($idRol==2){
+    $consultaSql = "SELECT e.id_empresa,e.acronimo,e.empresa,e.direccion,e.telefono,e.correo
+    FROM empresas e where e.id_usuarioAsignado='$idPersona'; ";
+    
+    }
+
     $result = $mysqli->query($consultaSql);
     $haveData = false;
     if ($result->num_rows > 0) {

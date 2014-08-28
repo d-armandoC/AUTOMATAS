@@ -1,7 +1,7 @@
 <?php
+include ('../../dll/config.php');
 include('isLogin.php');
-require_once('../../dll/conect.php');
-cerrarConexion();
+//cerrarConexion();
 
 session_destroy();
 header('Location: ../../index.php');

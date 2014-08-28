@@ -7,7 +7,7 @@ if (!$mysqli = getConectionDb()) {
     echo "{failure: true, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
     $haveData = false;
-    $consultaSql = "select r.latitud, r.longitud,r.fecha, r.hora, r.fecha_hora_registro, r.velocidad, 
+    $consultaSql = "select v.vehiculo,r.latitud, r.longitud,r.fecha, r.hora, r.fecha_hora_registro, r.velocidad, 
             r.bateria, r.gsm, r.gps, r.ign, r.direccion, se.color, se.sky_evento, r.id_sky_evento, 
             r.g1, r.g2, r.sal, e.empresa
             from karviewhistoricodb.dato_spks r, karviewdb.vehiculos v,  karviewdb.sky_eventos se,  karviewdb.empresas e
@@ -17,7 +17,6 @@ if (!$mysqli = getConectionDb()) {
             and r.id_equipo = ?
             and r.fecha between ? and ?
             order by r.fecha, r.hora";
-//    }
     $stmt = $mysqli->prepare($consultaSql);
     if ($stmt) {
         /* ligar parámetros para marcadores */

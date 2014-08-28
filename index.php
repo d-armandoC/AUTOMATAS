@@ -35,7 +35,7 @@
               <div class="control-group">
                 <label class="control-label" for="inputEmail"><strong>Usuario</strong></label>
                 <div class="controls">
-                  <input name = "us" type="text" placeholder="Usuario", onclick="getLocationUser()">
+                  <input name = "us" type="text" placeholder="Usuario" onclick="getLocationUser()">
                 </div>
               </div>
 

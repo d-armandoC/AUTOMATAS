@@ -1,5 +1,6 @@
 <?php
-require_once('../../dll/conect.php');
+include('../login/isLogin.php');
+include ('../../dll/config.php');
 
 extract($_GET);
 

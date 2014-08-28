@@ -248,7 +248,7 @@ Ext.onReady(function() {
                         format: 'Y-m-d',
                         emptyText: 'Ingresar Fecha...',
                         minValue: '1950-01-01',
-                        maxValue : new Date()
+//                        maxValue : new Date()
                     }]
             }, {
                 xtype: 'fieldset',

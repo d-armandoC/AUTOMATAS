@@ -1,25 +1,31 @@
 <?php
-require_once('../../dll/conect.php');
 
-extract($_GET);
+include('../login/isLogin.php');
+include ('../../dll/config.php');
 
-$salida = "{failure:true}";
+if (!$mysqli = getConectionDb()) {
+    echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
+} else {
+    extract($_GET);
+    $consultaSql = "SELECT id_clase_Vehiculo, clase_vehiculo FROM karviewdb.clase_vehiculos";
+    $result = $mysqli->query($consultaSql);
+    $mysqli->close();
+    
+    if ($result->num_rows > 0) {
+        $objJson = "{class_veh: [";
 
-$consultaSql = "SELECT id_clase_Vehiculo, clase_vehiculo FROM karviewdb.clase_vehiculos";
-consulta($consultaSql);
-$resulset = variasFilas();
-$salida = "{'class_veh': [";
-for ($i = 0; $i < count($resulset); $i++) {
-    $fila = $resulset[$i];
-    $salida .= "{
-            'id':" . $fila["id_clase_Vehiculo"] . ",
-            'text':'" . utf8_encode($fila["clase_vehiculo"]) . "'
-        }";
-    if ($i != count($resulset) - 1) {
-        $salida .= ",";
+        while ($myrow = $result->fetch_assoc()) {
+            $objJson .= "{            
+            id:" . $myrow["id_clase_Vehiculo"] . ",
+            text:'" . utf8_encode($myrow["clase_vehiculo"]) . "'
+            },";
+        }
+        $objJson .= "]}";
+        echo $objJson;
+    } else {
+        echo "{failure:true, message:'No hay datos que obtener'}";
     }
 }
-$salida .="]}";
 
-echo $salida;
+
 

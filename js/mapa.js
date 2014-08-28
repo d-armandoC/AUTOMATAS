@@ -152,7 +152,7 @@ function loadMap() {
                 eventListeners: {
                     featureselected: function(evt) {
                         var feature = evt.feature;
-                        var idTravel = feature.attributes.idTravel;
+                        var vehiculo = feature.attributes.vehiculo;
                         var direccion = feature.attributes.direccion;
                         var velocidad = feature.attributes.velocidad;
                         var latitud = feature.attributes.latitud;
@@ -160,7 +160,7 @@ function loadMap() {
                         var evento = feature.attributes.evenvto;
                         var contenidoAlternativo =
                                 "<section>" +
-                                "<b>Id: </b>" + idTravel.toString() + "<br>" +
+                                "<b>Vehiculo: </b>" + vehiculo.vehiculo + "<br>" +
                                 "<b>Velocidad: </b>" + velocidad.toString() + "</br>" +
                                 "<b>Latitud: </b>" + latitud.toString() + "</br>" +
                                 "<b>Longitud: </b>" + longitud.toString() + "</br>" +
@@ -586,8 +586,6 @@ function graficarEstaciones(datos) {
 }
 
 function buscarEnMapa(idCompany, idVehicle) {
-    console.log(idCompany);
-    console.log(idVehicle);
     var lienzoP = map.getLayer('vehicleLayer');
     if (lienzoP === null) {
         Ext.MessageBox.show({
@@ -1086,15 +1084,17 @@ function drawLineRouteManual(json) {
 function drawPointsRoute(coordPuntos, idRuta) {
     
     var features = new Array();
-    var i = 1;
-    for (i = 1; i < coordPuntos.length; i++) {
+    var cont = 0;
+    for (var i = 0; i < coordPuntos.length; i++) {
         var dataRuta = coordPuntos[i];
-
+        cont=cont+1;
         var pt = new OpenLayers.Geometry.Point(dataRuta.longitud, dataRuta.latitud);
         pt.transform(new OpenLayers.Projection("EPSG:4326"),
                 new OpenLayers.Projection("EPSG:900913"));
+                
         var puntoMap = new OpenLayers.Feature.Vector(pt, {
-            idTravel: i,
+            idTravel:cont,
+            vehiculo:dataRuta.vehiculo,
             empresa: dataRuta.company,
             direccion: dataRuta.direccion,
             velocidad: dataRuta.velocidad,
@@ -1365,6 +1365,9 @@ function clearLienzoLineRoute() {
 function clearLienzoPointTravel() {
     lienzoPoinTravel.destroyFeatures();
     clearPopups();
+    clearLienzoLineRoute();
+    clearLienzoPointRouteManual();
+    clearLienzoLineRouteManual();
 }
 
 function clearLienzoLineTravel() {

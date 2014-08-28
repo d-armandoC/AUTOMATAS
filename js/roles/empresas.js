@@ -19,7 +19,6 @@ Ext.require([
 ]);
 var idEstacion;
 var panelTabMapaAdmin;
-
 var drawControls;
 var required = '<span style="color:red;font-weight:bold" data-qtip="Requerido">*</span>';
 
@@ -341,25 +340,27 @@ Ext.onReady(function() {
                     ventAddPersonal();
 
                 }},
+             {text: 'Envio Correos', iconCls: 'icon-email', handler: function() {
+                            visualizarEnviosGeoCercas();
+                        }},
 //            {text: 'Usuarios', iconCls: 'icon-user', handler: function() {
 //                    ventAddUser();
 //                }},
 //            {text: 'Vehiculos', iconCls: 'icon-car', handler: function() {
 //                    ventanaAddVehiculos();
-//                }}
-            , {
-                text: 'Geocercas',
-                iconCls: 'icon-geocerca',
-                menu: [
-                    {text: 'Administracion', iconCls: 'icon-find-geo', handler: function() {
-//                            ventanaGeocerca();
-                               ventanaAddGeo();
-                        }},
-                    {text: 'Envio Correos', iconCls: 'icon-email', handler: function() {
-                            visualizarEnviosGeoCercas();
-                        }}
-                ]
-            },
+//                }}, {
+//                text: 'Geocercas',
+//                iconCls: 'icon-geocerca',
+//                menu: [
+//                    {text: 'Administracion', iconCls: 'icon-find-geo', handler: function() {
+////                            ventanaGeocerca();
+//                               ventanaAddGeo();
+//                        }},
+//                    {text: 'Envio Correos', iconCls: 'icon-email', handler: function() {
+//                            visualizarEnviosGeoCercas();
+//                        }}
+//                ]
+//            },
         ]
     });
 
@@ -373,9 +374,9 @@ Ext.onReady(function() {
 //            {text: 'Vehiculos en Lugares', iconCls: 'icon-vehiculos_lugar', handler: function() {
 //                    ventanaVehLugares();
 //                }},
-//            {text: 'Modificar usuario', iconCls: 'icon-personal', handler: function() {
-//                    ventanaModificarUsuario();
-//                }},
+            {text: 'Modificar usuario', iconCls: 'icon-personal', handler: function() {
+                    ventanaModificarUsuario();
+                }},
             {text: 'Cambiar contraseña', iconCls: 'icon-key', handler: function() {
                     ventanaCambiarContrasenia();
                 }},
@@ -441,10 +442,10 @@ Ext.onReady(function() {
                             {text: 'Registros de Panico', iconCls: 'icon-reset', handler: function() {
                                     showWinPanicosDaily();
                                 }},
-//                            {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function() {
-////                                    ventanaExcesoVelocidad();
-//                                     showWinExcesosDaily();
-//                                }}
+                            {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function() {
+//                                    ventanaExcesoVelocidad();
+                                     showWinExcesosDaily();
+                                }}
                             , {text: 'Mantenimiento General', iconCls: 'icon-config', handler: function() {
                                     ventanaMantenimiento();
                                 }}
@@ -459,13 +460,13 @@ Ext.onReady(function() {
 //                            {text: 'Consume de Combustible', iconCls: 'icon-flota', handler: function() {
 //                                   // ventanaConsumoCombustibles();
 //                                }},
-                            {text: 'Reporte de Paradas', iconCls: 'icon-unlock', handler: function() {
-                                    showWinPradas();
-                                }},
-                            {text: 'Reporte de Geocercas', iconCls: 'icon-report-geo', handler: function() {
-                                    ventanaReporteGeocerca();
-//                                  
-                                }}, ,
+//                            {text: 'Reporte de Paradas', iconCls: 'icon-unlock', handler: function() {
+//                                    showWinPradas();
+//                                }},
+//                            {text: 'Reporte de Geocercas', iconCls: 'icon-report-geo', handler: function() {
+//                                    ventanaReporteGeocerca();
+////                                  
+//                                }}, ,
                                     {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
                                             ventanaEventos();
                                         }},
@@ -486,7 +487,6 @@ Ext.onReady(function() {
                 ]
             },
             herraminetas,
-//            monitoreo,
             administracion,
             salir, '->',
             {

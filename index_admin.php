@@ -15,7 +15,7 @@
 <html lang='es'>
     <head>
         <meta charset="utf-8">
-        <title><?php echo $site_title?></title>
+        <?php  echo "<title>" .  $site_title . "</title>"?>
         <link rel="shortcut icon" href="<?php echo $site_icon?>" type="image/x-icon">
         <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/shared/example.css">
        <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/ux/grid/css/GridFilters.css">
@@ -45,11 +45,11 @@
         <script type="text/javascript" src="js/requerid/functions.js"></script>
         <script type="text/javascript" src="js/roles/admin.js"></script>
 
-        <script type="text/javascript" src="js/complements/loadLayer.js"></script>        
-        <script type="text/javascript" src="js/complements/drawLine.js"></script>
-        <script type="text/javascript" src="js/complements/clearLayer.js"></script>                
-        <script type="text/javascript" src="js/complements/showDataLayer.js"></script>
-        <script type="text/javascript" src="js/complements/getPositon.js"></script>
+        <!--<script type="text/javascript" src="js/complements/loadLayer.js"></script>-->        
+        <!--<script type="text/javascript" src="js/complements/drawLine.js"></script>-->
+        <!--<script type="text/javascript" src="js/complements/clearLayer.js"></script>-->                
+        <!--<script type="text/javascript" src="js/complements/showDataLayer.js"></script>-->
+        <!--<script type="text/javascript" src="js/complements/getPositon.js"></script>-->
 
         <script type="text/javascript" src="js/administracion/ventanaPersonal.js"></script>
         <script type="text/javascript" src="js/administracion/ventanaMantenimineto.js"></script>

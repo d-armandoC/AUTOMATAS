@@ -1,6 +1,6 @@
 <?php
 include ('../../../dll/config.php');
-
+include('../../login/isLogin.php');
 extract($_POST);
 
 if (!$mysqli = getConectionDb()) {
@@ -10,7 +10,7 @@ if (!$mysqli = getConectionDb()) {
     $requestBody = file_get_contents('php://input');
     $json = json_decode($requestBody, true);
     $setAcronimo = $setEmpresa = $setDireccion=$setTelefono=$setEmail= $setId="";
-    if (isset($json["acronimo"])) $setAcronimo = "acronimo=".$json["acronimo"].",";
+    if (isset($json["acronimo"])) $setAcronimo = "acronimo='".$json["acronimo"]."',";
     if (isset($json["empresa"])) $setEmpresa = "empresa='".utf8_decode(strtoupper($json["empresa"]))."',"; 
     if (isset($json["direccion"])) $setDireccion = "direccion='".utf8_decode(strtoupper($json["direccion"]))."',";
     if (isset($json["telefono"])) $setTelefono = "telefono='".$json["telefono"]."',";

@@ -94,7 +94,6 @@ function obtenerLitros(json) {
 
 function obtenerGalones(json) {
     var litros = parseFloat(obtenerLitros(json));
-    console.log(litros);
     var litrosEstimado=3.78541178;
     var galonEstimado=1;
     var galones= litros*galonEstimado/litrosEstimado;
@@ -145,14 +144,15 @@ function velociadadMedia(json) {
         var objeto = json[i];
         promedio = promedio+objeto.velocidad;
     }
-    return promedio/json.length;
+    return (promedio/json.length).toFixed(2);
 }
 
 function velociadadMayor60(json) {
     var contmayor = 0;
     for (var i = 0; i < json.length; i++) {
         var objeto = json[i];
-        if(objeto.velocidad>60&&objeto.velocidad<90){
+        console.log('velocidad de 60');
+        if(objeto.velocidad>60){
            contmayor=contmayor+1;
         }
     }

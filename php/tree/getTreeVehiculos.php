@@ -9,7 +9,7 @@ if (!$mysqli = getConectionDb()) {
     $idPersona = $_SESSION["IDPERSONKARVIEW"];
     $idRol = $_SESSION["IDROLKARVIEW"];
 
-    if ($idRol == 1 || $idRol == 2) {
+    if ($idRol == 1 ) {
         $expand = 'false';
         $consultaSql = 
             "SELECT v.id_vehiculo, v.id_equipo, v.vehiculo, v.icono, 
@@ -17,20 +17,19 @@ if (!$mysqli = getConectionDb()) {
             FROM vehiculos v, empresas e, personas p
             WHERE v.id_empresa = e.id_empresa
             AND v.id_persona = p.id_persona
-             ORDER BY e.empresa, v.vehiculo
-"
+             ORDER BY e.empresa, v.vehiculo"
         ;
-    } else if ($idRol == 4) {
-        $expand = 'true';
+    } if ($idRol == 2 ) {
+        $expand = 'false';
         $consultaSql = 
-            "SELECT v.id_vehiculo,v.id_equipo, v.vehiculo, v.icono, 
+            "SELECT v.id_vehiculo, v.id_equipo, v.vehiculo, v.icono, 
             e.id_empresa, e.empresa, p.nombres, p.apellidos
             FROM vehiculos v, empresas e, personas p
             WHERE v.id_empresa = e.id_empresa
-            AND v.id_persona = p.id_persona
-            AND v.id_persona = '$idPersona'"
+            AND v.id_persona = p.id_persona and e.id_usuarioAsignado=$idPersona
+             ORDER BY e.empresa, v.vehiculo"
         ;
-    } else {
+    } else if ($idRol == 3) {
         $expand = 'true';
         $consultaSql = 
             "SELECT v.id_vehiculo,v.id_equipo, v.vehiculo, v.icono,
@@ -39,8 +38,16 @@ if (!$mysqli = getConectionDb()) {
             WHERE v.id_empresa = e.id_empresa
             AND v.id_persona = p.id_persona
             AND e.id_empresa = '$idEmpresa'
-            ORDER BY v.vehiculo"
-        ;
+            ORDER BY v.vehiculo";
+    } else if ($idRol == 4) {
+          $expand = 'true';
+        $consultaSql = 
+            "SELECT v.id_vehiculo,v.id_equipo, v.vehiculo, v.icono, 
+            e.id_empresa, e.empresa, p.nombres, p.apellidos
+            FROM vehiculos v, empresas e, personas p
+            WHERE v.id_empresa = e.id_empresa
+            AND v.id_persona = p.id_persona
+            AND v.id_persona = '$idPersona'";
     }
 
     $result = $mysqli->query($consultaSql);

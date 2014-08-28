@@ -8,7 +8,9 @@ extract($_GET);
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, msg: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
+    $userKarview = $_SESSION["USERKARVIEW"];
     $idEmpresa = $_SESSION["IDCOMPANYKARVIEW"];
+    $idPersona = $_SESSION["IDPERSONKARVIEW"];
     $idRol = $_SESSION["IDROLKARVIEW"];
 
     if ($idRol == 1) {

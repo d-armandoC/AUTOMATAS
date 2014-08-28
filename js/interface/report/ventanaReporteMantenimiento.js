@@ -280,8 +280,8 @@ function loadGridTotalMantenimiento(store, fi, ff, empresa) {
         region: 'center',
         items: [gridTotalMantenimiento]
     });
-    panelMapaAdmin.add(tabExcesos1);
-    panelMapaAdmin.setActiveTab(tabExcesos1);
+    panelTabMapaAdmin.add(tabExcesos1);
+    panelTabMapaAdmin.setActiveTab(tabExcesos1);
     winMantenimiento.hide();
 }
 

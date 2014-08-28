@@ -14,14 +14,25 @@ Ext.require([
     'Ext.ux.ajax.SimManager',
     'Ext.ux.grid.FiltersFeature',
     'Ext.selection.CellModel',
-    'Ext.ux.CheckColumn'
+    'Ext.ux.CheckColumn',
+    'Ext.ux.Spotlight'
 ]);
-
 var idEstacion;
-var panelMapa;
-
+var panelTabMapaAdmin;
 var drawControls;
 var required = '<span style="color:red;font-weight:bold" data-qtip="Requerido">*</span>';
+
+var meses = new Array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+var diasSemana = new Array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
+var f = new Date();
+//document.write(diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear());
+var label = Ext.create('Ext.form.Label', {
+    text: 'hola',
+    id: 'tiempo',
+    style: {
+        color: 'gray'
+    }
+});
 
 var filters = {
     ftype: 'filters',
@@ -37,8 +48,16 @@ var filters = {
         }]
 };
 
+var idEqpMen;
+
+var spot = Ext.create('Ext.ux.Spotlight', {
+    easing: 'easeOut',
+    duration: 500
+});
+
 Ext.onReady(function() {
     var idEqpMen, nameVeh;
+    //Ext.getCmp('tiempo').setValue((diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear()));
 
     Ext.apply(Ext.form.field.VTypes, {
         daterange: function(val, field) {
@@ -59,13 +78,36 @@ Ext.onReady(function() {
                 end.validate();
                 this.dateRangeMin = date;
             }
-            /*
-             * Always return true since we're only using this vtype to set the
-             * min/max allowed values (these are tested for after the vtype test)
-             */
             return true;
         },
         daterangeText: 'Start date must be less than end date',
+        placaValida: function(val, field) {
+            var partes = val.split("");
+            if (partes.length === 7) {
+                if (!/^[A-Z]{3}[0-9]{4}$/.test(val.toUpperCase())) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                if (!/^[A-Z]{3}[0-9]{3}$/.test(val.toUpperCase())) {
+                    return false;
+                } else {
+                    return true;
+                }
+
+            }
+        },
+        placaValidaText: 'Ingrese un numero de placa valido <br>\n\
+                           Ej:(LAB3532) 3 letras 4 numeros',
+        digitos: function(val, field) {
+            if (!/^[0-9]{1,45}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        num1Text: 'Solo carateres \n\
+       numéricos',
         password: function(val, field) {
             if (field.initialPassField) {
                 var pwd = field.up('form').down('#' + field.initialPassField);
@@ -73,12 +115,11 @@ Ext.onReady(function() {
             }
             return true;
         },
-        passwordText: 'Passwords do not match',
+        passwordText: 'Las Contraseñas no coinciden',
         cedulaValida: function(val, field) {
             if (val.length !== 10) {
                 return false;
             }
-
             if (val.length === 10) {
                 if (check_cedula(val)) {
                     return true;
@@ -89,56 +130,270 @@ Ext.onReady(function() {
             return true;
         },
         cedulaValidaText: 'Numero de Cedula Invalida',
-        placaValida: function(val, field) {
-            var partes = val.split("-");
-            if (partes.length === 2) {
+        numeroTelefono: function(val, field) {
+            var partes = val.split("");
+            if (partes.length === 10) {
+                if (!/^[0]{1}[9]{1}[0-9]{8}$/.test(val)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                if (!/^[0]{1}[7]{1}[0-9]{7}$/.test(val)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        },
+        numeroTelefonoText: 'Ingresar solo caracteres numéricos válidos <br>que empiezen con [09] movil tamaño de (10)dígitos<br> 0 [072] convencional tamaño de (9)dígitos ',
+        emailNuevo: function(val, field) {
+            if (!/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/.test(val)) {
                 return false;
             }
             return true;
         },
-        placaValidaText: 'No utilice interfaceones'
+        emailNuevoText: 'Dede ingresar segun el formato kradac@kradac.com <br>sin caracteres especiales',
+        campos: function(val, field) {
+            if (!/^[-0-9.A-Z.a-z./áéíóúñÑ\s*]{2,45}$/.test(val)) {
+                return false;
+
+            }
+
+            return true;
+            Ext.Msg.alert('Error', 'Solo carateres alfa numéricos');
+        },
+        camposText: 'Solo carateres alfa numéricos<br> Tamaño min de 2 y un máx de 45 carateres',
+//para direccion
+        direccion: function(val, field) {
+            if (!/^[-0-9.A-Z.a-z.áéíóúñ()\s*]{2,150}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        direccionText: 'Solo carateres alfa numéricos<br> Tamaño min de 2 y un máx de 150 carateres',
+//Metodo utilizado para controlar caracteres alfanuericos y el tamano del campo "Reg. Municipal"
+//del archivo administracion de buses (vehicle.js)
+        camposVehicleMax10: function(val, field) {
+            if (!/^[-0-9.A-Z.a-z.áéíóúñ\s*]{5,10}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        camposVehicleMax10Text: 'Solo carateres alfa numéricos<br> Tamaño min de 5 y un máx de 10 carateres',
+//Metodo utilizado para controlar caracteres alfanuericos y el tamano de los campos
+//del archivo administracion de buses (vehicle.js) que requieren un tamano de entre 2 y 45 caracteres
+        camposVehicleMax45: function(val, field) {
+            if (!/^[-0-9.A-Z.a-z.áéíóúñ\s*]{5,45}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        camposVehicleMax45Text: 'Solo carateres alfa numéricos<br> Tamaño min de 5 y un máx de 45 carateres',
+        campos1: function(val, field) {
+            if (!/^[-0-9.A-Z.a-z.áéíóúñ\s*]{2,80}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        campos1Text: 'Solo carateres alfa numéricos<br> Tamaño min de 1 y un máx de 80 carateres',
+        camposMin: function(val, field) {
+            if (!/^[0-9A-Za-zñ\s*]{2,10}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        camposMinText: 'Solo carateres alfa numéricos<br> Tamaño min de 2 y un máx de 10 carateres',
+//solo mayus
+        mayus: function(val, field) {
+            if (!/^[0-9A-Z]{1,5}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        mayusText: 'Solo carateres Mayusculas',
+//Para datos combos vehiculos y personas
+        alphanum0: function(val, field) {
+            if (!/^[0-9A-Za-záéíóúñ\s*]{3,80}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        alphanum0Text: 'Solo carateres alfa numéricos',
+        alphanum1: function(val, field) {
+            if (!/^[0-9.A-Z.a-záéíóúñ\s*]{3,30}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        alphanum1Text: 'Solo carateres alfa numéricos',
+//para puntos
+        puntos: function(val, field) {
+            if (!/^[0-9.A-Z.a-záéíóúñ/\s*]{2,45}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        puntosText: 'Solo datos numéricos,mínimo 2 y máximo de 4 numeros',
+///para rutas
+        alphanum2: function(val, field) {
+            if (!/^[0-9\s.A-Z.\sa-záéíóúñ.()-:\s*]{3,100}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        alphanum2Text: 'Solo carateres alfa numéricos',
+//para geocercas
+        geo: function(val, field) {
+            if (!/^[0-9]{2,4}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        geoText: 'Solo carateres numéricos mínimo 2 y máximo 4 numeros',
+        num1: function(val, field) {
+            if (!/^[0-9]{3,4}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        num1Text: 'Solo carateres numéricos',
+//para numeros 3-45
+                num2: function(val, field) {
+                    if (!/^[0-9]{3,45}$/.test(val)) {
+                        return false;
+                    }
+                    return true;
+                },
+        num2Text: 'Solo carateres numéricos mínimo 3 y un máximo de 45',
+        camposRegMun: function(val, field) {
+            if (!/^[-0-9A-Za-z]{3,10}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        camposRegMunText: 'Solo carateres alfa numéricos,y guiones <br> Tamaño min de 5 y un máx de 10 carateres'
+
+    });
+////////////
+    Ext.tip.QuickTipManager.init();
+
+    menuCoop = Ext.create('Ext.menu.Menu', {
+        items: [],
+        listeners: {
+            click: function(menu, item, e, eOpts) {
+                for (var i = 0; i < showCoopMap.length; i++) {
+                    if (showCoopMap[i][0] === item.getItemId()) {
+                        showCoopMap[i][2] = item.checked;
+
+                        if (!item.checked) {
+                            var form = Ext.create('Ext.form.Panel');
+                            form.getForm().submit({
+                                url: 'php/interface/monitoring/ultimosGPS.php',
+                                params: {
+                                    listCoop: showCoopMap[i][0]
+                                },
+                                failure: function(form, action) {
+                                    Ext.example.msg('Mensaje', action.result.message);
+                                    console.log('logs');
+                                },
+                                success: function(form, action) {
+                                    if (connectionMap()) {
+                                        console.log('succes');
+                                        clearVehicles(action.result.dataGps);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        }
     });
 
-    Ext.tip.QuickTipManager.init();
 
     var administracion = Ext.create('Ext.button.Button', {
         text: 'Administración',
-        iconCls: 'icon-config',
+        iconCls: 'icon-direccion',
         scope: this,
         menu: [
-            {text: 'Usuarios', iconCls: 'icon-user-add', handler: function() {
-                    ventAddUser();
-                }},
-            {text: 'Vehiculos', iconCls: 'icon-car', handler: function() {
-                    ventAddVehiculo();
-                }},
+//            {text: 'Empresas', iconCls: 'icon-central', handler: function() {
+//                    showWinAdminCompany();
+//
+//                }},
+//            {text: 'Equipos',
+//                iconCls: 'icon-servicios',
+//                menu: [
+//                    {text: 'Equipos', iconCls: 'icon-credits', handler: function() {
+//                            showWinAdminDevice();
+//                        }},
+//                    {text: 'Enviar CMD', iconCls: 'icon-cmd', handler: function() {
+//                            ventComands();
+//                        }},
+//                    '-',
+//                    {text: 'Envio Correo', iconCls: 'icon-email', handler: function() {
+//                            ventanaEnvioMail();
+//                        }}
+//                ]
+//            },
             {text: 'Personal', iconCls: 'icon-personal', handler: function() {
                     ventAddPersonal();
-                }}
-        ]
-    });
 
-    var geocerca = Ext.create('Ext.button.Button', {
-        text: 'Geocercas',
-        scope: this,
-        iconCls: 'icon-geocerca',
-        menu: [
-            {text: 'Ver', iconCls: 'icon-find-geo', handler: function() {
-                    ventanaVerGeo();
                 }},
-            {text: 'Agregar', iconCls: 'icon-add-geo', handler: function() {
-                    ventanaAddGeo();
-                }}
+             {text: 'Envio Correos', iconCls: 'icon-email', handler: function() {
+                            visualizarEnviosGeoCercas();
+                        }},
+//            {text: 'Usuarios', iconCls: 'icon-user', handler: function() {
+//                    ventAddUser();
+//                }},
+//            {text: 'Vehiculos', iconCls: 'icon-car', handler: function() {
+//                    ventanaAddVehiculos();
+//                }}, {
+//                text: 'Geocercas',
+//                iconCls: 'icon-geocerca',
+//                menu: [
+//                    {text: 'Administracion', iconCls: 'icon-find-geo', handler: function() {
+////                            ventanaGeocerca();
+//                               ventanaAddGeo();
+//                        }},
+//                    {text: 'Envio Correos', iconCls: 'icon-email', handler: function() {
+//                            visualizarEnviosGeoCercas();
+//                        }}
+//                ]
+//            },
         ]
     });
 
-    var extra = Ext.create('Ext.button.Button', {
-        text: 'Extra',
+
+
+    var herraminetas = Ext.create('Ext.button.Button', {
+        text: 'Herramintas',
         scope: this,
-        icon: 'img/table_refresh.png',
+        iconCls: 'icon-config',
         menu: [
+//            {text: 'Vehiculos en Lugares', iconCls: 'icon-vehiculos_lugar', handler: function() {
+//                    ventanaVehLugares();
+//                }},
+            {text: 'Modificar usuario', iconCls: 'icon-personal', handler: function() {
+                    ventanaModificarUsuario();
+                }},
+            {text: 'Cambiar contraseña', iconCls: 'icon-key', handler: function() {
+                    ventanaCambiarContrasenia();
+                }},
+            {text: 'Mantenimientos', iconCls: 'icon-mantenimiento', handler: function() {
+                    ventAddMantenimientos();
+                }},
+            {text: 'Actualizar email', iconCls: 'icon-email', handler: function() {
+                    ventanaActualizarEmail();
+                }},
+            '-',
+            {text: 'Videos',
+                iconCls: 'icon-video',
+                handler: showVideo
+            },
             {text: 'Creditos', iconCls: 'icon-credits', handler: function() {
                     credits();
+                    spot.show('panel-credit');
                 }}
         ]
     });
@@ -148,58 +403,108 @@ Ext.onReady(function() {
         iconCls: 'icon-edit',
         scope: this,
         handler: function() {
-            ventanaEditarPuntos();
+            // ventanaEditarPuntos();
         }
     });
 
+    var monitoreo = Ext.create('Ext.button.Button', {
+        text: 'Monitoreo', iconCls: 'icon-monitoreo', handler: function() {
+            window.open('monitorTeam.php');
+        }
+
+    });
+
     var salir = Ext.create('Ext.button.Button', {
+        id: 'custom',
         text: 'Salir',
         scope: this,
         icon: 'img/salir.png',
         handler: function() {
-            window.location = 'php/login/logout.php';
+            Ext.MessageBox.confirm('SALIR', 'Desea Salir del Sistema ?', function(choice) {
+                if (choice === 'yes') {
+                    window.location = 'php/login/logout.php';
+                }
+            });
+
+
         }
     });
 
     var barraMenu = Ext.create('Ext.toolbar.Toolbar', {
         width: '100%',
         items: [{
-                text: 'Rastreo Satelital',
-                icon: 'img/application_go.png',
+                text: 'Menú',
+                icon: 'img/menu.png',
                 menu: [{
                         text: 'Reportes',
                         iconCls: 'icon-general',
                         menu: [
-                            /*{text: 'Asignacion Central', iconCls : 'icon-asignacion', handler: function(){ventanaAsignacion();}},
-                             {text: 'Carreas Realizadas', iconCls : 'icon-informe', handler: function(){ventanaSoftware();}},                    
-                             {text: 'Carreras No Atendidas', iconCls : 'icon-no-atendidos', handler: function(){ventanaNoAtendidas();}},
-                             {text: 'Registros de Panico', iconCls : 'icon-reset', handler: function(){ventanaPanico();}},
-                             {text: 'Excesos de Velocidad', iconCls : 'icon-exceso-vel', handler: function(){ventanaExcesosVelocidad();}},
-                             {text: 'Servicios', iconCls : 'icon-servicios', handler: function(){ventanaServicios();}},
-                             {text: 'Estado de Vehiculos', iconCls : 'icon-estado-veh', handler: function(){ventanaEstadoDeVehiculos();}},
-                             {text: 'Franjas Horarias', iconCls : 'icon-franjas-hor', handler: function(){ventanaFranjasHorarias();}},
-                             {text: 'Trabajo por Flota', iconCls : 'icon-trab-flota', handler: function(){ventanaTrabajoPorFlota();}},*/
+                            {text: 'Registros de Panico', iconCls: 'icon-reset', handler: function() {
+                                    showWinPanicosDaily();
+                                }},
+                            {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function() {
+//                                    ventanaExcesoVelocidad();
+                                     showWinExcesosDaily();
+                                }}
+                            , {text: 'Mantenimiento General', iconCls: 'icon-config', handler: function() {
+                                    ventanaMantenimiento();
+                                }}
+                            , {text: 'Mantenimiento Detallado', iconCls: 'icon-servicios', handler: function() {
+                                    showWinMantenimientoGeneral();
+                                }}
+                            ,
                             {text: 'Recorridos General', iconCls: 'icon-all-flags', handler: function() {
                                     ventanaBanderas();
                                 }}
-                            /*{text: 'Eventos', iconCls : 'icon-eventos', handler: function(){ventanaEventos();}},
-                             {text: 'Geocercas', iconCls : 'icon-report-geo', handler: function(){ventanaGeocercas();}},
-                             {text: 'Taximetro', iconCls : 'icon-taximetro', handler: function(){ventanaTaximetro();}}*/
+                            ,
+//                            {text: 'Consume de Combustible', iconCls: 'icon-flota', handler: function() {
+//                                   // ventanaConsumoCombustibles();
+//                                }},
+//                            {text: 'Reporte de Paradas', iconCls: 'icon-unlock', handler: function() {
+//                                    showWinPradas();
+//                                }},
+//                            {text: 'Reporte de Geocercas', iconCls: 'icon-report-geo', handler: function() {
+//                                    ventanaReporteGeocerca();
+////                                  
+//                                }}, ,
+                                    {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
+                                            ventanaEventos();
+                                        }},
+                            {text: 'CMD Enviados', iconCls: 'icon-cmd-hist', handler: function() {
+                                    ventanaCmdHistorial();
+                                }},
                         ]
-                    }, '-',
-                    {text: 'Limpiar Mapa', iconCls: 'icon-limpiar-mapa', handler: function() {
-                            limpiarCapasAll();
-                        }},
-                    {text: 'Simbologia', iconCls: 'icon-edit', handler: function() {
-                            ventanaSimbologia();
-                        }}
+                    },
+//                    {text: 'Estadisticas', iconCls: 'icon-statistics', handler: function() {
+//                            window.open('statistics.php');
+//                        }}, '-',
+//                    {text: 'Limpiar Mapa', iconCls: 'icon-limpiar-mapa', handler: function() {
+//                            //  limpiarCapasAll();
+//                        }},
+//                    {text: 'Simbologia', iconCls: 'icon-edit', handler: function() {
+//                            ventanaSimbologia();
+//                        }}
                 ]
             },
-            /*geocerca,
-             administracion,
-             extra,
-             editPosEmp,*/
-            salir
+            herraminetas,
+            administracion,
+            salir, '->',
+            {
+                xtype: 'label',
+                html: '<section id="panelNorte">' +
+                        '<center><strong id="name"> ' + (diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear()) + '</strong></center>' +
+                        '</section>'
+            },
+            {
+                xtype: 'image',
+                src: getNavigator(),
+                width: 16,
+                height: 16,
+                margin: '0 5 0 0'
+            }
+
+
+
         ]
     });
 
@@ -208,11 +513,24 @@ Ext.onReady(function() {
         deferreRender: false,
         activeTab: 0,
         items: [{
-                height: 47,
-                html: '<section id="panelNorte">' +
-                        '<center><strong id="titulo">SISTEMA DE RASTREO VEHICULAR</strong></center>' +
-                        '<strong id="subtitulo">Bienvenido al Sistema:: ' + personKarview + '</strong>' +
-                        '</section>'
+                layout: 'hbox',
+                bodyStyle: {
+                    background: '#add2ed'
+                },
+                items: [{
+                        xtype: 'label',
+                        html: '<a href="http://www.kradac.com" target="_blank"><img src="img/logo.png" width="250" height="64"></a>'
+                    }, {
+                        xtype: 'label',
+                        padding: '15 0 0 0',
+                        style: {
+                            color: '#157fcc'
+                        },
+                        html: '<section id="panelNorte">' +
+                                '<center><strong id="titulo">Sistema de Rastreo Vehicular</strong></center>' +
+                                '<strong id="subtitulo">Bienvenid@ al Sistema: ' + personKarview + '</strong>' +
+                                '</section>'
+                    }]
             },
             barraMenu]
     });
@@ -222,7 +540,7 @@ Ext.onReady(function() {
         title: 'Buscar Vehiculo',
         iconCls: 'icon-car',
         width: 300,
-        height: 125,
+        height: 150,
         closeAction: 'hide',
         plain: false,
         items: [{
@@ -267,7 +585,7 @@ Ext.onReady(function() {
                         editable: false,
                         allowBlank: false,
                         listConfig: {
-                            minWidth: 300
+                            minWidth: 450
                         }
                     }],
                 buttons: [{
@@ -277,9 +595,6 @@ Ext.onReady(function() {
                             if (this.up('form').getForm().isValid()) {
                                 var capa = this.up('form').down('[name=cbxEmpresas]').getValue();
                                 var idEqpCoop = this.up('form').down('[name=cbxVeh]').getValue();
-                                if (capa !== 'coop') {
-                                    capa = 'KRC';
-                                }
                                 buscarEnMapa(capa, idEqpCoop);
                             } else {
                                 Ext.example.msg('Error', 'Escoja un Vehiculo');
@@ -292,10 +607,10 @@ Ext.onReady(function() {
     var panelEste = Ext.create('Ext.form.Panel', {
         region: 'west',
         id: 'west_panel',
-        title: 'Localizacion',
+        title: 'Facetas_Karview',
+        iconCls: 'icon-facetas',
         frame: true,
         width: 240,
-        height: 10,
         split: true,
         collapsible: true,
         layout: 'accordion',
@@ -307,13 +622,13 @@ Ext.onReady(function() {
                 xtype: 'treepanel',
                 id: 'veh-taxis-tree',
                 rootVisible: false,
-                title: 'Rastreo Taxis',
+                title: 'Empresas',
                 autoScroll: true,
-                iconCls: 'icon-taxi-2',
+                iconCls: 'icon-tree-company',
                 store: storeTreeVehTaxis,
                 columns: [
-                    {xtype: 'treecolumn', text: 'Central', flex: 4, sortable: true, dataIndex: 'text'}/*,
-                     {text: 'Estado', flex: 1, dataIndex: 'estado', sortable: true, renderer: formatState}*/
+                    {xtype: 'treecolumn', text: 'Central', flex: 4, sortable: true, dataIndex: 'text'},
+//                     {text: 'Estado', flex: 1, dataIndex: 'estado', sortable: true, renderer: formatState}
                 ],
                 tools: [{
                         type: 'help',
@@ -324,15 +639,19 @@ Ext.onReady(function() {
                         type: 'refresh',
                         itemId: 'refresh_taxis',
                         tooltip: 'Recargar Datos',
-                        //hidden: true,
                         handler: function() {
                             var tree = Ext.getCmp('veh-taxis-tree');
+                            tree.body.mask('Loading', 'x-mask-loading');
                             reloadTree(tree, 'Vehiculos', storeTreeVehTaxis);
+                            Ext.example.msg('Vehiculos', 'Recargado');
+                            tree.body.unmask();
                         }
                     }, {
                         type: 'search',
                         tooltip: 'Buscar Vehiculo',
                         handler: function(event, target, owner, tool) {
+                            // do search                    
+                            owner.child('#refresh_taxis').show();
                             winSearchVeh.showAt(event.getXY());
                         }
                     }],
@@ -342,29 +661,35 @@ Ext.onReady(function() {
                 },
                 listeners: {
                     itemclick: function(thisObject, record, item, index, e, eOpts) {
-                        var aux = record.internalId;
-
-                        var capa = aux.split('_')[0];
-                        var idEqpCoop = aux.split('_')[1];
-                        if (capa !== 'coop') {
-                            capa = 'KRC';
-                        }
-
-                        buscarEnMapa(capa, idEqpCoop);
-                    },
-                    itemcontextmenu: function(thisObject, record, item, index, e, eOpts) {
-                        idEqpMen = record.internalId;
-                        nameVeh = record.data.text;
-                        if (idEqpMen.indexOf('ext-record') === -1) {
-                            var posXY = new Array(2);
-                            posXY[0] = window.event.clientX;
-                            posXY[1] = window.event.clientY;
-                            menuContext.showAt(posXY);
-                        } else {
-                            idEqpMen = '';
-                            nameVeh = '';
+                        if (connectionMap()) {
+                            var id = record.internalId;
+//                            if (id.indexOf('_') !== -1) {
+                            var aux = record.id.split('_');
+                            var idEmpresa = parseInt(aux[0]);
+                            var idVehicle = 'last' + aux[1];
+                            buscarEnMapa(idEmpresa, idVehicle);
+                            panelTabMapaAdmin.setActiveTab(0);
+//                            };
                         }
                     }
+//                    itemclick: function(thisObject, record, item, index, e, eOpts) {
+//                        var aux = record.internalId;
+//
+//                        var capa = aux.split('_')[0];
+//                        var idEqpCoop = aux.split('_')[1];
+//
+//                        buscarEnMapa(capa, idEqpCoop);
+//                    },
+//                    itemcontextmenu: function(thisObject, record, item, index, e, eOpts) {
+//                        idEqpMen = record.internalId;
+//                        nameVeh = record.data.text;
+//                        if (idEqpMen.indexOf('ext-record') === -1) {
+//                            menuContext.showAt(e.getXY());
+//                        } else {
+//                            idEqpMen = '';
+//                            nameVeh = '';
+//                        }
+//                    }
                 }
             }]
     });
@@ -439,19 +764,15 @@ Ext.onReady(function() {
         }
     });
 
-    var toolBarOnMap = Ext.create('Ext.form.Panel', {
+    var toolBarOnMap = Ext.create('Ext.toolbar.Toolbar', {
         region: 'north',
-        frame: true,
-        layout: 'hbox',
-        defaults: {
-            margin: '0 5 0 0'
-        },
+        border: true,
         items: [{
                 xtype: 'combo',
-                width: '88%',
-                labelWidth: 60,
+                width: '86%',
+                padding: '0 0 0 5',
                 store: storeDirecciones,
-                fieldLabel: 'Dirección',
+                fieldLabel: '<b>Dirección</b>',
                 displayField: 'todo',
                 typeAhead: false,
                 hideTrigger: true,
@@ -464,14 +785,14 @@ Ext.onReady(function() {
                         return '<b>{pais} , {ciudad}:</b><br>{barrio} , {avenidaP} , {avenidaS}';
                     }
                 },
-                listeners: {
-                    select: function(thisObject, record, eOpts) {
-                        var longitud = record[0].data.longitud;
-                        var latitud = record[0].data.latitud;
-                        var zoom = 18;
-                        localizarDireccion(longitud, latitud, zoom);
-                    }
-                },
+//                listeners: {
+//                    select: function(thisObject, record, eOpts) {
+//                        var longitud = record[0].data.longitud;
+//                        var latitud = record[0].data.latitud;
+//                        var zoom = 18;
+//                        localizarDireccion(longitud, latitud, zoom);
+//                    }
+//                },
                 pageSize: 10
             }, {
                 xtype: 'button',
@@ -479,10 +800,10 @@ Ext.onReady(function() {
                 tooltip: 'Ubicar mi Posición',
                 handler: function() {
                     getLocation();
+                    panelTabMapaAdmin.setActiveTab(0);
                 }
             }, {
                 xtype: 'splitbutton',
-                width: '10%',
                 text: 'Cooperativas',
                 iconCls: 'icon-central',
                 menu: menuCoop,
@@ -492,16 +813,19 @@ Ext.onReady(function() {
             }]
     });
 
-    panelMapa = Ext.create('Ext.tab.Panel', {
+    panelTabMapaAdmin = Ext.create('Ext.tab.Panel', {
         region: 'center',
         frame: true,
         deferreRender: false,
         activeTab: 0,
-        items: [{
+        items: [
+            {
                 title: 'Mapa',
+                id: 'panelMapaTab',
                 iconCls: 'icon-mapa',
                 html: '<div id="map"></div>'
-            }]
+            }
+        ]
     });
 
     storeEventos = Ext.create('Ext.data.JsonStore', {
@@ -538,7 +862,7 @@ Ext.onReady(function() {
         listeners: {
             itemclick: function(thisObject, record, item, index, e, eOpts) {
                 var g = record.data.coordenadas.split(",");
-                panelMapa.setActiveTab(0);
+                panelTabMapaAdmin.setActiveTab(0);
                 localizarDireccion(g[0], g[1], 15);
             }
         }
@@ -549,7 +873,7 @@ Ext.onReady(function() {
         layout: 'border',
         items: [
             toolBarOnMap,
-            panelMapa,
+            panelTabMapaAdmin,
             gridEventos
         ]
     });
@@ -558,6 +882,6 @@ Ext.onReady(function() {
         layout: 'border',
         items: [panelMenu, panelEste, panelCentral]
     });
-
-    storeEmpresas.load();
+     storeEmpresas.load();
+    loadMap();
 });

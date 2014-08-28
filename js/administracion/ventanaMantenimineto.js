@@ -12,8 +12,22 @@ var obj_vehiculos;
 var obj_empresa;
 var dateMantenimiento;
 var servicioSeleccionado = false;
+var edadDate;
 
 
+var fechaSoat = Ext.create('Ext.form.field.Date', {
+    fieldLabel: 'Desde el',
+    format: 'Y-m-d',
+    id: 'fechaIniBan',
+    name: 'fechaIni',
+    vtype: 'daterange',
+    allowBlank: false,
+    endDateField: 'fechaFinBan',
+    emptyText: 'Fecha Inicial...',
+    listConfig: {
+        minWidth: 300
+    }
+});
 var storecombo = new Ext.data.ArrayStore({
     id: 'stor',
     fields: [
@@ -22,7 +36,6 @@ var storecombo = new Ext.data.ArrayStore({
     ],
     data: [['1', 'Nuevo'], ['2', 'Usado']]
 });
-
 Ext.onReady(function() {
 
 
@@ -160,7 +173,8 @@ Ext.onReady(function() {
         activeRecord: null,
         bodyStyle: 'padding: 10px; background-color: #DFE8F6',
         labelWidth: 100,
-        margins: '0 0 0 3',
+        hight:200,
+        margins: '0 0 0 0',
         items: [
             {
                 xtype: 'fieldset',
@@ -171,7 +185,6 @@ Ext.onReady(function() {
                 defaults: {
                     padding: '0 0 15 30',
                     baseCls: 'x-plain',
-                    layout: 'hbox',
                     defaults: {
                         labelWidth: 80
                     }
@@ -182,127 +195,228 @@ Ext.onReady(function() {
                         defaults: {
                             padding: '0 0 5 0',
                             baseCls: 'x-plain',
-                            layout: 'vbox',
+                            layout: 'hbox',
                             defaults: {
                                 labelWidth: 80
                             }
                         },
                         items: [
                             {
-                                items: [
-                                    {
-                                        xtype: 'combobox',
-                                        fieldLabel: '<b>Empresa</b>',
-                                        name: 'idempresa',
-                                        afterLabelTextTpl: required,
-                                        id: 'idempresa',
-                                        store: storeEmpresas,
-                                        valueField: 'id',
-                                        displayField: 'text',
-                                        queryMode: 'local',
-                                        emptyText: 'Seleccionar Cooperativa...',
-                                        editable: false,
-                                        allowBlank: false,
-                                        padding: '5 5 5 5',
-                                        width: 300,
-//                                        height: 20,
-                                        listeners: {
-                                            select: function(combo, records, eOpts) {
-                                                var listSelected = contenedorwinEvt.down('[name=listVeh]');
-                                                listSelected.clearValue();
-                                                listSelected.fromField.store.removeAll();
-                                                obj_empresa = combo.getValue();
-                                                storeVeh.load({
-                                                    params: {
-                                                        cbxEmpresas: records[0].data.id
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    },
-                                    {
-                                        xtype: 'combobox',
-                                        fieldLabel: '<b>Elejir Vehiculo</b>',
-                                        name: 'idvehiculo',
-                                        afterLabelTextTpl: required,
-                                        id: 'idvehiculo',
-                                        store: storeVeh,
-                                        valueField: 'id',
-                                        displayField: 'text',
-                                        emptyText: 'Seleccionar Vehículo...',
-                                        allowBlank: false,
-                                        editable: false,
-                                        padding: '5 5 5 5',
-                                        width: 300,
-//                                        height: 20,
-                                        listConfig: {
-                                            minWidth: 350
-                                        }, listeners: {
-                                            select: {
-                                                fn: function(combo, records, index) {
-                                                    obj_vehiculos = combo.getValue();
-                                                }
-                                            }
-                                        }},
-                                    {
-                                        xtype: 'combobox',
-                                        fieldLabel: '<b>Servicio</b>',
-                                        afterLabelTextTpl: required,
-                                        name: 'idestandar',
-                                        displayField: 'text',
-                                        valueField: 'id',
-                                        id: 'idestandar',
-                                        store: storeVehiculosservicios,
-                                        emptyText: 'Seleccionar el Servicio...',
-                                        queryMode: 'local',
-                                        allowBlank: false,
-                                        editable: false,
-                                        padding: '5 5 5 5',
-                                        width: 300,
-//                                        height: 25,
-                                        listConfig: {
-                                            minWidth: 350
-                                        }
-                                        , listeners: {
-                                            select: {
-                                                fn: function(combo, record, index) {
-                                                    if (record.length > 0 && record.length !== null) {
-                                                        servicioSeleccionado = true;
-                                                        Ext.getCmp('mk').enable();
-                                                        Ext.getCmp('mt').enable();
-                                                        Ext.getCmp('mtyk').enable();
-                                                        Ext.getCmp('mtok').enable();
-                                                        Ext.getCmp('mdias').enable();
-                                                        Ext.getCmp('mkilometraje').enable();
-                                                        Ext.getCmp('mk').reset();
-                                                        Ext.getCmp('mt').reset();
-                                                        Ext.getCmp('mtyk').reset();
-                                                        Ext.getCmp('mtok').reset();
-                                                        Ext.getCmp('mdias').reset();
-                                                        Ext.getCmp('mkilometraje').reset();
-                                                        arregloEstandars = new Array();
-                                                        for (i = 0; i < record.length; i++) {
-                                                            arregloEstandars[i] = new Array(record[i].data.tiempo, record[i].data.kilometro);
-                                                        }
-                                                    }
-                                                }}}}
-                                ]}]},
-                    {
-                        items: [
-                            {
-                                xtype: 'fieldset',
-                                flex: 2,
-                                title: 'Elegir Tipo de Servicio',
-                                padding: '5 5 5 5',
-                                defaultType: 'radio',
-                                layout: 'anchor',
                                 defaults: {
-                                    anchor: '100%',
-                                    hideEmptyLabel: false
+                                    padding: '0 0 5 0',
+                                    baseCls: 'x-plain',
+                                    layout: 'vbox',
+                                    defaults: {
+                                        labelWidth: 80
+                                    }
                                 },
                                 items: [
                                     {
-                                        fieldLabel: 'Tipo',
+                                        items: [
+                                            {
+                                                xtype: 'combobox',
+                                                fieldLabel: '<b>Empresa</b>',
+                                                name: 'idempresa',
+                                                afterLabelTextTpl: required,
+                                                id: 'idempresa',
+                                                store: storeEmpresas,
+                                                valueField: 'id',
+                                                displayField: 'text',
+                                                queryMode: 'local',
+                                                emptyText: 'Seleccionar Cooperativa...',
+                                                editable: false,
+                                                allowBlank: false,
+                                                // padding: '5 5 5 5',
+                                                width: 250,
+//                                        height: 20,
+                                                listeners: {
+                                                    select: function(combo, records, eOpts) {
+                                                        var listSelected = contenedorwinEvt.down('[name=listVeh]');
+                                                        listSelected.clearValue();
+                                                        listSelected.fromField.store.removeAll();
+                                                        obj_empresa = combo.getValue();
+                                                        storeVeh.load({
+                                                            params: {
+                                                                cbxEmpresas: records[0].data.id
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                xtype: 'combobox',
+                                                fieldLabel: '<b>Elejir Vehiculo</b>',
+                                                name: 'idvehiculo',
+                                                afterLabelTextTpl: required,
+                                                id: 'idvehiculo',
+                                                store: storeVeh,
+                                                valueField: 'id',
+                                                displayField: 'text',
+                                                emptyText: 'Seleccionar Vehículo...',
+                                                allowBlank: false,
+                                                editable: false,
+                                                width: 250,
+                                                listConfig: {
+                                                    minWidth: 350
+                                                }, listeners: {
+                                                    select: {
+                                                        fn: function(combo, records, index) {
+                                                            obj_vehiculos = combo.getValue();
+                                                        }
+                                                    }
+                                                }},
+                                            {
+                                                xtype: 'combobox',
+                                                fieldLabel: '<b>Servicio</b>',
+                                                afterLabelTextTpl: required,
+                                                name: 'idestandar',
+                                                displayField: 'text',
+                                                valueField: 'id',
+                                                id: 'idestandar',
+                                                store: storeVehiculosservicios,
+                                                emptyText: 'Seleccionar el Servicio...',
+                                                queryMode: 'local',
+                                                allowBlank: false,
+                                                editable: false,
+                                                // padding: '5 5 5 5',
+                                                width: 250,
+//                                        height: 25,
+                                                listConfig: {
+                                                    minWidth: 350
+                                                }
+                                                , listeners: {
+                                                    select: {
+                                                        fn: function(combo, record, index) {
+                                                            if (record.length > 0 && record.length !== null) {
+                                                                servicioSeleccionado = true;
+                                                                Ext.getCmp('mk').enable();
+                                                                Ext.getCmp('mt').enable();
+                                                                Ext.getCmp('mtyk').enable();
+                                                                Ext.getCmp('mtok').enable();
+                                                                Ext.getCmp('mdias').enable();
+                                                                Ext.getCmp('mkilometraje').enable();
+                                                                Ext.getCmp('mk').reset();
+                                                                Ext.getCmp('mt').reset();
+                                                                Ext.getCmp('mtyk').reset();
+                                                                Ext.getCmp('mtok').reset();
+                                                                Ext.getCmp('mdias').reset();
+                                                                Ext.getCmp('mkilometraje').reset();
+                                                                arregloEstandars = new Array();
+                                                                for (i = 0; i < record.length; i++) {
+                                                                    arregloEstandars[i] = new Array(record[i].data.tiempo, record[i].data.kilometro);
+                                                                }
+                                                            }
+                                                        }}}},
+                                            {
+                                                xtype: 'fieldset',
+                                                flex: 0,
+                                                title: '<b>Configurar Matricula</b>',
+                                                border:true,
+                                                padding: '5 5 5 5',
+                                                defaultType: 'radio',
+                                                layout: 'anchor',
+                                                defaults: {
+                                                    anchor: '100%',
+                                                    hideEmptyLabel: false
+                                                },
+                                                items: [
+                                                    {
+                                                        xtype: 'textfield',
+                                                        fieldLabel: '<b>Matricula</b> ',
+                                                        name: 'matricula',
+                                                        id: 'matricula',
+                                                        emptyText: 'Descripción Matricula'
+                                                    },
+                                                    {
+                                                        fieldLabel: '<b>Registro</b>',
+                                                        padding: '0 0 5 0',
+                                                        name: 'fechamatriculareg',
+                                                        id: 'fechamatriculareg',
+                                                        xtype: 'datefield',
+                                                        format: 'Y-m-d',
+                                                        emptyText: 'Seleccionar Fecha...',
+                                                        listeners: {
+                                                            select: function(A, B) {
+                                                                edadDate = Ext.Date.add(Ext.getCmp('fechaSRegistro').value, Ext.Date.YEAR, 1);
+                                                                Ext.getCmp('fechaSVencimiento').reset();
+                                                                Ext.getCmp('fechaSVencimiento').setValue(edadDate);
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        fieldLabel: '<b>Vencimiento</b>',
+                                                        padding: '0 0 5 0',
+                                                        name: 'fechamatriculavenc',
+                                                        id: 'fechamatriculavenc',
+                                                        xtype: 'datefield',
+                                                        format: 'Y-m-d',
+                                                        emptyText: 'Seleccionar Fecha...'
+                                                    }
+
+                                                ]
+                                            }
+                                   
+                                        ]}]}]
+
+                    },   {
+                                                xtype: 'fieldset',
+                                                flex: 0,
+                                                title: '<b>Configurar Soat</b>',
+                                                border:true,
+                                                padding: '5 5 5 5',
+                                                defaultType: 'radio',
+                                                layout: 'anchor',
+                                                defaults: {
+                                                    anchor: '100%',
+                                                    hideEmptyLabel: false
+                                                },
+                                                items: [
+                                                    {
+                                                        xtype: 'textfield',
+                                                        fieldLabel: '<b>SOAT</b> ',
+                                                        name: 'soat',
+                                                        id: 'soat',
+                                                        emptyText: 'Descripción Soat'
+                                                    },
+                                                    {
+                                                        fieldLabel: '<b>Registro</b>',
+                                                        padding: '0 0 5 0',
+                                                        name: 'fechaSRegistro',
+                                                        id: 'fechaSRegistro',
+                                                        xtype: 'datefield',
+                                                        format: 'Y-m-d',
+                                                        emptyText: 'Seleccionar Fecha...',
+                                                        listeners: {
+                                                            select: function(A, B) {
+                                                                edadDate = Ext.Date.add(Ext.getCmp('fechaSRegistro').value, Ext.Date.YEAR, 1);
+                                                                Ext.getCmp('fechaSVencimiento').reset();
+                                                                Ext.getCmp('fechaSVencimiento').setValue(edadDate);
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        fieldLabel: '<b>Vencimiento</b>',
+                                                        padding: '0 0 5 0',
+                                                        name: 'fechaSVencimiento',
+                                                        id: 'fechaSVencimiento',
+                                                        xtype: 'datefield',
+                                                        format: 'Y-m-d',
+                                                        emptyText: 'Seleccionar Fecha...'
+                                                    }
+
+                                                ]
+                                            }
+                                            /////////////////
+                                            ,{
+                        items: [
+                            {
+                                xtype: 'fieldset',
+//                                flex: 0,
+                                title: 'Elegir Tipo de Servicio',
+                                defaultType: 'radio',
+                                layout: 'anchor',
+                                items: [
+                                    {
                                         boxLabel: 'Manteninimiento',
                                         id: 's1',
                                         name: 'valorTipoServicio',
@@ -312,8 +426,8 @@ Ext.onReady(function() {
                                                 var r1 = Ext.getCmp('s1').value;
                                                 if (r1 === true) {
                                                     Ext.getCmp('fsmantenimiento').toggle();
-                                                    Ext.getCmp('fsreparacion').collapse( );
-                                                    Ext.getCmp('fsrepuesto').collapse( );
+                                                    Ext.getCmp('fsreparacion').collapse();
+                                                    Ext.getCmp('fsrepuesto').collapse();
                                                 }
                                             }
                                         }
@@ -326,9 +440,9 @@ Ext.onReady(function() {
                                             change: function(field, newValue, oldValue) {
                                                 var r1 = Ext.getCmp('s2').value;
                                                 if (r1 === true) {
-                                                    Ext.getCmp('fsmantenimiento').collapse( );
+                                                    Ext.getCmp('fsmantenimiento').collapse();
                                                     Ext.getCmp('fsreparacion').toggle();
-                                                    Ext.getCmp('fsrepuesto').collapse( );
+                                                    Ext.getCmp('fsrepuesto').collapse();
                                                 }
                                             }
                                         }
@@ -341,8 +455,8 @@ Ext.onReady(function() {
                                             change: function(field, newValue, oldValue) {
                                                 var r1 = Ext.getCmp('s3').value;
                                                 if (r1 === true) {
-                                                    Ext.getCmp('fsmantenimiento').collapse( );
-                                                    Ext.getCmp('fsreparacion').collapse( );
+                                                    Ext.getCmp('fsmantenimiento').collapse();
+                                                    Ext.getCmp('fsreparacion').collapse();
                                                     Ext.getCmp('fsrepuesto').toggle();
                                                 }
                                             }
@@ -366,8 +480,8 @@ Ext.onReady(function() {
                 padding: '2 2 2 2',
                 listeners: {
                     'beforeexpand': function() {
-                        Ext.getCmp('fsreparacion').collapse( );
-                        Ext.getCmp('fsrepuesto').collapse( );
+                        Ext.getCmp('fsreparacion').collapse();
+                        Ext.getCmp('fsrepuesto').collapse();
                         Ext.getCmp('s1').setValue(true);
                         Ext.getCmp('repaFecha').reset();
                         Ext.getCmp('repaDescripcion').reset();
@@ -409,8 +523,7 @@ Ext.onReady(function() {
                                                     Ext.getCmp('mkilometraje').setValue("");
                                                 }
                                             }
-                                        }
-                                    },
+                                        }},
                                     {
                                         xtype: 'radio',
                                         name: 'valorTipoMantenimiento',
@@ -429,8 +542,7 @@ Ext.onReady(function() {
                                             }
                                         }
                                     }, {xtype: 'textfield',
-                                        fieldLabel: '<i>Elegir Tiempo en Dias   </i>',
-                                        name: 'mdias',
+                                        fieldLabel: '<i>Elegir Tiempo en Dias   </i>', name: 'mdias',
                                         vtype: 'digitos',
                                         padding: '0 0 0 80',
                                         id: 'mdias',
@@ -521,15 +633,14 @@ Ext.onReady(function() {
                 id: 'fsreparacion',
                 autoHeight: true,
                 checkboxToggle: true,
-                collapsed: true, // fieldset initially collapsed
-                disable: true,
+                collapsed: true, // fieldset initially collapsed                 disable: true,
                 collapsible: true,
                 layout: 'hbox',
                 padding: '5 5 5 5',
                 listeners: {
                     'beforeexpand': function() {
-                        Ext.getCmp('fsmantenimiento').collapse( );
-                        Ext.getCmp('fsrepuesto').collapse( );
+                        Ext.getCmp('fsmantenimiento').collapse();
+                        Ext.getCmp('fsrepuesto').collapse();
                         Ext.getCmp('s2').setValue(true);
                         Ext.getCmp('mt').reset();
                         Ext.getCmp('mk').reset();
@@ -544,7 +655,6 @@ Ext.onReady(function() {
                         Ext.getCmp('repuCodigo').reset();
                         Ext.getCmp('repuSerie').reset();
                         Ext.getCmp('repuEstado').reset();
-
                     }
                 },
                 defaults: {
@@ -622,8 +732,8 @@ Ext.onReady(function() {
                 padding: '5 5 5 5',
                 listeners: {
                     'beforeexpand': function() {
-                        Ext.getCmp('fsmantenimiento').collapse( );
-                        Ext.getCmp('fsreparacion').collapse( );
+                        Ext.getCmp('fsmantenimiento').collapse();
+                        Ext.getCmp('fsreparacion').collapse();
                         Ext.getCmp('s3').setValue(true);
                         Ext.getCmp('mt').reset();
                         Ext.getCmp('mk').reset();
@@ -692,7 +802,7 @@ Ext.onReady(function() {
 
                     },
                     {
-//                     
+                        //                     
                         defaults: {
                             padding: '0 0 15 0',
                             baseCls: 'x-plain',
@@ -700,8 +810,7 @@ Ext.onReady(function() {
                             defaultType: 'textfield',
                             defaults: {
                                 labelWidth: 50
-                            }
-                        },
+                            }},
                         items: [
                             {
                                 items: [
@@ -768,8 +877,7 @@ function ventAddMantenimientos() {
             closeAction: 'hide',
             plain: false,
             items: [{
-                    layout: 'border',
-                    bodyPadding: 5,
+                    layout: 'border', bodyPadding: 5,
                     items: [formPanelGrid_Vehiculos,
                         formRecordsVehiculos]
                 }]
@@ -845,7 +953,7 @@ function onUpdateVehiculos() {
 function onCreateVehiculos() {
     Ext.getCmp('idempresa').setValue(obj_empresa);
     Ext.getCmp('idvehiculo').setValue(obj_vehiculos);
-//    if (Ext.getCmp('mkilometraje').getValue() !== ('') || Ext.getCmp('mdias').getValue() !== ('')) {
+    //    if (Ext.getCmp('mkilometraje').getValue() !== ('') || Ext.getCmp('mdias').getValue() !== ('')) {
     var form = formRecordsVehiculos.getForm();
     if (form.isValid()) {
         console.log("creando");
@@ -855,7 +963,7 @@ function onCreateVehiculos() {
     }
     ;
 //    } else {
-//        Ext.Msg.alert('Failure', 'Debe Elegir el servicio por: Tiempo o Kilometros');
+    //        Ext.Msg.alert('Failure', 'Debe Elegir el servicio por: Tiempo o Kilometros');
 //    }
 
 }

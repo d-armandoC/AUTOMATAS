@@ -1,31 +1,33 @@
 <?php
-require_once('../../dll/conect.php');
+include('../login/isLogin.php');
+include ('../../dll/config.php');
 
-extract($_GET);
+if (!$mysqli = getConectionDb()) {
+    echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
+} else {
+    extract($_GET);
+    $consultaSql = "SELECT id_rol_usuario, nombre FROM rol_usuarios";
+    $result = $mysqli->query($consultaSql);
+    $mysqli->close();
+    
+    if ($result->num_rows > 0) {
+        $objJson = "{rol_usuario: [";
 
-$salida = "{failure:true}";
-
-$consultaSql = "SELECT id_rol_usuario, nombre
-    FROM rol_usuarios
-";
-
-consulta($consultaSql);
-$resulset = variasFilas();
-
-$salida = "{'rol_usuario': [";
-
-for ($i = 0; $i < count($resulset); $i++) {
-    $fila = $resulset[$i];
-    $salida .= "{
-            'id':" . $fila["id_rol_usuario"] . ",
-            'nombre':'" . utf8_encode($fila["nombre"]). "'
-        }";
-    if ($i != count($resulset) - 1) {
-        $salida .= ",";
+        while ($myrow = $result->fetch_assoc()) {
+            $objJson .= "{            
+               id:'" . $myrow["id_rol_usuario"]."',
+               nombre:'" . utf8_encode($myrow["nombre"]). "'
+            },";
+        }
+        $objJson .= "]}";
+        echo $objJson;
+    } else {
+        echo "{failure:true, message:'No hay datos que obtener'}";
     }
 }
 
-$salida .="]}";
 
-echo $salida;
-?>
+
+
+
+
