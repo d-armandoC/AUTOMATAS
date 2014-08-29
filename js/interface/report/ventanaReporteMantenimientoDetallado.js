@@ -45,7 +45,7 @@ Ext.onReady(function() {
             }
         }
     });
-    var dateIni = Ext.create('Ext.form.field.Date', {
+    var fechaInicio = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
         id: 'fechaIniExcesos',
@@ -56,7 +56,7 @@ Ext.onReady(function() {
         endDateField: 'fechaFinExcesos',
         emptyText: 'Fecha Inicial...'
     });
-    var dateFin = Ext.create('Ext.form.field.Date', {
+    var fechaFinal = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Hasta el',
         format: 'Y-m-d',
         id: 'fechaFinExcesos',
@@ -68,31 +68,31 @@ Ext.onReady(function() {
         startDateField: 'fechaIniExcesos',
         emptyText: 'Fecha Final...'
     });
-    var btnToday = Ext.create('Ext.button.Button', {
+    var btnHoy = Ext.create('Ext.button.Button', {
         text: 'Hoy',
         iconCls: 'icon-today',
         handler: function() {
             var nowDate = new Date();
-            dateIni.setValue(nowDate);
-            dateFin.setValue(nowDate);
+            fechaInicio.setValue(nowDate);
+            fechaFinal.setValue(nowDate);
         }
     });
-    var btnYesterday = Ext.create('Ext.button.Button', {
+    var btHayer = Ext.create('Ext.button.Button', {
         text: 'Ayer',
         iconCls: 'icon-yesterday',
         handler: function() {
             var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
-            dateIni.setValue(yestDate);
-            dateFin.setValue(yestDate);
+            fechaInicio.setValue(yestDate);
+            fechaFinal.setValue(yestDate);
         }
     });
-    var panelButtons = Ext.create('Ext.panel.Panel', {
+    var panelBoton = Ext.create('Ext.panel.Panel', {
         layout: 'hbox',
         padding: '0 0 5 0',
         defaults: {
             margin: '0 5 0 0'
         },
-        items: [btnToday, btnYesterday]
+        items: [btnHoy, btHayer]
     });
     formularioMantenimientoDetallado = Ext.create('Ext.form.Panel', {
         bodyPadding: '10 10 0 10',
@@ -134,9 +134,9 @@ Ext.onReady(function() {
                 xtype: 'fieldset',
                 title: '<b>Fechas</b>',
                 items: [
-                    dateIni,
-                    dateFin,
-                    panelButtons,
+                    fechaInicio,
+                    fechaFinal,
+                    panelBoton,
                 ]
             }, {
                 xtype: 'fieldset',
@@ -166,8 +166,8 @@ Ext.onReady(function() {
                 handler: function() {
                     var isDetallado = this.up('form').down('[name=isDetallado]').getValue();
                     var isGeneral = this.up('form').down('[name=isGeneral]').getValue();
-                    fechaInicio = dateIni.getRawValue();
-                    fechaFin = dateFin.getRawValue();
+                    fechaInicio = fechaInicio.getRawValue();
+                    fechaFinal = fechaFinal.getRawValue();
                     var form = formularioMantenimientoDetallado.getForm();
                     if (form.isValid()) {
                         if (isDetallado) {
@@ -195,7 +195,7 @@ Ext.onReady(function() {
                                         region: 'west',
                                         frame: true,
                                         width: '40%',
-                                        title: '<center>Mantenimientos Totales: ' + '<br>Desde: ' + fechaInicio + ' | Hasta: ' + fechaFin + '</center>',
+                                        title: '<center>Mantenimientos Totales: ' + '<br>Desde: ' + fechaInicio + ' | Hasta: ' + fechaFinal + '</center>',
                                         store: storeDataReporteDetallado,
                                         features: [filters],
                                         multiSelect: true,
@@ -226,7 +226,7 @@ Ext.onReady(function() {
                                                             var table_div = "<meta charset='UTF-8'><body>" +
                                                                     "<font face='" + tiLetra + "'><table>" +
                                                                     "<tr><th colspan='7'>Mantenimientos Totales" + "</th></tr>" +
-                                                                    "<tr><th colspan='7'>Desde " + fechaInicio + " hasta " + fechaFin + "</th></tr>" +
+                                                                    "<tr><th colspan='7'>Desde " + fechaInicio + " hasta " + fechaFinal + "</th></tr>" +
                                                                     "<tr></tr>";
                                                             table_div += "<tr>";
                                                             if (h1)
@@ -254,7 +254,7 @@ Ext.onReady(function() {
                                                             var table_html = table_div.replace(/ /g, '%20');
                                                             a.href = data_type + ', ' + table_html;
 //setting the file name
-                                                            a.download = 'Mantenimiento Total' + fechaInicio + '_' + fechaFin + '.xls';
+                                                            a.download = 'Mantenimiento Total' + fechaInicio + '_' + fechaFinal + '.xls';
 //triggering the function
                                                             a.click();
                                                         } else {
@@ -281,7 +281,7 @@ Ext.onReady(function() {
                                                 var reg = record.get('empresa');
                                                 var id_vehiculo = record.get('id_vehiculo');
                                                 banderaMantenimiento = 1;
-                                                gridViewDataMantenimiento.setTitle('<center>Lista de Mnatenimientos por Vehicuculo <br>Empresa: ' + reg + ' Desde: ' + fechaInicio + ' Hasta:' + fechaFin + '</center>');
+                                                gridViewDataMantenimiento.setTitle('<center>Lista de Mnatenimientos por Vehicuculo <br>Empresa: ' + reg + ' Desde: ' + fechaInicio + ' Hasta:' + fechaFinal + '</center>');
                                                 storeViewMantenimiento.load({
                                                     params: {
                                                         idVehiculo: id_vehiculo
@@ -325,7 +325,7 @@ Ext.onReady(function() {
                                                             var table_div = "<meta charset='UTF-8'><body>" +
                                                                     "<font face='" + tiLetra + "'><table>" +
                                                                     "<tr><th colspan='7'>MANTENIMIENTO POR VEHÍCULO: " + personaMantenimiento + "</th></tr>" +
-                                                                    "<tr><th colspan='7'>DESDE" + fechaInicio + "HASTA" + fechaFin + "</th></tr>" +
+                                                                    "<tr><th colspan='7'>DESDE" + fechaInicio + "HASTA" + fechaFinal + "</th></tr>" +
                                                                     "<tr></tr>";
                                                             table_div += "<tr>";
                                                             table_div += "<th align=left>PLACA</th>";
@@ -345,7 +345,7 @@ Ext.onReady(function() {
                                                             var table_html = table_div.replace(/ /g, '%20');
                                                             a.href = data_type + ', ' + table_html;
 //setting the file name
-                                                            a.download = 'Mantenimiento por vehiculo' + fechaInicio + '_' + fechaFin + '.xls';
+                                                            a.download = 'Mantenimiento por vehiculo' + fechaInicio + '_' + fechaFinal + '.xls';
 //triggering the function
                                                               a.click();
                                                             } else {
@@ -402,8 +402,8 @@ Ext.onReady(function() {
                             waitMsg: 'Obteniendo Información',
                             params: {
                                 idCompanyExcesosDT: empresaMantenimiento,
-                                fechaIniExcesos: dateIni,
-                                fechaFinExcesos: dateFin
+                                fechaIniExcesos: fechaInicio,
+                                fechaFinExcesos: fechaFinal
                             },
                             success: function(form, action) {
                                 storeViewExcesosMantenimiento = Ext.create('Ext.data.JsonStore', {
@@ -424,7 +424,7 @@ Ext.onReady(function() {
                                     region: 'center',
                                     frame: true,
                                     width: '100%',
-                                    title: '<center>Reporte Excesos de Velocidad Totales: ' + '<br>Desde: ' + fechaInicio + ' | Hasta: ' + fechaFin + '</center>',
+                                    title: '<center>Reporte Excesos de Velocidad Totales: ' + '<br>Desde: ' + fechaInicio + ' | Hasta: ' + fechaFinal + '</center>',
                                     store: storeViewExcesosMantenimiento,
                                     features: [filters],
                                     multiSelect: true,
@@ -457,7 +457,7 @@ Ext.onReady(function() {
                                                         var table_div = "<meta charset='UTF-4'><body>" +
                                                                 "<font face='" + tiLetra + "'><table>" +
                                                                 "<tr><th colspan='7'>EXCESOS DE VELOCIDAD GENERALES" + "</th></tr>" +
-                                                                "<tr><th colspan='7'>DESDE " + fechaInicio + " HASTA " + fechaFin + "</th></tr>" +
+                                                                "<tr><th colspan='7'>DESDE " + fechaInicio + " HASTA " + fechaFinal + "</th></tr>" +
                                                                 "<tr></tr>";
                                                         table_div += "<tr>";
                                                         table_div += "<th align=left>EMPRESA</th>";

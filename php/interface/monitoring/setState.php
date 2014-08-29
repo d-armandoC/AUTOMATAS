@@ -13,7 +13,7 @@ if (!$mysqli = getConectionDb()) {
         $stmt = $mysqli->prepare($updateSql);
 
         if ($stmt) {
-            $stmt->bind_param("iis", $idUsuario, $idEquipo, utf8_decode(preg_replace("[\n|\r|\n\r]", "", $stadoEqp)));
+            $stmt->bind_param("iis", $idUsuario, $idvehiculo, utf8_decode(preg_replace("[\n|\r|\n\r]", "", $stadoEqp)));
             $stmt->execute();
 
             if ($stmt->affected_rows > 0) {

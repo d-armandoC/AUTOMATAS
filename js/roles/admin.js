@@ -489,7 +489,7 @@ Ext.onReady(function() {
             {
                 xtype: 'label',
                 html: '<section id="panelNorte">' +
-                        '<center><strong id="name"> ' + (diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear()) + '</strong></center>' +
+                        '<center><strong id="name"><FONT SIZE=3  COLOR="blue">'+(diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()]) +'  '+'</FONT><iframe src="http://free.timeanddate.com/clock/i3x5kb7x/n190/tlec4/fn12/fs18/tct/pct/ftb/bas0/bat0/th1"  frameborder="0" width="96"  height="15" allowTransparency="true" ></iframe>'+'</strong></center>' +
                         '</section>'
             },
             {

@@ -8,7 +8,7 @@ var bandera=false;
 var labelDatos = Ext.create('Ext.form.Label', {
     text: 'DATOS:',
     style: {
-        color: '#000000',
+        color: 'RED'
     }
 });
 var labelRegistro = Ext.create('Ext.form.Label', {
@@ -101,7 +101,6 @@ Ext.onReady(function() {
         // encode and local configuration options defined previously for easier reuse
         encode: false, // json encode the filter query
         local: true, // defaults to false (remote filtering)
-
         // Filters are most naturally placed in the column definition, but can also be
         // added here.
         filters: [{
@@ -142,20 +141,6 @@ Ext.onReady(function() {
              groupField: 'empresa'*/
     });
 
-//    storeStateEqpUdp = Ext.create('Ext.data.JsonStore', {
-//        //autoDestroy : true,
-//        autoLoad: true,
-//        proxy: {
-//            type: 'ajax',
-//            url: 'php/gui/monitoreo/getStateEqpUdp.php',
-//            reader: {
-//                type: 'json',
-//                root: 'stateUdp'
-//            },
-//        },
-//        fields: ['id_equipo', 'id_vehiculo', 'reg_municipal', 'estadoE', 'estadoV', 'fecha_hora_estadoE', 'fecha_hora_estadoV', 'empresaUdp', 'equipoUdp', 'fecha_hora_ult_datoUdp', 'tmpdes', 'encabezadoUdp', 'rutaEqpUdp', 'puntoEqpUdp', 'estadoUdp', 'displayUdp', 'estadoMecanicoUdp', 'stadoUdp', 'latitudUdp', 'longitudUdp', 'velocidadUdp']
-//    });
-//
 
     storeDataInvalid = Ext.create('Ext.data.JsonStore', {
         //autoDestroy : true,
@@ -180,11 +165,8 @@ Ext.onReady(function() {
                     cantidadPrecio = cantidadPrecio + records[i].data.precioDI;
 //                    console.log(records.data.megasDI);
                 }
-
-
                 Ext.getCmp('form-info').setTitle('Datos Inválidos de Equipos:  ' + cantidadMegas.toFixed(4) + ' Mb');
             }
-
         }
     });
     var storeCantEqp = Ext.create('Ext.data.JsonStore', {
@@ -200,20 +182,6 @@ Ext.onReady(function() {
         },
         fields: ['conect', 'desco', 'total', 'empresa']
     });
-//    var storeCantUdp = Ext.create('Ext.data.JsonStore', {
-//        autoDestroy: true,
-//        autoLoad: true,
-//        proxy: {
-//            type: 'ajax',
-//            url: 'php/gui/monitoreo/getCantUdp.php',
-//            reader: {
-//                type: 'json',
-//                root: 'cantUdp'
-//            },
-//        },
-//        fields: ['conect', 'desco', 'total', 'empresa']
-//    });
-//
 
     var storeUserConect = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
@@ -249,6 +217,7 @@ Ext.onReady(function() {
             ActionVista
         ]
     });
+    
     gridStateEqpSKP = Ext.create('Ext.grid.Panel', {
         region: 'center',
         title: '<b>Estado de Equipos</b>',
@@ -672,25 +641,11 @@ Ext.onReady(function() {
                         handler: function(event, toolEl, panelHeader) {
                             Ext.example.msg('Mensaje', 'Datos actualizados correctamente.');
                             storeStateEqp.reload();
-//                            storeStateEqpUdp.reload();
                             storeUserConect.reload();
                             storeCantEqp.reload();
                         }
                     }],
                 items: [
-                    {
-                        xtype: 'panel',
-                        margin: '5 5 5 5',
-                        border: false,
-                        layout: 'vbox',
-                        bodyStyle: {
-                            background: '#ffc'
-                        },
-                        items: [labelDatos, labelRegistro, labelEquipo,
-                            labelFecha, labelUsuario]
-                    }
-                    ,
-                    estado,
                     {
                         xtype: 'radiogroup',
                         fieldLabel: '<b>Criterios</b>',
@@ -719,6 +674,17 @@ Ext.onReady(function() {
 
                             }
                         }
+                    },
+                      {
+                        xtype: 'panel',
+                        margin: '5 5 5 5',
+                        border: false,
+                        layout: 'vbox',
+                        bodyStyle: {
+                            background: '#ffc'
+                        },
+                        items: [labelDatos,estado ,labelRegistro, labelEquipo,
+                            labelFecha, labelUsuario]
                     }
                 ],
                 dockedItems: [{
@@ -870,6 +836,7 @@ Ext.onReady(function() {
                                                     url: 'php/interface/monitoring/setState.php',
                                                     params: {
                                                         idEquipo: idEquipo,
+                                                        idvehiculo: IdVehiculo
                                                     },
                                                     failure: function(form, action) {
                                                         Ext.MessageBox.show({
