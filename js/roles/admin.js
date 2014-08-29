@@ -460,11 +460,13 @@ Ext.onReady(function() {
                                 }},
                             {text: 'Reporte de Geocercas', iconCls: 'icon-report-geo', handler: function() {
                                     ventanaReporteGeocerca();
-//                                  
-                                }}, ,
-                                    {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
-                                            ventanaEventos();
-                                        }},
+                                }},
+                            {text: 'Reporte de Encendido y Apagado', iconCls: 'icon-on-off', handler: function() {
+                                    ventanaEncendidoApagado();
+                                }},
+                            {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
+                                    ventanaEventos();
+                                }},
                             {text: 'CMD Enviados', iconCls: 'icon-cmd-hist', handler: function() {
                                     ventanaCmdHistorial();
                                 }},
