@@ -187,15 +187,15 @@ function limpiar_datosEnc() {
     }
 }
 
-function ventanaEncendido() {
+function ventanaEncendidoApagado1() {
     if (!winEnc) {
         winEnc = Ext.create('Ext.window.Window', {
             layout: 'fit',
             title: 'Reporte de Encendido y Apagado',
             iconCls: 'icon-on-off',
             resizable: false,
-            width: 560,
-            height: 200,
+            width: 50,
+            height: 220,
             closeAction: 'hide',
             plain: false,
             items: [contenedorwinEnc],
