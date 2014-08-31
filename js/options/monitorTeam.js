@@ -252,17 +252,17 @@ Ext.onReady(function() {
             {text: '<b>Vehículo</b>', width: 95, dataIndex: 'vehiculo', align: 'center'},
             {text: '<b>Fecha Conexión</b>', width: 140, dataIndex: 'fhCon', align: 'center'},
             {text: '<b>Fecha Ult Trama</b>', width: 140, dataIndex: 'fhDes', align: 'center'},
-            {text: '<b>Tmp Conex.</b>', width: 95, dataIndex: 'tmpcon', align: 'center', filter: {type: 'numeric'}},
+            {text: '<b>Tmp Conex.</b>', width: 110, dataIndex: 'tmpcon', align: 'center', filter: {type: 'numeric'}},
             {text: '<b>Estado</b>', width: 100, dataIndex: 'tmpdes', renderer: formatStateConect, align: 'center'},
-            {text: '<b>Tmp Desc.</b>', width: 85, dataIndex: 'tmpdes', align: 'center', renderer: formatTmpDes, filter: {type: 'numeric'}},
+            {text: '<b>Tmp Desc.</b>', width: 110, dataIndex: 'tmpdes', align: 'center', renderer: formatTmpDes, filter: {type: 'numeric'}},
             {text: '<b>Bateria</b>', width: 75, dataIndex: 'bateria', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
             {text: '<b>IGN</b>', width: 65, dataIndex: 'ign', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
             {text: '<b>GSM</b>', width: 65, dataIndex: 'gsm', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
             {text: '<b>GPS</b>', width: 65, dataIndex: 'gps2', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
             {text: '<b>Velocidad (Km/h)</b>', dataIndex: 'vel', align: 'center', width: 100, renderer: formatSpeed, filter: {type: 'numeric'}},
             {text: '<b>Activo</b>', width: 65, dataIndex: 'activo', renderer: formatLock, align: 'center'},
-            {text: '<b>Comentario Vehículo</b>', width: 100, dataIndex: 'comentarioV', align: 'center', filterable: true},
-            {text: '<b>Comentario Equipo</b>', width: 100, dataIndex: 'comentarioE', align: 'center', filterable: true},
+            {text: '<b>Comentario Vehículo</b>', width: 160, dataIndex: 'estadoV', align: 'center', filterable: true},
+            {text: '<b>Comentario Equipo</b>', width: 160, dataIndex: 'estadoE', align: 'center', filterable: true},
             {text: '<b>Pánico</b>', width: 100, dataIndex: 'panico', renderer: formatPanic, align: 'center', filterable: true},
 //            {text: '<b>Fecha Comentario</b>', width: 150, dataIndex: 'fechaEstado', align: 'center'}
         ],
@@ -298,8 +298,8 @@ Ext.onReady(function() {
                         + "<tr><td>&nbsp</td><td><b>IGN:" + '<td> </td>' + '<td>' + formatBatIgnGsmGps2(record.data.ign) + "</td></tr>"
                         + "<tr><td>&nbsp</td><td><b>Velocidad:" + '<td> </td>' + '<td>' + record.data.vel + "</td></tr>"
                         + "<tr><td>&nbsp</td><td><b>Activo:" + '<td> </td>' + '<td>' + formatLock(record.data.activo) + "</td></tr>"
-                        + "<tr><td>&nbsp</td><td><b>Comentario Vehículo:" + '<td> </td>' + '<td>' + record.data.comentario + "</td></tr>"
-                        + "<tr><td>&nbsp</td><td><b>Comentario Equipo:" + '<td> </td>' + '<td>' + record.data.comentario + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Comentario Vehículo:" + '<td> </td>' + '<td>' + record.data.estadoE + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Comentario Equipo:" + '<td> </td>' + '<td>' + record.data.estadoV + "</td></tr>"
                         + "<tr><td>&nbsp</td><td><b>Pánico:" + '<td> </td>' + '<td>' + formatPanic(record.data.panico) + "</td></tr>"
                         + "</table>"
                         + "<br/>"
@@ -392,18 +392,18 @@ Ext.onReady(function() {
             {text: '<b>Vehículo</b>', width: 95, dataIndex: 'vehiculo', align: 'center'},
             {text: '<b>Fecha Conexión</b>', width: 140, dataIndex: 'fhCon', align: 'center'},
             {text: '<b>Fecha Ult Trama</b>', width: 140, dataIndex: 'fhDes', align: 'center'},
-            {text: '<b>Tmp Conex.</b>', width: 95, dataIndex: 'tmpcon', align: 'center', filter: {type: 'numeric'}},
-            {text: '<b>Estado</b>', width: 100, dataIndex: 'tmpdes', renderer: formatStateConect, align: 'center'},
+            {text: '<b>Tmp Conex.</b>', width: 100, dataIndex: 'tmpcon', align: 'center', filter: {type: 'numeric'}},
+            {text: '<b>Estado</b>', width: 110, dataIndex: 'tmpdes', renderer: formatStateConect, align: 'center'},
             {text: '<b>Tmp Desc.</b>', width: 85, dataIndex: 'tmpdes', align: 'center', renderer: formatTmpDes, filter: {type: 'numeric'}},
             {text: '<b>Bateria</b>', width: 75, dataIndex: 'bateria', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
             {text: '<b>IGN</b>', width: 65, dataIndex: 'ign', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
             {text: '<b>GSM</b>', width: 65, dataIndex: 'gsm', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
             {text: '<b>GPS</b>', width: 65, dataIndex: 'gps2', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>Velocidad (Km/h)</b>', dataIndex: 'vel', align: 'center', width: 100, renderer: formatSpeed, filter: {type: 'numeric'}},
+            {text: '<b>Velocidad (Km/h)</b>', dataIndex: 'vel', align: 'center', width: 130, renderer: formatSpeed, filter: {type: 'numeric'}},
             {text: '<b>Activo</b>', width: 65, dataIndex: 'activo', renderer: formatLock, align: 'center'},
-            {text: '<b>Comentario Vehículo</b>', width: 100, dataIndex: 'comentarioV', align: 'center', filterable: true},
-            {text: '<b>Comentario Equipo</b>', width: 100, dataIndex: 'comentarioE', align: 'center', filterable: true},
-            {text: '<b>Pánico</b>', width: 100, dataIndex: 'panico', renderer: formatPanic, align: 'center', filterable: true},
+            {text: '<b>Comentario Vehículo</b>', width: 160, dataIndex: 'estadoV', align: 'center', filterable: true},
+            {text: '<b>Comentario Equipo</b>', width: 160, dataIndex: 'estadoE', align: 'center', filterable: true},
+            {text: '<b>Pánico</b>', width: 150, dataIndex: 'panico', renderer: formatPanic, align: 'center', filterable: true},
 //            {text: '<b>Fecha Comentario</b>', width: 150, dataIndex: 'fechaEstado', align: 'center'}
         ],
         listeners: {
@@ -438,8 +438,8 @@ Ext.onReady(function() {
                         + "<tr><td>&nbsp</td><td><b>IGN:" + '<td> </td>' + '<td>' + formatBatIgnGsmGps2(record.data.ign) + "</td></tr>"
                         + "<tr><td>&nbsp</td><td><b>Velocidad:" + '<td> </td>' + '<td>' + record.data.vel + "</td></tr>"
                         + "<tr><td>&nbsp</td><td><b>Activo:" + '<td> </td>' + '<td>' + formatLock(record.data.activo) + "</td></tr>"
-                        + "<tr><td>&nbsp</td><td><b>Comentario Vehículo:" + '<td> </td>' + '<td>' + record.data.comentario + "</td></tr>"
-                        + "<tr><td>&nbsp</td><td><b>Comentario Equipo:" + '<td> </td>' + '<td>' + record.data.comentario + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Comentario Vehículo:" + '<td> </td>' + '<td>' + record.data.estadoV + "</td></tr>"
+                        + "<tr><td>&nbsp</td><td><b>Comentario Equipo:" + '<td> </td>' + '<td>' + record.data.estadoE + "</td></tr>"
                         + "<tr><td>&nbsp</td><td><b>Pánico:" + '<td> </td>' + '<td>' + formatPanic(record.data.panico) + "</td></tr>"
                         + "</table>"
                         + "<br/>"
@@ -738,6 +738,7 @@ Ext.onReady(function() {
                                                             xtype: 'textarea',
                                                             grow: true,
                                                             //                                                    fieldLabel: '<b>Comentario</b>',
+                                                            editable:false,
                                                             name: 'estado'
                                                         }, {
                                                             xtype: 'button',

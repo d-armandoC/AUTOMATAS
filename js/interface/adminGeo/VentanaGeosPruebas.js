@@ -5,6 +5,8 @@ var vertPolygon = "";
 var trazando = 0;
 var gridStoreGeos;
 var listVeh = "";
+var drawRoute;
+var geom;
 var storeVehGeo = Ext.create('Ext.data.JsonStore', {
     autoDestroy: true,
     proxy: {
@@ -17,7 +19,18 @@ var storeVehGeo = Ext.create('Ext.data.JsonStore', {
     },
     fields: ['id', 'nombre']
 });
-
+var storeVeh = Ext.create('Ext.data.JsonStore', {
+    autoDestroy: true,
+    proxy: {
+        type: 'ajax',
+        url: 'php/combobox/comboVeh.php',
+        reader: {
+            type: 'json',
+            root: 'veh'
+        }
+    },
+    fields: [{name: 'value', mapping: 'id'}, {name: 'text', mapping: 'nombre'}]
+});
 
 Ext.onReady(function() {
     //Genera campos de array para usar en el inicio del store por defecto
@@ -105,8 +118,6 @@ Ext.onReady(function() {
             selectionchange: function(thisObject, selected, eOpts) {
                 setActiveRecord(selected[0] || null);
                 var record = selected[0];
-                console.log(record);
-
 //                    formPanelGrid.down('#showButton').enable();
 //                    formPanelGrid.down('#delete').enable();
                 formRecordsGeo.getForm().loadRecord(record);
@@ -120,6 +131,114 @@ Ext.onReady(function() {
 
             }
         }
+    });
+
+
+    var vistaVehiculos = Ext.create('Ext.window.Window', {
+        title: 'Obtener Vehciulo ',
+        id: 'vistavehiculo',
+        layout: 'fit',
+        iconCls: 'icon-car',
+        padding: '5 5 10 10',
+        width: 555,
+        height: 500,
+        closeAction: 'hide',
+        items: [
+            {
+                items: [
+                    {
+                        xtype: 'fieldset',
+                        title: 'Vehiculos de la Geocerca',
+                        defaultType: 'textfield',
+                        collapsed: false,
+                        layout: 'anchor',
+                        width: 523,
+                        height: 400,
+                        items: [
+                            {
+                                xtype: 'combobox',
+                                fieldLabel: 'Cooperativa',
+                                id: 'idempresa',
+                                afterLabelTextTpl: required,
+                                forceSelection:true,
+                                padding: '5 5 10 10',
+                                name: 'cbxEmpresas',
+                                store: storeEmpresas,
+                                valueField: 'id',
+                                displayField: 'text',
+                                queryMode: 'local',
+                                editable: false,
+                                allowBlank: false,
+                                emptyText: 'Escoja la Cooperativa...',
+                                listeners: {
+                                    select: function(combo, records, eOpts) {
+                                        var listSelected = Ext.getCmp('idvehiculo');
+                                        listSelected.clearValue();
+//                                        console.log(listSelected.fromField.store.items.data);
+                                        listSelected.fromField.store.removeAll();
+                                        storeVeh.load({
+                                            params: {
+                                                cbxEmpresas: records[0].data.id
+                                            }
+                                        });
+                                    }
+                                }
+                            },
+                            {
+                                xtype: 'form',
+                                width: 500,
+                                height: 330,
+                                // bodyPadding: 20,
+                                layout: 'fit',
+                                baseCls: 'x-plain',
+                                items: [
+                                    {
+                                        xtype: 'itemselector',
+                                        name: 'listvehiculo',
+                                        id: 'idvehiculo',
+                                        anchor: '100%',
+                                        store: storeVeh,
+                                        displayField: 'text',
+                                        valueField: 'value',
+                                        allowBlank: false,
+                                        msgTarget: 'side',
+                                        fromTitle: 'Vehiculos',
+                                        toTitle: 'Seleccionados'
+                                    }]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        dockedItems: [
+            {
+                xtype: 'toolbar',
+                dock: 'bottom',
+                ui: 'footer',
+                items: ['->', {
+                        iconCls: 'icon-save',
+                        text: 'Guardar',
+                        tooltip: 'Guardar Geocerca',
+                        handler: function() {
+
+                            var area = contenedorWinAddGeo.down('[name=area]').getValue()
+
+                        }
+                    }, {
+                        iconCls: 'icon-cancelar',
+                        text: 'Cancelar',
+                        tooltip: 'Salir de la Ventana',
+                        handler: function() {
+                            if (vistaVehiculos) {
+                                Ext.getCmp('idvehiculo').reset();
+                                Ext.getCmp('idempresa').reset();
+                                Ext.getCmp('idvehiculo').fromField.store.removeAll();
+                                Ext.getCmp('vistavehiculo').hide();
+                            }
+                        }
+                    }]
+            }]
     });
 
     formGeocerca = Ext.create('Ext.form.Panel', {
@@ -176,48 +295,77 @@ Ext.onReady(function() {
                                         tooltip: 'Descripcion de la Geocerca',
                                     },
                                     {
-                                        layout: 'column',
-                                        baseCls: 'x-plain',
-                                        items: [{
-                                                columnWidth: .9,
-                                                baseCls: 'x-plain',
-                                                items: [{
-                                                        xtype: 'textfield',
-                                                        afterLabelTextTpl: required,
-                                                        name: 'areaGeocerca',
-                                                        fieldLabel: '<b>Area:</b>',
-                                                        // disabled: true
-                                                    }]
+                                        xtype: 'panel',
+                                        layout: 'hbox',
+                                        defaults: {
+                                            margin: '0 5 0 0'
+                                        },
+                                        items: [
+                                            {
+                                                xtype: 'numberfield',
+                                                id: 'numberfield-point-route',
+                                                fieldLabel: 'Cant. Puntos',
+                                                afterLabelTextTpl: required,
+                                                disabled: true,
+                                                name: 'countPointsRoute',
+                                                allowBlank: false,
+                                                minValue: 2,
+                                                width: 225
                                             }, {
-                                                columnWidth: .1,
-                                                baseCls: 'x-plain',
-                                                items: [
-                                                    {
-                                                        xtype: 'button',
-                                                        iconCls: 'icon-trazar',
-                                                        tooltip: 'Trazar Geocerca',
-                                                        handler: function() {
-                                                            // winAddGeo.hide();
-//                                                    winDrawGeo.show();
-                                                            trazando = 1;
-                                                            estadoControlD("polygon");
-                                                            // winAddGeo.hide();
-                                                        }
-                                                    }]
+                                                id: 'btn-draw-edit-route',
+                                                iconCls: 'icon-add',
+                                                xtype: 'button',
+                                                value: 0,
+                                                handler: function() {
+                                                    if (drawRoute === true) {
+                                                        drawLine.activate();
+                                                    } else {
+                                                        modifyLine.activate();
+                                                        modifyLine.activate();
+                                                        Ext.create('Ext.menu.Menu', {
+                                                            width: 100,
+                                                            floating: true, // usually you want this set to True (default)
+                                                            renderTo: 'map', // usually rendered by it's containing componen
+                                                            items: [{
+                                                                    iconCls: 'icon-valid',
+                                                                    text: 'Terminar',
+                                                                    handler: function() {
+                                                                        geom = lines.features[0].geometry; //figura
+                                                                        var area = geom.getArea() / 1000;
+                                                                        area = Math.round(area * 100) / 100;
+                                                                        Ext.getCmp('numberfield-point-route').setValue(area + ' km2');
+                                                                        modifyLine.deactivate();
+                                                                        winAddGeocerca.show();
+                                                                    }
+                                                                }]
+                                                        }).show();
+                                                    }
+                                                    winAddGeocerca.hide();
+                                                }
+                                            }, {
+                                                id: 'btn-delete-route',
+                                                iconCls: 'icon-delete',
+                                                xtype: 'button',
+                                                disabled: true,
+                                                handler: function() {
+                                                    lines.destroyFeatures();
+                                                    Ext.getCmp('numberfield-point-route').reset();
+                                                    Ext.getCmp('btn-delete-route').disable();
+                                                    Ext.getCmp('btn-draw-edit-route').setIconCls("icon-add");
+                                                    drawRoute = true;
+                                                }
                                             }]
-                                    },
+                                    }
+                                    ,
                                     {
                                         xtype: 'button',
                                         fieldLabel: '<b>Agregar</b>',
                                         iconCls: 'icon-add',
-                                        tooltip: 'Agregar Vehiculos',
-                                        text: 'Crear Vehiculo',
+                                        tooltip: 'Asignar Vehiculos a la Geocerca',
+                                        text: 'Asignar Vehiculos',
                                         handler: function() {
-                                            // winAddGeo.hide();
-//                                                    winDrawGeo.show();
-//                                            trazando = 1;
-//                                            estadoControlD("polygon");
-                                            // winAddGeo.hide();
+                                            vistaVehiculos.show();
+                                            Ext.getCmp(idvehiculo).setValue(['2', '3']);
                                         }
                                     }
 
@@ -389,12 +537,23 @@ function onResetPerson() {
     formGeocerca.down('#deleteGeo').disable();
     formGeocerca.down('#createGeo').enable();
     formGeocerca.getForm().reset();
+    lines.destroyFeatures();
+    Ext.getCmp('numberfield-point-route').reset();
+    Ext.getCmp('btn-delete-route').disable();
+    Ext.getCmp('btn-draw-edit-route').setIconCls("icon-add");
+    drawRoute = true;
 }
 
 function clearWinPerson() {
     formGeocerca.down('#deleteGeo').disable();
     formGeocerca.down('#createGeo').enable();
     winAddGeocerca.hide();
+
+    lines.destroyFeatures();
+    Ext.getCmp('numberfield-point-route').reset();
+    Ext.getCmp('btn-delete-route').disable();
+    Ext.getCmp('btn-draw-edit-route').setIconCls("icon-add");
+    drawRoute = true;
 }
 
 function onDeleteClick() {

@@ -287,7 +287,14 @@ function formatTipoEstado(val) {
             break;
     }
 }
-
+//
+function formatTipoSeguro(val) {
+    if(val==='0000-00-00'){
+         return '<span style="color:blue;">NO TIENE</span>';
+    }else{
+        return val;
+    }
+}
 
 
 

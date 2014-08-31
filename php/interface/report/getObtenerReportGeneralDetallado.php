@@ -4,7 +4,7 @@ include ('../../../dll/config.php');
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-    $consultaSql ="SELECT m.id_vehiculo, vh.placa, vh.marca, emp.empresa, count(*) as totalMantenimiento FROM karviewdb.mantenimiento m, karviewdb.vehiculos vh, karviewdb.empresas emp where m.id_vehiculo=vh.id_vehiculo and vh.id_empresa= emp.id_empresa group by id_vehiculo;";
+    $consultaSql ="SELECT m.id_vehiculo, vh.placa, vh.marca, emp.empresa, count(*) as totalMantenimiento, m.descripSoat, m.fechaSoatVenc, m.descripMatricula, m.fechaMatriculaVenc, m.descripSeguro, m.fechaSeguroVenc   FROM karviewdb.mantenimiento m, karviewdb.vehiculos vh, karviewdb.empresas emp where m.id_vehiculo=vh.id_vehiculo and vh.id_empresa= emp.id_empresa group by id_vehiculo";
     $result = $mysqli->query($consultaSql);
     $haveData = false;
     $empresa=" ";
@@ -16,7 +16,13 @@ if (!$mysqli = getConectionDb()) {
                     . "id_vehiculo:".$myrow["id_vehiculo"].","
                     . "empresa:'" . $myrow["empresa"] . "',"
                     . "vehiculo:'" . $myrow["placa"] . " " . $myrow["marca"] . "',"
-                    . "total:".$myrow["totalMantenimiento"]
+                    . "total:".$myrow["totalMantenimiento"].","
+                    . "descripSoat:'".$myrow["descripSoat"]. "',"
+                    . "fechaSoatVenc:'".$myrow["fechaSoatVenc"]. "',"
+                    . "descripMatricula:'".$myrow["descripMatricula"]. "',"
+                    . "fechaMatriculaVenc:'".$myrow["fechaMatriculaVenc"]. "',"
+                    . "descripSeguro:'".$myrow["descripSeguro"]. "',"
+                    . "fechaSeguroVenc:'".$myrow["fechaSeguroVenc"]. "'"
                     . "},";
         }
         $objJson .="],";

@@ -225,7 +225,8 @@ Ext.onReady(function() {
             }]            
         }],
 
-        dockedItems: [{
+        dockedItems: [
+            {
             xtype: 'toolbar',
             dock: 'bottom',
             ui: 'footer',

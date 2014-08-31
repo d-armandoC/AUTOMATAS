@@ -23,12 +23,24 @@ var lat = -1.9912;
 var lon = -79.20733;
 var zoom = 7;
 
+var lines;
+var drawLine;
+var modifyLine;
+
+
 function loadMap() {
     if (connectionMap()) {
         Ext.onReady(function() {
             toMercator = OpenLayers.Projection.transforms['EPSG:900913']['EPSG:4326'];
             lienzoLocalizar = new OpenLayers.Layer.Vector('Direcciones');
-
+            lines = new OpenLayers.Layer.Vector("Lines", {
+                styleMap: new OpenLayers.StyleMap({
+                    pointRadius: 3,
+                    strokeColor: "#ff3300",
+                    strokeWidth: 3,
+                    fillOpacity: 0
+                })
+            });
             var options = {
                 controls: [
                     new OpenLayers.Control.Navigation({dragPanOptions: {enableKinetic: true}}),
@@ -152,7 +164,7 @@ function loadMap() {
                 eventListeners: {
                     featureselected: function(evt) {
                         var feature = evt.feature;
-                        var vehiculo = feature.attributes.vehiculo;
+                        var placa = feature.attributes.placa;
                         var direccion = feature.attributes.direccion;
                         var velocidad = feature.attributes.velocidad;
                         var latitud = feature.attributes.latitud;
@@ -160,7 +172,7 @@ function loadMap() {
                         var evento = feature.attributes.evenvto;
                         var contenidoAlternativo =
                                 "<section>" +
-                                "<b>Vehiculo: </b>" + vehiculo.vehiculo + "<br>" +
+                                "<b>Vehiculo: </b>" + placa.toString() + "<br>" +
                                 "<b>Velocidad: </b>" + velocidad.toString() + "</br>" +
                                 "<b>Latitud: </b>" + latitud.toString() + "</br>" +
                                 "<b>Longitud: </b>" + longitud.toString() + "</br>" +
@@ -317,6 +329,11 @@ function loadMap() {
             lienzoLineTravel = new OpenLayers.Layer.Vector("Linea de Recorrido");
             lienzoLineRouteManual = new OpenLayers.Layer.Vector("Linea de Ruta Manual");
             markerInicioFin = new OpenLayers.Layer.Markers("Inicio-Fin");
+//            polygonControl = new OpenLayers.Control.DrawFeature(lienzoGeoCercas,OpenLayers.Handler.RegularPolygon,{handlerOptions: polyOptions,featureAdded: getDateGeo}
+//            );
+            drawLine = new OpenLayers.Control.DrawFeature(lines, OpenLayers.Handler.Polygon, {featureAdded: getDataRoute});
+            modifyLine = new OpenLayers.Control.ModifyFeature(lines);
+
 
             map.addLayers([
                 lienzoVehicle,
@@ -326,10 +343,13 @@ function loadMap() {
                 lienzoPointRoute,
                 lienzoLineRouteManual,
                 lienzoPointRouteManual,
-                markerInicioFin
+                markerInicioFin,
+                lines
             ]);
 
             map.addControl(selectFeatures);
+            map.addControl(drawLine);
+            map.addControl(modifyLine);
             selectFeatures.activate();
 
             graficarCoop();
@@ -604,7 +624,7 @@ function buscarEnMapa(idCompany, idVehicle) {
                     Ext.MessageBox.show({
                         title: 'Información',
                         msg: 'Activando Capa.. Espere un Momento, por favor.',
-                       buttons: Ext.MessageBox.OK,
+                        buttons: Ext.MessageBox.OK,
                         icon: Ext.MessageBox.INFO
                     });
                 } else {
@@ -1082,19 +1102,19 @@ function drawLineRouteManual(json) {
 }
 
 function drawPointsRoute(coordPuntos, idRuta) {
-    
+
     var features = new Array();
     var cont = 0;
     for (var i = 0; i < coordPuntos.length; i++) {
         var dataRuta = coordPuntos[i];
-        cont=cont+1;
+        cont = cont + 1;
         var pt = new OpenLayers.Geometry.Point(dataRuta.longitud, dataRuta.latitud);
         pt.transform(new OpenLayers.Projection("EPSG:4326"),
                 new OpenLayers.Projection("EPSG:900913"));
-                
+
         var puntoMap = new OpenLayers.Feature.Vector(pt, {
-            idTravel:cont,
-            vehiculo:dataRuta.vehiculo,
+            idTravel: cont,
+            placa: dataRuta.placa,
             empresa: dataRuta.company,
             direccion: dataRuta.direccion,
             velocidad: dataRuta.velocidad,
@@ -1363,11 +1383,17 @@ function clearLienzoLineRoute() {
 }
 
 function clearLienzoPointTravel() {
+
     lienzoPoinTravel.destroyFeatures();
+    lienzoLocalizar.destroyFeatures();
     clearPopups();
+    clearLienzoLineTravel();
     clearLienzoLineRoute();
     clearLienzoPointRouteManual();
     clearLienzoLineRouteManual();
+    clearLienzoPointsRoute();
+    clearVehiclesByRoute();
+    clearMarks();
 }
 
 function clearLienzoLineTravel() {
@@ -1447,4 +1473,24 @@ function dibujarPerimetro(m, ypos, xpos) {
     };
     var lineFeature = new OpenLayers.Feature.Vector(ruta, null, style);
     lienzoPointRoute.addFeatures(lineFeature);
+}
+
+function getDataRoute(fig) {
+
+    var geom = fig.geometry; //figura
+    var area = geom.getArea() / 1000     //area km
+    area = Math.round(area * 100) / 100;
+    Ext.getCmp('numberfield-point-route').setValue(area + ' km2');
+    console.log(area + ' km2');
+//    var listPoint = fig.geometry.getVertices();
+//    Ext.getCmp('numberfield-point-route').setValue(listPoint.length);
+    drawRoute = false;
+    Ext.getCmp('btn-draw-edit-route').setIconCls("icon-update");
+    Ext.getCmp('btn-delete-route').enable();
+    drawLine.deactivate();
+    winAddGeocerca.show();
+    /*for (var i = 0; i < listPoint.length; i++) {
+     var pointConvert = listPoint[i].transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:4326'));
+     console.log("Latitud: " + pointConvert.y + " --:-- Longitud: " + pointConvert.x);
+     }*/
 }

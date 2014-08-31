@@ -6,10 +6,11 @@ if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
 
-    $idRol = $_SESSION["IDROLKBUS" . $site_city];
-    $idCompany = $_SESSION["IDEMPRESAKBUS" . $site_city];
+   $idEmpresa = $_SESSION["IDCOMPANYKARVIEW"];
+    $idPersona = $_SESSION["IDPERSONKARVIEW"];
+    $idRol = $_SESSION["IDROLKARVIEW"];
 
-    $consultaSql = "SELECT ((length(trama))/1048576) as megas,(((length(trama)/1048576)*11.19)/300) as precio,di.tipo_dato_invalido as descripcion,i.fecha_hora_registro as fecha_hora_reg,i.equipo,i.trama,i.exception as excepcion
+    $consultaSql = "SELECT ((length(trama))/1048576) as megas,(((length(trama)/1048576)*11.19)/300) as precio,di.tipo_dato_invalido as descripcion,i.fecha_hora_registro as fecha_hora_reg,i.equipo,i.trama,i.excepcion as excepcion
             FROM karviewhistoricodb.dato_invalidos i,  karviewdb.tipo_dato_invalidos di 
             where i.id_tipo_dato_invalido=di.id_tipo_dato_invalido and  date(i.fecha_hora_registro)=date(now()) order by i.fecha_hora_registro desc";
 

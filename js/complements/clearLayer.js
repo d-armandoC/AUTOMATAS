@@ -6,8 +6,10 @@
 
 
 function limpiarCapasAll(){    
+    clearLienzoPointTravel();
     limpiarCapasHistorico();    
     lienzoLocalizar.destroyFeatures();
+    
 }
 
 function limpiarCapasHistorico(){

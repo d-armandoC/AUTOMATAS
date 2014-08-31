@@ -232,6 +232,7 @@ Ext.onReady(function() {
                                     var resultado = action.result;
                                     if (trazar_ruta) {
                                         clearLienzoTravel();
+                                        clearLienzoPointTravel();
                                         drawPointsRoute(resultado.puntos, "Puntos");
                                         drawRutaMapa(resultado.puntos);
                                         
@@ -251,6 +252,7 @@ Ext.onReady(function() {
                                             title: '<b>Informe Tecnico</b>',
                                             autoScroll: true,
                                             id: 'contenedor',
+                                            iconCls: 'icon-car',
                                             name: 'contenedoresg',
                                             padding: '5 5 5 15',
                                             defaults: {
@@ -483,6 +485,7 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
     var gridFlags = Ext.create('Ext.grid.Panel', {
         title: '<center>Informe Detallado</center>',
         region: 'center',
+        iconCls: 'icon-general',
         store: storeFlags,
         columnLines: true,
         autoScroll: true,
@@ -492,11 +495,23 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
             emptyText: 'No hay datos que Mostrar'
         },
         columns: columnFlags,
-        listeners: {
+             listeners: {
             itemcontextmenu: function(thisObj, record, item, index, e, eOpts) {
-                panelTabMapaAdmin.setActiveTab('panelMapaTab');
-                console.log(record);
-                // localizarDireccion(record.data.longitud, record.data.latitud, 17);
+                e.stopEvent();
+                Ext.create('Ext.menu.Menu', {
+                    items: [
+                        Ext.create('Ext.Action', {
+                            iconCls: 'icon-vehiculos_lugar', // Use a URL in the icon config
+                            text: 'Ver Ubicación en el Mapa',
+                            disabled: false,
+                            handler: function(widget, event) {
+                                panelTabMapaAdmin.setActiveTab('panelMapaTab');
+                                localizarDireccion(record.data.longitud, record.data.latitud, 17);
+                            }
+                        })
+                    ]
+                }).showAt(e.getXY());
+                return false;
             }
         }
     });
@@ -513,7 +528,7 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
     });
 
     var tab = Ext.create('Ext.container.Container', {
-        title: 'Reporte General ' + idEmp + '-' + idEqp,
+        title: 'Reporte de Recorrido General  ',
         closable: true,
         iconCls: 'icon-all-flags',
         layout: 'border',

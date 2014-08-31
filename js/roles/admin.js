@@ -348,8 +348,8 @@ Ext.onReady(function() {
                 iconCls: 'icon-geocerca',
                 menu: [
                     {text: 'Administracion', iconCls: 'icon-find-geo', handler: function() {
-//                            ventanaGeocerca();
-                            ventanaAddGeo();
+                        //ventanaAddGeo();
+                        ventanaGeocerca() ;
                         }},
                     {text: 'Envio Correos', iconCls: 'icon-email', handler: function() {
                             visualizarEnviosGeoCercas();
@@ -450,6 +450,9 @@ Ext.onReady(function() {
                             ,
                             {text: 'Recorridos General', iconCls: 'icon-all-flags', handler: function() {
                                     ventanaBanderas();
+                                }},
+                            {text: 'Perdiad de GSM', iconCls: 'icon-flota', handler: function() {
+                                  ventanaPerdidaGSM();
                                 }}
                             ,
 //                            {text: 'Consume de Combustible', iconCls: 'icon-flota', handler: function() {
@@ -460,22 +463,25 @@ Ext.onReady(function() {
                                 }},
                             {text: 'Reporte de Geocercas', iconCls: 'icon-report-geo', handler: function() {
                                     ventanaReporteGeocerca();
-//                                  
+                                   
+                                  
                                 }}, ,
                                     {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
                                             ventanaEventos();
                                         }},
                             {text: 'CMD Enviados', iconCls: 'icon-cmd-hist', handler: function() {
                                     ventanaCmdHistorial();
-                                }},
+                                }}
                         ]
                     },
 //                    {text: 'Estadisticas', iconCls: 'icon-statistics', handler: function() {
 //                            window.open('statistics.php');
 //                        }}, '-',
-//                    {text: 'Limpiar Mapa', iconCls: 'icon-limpiar-mapa', handler: function() {
-//                            //  limpiarCapasAll();
-//                        }},
+                    {text: 'Limpiar Mapa', iconCls: 'icon-limpiar-mapa', handler: function() {
+                            clearLienzoPointTravel();
+                            var lonlatCenter = new OpenLayers.LonLat(0, 100000000);
+                            map.setCenter(lonlatCenter, 7);
+                        }}
 //                    {text: 'Simbologia', iconCls: 'icon-edit', handler: function() {
 //                            ventanaSimbologia();
 //                        }}
@@ -489,7 +495,7 @@ Ext.onReady(function() {
             {
                 xtype: 'label',
                 html: '<section id="panelNorte">' +
-                        '<center><strong id="name"><FONT SIZE=3  COLOR="blue">'+(diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()]) +'  '+'</FONT><iframe src="http://free.timeanddate.com/clock/i3x5kb7x/n190/tlec4/fn12/fs18/tct/pct/ftb/bas0/bat0/th1"  frameborder="0" width="96"  height="15" allowTransparency="true" ></iframe>'+'</strong></center>' +
+                        '<center><strong id="name"><FONT SIZE=3  COLOR="blue">' + (diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()]) + '  ' + '</FONT><iframe src="http://free.timeanddate.com/clock/i3x5kb7x/n190/tlec4/fn12/fs18/tct/pct/ftb/bas0/bat0/th1"  frameborder="0" width="96"  height="15" allowTransparency="true" ></iframe>' + '</strong></center>' +
                         '</section>'
             },
             {
@@ -669,24 +675,6 @@ Ext.onReady(function() {
 //                            };
                         }
                     }
-//                    itemclick: function(thisObject, record, item, index, e, eOpts) {
-//                        var aux = record.internalId;
-//
-//                        var capa = aux.split('_')[0];
-//                        var idEqpCoop = aux.split('_')[1];
-//
-//                        buscarEnMapa(capa, idEqpCoop);
-//                    },
-//                    itemcontextmenu: function(thisObject, record, item, index, e, eOpts) {
-//                        idEqpMen = record.internalId;
-//                        nameVeh = record.data.text;
-//                        if (idEqpMen.indexOf('ext-record') === -1) {
-//                            menuContext.showAt(e.getXY());
-//                        } else {
-//                            idEqpMen = '';
-//                            nameVeh = '';
-//                        }
-//                    }
                 }
             }]
     });
@@ -796,6 +784,7 @@ Ext.onReady(function() {
                 iconCls: 'icon-geoloc',
                 tooltip: 'Ubicar mi Posición',
                 handler: function() {
+                    clearLienzoPointTravel();
                     getLocation();
                     panelTabMapaAdmin.setActiveTab(0);
                 }
