@@ -4,7 +4,9 @@ include ('../../../dll/config.php');
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-    $consultaSql ="SELECT m.id_vehiculo, vh.placa, vh.marca, emp.empresa, count(*) as totalMantenimiento, m.descripSoat, m.fechaSoatVenc, m.descripMatricula, m.fechaMatriculaVenc, m.descripSeguro, m.fechaSeguroVenc   FROM karviewdb.mantenimiento m, karviewdb.vehiculos vh, karviewdb.empresas emp where m.id_vehiculo=vh.id_vehiculo and vh.id_empresa= emp.id_empresa group by id_vehiculo";
+    $consultaSql ="SELECT m.id_vehiculo, vh.placa, vh.marca, emp.empresa, count(*) as totalMantenimiento, "
+            . "m.fechaSoatReg, m.fechaSoatVenc,m.descripSoat,m.fechaMatriculaReg ,m.fechaMatriculaVenc, m.descripMatricula, "
+            . "m.fechaSeguroReg, m.fechaSeguroVenc , m.descripSeguro   FROM karviewdb.mantenimiento m, karviewdb.vehiculos vh, karviewdb.empresas emp where m.id_vehiculo=vh.id_vehiculo and vh.id_empresa= emp.id_empresa group by id_vehiculo";
     $result = $mysqli->query($consultaSql);
     $haveData = false;
     $empresa=" ";
@@ -17,12 +19,16 @@ if (!$mysqli = getConectionDb()) {
                     . "empresa:'" . $myrow["empresa"] . "',"
                     . "vehiculo:'" . $myrow["placa"] . " " . $myrow["marca"] . "',"
                     . "total:".$myrow["totalMantenimiento"].","
-                    . "descripSoat:'".$myrow["descripSoat"]. "',"
+                    . "fechaSoatReg:'".$myrow["fechaSoatReg"]. "',"
                     . "fechaSoatVenc:'".$myrow["fechaSoatVenc"]. "',"
-                    . "descripMatricula:'".$myrow["descripMatricula"]. "',"
+                    . "descripSoat:'".$myrow["descripSoat"]. "',"
+                    . "fechaMatriculaReg:'".$myrow["fechaMatriculaReg"]. "',"
                     . "fechaMatriculaVenc:'".$myrow["fechaMatriculaVenc"]. "',"
-                    . "descripSeguro:'".$myrow["descripSeguro"]. "',"
-                    . "fechaSeguroVenc:'".$myrow["fechaSeguroVenc"]. "'"
+                    . "descripMatricula:'".$myrow["descripMatricula"]. "',"
+                    . "fechaSeguroReg:'".$myrow["fechaSeguroReg"]. "',"
+                    . "fechaSeguroVenc:'".$myrow["fechaSeguroVenc"]. "',"
+                    . "descripSeguro:'".$myrow["descripSeguro"]. "'"
+                    
                     . "},";
         }
         $objJson .="],";

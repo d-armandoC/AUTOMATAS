@@ -877,12 +877,13 @@ Ext.onReady(function() {
         items: [panelCentral, panelOeste]
     });
     var tab = Ext.create('Ext.form.Panel', {
+        //contenedoresg
         id: 'contenedoresg',
         name: 'contenedoresg',
         items: [
             {
                 id: 'contenido2',
-                html: "",
+                html: ""
             }
         ]
         ,

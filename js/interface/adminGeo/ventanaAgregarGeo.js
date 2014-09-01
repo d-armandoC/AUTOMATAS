@@ -211,7 +211,8 @@ Ext.onReady(function() {
             bodyPadding : 20,
             layout : 'fit',
             baseCls: 'x-plain',
-            items : [{
+            items : [
+                {
                 xtype: 'itemselector',            
                 name: 'listVeh',                
                 anchor : '100%',
@@ -222,7 +223,8 @@ Ext.onReady(function() {
                 msgTarget: 'side',
                 fromTitle: 'Vehiculos',
                 toTitle: 'Seleccionados'
-            }]            
+            }
+        ]            
         }],
 
         dockedItems: [

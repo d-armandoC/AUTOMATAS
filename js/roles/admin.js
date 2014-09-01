@@ -452,7 +452,8 @@ Ext.onReady(function() {
                                     ventanaBanderas();
                                 }},
                             {text: 'Perdiad de GSM', iconCls: 'icon-flota', handler: function() {
-                                  ventanaPerdidaGSM();
+                                  //ventanaPerdidaGSM();
+                                  ReporteWinperdidaGSM();
                                 }}
                             ,
 //                            {text: 'Consume de Combustible', iconCls: 'icon-flota', handler: function() {

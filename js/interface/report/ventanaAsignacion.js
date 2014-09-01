@@ -129,7 +129,8 @@ Ext.onReady(function() {
     var panelBotonesGenAsi = Ext.create('Ext.form.Panel', {
         layout: 'column',
         baseCls: 'x-plain',
-        items: [{
+        items: [
+            {
                 baseCls: 'x-plain',
                 bodyStyle: 'padding:0 5px 0 0',
                 items: [btn1RecMAsi]
@@ -137,7 +138,8 @@ Ext.onReady(function() {
                 baseCls: 'x-plain',
                 bodyStyle: 'padding:0 5px 0 0',
                 items: [btn2RecMAsi]
-            }]
+            }
+        ]
     });
 
     contenedorwinAsi = Ext.create('Ext.form.Panel', {

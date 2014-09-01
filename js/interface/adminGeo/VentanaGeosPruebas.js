@@ -5,21 +5,13 @@ var vertPolygonos = "";
 var trazar = 0;
 var gridStoreGeocercas;
 var listVehiculos = "";
-var drawRutas;
+var drawRoute;
 var geometria;
-var storeVehGeocerca = Ext.create('Ext.data.JsonStore', {
-    autoDestroy: true,
-    proxy: {
-        type: 'ajax',
-        url: 'php/interface/adminGeo/geoVeh.php',
-        reader: {
-            type: 'json',
-            root: 'veh_geo'
-        }
-    },
-    fields: ['id', 'nombre']
-});
-var storeVehiculos = Ext.create('Ext.data.JsonStore', {
+var id_empresageos;
+var vistaVehiculosGeocercas;
+
+
+var storeVeh = Ext.create('Ext.data.JsonStore', {
     autoDestroy: true,
     proxy: {
         type: 'ajax',
@@ -32,7 +24,22 @@ var storeVehiculos = Ext.create('Ext.data.JsonStore', {
     fields: [{name: 'value', mapping: 'id'}, {name: 'text', mapping: 'nombre'}]
 });
 
+var storeVehGeocerca = Ext.create('Ext.data.JsonStore', {
+    autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        url: 'php/interface/adminGeo/geoVeh.php',
+        reader: {
+            type: 'json',
+            root: 'veh_geo'
+        }
+    },
+    fields: ['id', 'nombre']
+});
+
+
 Ext.onReady(function() {
+
     //Genera campos de array para usar en el inicio del store por defecto
     Ext.define('DataObject', {
         extend: 'Ext.data.Model',
@@ -49,6 +56,7 @@ Ext.onReady(function() {
 
     // crea los datos del store
     gridStoreGeocercas = Ext.create('Ext.data.Store', {
+        autoDestroy: true,
         autoLoad: true,
         autoSync: true,
         model: 'DataObject',
@@ -56,7 +64,7 @@ Ext.onReady(function() {
             type: 'ajax',
             api: {
                 read: 'php/administracion/geos/read.php',
-                create: 'php/administracion/geos/create.php?listVeh=' + listVehiculos,
+                create: 'php/administracion/geos/create.php?id_empresa=' + id_empresageos,
                 update: 'php/administracion/geos/update.php'
 //                destroy: 'php/administracion/personal/destroy.php'
             },
@@ -118,8 +126,7 @@ Ext.onReady(function() {
             selectionchange: function(thisObject, selected, eOpts) {
                 setActiveRecord(selected[0] || null);
                 var record = selected[0];
-//                    formPanelGrid.down('#showButton').enable();
-//                    formPanelGrid.down('#delete').enable();
+                Ext.getCmp('multiselectvehiculos1').reset();
                 formRecordsGeo.getForm().loadRecord(record);
                 idGeo = record.data.id;
                 storeVehGeocerca.load({
@@ -134,7 +141,7 @@ Ext.onReady(function() {
     });
 
 
-    var vistaVehiculosGeocercas = Ext.create('Ext.window.Window', {
+    vistaVehiculosGeocercas = Ext.create('Ext.window.Window', {
         title: 'Obtener Vehciulo ',
         id: 'vistavehiculosgeos',
         layout: 'fit',
@@ -160,7 +167,7 @@ Ext.onReady(function() {
                                 fieldLabel: 'Cooperativa',
                                 id: 'idempresageos',
                                 afterLabelTextTpl: required,
-                                forceSelection:true,
+                                forceSelection: true,
                                 padding: '5 5 10 10',
                                 name: 'cbxEmpresasgeos',
                                 store: storeEmpresas,
@@ -172,11 +179,10 @@ Ext.onReady(function() {
                                 emptyText: 'Escoja la Cooperativa...',
                                 listeners: {
                                     select: function(combo, records, eOpts) {
-                                        var listSelected = Ext.getCmp('idvehiculogeos');
+                                        var listSelected = Ext.getCmp('idvehiculogeosList');
                                         listSelected.clearValue();
-//                                        console.log(listSelected.fromField.store.items.data);
                                         listSelected.fromField.store.removeAll();
-                                        storeVehiculos.load({
+                                        storeVeh.load({
                                             params: {
                                                 cbxEmpresas: records[0].data.id
                                             }
@@ -194,10 +200,10 @@ Ext.onReady(function() {
                                 items: [
                                     {
                                         xtype: 'itemselector',
-                                        name: 'listvehiculogeos',
-                                        id: 'idvehiculogeos',
+                                        name: 'listVeh',
                                         anchor: '100%',
-                                        store: storeVehiculos,
+                                        id: 'idvehiculogeosList',
+                                        store: storeVeh,
                                         displayField: 'text',
                                         valueField: 'value',
                                         allowBlank: false,
@@ -221,9 +227,7 @@ Ext.onReady(function() {
                         text: 'Guardar',
                         tooltip: 'Guardar Geocerca',
                         handler: function() {
-
-                            var area = contenedorWinAddGeo.down('[name=area]').getValue()
-
+                            Ext.getCmp('vistavehiculosgeos').hide();
                         }
                     }, {
                         iconCls: 'icon-cancelar',
@@ -231,9 +235,9 @@ Ext.onReady(function() {
                         tooltip: 'Salir de la Ventana',
                         handler: function() {
                             if (vistaVehiculosGeocercas) {
-                                Ext.getCmp('idvehiculogeos').reset();
-                                Ext.getCmp('idempresageos').reset();
-                                Ext.getCmp('idvehiculogeos').fromField.store.removeAll();
+//                                Ext.getCmp('idvehiculogeosList').reset();
+//                                Ext.getCmp('idempresageos').reset();
+//                                Ext.getCmp('idvehiculogeosList').fromField.store.removeAll();
                                 Ext.getCmp('vistavehiculosgeos').hide();
                             }
                         }
@@ -295,6 +299,14 @@ Ext.onReady(function() {
                                         tooltip: 'Descripcion de la Geocerca',
                                     },
                                     {
+                                        xtype: 'label',
+                                        forId: 'myFieldId',
+                                        id:'idPrueba',
+                                        name:'idPrueba',
+                                        margin: '0 0 0 10'
+                                    }
+                                    ,
+                                    {
                                         xtype: 'panel',
                                         layout: 'hbox',
                                         defaults: {
@@ -317,7 +329,7 @@ Ext.onReady(function() {
                                                 xtype: 'button',
                                                 value: 0,
                                                 handler: function() {
-                                                    if (drawRutas === true) {
+                                                    if (drawRoute === true) {
                                                         drawLine.activate();
                                                     } else {
                                                         modifyLine.activate();
@@ -352,7 +364,7 @@ Ext.onReady(function() {
                                                     Ext.getCmp('numberfield-point-route').reset();
                                                     Ext.getCmp('btn-delete-route').disable();
                                                     Ext.getCmp('btn-draw-edit-route').setIconCls("icon-add");
-                                                    drawRutas = true;
+                                                    drawRoute = true;
                                                 }
                                             }]
                                     }
@@ -365,7 +377,7 @@ Ext.onReady(function() {
                                         text: 'Asignar Vehiculos',
                                         handler: function() {
                                             vistaVehiculosGeocercas.show();
-                                            Ext.getCmp(idvehiculo).setValue(['2', '3']);
+//                                            Ext.getCmp(idvehiculo).setValue(['2', '3']);
                                         }
                                     }
 
@@ -395,22 +407,13 @@ Ext.onReady(function() {
                                         title: 'Vehiculos',
                                         msgTarget: 'side',
                                         name: 'vehiculos',
-                                        id: 'multiselect-vehiculos1',
-                                        height: 132,
+                                        id: 'multiselectvehiculos1',
                                         store: storeVehGeocerca,
+                                        height: 132,
                                         valueField: 'id',
-                                        displayField: 'nombre',
-                                        ddReorder: true,
-                                        listeners: {
-                                            select: function(combo, records, eOpts) {
+                                        displayField: 'nombre'
+                                                //ddReorder: true
 
-                                                storeVehiculos.load({
-                                                    params: {
-                                                        cbxEmpresas: records[0].data.id
-                                                    }
-                                                });
-                                            }
-                                        }
                                     }
                                 ]
                             }
@@ -525,10 +528,12 @@ function onUpdatePerson() {
 function onCreatePerson() {
     var form = formGeocercas.getForm();
     if (form.isValid()) {
+        var idEmpresaGeoss = vistaVehiculosGeocercas.down('[name=idPrueba]').getValue();
+        console.log(idEmpresaGeoss);
+        id_empresageos = idEmpresaGeoss;
         formGeocercas.fireEvent('create', formGeocercas, form.getValues());
         formGeocercas.down('#updateGeo').disable();
         form.reset();
-        console.log("crando");
     }
 }
 
@@ -541,7 +546,7 @@ function onResetPerson() {
     Ext.getCmp('numberfield-point-route').reset();
     Ext.getCmp('btn-delete-route').disable();
     Ext.getCmp('btn-draw-edit-route').setIconCls("icon-add");
-    drawRutas = true;
+    drawRoute = true;
 }
 
 function clearWinPerson() {
@@ -553,7 +558,7 @@ function clearWinPerson() {
     Ext.getCmp('numberfield-point-route').reset();
     Ext.getCmp('btn-delete-route').disable();
     Ext.getCmp('btn-draw-edit-route').setIconCls("icon-add");
-    drawRutas = true;
+    drawRoute = true;
 }
 
 function onDeleteClick() {

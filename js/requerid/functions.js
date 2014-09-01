@@ -288,12 +288,34 @@ function formatTipoEstado(val) {
     }
 }
 //
+//function formatTipoSeguro(val) {
+//     var nowDate = new Date();
+//   console.logg(Ext.Date.format(val, 'Y-m-d'));
+//   console.logg(Ext.Date.format(nowDate, 'Y-m-d'));
+////    if(Ext.Date.format(val, 'Y-m-d')===(Ext.Date.format(nowDate, 'Y-m-d'))){
+////         return '<span style="color:blue;">CADUCADO</span>';
+////    }else if(val==='0000-00-00'){
+////         return '<span style="color:blue;">NO REGISTRADO</span>';
+////    }else{
+////        return '<span style="color:green;">VIGENTE</span>';
+////    }
+//    
+   
+//}
+
+
+
 function formatTipoSeguro(val) {
-    if(val==='0000-00-00'){
-         return '<span style="color:blue;">NO TIENE</span>';
+     var nowDate = new Date();
+    if(Ext.Date.format(val, 'Y-m-d')===(Ext.Date.format(nowDate, 'Y-m-d'))){
+         return '<span style="color:blue;">CADUCADO</span>';
+    }else if(val==='0000-00-00'){
+         return '<span style="color:blue;">NO REGISTRADO</span>';
     }else{
-        return val;
+        return '<span style="color:green;">VIGENTE</span>';
     }
+    
+   
 }
 
 
