@@ -207,7 +207,7 @@ function limpiar_datosEnerg() {
     }
 }
 
-function ventanaEncendidoApagado() {
+function ventanaEnegizacion() {
     if (!winEnerg) {
         winEnerg = Ext.create('Ext.window.Window', {
             layout: 'fit',
@@ -788,7 +788,7 @@ function obtenerRepEnergDes() {
                     fullscreen: true,
                     height: 485,
                     width: 2000,
-                    region: 'center',
+//                    region: 'center',
                     items: [gridGeneralEneDes, gridViewDataEnegDesDetallado]
                 });
                 panelTabMapaAdmin.add(tabExcesos);
