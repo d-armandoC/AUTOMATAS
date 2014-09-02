@@ -87,6 +87,8 @@
         <script type="text/javascript" src="js/interface/report/ventanaCmdHist.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaReporteParadas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaReporteConsumoCombustible.js"></script>
+        <script type="text/javascript" src="js/interface/report/ventanaEncendido.js"></script>
+        <script type="text/javascript" src="js/interface/report/ventanaEnegizacionDes.js"></script>
         <!--<script type="text/javascript" src="js/interface/report/ventanaPerdidaGSM.js"></script>-->
         <script type="text/javascript" src="js/interface/report/gsmPrueba.js"></script>
       

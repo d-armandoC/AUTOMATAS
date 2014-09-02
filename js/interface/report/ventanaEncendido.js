@@ -1,11 +1,31 @@
 var contenedorwinEnc;
+var storeDataDetalladoOnOff;
+var gridViewDataEncApagDetallado;
+var cbxEmpresaEA;
 var winEnc;
-
+//VARIABLE PARA REALIZAR EL TIPO DE REPORTE
+var tipoReportEnc;
+//VARIABLE PARA REALIZAR LAS CONSULTAS
+var dateIniEncApag;
+var dateFinEncApag;
+var horaIniEncApag;
+var horaFinEncApag;
 Ext.onReady(function() {
-
-    var cbxEmpresasBD = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Cooperativa',        
-        name: 'cbxEmpresas',
+    storeDataDetalladoOnOff = Ext.create('Ext.data.JsonStore', {
+        autoDestroy: true,
+        proxy: {
+            type: 'ajax',
+            url: 'php/interface/report/encendidoApagado/getReportEncApag.php',
+            reader: {
+                type: 'json',
+                root: 'data'
+            }
+        },
+        fields: ['fechaEA', 'horaEA', 'eventoEA', 'velocidadEA', 'latitudEA', 'longitudEA', 'bateriaEA', 'gsmEA', 'gpsEA', 'direccionEA']
+    });
+    cbxEmpresaEA = Ext.create('Ext.form.ComboBox', {
+        fieldLabel: 'Cooperativa',
+        name: 'cbxEmpresaEnc',
         store: storeEmpresas,
         valueField: 'id',
         displayField: 'text',
@@ -13,91 +33,59 @@ Ext.onReady(function() {
         emptyText: 'Seleccionar Cooperativa...',
         editable: false,
         allowBlank: false,
-        listeners: {
-            select: function(combo, records, eOpts) {
-                cbxVehBD.enable();
-                cbxVehBD.clearValue();
-
-                storeVeh.load({
-                    params: {
-                        cbxEmpresas: records[0].data.id
-                    }
-                });
-            }
-        }
     });
-
-    var cbxVehBD = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Vehículo:',        
-        name: 'cbxVeh',
-        store: storeVeh,
-        valueField: 'id',
-        displayField: 'text',
-        queryMode: 'local',
-        emptyText: 'Seleccionar Vehículo...',
-        disabled: true,
-        editable: false,
-        allowBlank: false,
-        listConfig: {
-            minWidth : 300
-        }
-    });
-
     var dateIni = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
         id: 'fechaIniEnc',
         name: 'fechaIni',
         vtype: 'daterange',
+        value: new Date(),
         allowBlank: false,
         endDateField: 'fechaFinEnc',
         emptyText: 'Fecha Inicial...'
     });
-
     var dateFin = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Hasta el',
         format: 'Y-m-d',
         id: 'fechaFinEnc',
         name: 'fechaFin',
         vtype: 'daterange',
+        value: new Date(),
         allowBlank: false,
         startDateField: 'fechaIniEnc',
         emptyText: 'Fecha Final...'
     });
-
     var timeIni = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
-        name: 'horaIni',
+        name: 'horaIniEnc',
         format: 'H:i',
+        value: '00:01',
         allowBlank: false,
         emptyText: 'Hora Inicial...'
     });
-
     var timeFin = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Hasta las',
-        name: 'horaFin',
+        name: 'horaFinEnc',
         format: 'H:i',
+        value: '23:59',
         allowBlank: false,
         emptyText: 'Hora Final...'
     });
-
     var today = Ext.create('Ext.button.Button', {
         text: 'Hoy',
-        iconCls : 'icon-today',
+        iconCls: 'icon-today',
         handler: function() {
             var nowDate = new Date();
-
             dateIni.setValue(formatoFecha(nowDate));
             dateFin.setValue(formatoFecha(nowDate));
-
             timeIni.setValue('00:01');
             timeFin.setValue('23:59');
         }
     });
-
     var yesterday = Ext.create('Ext.button.Button', {
         text: 'Ayer',
-        iconCls : 'icon-yesterday',
+        iconCls: 'icon-yesterday',
         handler: function() {
             var nowDate = new Date();
             var año = nowDate.getFullYear();
@@ -110,64 +98,99 @@ Ext.onReady(function() {
                 dia = "0" + dia;
             }
             nowDate.setMinutes(nowDate.getMinutes() + 10);
-
             dateIni.setValue(año + "-" + mes + "-" + dia);
             dateFin.setValue(año + "-" + mes + "-" + dia);
-
             timeIni.setValue('00:01');
             timeFin.setValue('23:59');
         }
     });
-
     var panelBotones = Ext.create('Ext.form.Panel', {
         layout: 'column',
         baseCls: 'x-plain',
         items: [{
-            baseCls: 'x-plain',
-            bodyStyle: 'padding:0 5px 0 0',
-            items: [today]
-        }, {
-            baseCls: 'x-plain',
-            bodyStyle: 'padding:0 5px 0 0',
-            items: [yesterday]
-        }]
+                baseCls: 'x-plain',
+                bodyStyle: 'padding:0 5px 0 0',
+                items: [today]
+            }, {
+                baseCls: 'x-plain',
+                bodyStyle: 'padding:0 5px 0 0',
+                items: [yesterday]
+            }]
     });
-
     contenedorwinEnc = Ext.create('Ext.form.Panel', {
         frame: true,
         fieldDefaults: {
             labelAlign: 'left',
             labelWidth: 70,
-            width : 260
+            width: 220
         },
         items: [{
-            layout: 'column',
-            baseCls: 'x-plain',
-            items: [{
-                columnWidth: .5,
-                baseCls: 'x-plain',
-                items: [
-                    cbxEmpresasBD,
-                    dateIni,
-                    timeIni
-                ]            
-            },{
-                columnWidth: .5,
-                baseCls: 'x-plain',
-                items: [
-                    cbxVehBD,
-                    dateFin,
-                    timeFin
+                margin: '10 0 0 0',
+                xtype: 'fieldset',
+                title: '<b>Tipo Reporte</b>',
+                width: 480,
+                height: 80,
+                items: [{
+                        xtype: 'radiogroup',
+// fieldLabel: ' ',
+// Arrange radio buttons into two columns, distributed vertically
+                        columns: 2,
+                        vertical: true,
+                        items: [
+                            {boxLabel: 'General ', name: 'tipoRepEA', inputValue: '1'},
+                            {boxLabel: 'Por Cooperativa', name: 'tipoRepEA', inputValue: '2', checked: true},
+                        ],
+                        listeners: {
+                            change: function(field, newValue, oldValue) {
+                                switch (parseInt(newValue['tipoRepEA'])) {
+                                    case 1:
+                                        tipoReportEnc = 1;
+                                        cbxEmpresaEA.disable();
+                                        break;
+                                    case 2:
+                                        tipoReportEnc = 2;
+                                        cbxEmpresaEA.enable();
+                                        break;
+                                }
+                            }
+                        }
+                    },
+                    cbxEmpresaEA,
                 ]
-            }]
-        },
-        panelBotones],
+            }, {
+                margin: '20 0 0 10',
+                layout: 'column',
+                baseCls: 'x-plain',
+                items: [{
+                        columnWidth: .5,
+                        baseCls: 'x-plain',
+                        items: [
+                            dateIni,
+                            timeIni
+                        ]
+                    }, {
+                        columnWidth: .5,
+                        baseCls: 'x-plain',
+                        items: [
+                            dateFin,
+                            timeFin
+                        ]
+                    }]
+            },
+            panelBotones],
         buttons: [{
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
                 handler: function() {
                     if (contenedorwinEnc.getForm().isValid()) {
-                        loadGridEnc();                        
+                        dateIniEncApag = dateIni.getRawValue();
+                        dateFinEncApag = dateFin.getRawValue();
+                        horaIniEncApag = timeIni.getRawValue();
+                        horaFinEncApag = timeFin.getRawValue();
+                        empresEncApag = cbxEmpreEnergDese.getRawValue();
+                        obtenerRepEncApag();
+                    } else {
+                        Ext.example.msg("Alerta", 'Llenar los campos marcados en rojo, correctamente ');
                     }
                 }
             }, {
@@ -177,30 +200,27 @@ Ext.onReady(function() {
             }]
     });
 });
-
 function limpiar_datosEnc() {
     contenedorwinEnc.getForm().reset();
-    contenedorwinEnc.down('[name=cbxVeh]').disable();
-
     if (winEnc) {
         winEnc.hide();
     }
 }
 
-function ventanaEncendido() {
+function ventanaEncendidoApagado() {
     if (!winEnc) {
         winEnc = Ext.create('Ext.window.Window', {
             layout: 'fit',
             title: 'Reporte de Encendido y Apagado',
             iconCls: 'icon-on-off',
             resizable: false,
-            width: 560,
-            height: 200,
+            width: 510,
+            height: 320,
             closeAction: 'hide',
             plain: false,
-            items: [contenedorwinEnc],
-            listeners : {
-                close : function(panel, eOpts) {
+            items: contenedorwinEnc,
+            listeners: {
+                close: function(panel, eOpts) {
                     limpiar_datosEnc();
                 }
             }
@@ -210,106 +230,578 @@ function ventanaEncendido() {
     winEnc.show();
 }
 
+function obtenerRepEncApag() {
+    var form = contenedorwinEnc.getForm();
+    //reporte por limites
+    if (tipoReportEnc === 1) {//reporte de tipo general
+        form.submit({
+            url: 'php/interface/report/encendidoApagado/getReportGeneralEncApag.php',
+            waitTitle: 'Procesando...',
+            waitMsg: 'Obteniendo Información',
+            params: {
+                fechaIni: dateIniEncApag, fechaFin: dateFinEncApag,
+                horaIni: horaIniEncApag, horaFin: horaFinEncApag
+            },
+            failure: function(form, action) {
+                Ext.MessageBox.show({
+                    title: 'Información',
+                    msg:  action.result.message,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO
+                });
+            },
+            success: function(form, action) {
+//                console.log(action.result.data);
+                var storeDataGeneralEncApag = Ext.create('Ext.data.JsonStore', {
+                    data: action.result.data,
+                    proxy: {
+                        type: 'ajax',
+                        reader: 'array'
+                    },
+                    fields: ['empresaEncApag', 'personaEncApag', 'placaEncApag', 'idEquipoEncApag', 'equipoEncApag', 'totalEncApag']
+                });
+                var gridGeneralApagEnc = Ext.create('Ext.grid.Panel', {
+                    frame: true,
+                    width: '100%',
+                    height: 230,
+                    title: '<center>Reporte General de encendido y apagado ' + '<br>Fechas:' + dateIniEncApag + ' / ' + dateFinEncApag +
+                            '<br>Horas:' + horaIniEncApag + ' / ' + horaFinEncApag + '</center>',
+                    store: storeDataGeneralEncApag,
+                    features: [filters],
+                    multiSelect: true,
+                    viewConfig: {
+                        emptyText: 'No hay datos que Mostrar'
+                    },
+                    columns: [
+                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 40, align: 'center'}),
+                        {text: 'Empresa', width: 290, dataIndex: 'empresaEncApag', align: 'center'},
+                        {text: 'Persona', width: 290, dataIndex: 'personaEncApag', align: 'center'},
+                        {text: 'Placa', width: 130, dataIndex: 'placaEncApag', align: 'center'},
+                        {text: 'Equipo', width: 130, dataIndex: 'equipoEncApag', align: 'center'},
+                        {text: 'Cantidad', width: 130, dataIndex: 'totalEncApag', align: 'center'},
+                    ],
+                    tbar: [{
+                            xtype: 'button',
+                            iconCls: 'icon-excel',
+                            text: 'Exportar a Excel',
+                            handler: function() {
 
-function loadGridEnc() {
-    var empresa = contenedorwinEnc.down('[name=cbxEmpresas]').getValue();
-    var idEqp = contenedorwinEnc.down('[name=cbxVeh]').getValue();    
-    var fi = formatoFecha(contenedorwinEnc.down('[name=fechaIni]').getValue());
-    var ff = formatoFecha(contenedorwinEnc.down('[name=fechaFin]').getValue());
-    var hi = formatoHora(contenedorwinEnc.down('[name=horaIni]').getValue());
-    var hf = formatoHora(contenedorwinEnc.down('[name=horaFin]').getValue());
+                                var h0, h1, h2, h3, h4;
+                                h0, h1 = h2 = h3 = h4 = true;
+                                if (storeDataGeneralEncApag.getCount() > 0) {
+                                    if (getNavigator() === 'img/chrome.png') {
+                                        var a = document.createElement('a');
+                                        //getting data from our div that contains the HTML table
+                                        var data_type = 'data:application/vnd.ms-excel';
+                                        //var table_div = document.getElementById('exportar');
+                                        //var table_html = table_div.outerHTML.replace(/ /g, '%20');
+                                        var tiLetra = 'Calibri';
 
-    var vehiculo = contenedorwinEnc.down('[name=cbxVeh]').getRawValue();
+                                        var table_div = "<meta charset='UTF-8'><body>" +
+                                                "<font face='" + tiLetra + "'><table>" +
+                                                "<tr><th colspan='7'>Reporte General de Encendido y Apagado  : </th></tr>" +
+                                                "<tr><th colspan='7' Fecha" + dateIniEncApag + ' / ' + dateFinEncApag + ' Horas: ' + horaIniEncApag + ' / ' + horaFinEncApag + ") km</th></tr>" +
+                                                "<tr></tr>";
+                                        table_div += "<tr>";
+                                        if (h0)
+                                            table_div += "<th align=left>Empresa</th>";
+                                        if (h1)
+                                            table_div += "<th align=left>Persona</th>";
+                                        if (h2)
+                                            table_div += "<th align=left>Placa</th>";
+                                        if (h3)
+                                            table_div += "<th align=left>Equipo</th>";
+                                        if (h4)
+                                            table_div += "<th align=left>Cantidad</th>";
+                                        table_div += "</tr>";
 
-    Ext.MessageBox.show({
-        title : "Obteniendo Datos",
-        msg : "Reportes",
-        progressText : "Obteniendo...",                        
-        wait : true,
-        waitConfig : {
-            interval:200
-        }
-    });
+                                        for (var i = 0; i < storeDataGeneralEncApag.data.length; i++) {
+                                            table_div += "<tr>";
+                                            if (h0)
+                                                table_div += "<td align=lef>" + storeDataGeneralEncApag.data.items[i].data.empresaEncApag + "</td>";
+                                            if (h1)
+                                                table_div += "<td align=lef>" + storeDataGeneralEncApag.data.items[i].data.personaEncApag + "</td>";
+                                            if (h2)
+                                                table_div += "<td align=lef>" + storeDataGeneralEncApag.data.items[i].data.placaEncApag + "</td>";
+                                            if (h3)
+                                                table_div += "<td align=lef>" + storeDataGeneralEncApag.data.items[i].data.equipoEncApag + "</td>";
+                                            if (h4)
+                                                table_div += "<td align=lef>" + storeDataGeneralEncApag.data.items[i].data.totalEncApag + "</td>";
+                                            table_div += "</tr>";
+                                        }
+                                        ;
 
-    var store = Ext.create('Ext.data.JsonStore', {
-        autoDestroy: true,
-        autoLoad: true,
-        proxy: {
-            type: 'ajax',
-            url: 'php/interface/report/getReportEncApag.php?cbxEmpresas=' + empresa +
-                    '&cbxVeh=' + idEqp +
-                    '&fechaIni=' + fi +
-                    '&fechaFin=' + ff +
-                    '&horaIni=' + hi +
-                    '&horaFin=' + hf,
-            reader: {
-                type: 'json',
-                root: 'datos'
-            }
-        },
-        fields: ['latitud', 'longitud', 'fecha_hora', 'velocidad', 'bateria', 'gsm', 'gps2', 'ign', 'evt', 'direccion'],
-        listeners: {
-            load: function(thisObject, records, successful, eOpts) {
+                                        table_div += "</table></font></body>";
 
-                Ext.MessageBox.hide();
+                                        var table_html = table_div.replace(/ /g, '%20');
 
-                if (records.length > 0) {                    
-                    var columnEvets = [
-                        Ext.create('Ext.grid.RowNumberer'),                        
-                        {text: 'Fecha', xtype: 'datecolumn', format: 'd-m-Y', width: 75, dataIndex: 'fecha_hora', align: 'center'},
-                        {text: 'Hora', xtype: 'datecolumn', format: 'H:i:s', width: 75, dataIndex: 'fecha_hora', align: 'center'},
-                        {text: 'Vel. (Km/h)', dataIndex: 'velocidad', align: 'right', width: 75, cls: 'listview-filesize'},
-                        {text: 'Bateria', width: 50, dataIndex: 'bateria', align: 'center'},
-                        {text: 'GSM', width: 50, dataIndex: 'gsm', align: 'center'},
-                        {text: 'GPS2', width: 50, dataIndex: 'gps2', align: 'center'},
-                        {text: 'IGN', width: 50, dataIndex: 'ign', align: 'center'},
-                        {text: 'Evento', width: 250, dataIndex: 'evt'},
-                        {text: 'Direccion', flex: 300, dataIndex: 'direccion'},
-                        {text: 'Latitud', width: 150, dataIndex: 'latitud'},
-                        {text: 'Longitud', width: 150, dataIndex: 'longitud'}
-                    ]
+                                        a.href = data_type + ', ' + table_html;
+                                        //setting the file name
+                                        a.download = 'ReporteEncendidoApagadoGeneral.xls';
+                                        //triggering the function
+                                        a.click();
 
-                    var gridEvents = Ext.create('Ext.grid.Panel', {
-                        width: '100%',
-                        height: 455,
-                        collapsible: true,
-                        title: '<center>Reporte de Encendido/Apagado ' + vehiculo + '</center>',
-                        store: store,
-                        multiSelect: true,
-                        columnLines: true,
-                        viewConfig: {
-                            emptyText: 'No hay datos que Mostrar'
-                        },
-                        columns: columnEvets,
-                        listeners : {
-                            itemcontextmenu : function( thisObj, record, item, index, e, eOpts ){
-                                panelMapa.setActiveTab('panelMapaTab');
-                                localizarDireccion(record.data.longitud, record.data.latitud, 17);
+                                    } else {
+                                        Ext.MessageBox.show({
+                                            title: 'Error',
+                                            msg: '<center>El Servicio para este navegador no esta disponible<br>Usar un navegador como Google Chrome<center>',
+                                            buttons: Ext.MessageBox.OK,
+                                            icon: Ext.MessageBox.ERROR
+                                        });
+
+                                    }
+                                } else {
+                                    Ext.MessageBox.show({
+                                        title: 'Error...',
+                                        msg: 'No hay datos en la Lista a Exportar',
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.ERROR
+                                    });
+                                }
                             }
+                        }],
+                    listeners: {
+                        itemclick: function(thisObj, record, item, index, e, eOpts) {
+                            var reg = record.get('idEquipoEncApag');
+                            var persona = record.get('personaEncApag');
+                            var estado = 1;
+                            gridViewDataEncApagDetallado.setTitle('<center>Vista detallada de encendido y apagado ' + persona + ' <br> Equipo: ' + reg + ' Desde: ' + dateIniEncApag + ' Hasta:' + dateFinEncApag + '</center>');
+                            storeDataDetalladoOnOff.load({
+                                params: {
+                                    idEquipoEA: reg,
+                                    fechaIniEA: dateIniEncApag, fechaFinEA: dateFinEncApag,
+                                    horaIniEA: horaIniEncApag, horaFinEA: horaFinEncApag
+                                }
+                            });
+
                         }
-                    });
+                    }
+                });
+                gridViewDataEncApagDetallado = Ext.create('Ext.grid.Panel', {
+                    title: '<center>Vista detallada de encendido y apagado :</center>',
+                    region: 'center',
+                    columnLines: true,
+                    autoScroll: true,
+                    height: 485,
+                    width: '55%',
+                    store: storeDataDetalladoOnOff,
+                    viewConfig: {
+                        emptyText: 'No hay datos que Mostrar'
+                    },
+                    columns: [
+                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 40, align: 'center'}),
+                        {text: 'Fecha', width: 150, dataIndex: 'fechaEA', align: 'center'},
+                        {text: 'Hora', width: 150, dataIndex: 'horaEA', align: 'center'},
+                        {text: 'evento', width: 150, dataIndex: 'eventoEA', align: 'center'},
+                        {text: 'Velocidad', width: 150, dataIndex: 'velocidadEA', align: 'center', xtype: 'numbercolumn', format: '0.00'},
+                        {text: 'Latitud', width: 200, dataIndex: 'latitudEA', align: 'center'},
+                        {text: 'Longitud', width: 200, dataIndex: 'longitudEA', align: 'center'},
+                        {text: 'Bateria', width: 200, dataIndex: 'bateriaEA', align: 'center'},
+                        {text: 'GSM', width: 200, dataIndex: 'gsmEA', align: 'center'},
+                        {text: 'GPS', width: 200, dataIndex: 'gpsEA', align: 'center'},
+                        {text: 'Direccion', width: 200, dataIndex: 'direccionEA', align: 'center'},
+                    ],
+                    tbar: [{
+                            xtype: 'button',
+                            iconCls: 'icon-excel',
+                            text: 'Exportar a Excel',
+                            handler: function() {
 
-                    var tab = Ext.create('Ext.form.Panel', {
-                        title: 'Reporte de Enc/Apag',
-                        closable: true,
-                        iconCls: 'icon-on-off',
-                        items: gridEvents
-                    });
+                                var h0, h1, h2, h3, h4, h5, h6, h7, h8, h9;
+                                h0, h1 = h2 = h3 = h4 = h5 = h6 = h7 = h8 = h9 = true;
+                                if (storeDataDetalladoOnOff.getCount() > 0) {
+                                    if (getNavigator() === 'img/chrome.png') {
+                                        var a = document.createElement('a');
+                                        //getting data from our div that contains the HTML table
+                                        var data_type = 'data:application/vnd.ms-excel';
+                                        //var table_div = document.getElementById('exportar');
+                                        //var table_html = table_div.outerHTML.replace(/ /g, '%20');
+                                        var tiLetra = 'Calibri';
 
-                    panelMapa.add(tab);
-                    panelMapa.setActiveTab(tab);
+                                        var table_div = "<meta charset='UTF-8'><body>" +
+                                                "<font face='" + tiLetra + "'><table>" +
+                                                "<tr><th colspan='7'>Reporte de Encendido y Apagado Detallado</th></tr>" +
+                                                "<tr><th colspan='7' Fecha" + dateIniEncApag + " / " + dateFinEncApag + " Horas: " + horaIniEncApag + " / " + horaFinEncApag + ") km</th></tr>" +
+                                                "<tr></tr>";
+                                        table_div += "<tr>";
 
-                    limpiar_datosEnc();
-                } else {
-                    Ext.MessageBox.show({
-                        title: 'Error...',
-                        msg: 'No hay Datos en estas fechas y horas...',
-                        buttons: Ext.MessageBox.OK,
-                        icon: Ext.MessageBox.ERROR
-                    });
-                }
-                
+                                        if (h0)
+                                            table_div += "<th align=left>Fecha</th>";
+                                        if (h1)
+                                            table_div += "<th align=left>Hora</th>";
+                                        if (h2)
+                                            table_div += "<th align=left>evento</th>";
+                                        if (h3)
+                                            table_div += "<th align=left>Velocidad</th>";
+                                        if (h4)
+                                            table_div += "<th align=left>Latitud</th>";
+                                        if (h5)
+                                            table_div += "<th align=left>Longitud</th>";
+                                        if (h6)
+                                            table_div += "<th align=left>Bateria</th>";
+                                        if (h7)
+                                            table_div += "<th align=left>GSM</th>";
+                                        if (h8)
+                                            table_div += "<th align=left>GPS</th>";
+                                        if (h9)
+                                            table_div += "<th align=left>Direccion</th>";
+
+                                        table_div += "</tr>";
+
+                                        for (var i = 0; i < storeDataDetalladoOnOff.data.length; i++) {
+                                            table_div += "<tr>";
+
+                                            if (h0)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.fechaEA + "</td>";
+                                            if (h1)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.horaEA + "</td>";
+                                            if (h2)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.eventoEA + "</td>";
+                                            if (h3)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.velocidadEA + "</td>";
+                                            if (h4)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.latitudEA + "</td>";
+                                            if (h5)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.longitudEA + "</td>";
+                                            if (h6)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.bateriaEA + "</td>";
+                                            if (h7)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.gsmEA + "</td>";
+                                            if (h8)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.gpsEA + "</td>";
+                                            if (h9)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.direccionEA + "</td>";
+                                            table_div += "</tr>";
+                                        }
+                                        ;
+                                        table_div += "</table></font></body>";
+
+                                        var table_html = table_div.replace(/ /g, '%20');
+
+                                        a.href = data_type + ', ' + table_html;
+                                        //setting the file name
+                                        a.download = 'ReporteEncendidoApagadoDetallado.xls';
+                                        //triggering the function
+                                        a.click();
+
+                                    } else {
+                                        Ext.MessageBox.show({
+                                            title: 'Error',
+                                            msg: '<center>El Servicio para este navegador no esta disponible<br>Usar un navegador como Google Chrome<center>',
+                                            buttons: Ext.MessageBox.OK,
+                                            icon: Ext.MessageBox.ERROR
+                                        });
+
+                                    }
+                                } else {
+                                    Ext.MessageBox.show({
+                                        title: 'Error...',
+                                        msg: 'No hay datos en la Lista a Exportar',
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.ERROR
+                                    });
+                                }
+                            }
+                        }]
+                });
+                var tabExcesos = Ext.create('Ext.container.Container', {
+                    title: 'Reporte de Encendido y Apagado',
+                    closable: true,
+                    iconCls: 'icon-on-off',
+                    layout: 'border',
+                    fullscreen: true,
+                    height: 485,
+                    width: 2000,
+                    region: 'center',
+                    items: [gridGeneralApagEnc, gridViewDataEncApagDetallado]
+                });
+                panelTabMapaAdmin.add(tabExcesos);
+                panelTabMapaAdmin.setActiveTab(tabExcesos);
+                winEnc.hide();
             }
-        }
-    });
+
+        });
+    } else { //reporte por cooperativa
+        form.submit({
+            url: 'php/interface/report/encendidoApagado/getReportCooperativaEncApag.php',
+            waitTitle: 'Procesando...',
+            waitMsg: 'Obteniendo Información',
+            params: {
+                empEA: empresEncApag,
+                fechaIni: dateIniEncApag, fechaFin: dateFinEncApag,
+                horaIni: horaIniEncApag, horaFin: horaFinEncApag
+            },
+            failure: function(form, action) {
+                Ext.MessageBox.show({
+                    title: 'Información',
+                    msg:  action.result.message,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO
+                });
+            },
+            success: function(form, action) {
+                var storeDataPOrCooperativaEncendidoApg = Ext.create('Ext.data.JsonStore', {
+                    data: action.result.data,
+                    proxy: {
+                        type: 'ajax',
+                        reader: 'array'
+                    },
+                    fields: ['personaEA', 'placaEA', 'idEquipoEA', 'equipoEA', 'totalEA']
+                });
+                var gridGeneralApagEnc = Ext.create('Ext.grid.Panel', {
+                    frame: true,
+                    width: '100%',
+                    height: 230,
+                    title: '<center>Reporte de encendido y apagado,de la cooperativa:' + empresEncApag + '<br>Fechas:' + dateIniEncApag + ' / ' + dateFinEncApag +
+                            '<br>Horas:' + horaIniEncApag + ' / ' + horaFinEncApag + '</center>',
+                    store: storeDataPOrCooperativaEncendidoApg,
+                    features: [filters],
+                    multiSelect: true,
+                    viewConfig: {
+                        emptyText: 'No hay datos que Mostrar'
+                    },
+                    columns: [
+                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 40, align: 'center'}),
+                        {text: 'Persona', width: 290, dataIndex: 'personaEA', align: 'center'},
+                        {text: 'Placa', width: 130, dataIndex: 'placaEA', align: 'center'},
+                        {text: 'Equipo', width: 130, dataIndex: 'equipoEA', align: 'center'},
+                        {text: 'Cantidad', width: 130, dataIndex: 'totalEA', align: 'center'},
+                    ],
+                    tbar: [{
+                            xtype: 'button',
+                            iconCls: 'icon-excel',
+                            text: 'Exportar a Excel',
+                            handler: function() {
+                                var h0, h1, h2, h3, h4;
+                                h0, h1 = h2 = h3 = h4 = true;
+                                if (storeDataPOrCooperativaEncendidoApg.getCount() > 0) {
+                                    if (getNavigator() === 'img/chrome.png') {
+                                        var a = document.createElement('a');
+                                        //getting data from our div that contains the HTML table
+                                        var data_type = 'data:application/vnd.ms-excel';
+                                        //var table_div = document.getElementById('exportar');
+                                        //var table_html = table_div.outerHTML.replace(/ /g, '%20');
+                                        var tiLetra = 'Calibri';
+
+                                        var table_div = "<meta charset='UTF-8'><body>" +
+                                                "<font face='" + tiLetra + "'><table>" +
+                                                "<tr><th colspan='7'>Reporte de Encendido y Apagado de la Cooperativa: " + empresEncApag + "</th></tr>" +
+                                                "<tr><th colspan='7' Fecha" + dateIniEncApag + " / " + dateFinEncApag + " Horas: " + horaIniEncApag + " / " + horaFinEncApag + ") km</th></tr>" +
+                                                "<tr></tr>";
+                                        table_div += "<tr>";
+                                        if (h1)
+                                            table_div += "<th align=left>Persona</th>";
+                                        if (h2)
+                                            table_div += "<th align=left>Placa</th>";
+                                        if (h3)
+                                            table_div += "<th align=left>Equipo</th>";
+                                        if (h4)
+                                            table_div += "<th align=left>Cantidad</th>";
+                                        table_div += "</tr>";
+
+                                        for (var i = 0; i < storeDataPOrCooperativaEncendidoApg.data.length; i++) {
+                                            table_div += "<tr>";
+                                            if (h1)
+                                                table_div += "<td align=lef>" + storeDataPOrCooperativaEncendidoApg.data.items[i].data.personaEA + "</td>";
+                                            if (h2)
+                                                table_div += "<td align=lef>" + storeDataPOrCooperativaEncendidoApg.data.items[i].data.placaEA + "</td>";
+                                            if (h3)
+                                                table_div += "<td align=lef>" + storeDataPOrCooperativaEncendidoApg.data.items[i].data.equipoEA + "</td>";
+                                            if (h4)
+                                                table_div += "<td align=lef>" + storeDataPOrCooperativaEncendidoApg.data.items[i].data.totalEA + "</td>";
+                                            table_div += "</tr>";
+                                        }
+                                        ;
+
+                                        table_div += "</table></font></body>";
+
+                                        var table_html = table_div.replace(/ /g, '%20');
+
+                                        a.href = data_type + ', ' + table_html;
+                                        //setting the file name
+                                        a.download = 'ReporteEncendidoApagadoPorCooperativa.xls';
+                                        //triggering the function
+                                        a.click();
+
+                                    } else {
+                                        Ext.MessageBox.show({
+                                            title: 'Error',
+                                            msg: '<center>El Servicio para este navegador no esta disponible<br>Usar un navegador como Google Chrome<center>',
+                                            buttons: Ext.MessageBox.OK,
+                                            icon: Ext.MessageBox.ERROR
+                                        });
+
+                                    }
+                                } else {
+                                    Ext.MessageBox.show({
+                                        title: 'Error...',
+                                        msg: 'No hay datos en la Lista a Exportar',
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.ERROR
+                                    });
+                                }
+                            }
+                        }],
+                    listeners: {
+                        itemclick: function(thisObj, record, item, index, e, eOpts) {
+                            var reg = record.get('idEquipoEA');
+                            var persona = record.get('personaEA');
+                            var estado = 2;
+                            gridViewDataEncApagDetallado.setTitle('<center>Vista detallado de encendido y apagado: ' + persona + ' <br> Equipo: ' + reg + ' Desde: ' + dateIniEncApag + ' Hasta:' + dateFinEncApag + '</center>');
+                            storeDataDetalladoOnOff.load({
+                                params: {
+                                    idEquipoEA: reg,
+                                    fechaIniEA: dateIniEncApag, fechaFinEA: dateFinEncApag,
+                                    horaIniEA: horaIniEncApag, horaFinEA: horaFinEncApag
+                                }
+                            });
+
+                        }
+                    }
+                });
+                gridViewDataEncApagDetallado = Ext.create('Ext.grid.Panel', {
+                    title: '<center>Vista detallado de encendido y apagado:</center>',
+                    region: 'center',
+                    columnLines: true,
+                    autoScroll: true,
+                    height: 485,
+                    width: '55%',
+                    store: storeDataDetalladoOnOff,
+                    viewConfig: {
+                        emptyText: 'No hay datos que Mostrar'
+                    },
+                    columns: [
+                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 40, align: 'center'}),
+                        {text: 'Fecha', width: 150, dataIndex: 'fechaEA', align: 'center'},
+                        {text: 'Hora', width: 150, dataIndex: 'horaEA', align: 'center'},
+                        {text: 'evento', width: 150, dataIndex: 'eventoEA', align: 'center'},
+                        {text: 'Velocidad', width: 150, dataIndex: 'velocidadEA', align: 'center', xtype: 'numbercolumn', format: '0.00'},
+                        {text: 'Latitud', width: 200, dataIndex: 'latitudEA', align: 'center'},
+                        {text: 'Longitud', width: 200, dataIndex: 'longitudEA', align: 'center'},
+                        {text: 'Bateria', width: 200, dataIndex: 'bateriaEA', align: 'center'},
+                        {text: 'GSM', width: 200, dataIndex: 'gsmEA', align: 'center'},
+                        {text: 'GPS', width: 200, dataIndex: 'gpsEA', align: 'center'},
+                        {text: 'Direccion', width: 200, dataIndex: 'direccionEA', align: 'center'},
+                    ],
+                    tbar: [{
+                            xtype: 'button',
+                            iconCls: 'icon-excel',
+                            text: 'Exportar a Excel',
+                            handler: function() {
+                                var h0, h1, h2, h3, h4, h5, h6, h7, h8, h9;
+                                h0, h1 = h2 = h3 = h4 = h5 = h6 = h7 = h8 = h9 = true;
+                                if (storeDataDetalladoOnOff.getCount() > 0) {
+                                    if (getNavigator() === 'img/chrome.png') {
+                                        var a = document.createElement('a');
+                                        //getting data from our div that contains the HTML table
+                                        var data_type = 'data:application/vnd.ms-excel';
+                                        //var table_div = document.getElementById('exportar');
+                                        //var table_html = table_div.outerHTML.replace(/ /g, '%20');
+                                        var tiLetra = 'Calibri';
+
+                                        var table_div = "<meta charset='UTF-8'><body>" +
+                                                "<font face='" + tiLetra + "'><table>" +
+                                                "<tr><th colspan='7'>Reporte de Encendido y Apagado Detallado</th></tr>" +
+                                                "<tr><th colspan='7' Fecha" + dateIniEncApag + " / " + dateFinEncApag + " Horas: " + horaIniEncApag + " / " + horaFinEncApag + ") km</th></tr>" +
+                                                "<tr></tr>";
+                                        table_div += "<tr>";
+
+                                        if (h0)
+                                            table_div += "<th align=left>Fecha</th>";
+                                        if (h1)
+                                            table_div += "<th align=left>Hora</th>";
+                                        if (h2)
+                                            table_div += "<th align=left>evento</th>";
+                                        if (h3)
+                                            table_div += "<th align=left>Velocidad</th>";
+                                        if (h4)
+                                            table_div += "<th align=left>Latitud</th>";
+                                        if (h5)
+                                            table_div += "<th align=left>Longitud</th>";
+                                        if (h6)
+                                            table_div += "<th align=left>Bateria</th>";
+                                        if (h7)
+                                            table_div += "<th align=left>GSM</th>";
+                                        if (h8)
+                                            table_div += "<th align=left>GPS</th>";
+                                        if (h9)
+                                            table_div += "<th align=left>Direccion</th>";
+
+                                        table_div += "</tr>";
+
+                                        for (var i = 0; i < storeDataDetalladoOnOff.data.length; i++) {
+                                            table_div += "<tr>";
+
+                                            if (h0)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.fechaEA + "</td>";
+                                            if (h1)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.horaEA + "</td>";
+                                            if (h2)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.eventoEA + "</td>";
+                                            if (h3)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.velocidadEA + "</td>";
+                                            if (h4)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.latitudEA + "</td>";
+                                            if (h5)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.longitudEA + "</td>";
+                                            if (h6)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.bateriaEA + "</td>";
+                                            if (h7)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.gsmEA + "</td>";
+                                            if (h8)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.gpsEA + "</td>";
+                                            if (h9)
+                                                table_div += "<td align=lef>" + storeDataDetalladoOnOff.data.items[i].data.direccionEA + "</td>";
+                                            table_div += "</tr>";
+                                        }
+                                        ;
+                                        table_div += "</table></font></body>";
+
+                                        var table_html = table_div.replace(/ /g, '%20');
+
+                                        a.href = data_type + ', ' + table_html;
+                                        //setting the file name
+                                        a.download = 'ReporteEncendidoApagadoDetallado.xls';
+                                        //triggering the function
+                                        a.click();
+
+                                    } else {
+                                        Ext.MessageBox.show({
+                                            title: 'Error',
+                                            msg: '<center>El Servicio para este navegador no esta disponible<br>Usar un navegador como Google Chrome<center>',
+                                            buttons: Ext.MessageBox.OK,
+                                            icon: Ext.MessageBox.ERROR
+                                        });
+
+                                    }
+                                } else {
+                                    Ext.MessageBox.show({
+                                        title: 'Error...',
+                                        msg: 'No hay datos en la Lista a Exportar',
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.ERROR
+                                    });
+                                }
+                            }
+                        }]
+                });
+                var tabExcesos = Ext.create('Ext.container.Container', {
+                    title: 'Reporte de Encendido y Apagado',
+                    closable: true,
+                    iconCls: 'icon-on-off',
+                    layout: 'border',
+                    fullscreen: true,
+                    height: 485,
+                    width: 2000,
+                    region: 'center',
+                    items: [gridGeneralApagEnc, gridViewDataEncApagDetallado]
+                });
+                panelTabMapaAdmin.add(tabExcesos);
+                panelTabMapaAdmin.setActiveTab(tabExcesos);
+                winEnc.hide();
+            }
+
+        });
+    }
+
 }

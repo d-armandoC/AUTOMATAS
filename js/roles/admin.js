@@ -464,6 +464,16 @@ Ext.onReady(function() {
                                 }},
                             {text: 'Reporte de Geocercas', iconCls: 'icon-report-geo', handler: function() {
                                     ventanaReporteGeocerca();
+                                }},
+                            {text: 'Reporte de Encendido y Apagado', iconCls: 'icon-on-off', handler: function() {
+                                    ventanaEncendidoApagado();
+                                }},
+                            {text: 'Conexion y desconexion enegia de Equipo', iconCls: 'icon-on-off', handler: function() {
+                                    ventanaEnegizacion;
+                                }},
+                            {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
+                                    ventanaEventos();
+                                }},
                                    
                                   
                                 }}, ,
