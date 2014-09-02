@@ -474,12 +474,6 @@ Ext.onReady(function() {
                             {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
                                     ventanaEventos();
                                 }},
-                                   
-                                  
-                                }}, ,
-                                    {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
-                                            ventanaEventos();
-                                        }},
                             {text: 'CMD Enviados', iconCls: 'icon-cmd-hist', handler: function() {
                                     ventanaCmdHistorial();
                                 }}
