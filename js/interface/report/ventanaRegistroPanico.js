@@ -346,8 +346,8 @@ Ext.onReady(function() {
                                 region: 'center',
                                 items: [gridDataExcesos, gridViewDataPanico]
                             });
-                            panelMapaAdmin.add(tabExcesos);
-                            panelMapaAdmin.setActiveTab(tabExcesos);
+                            panelTabMapaAdmin.add(tabExcesos);
+                            panelTabMapaAdmin.setActiveTab(tabExcesos);
                             winPanico.hide();
                         },
                         failure: function(form, action) {

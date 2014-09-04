@@ -348,8 +348,8 @@ Ext.onReady(function() {
                 iconCls: 'icon-geocerca',
                 menu: [
                     {text: 'Administracion', iconCls: 'icon-find-geo', handler: function() {
-                        //ventanaAddGeo();
-                        ventanaGeocerca() ;
+                            //ventanaAddGeo();
+                            ventanaGeocerca();
                         }},
                     {text: 'Envio Correos', iconCls: 'icon-email', handler: function() {
                             visualizarEnviosGeoCercas();
@@ -434,15 +434,16 @@ Ext.onReady(function() {
                         text: 'Reportes',
                         iconCls: 'icon-general',
                         menu: [
-//                            {text: 'Registros de Panico', iconCls: 'icon-reset', handler: function() {
-//                                    showWinPanicosDaily();
-//                                }},
+                            {text: 'Registros de Panico', iconCls: 'icon-reset', handler: function() {
+                                    showWinPanicosDaily();
+                                }},
                             {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function() {
-////                                    ventanaExcesoVelocidad();
-                                    showWinExcesosDaily();
+                                    //  ventanaExcesoVelocidad();
+                                   showWinExcesosDaily();
+                                  // showExcesosVelociad();
                                 }}
-                            , {text: 'Mantenimiento General', iconCls: 'icon-config', handler: function() {
-                                    ventanaMantenimiento();
+                            , {text: 'Vista Ejemplo', iconCls: 'icon-config', handler: function() {
+//                                   ventRecaudo();
                                 }}
                             , {text: 'Mantenimiento Detallado', iconCls: 'icon-servicios', handler: function() {
                                     showWinMantenimientoGeneral();
@@ -452,8 +453,8 @@ Ext.onReady(function() {
                                     ventanaBanderas();
                                 }},
                             {text: 'Perdiad de GSM', iconCls: 'icon-flota', handler: function() {
-                                  //ventanaPerdidaGSM();
-                                  ReporteWinperdidaGSM();
+                                    //ventanaPerdidaGSM();
+                                    ReporteWinperdidaGSM();
                                 }}
                             ,
 //                            {text: 'Consume de Combustible', iconCls: 'icon-flota', handler: function() {
@@ -465,17 +466,18 @@ Ext.onReady(function() {
                             {text: 'Reporte de Geocercas', iconCls: 'icon-report-geo', handler: function() {
                                     ventanaReporteGeocerca();
                                 }},
+                            {text: 'CMD Enviados', iconCls: 'icon-cmd-hist', handler: function() {
+                                    ventanaCmdHistorial();
+                                }},
                             {text: 'Reporte de Encendido y Apagado', iconCls: 'icon-on-off', handler: function() {
-                                    ventanaEncendidoApagado();
+                                    showWinencendidoapagado();
                                 }},
                             {text: 'Conexion y desconexion enegia de Equipo', iconCls: 'icon-on-off', handler: function() {
-                                    ventanaEnegizacion;
+                                    //ventanaEnegizacion();
+                                    showWinEnergizcion();
                                 }},
                             {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
                                     ventanaEventos();
-                                }},
-                            {text: 'CMD Enviados', iconCls: 'icon-cmd-hist', handler: function() {
-                                    ventanaCmdHistorial();
                                 }}
                         ]
                     },

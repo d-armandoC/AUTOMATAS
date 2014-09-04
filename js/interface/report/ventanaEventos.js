@@ -275,7 +275,7 @@ function ventanaEventos() {
             iconCls: 'icon-eventos',
             resizable: false,
             width: 600,
-            height: 530,
+            height: 550,
             closeAction: 'hide',
             plain: false,
             items: [contenedorwinEvt],
@@ -375,7 +375,7 @@ function loadGridEvents() {
                         columns: columnEvets,
                         listeners: {
                             itemcontextmenu: function(thisObj, record, item, index, e, eOpts) {
-                                panelMapa.setActiveTab('panelMapaTab');
+                                panelTabMapaAdmin.setActiveTab('panelMapaTab');
                                 localizarDireccion(record.data.longitud, record.data.latitud, 17);
                             }
                         }
@@ -388,8 +388,8 @@ function loadGridEvents() {
                         items: gridEvents
                     });
 
-                    panelMapa.add(tab);
-                    panelMapa.setActiveTab(tab);
+                    panelTabMapaAdmin.add(tab);
+                    panelTabMapaAdmin.setActiveTab(tab);
 
                     limpiar_datosEvt();
                 } else {

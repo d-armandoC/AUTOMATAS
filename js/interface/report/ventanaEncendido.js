@@ -1,4 +1,4 @@
-var contenedorwinEnc;
+var contenedorwinEA;
 var storeDataDetalladoOnOff;
 var gridViewDataEncApagDetallado;
 var cbxEmpresaEA;
@@ -10,7 +10,10 @@ var dateIniEncApag;
 var dateFinEncApag;
 var horaIniEncApag;
 var horaFinEncApag;
+
+
 Ext.onReady(function() {
+    
     storeDataDetalladoOnOff = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
         proxy: {
@@ -23,6 +26,8 @@ Ext.onReady(function() {
         },
         fields: ['fechaEA', 'horaEA', 'eventoEA', 'velocidadEA', 'latitudEA', 'longitudEA', 'bateriaEA', 'gsmEA', 'gpsEA', 'direccionEA']
     });
+    
+ 
     cbxEmpresaEA = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Cooperativa',
         name: 'cbxEmpresaEnc',
@@ -32,31 +37,31 @@ Ext.onReady(function() {
         queryMode: 'local',
         emptyText: 'Seleccionar Cooperativa...',
         editable: false,
-        allowBlank: false,
+        allowBlank: false
     });
-    var dateIni = Ext.create('Ext.form.field.Date', {
+    var dateInicialEA = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
         id: 'fechaIniEnc',
         name: 'fechaIni',
-        vtype: 'daterange',
+//        vtype: 'daterange',
         value: new Date(),
         allowBlank: false,
         endDateField: 'fechaFinEnc',
         emptyText: 'Fecha Inicial...'
     });
-    var dateFin = Ext.create('Ext.form.field.Date', {
+    var dateFinalEA = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Hasta el',
         format: 'Y-m-d',
         id: 'fechaFinEnc',
         name: 'fechaFin',
-        vtype: 'daterange',
+//        vtype: 'daterange',
         value: new Date(),
         allowBlank: false,
         startDateField: 'fechaIniEnc',
         emptyText: 'Fecha Final...'
     });
-    var timeIni = Ext.create('Ext.form.field.Time', {
+    var timeIniEA = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
         name: 'horaIniEnc',
         format: 'H:i',
@@ -64,7 +69,7 @@ Ext.onReady(function() {
         allowBlank: false,
         emptyText: 'Hora Inicial...'
     });
-    var timeFin = Ext.create('Ext.form.field.Time', {
+    var timeFinEA = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Hasta las',
         name: 'horaFinEnc',
         format: 'H:i',
@@ -72,18 +77,18 @@ Ext.onReady(function() {
         allowBlank: false,
         emptyText: 'Hora Final...'
     });
-    var today = Ext.create('Ext.button.Button', {
+    var todayEA = Ext.create('Ext.button.Button', {
         text: 'Hoy',
         iconCls: 'icon-today',
         handler: function() {
             var nowDate = new Date();
-            dateIni.setValue(formatoFecha(nowDate));
-            dateFin.setValue(formatoFecha(nowDate));
-            timeIni.setValue('00:01');
-            timeFin.setValue('23:59');
+            dateInicialEA.setValue(formatoFecha(nowDate));
+            dateFinalEA.setValue(formatoFecha(nowDate));
+            timeIniEA.setValue('00:01');
+            timeFinEA.setValue('23:59');
         }
     });
-    var yesterday = Ext.create('Ext.button.Button', {
+    var yesterdayEA = Ext.create('Ext.button.Button', {
         text: 'Ayer',
         iconCls: 'icon-yesterday',
         handler: function() {
@@ -98,26 +103,26 @@ Ext.onReady(function() {
                 dia = "0" + dia;
             }
             nowDate.setMinutes(nowDate.getMinutes() + 10);
-            dateIni.setValue(año + "-" + mes + "-" + dia);
-            dateFin.setValue(año + "-" + mes + "-" + dia);
-            timeIni.setValue('00:01');
-            timeFin.setValue('23:59');
+            dateInicialEA.setValue(año + "-" + mes + "-" + dia);
+            dateFinalEA.setValue(año + "-" + mes + "-" + dia);
+            timeIniEA.setValue('00:01');
+            timeFinEA.setValue('23:59');
         }
     });
-    var panelBotones = Ext.create('Ext.form.Panel', {
+    var panelBotonesEA = Ext.create('Ext.form.Panel', {
         layout: 'column',
         baseCls: 'x-plain',
         items: [{
                 baseCls: 'x-plain',
                 bodyStyle: 'padding:0 5px 0 0',
-                items: [today]
+                items: [todayEA]
             }, {
                 baseCls: 'x-plain',
                 bodyStyle: 'padding:0 5px 0 0',
-                items: [yesterday]
+                items: [yesterdayEA]
             }]
     });
-    contenedorwinEnc = Ext.create('Ext.form.Panel', {
+    contenedorwinEA = Ext.create('Ext.form.Panel', {
         frame: true,
         fieldDefaults: {
             labelAlign: 'left',
@@ -165,28 +170,28 @@ Ext.onReady(function() {
                         columnWidth: .5,
                         baseCls: 'x-plain',
                         items: [
-                            dateIni,
-                            timeIni
+                            dateInicialEA,
+                            timeIniEA
                         ]
                     }, {
                         columnWidth: .5,
                         baseCls: 'x-plain',
                         items: [
-                            dateFin,
-                            timeFin
+                            dateFinalEA,
+                            timeFinEA
                         ]
                     }]
             },
-            panelBotones],
+            panelBotonesEA],
         buttons: [{
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
                 handler: function() {
-                    if (contenedorwinEnc.getForm().isValid()) {
-                        dateIniEncApag = dateIni.getRawValue();
-                        dateFinEncApag = dateFin.getRawValue();
-                        horaIniEncApag = timeIni.getRawValue();
-                        horaFinEncApag = timeFin.getRawValue();
+                    if (contenedorwinEA.getForm().isValid()) {
+                        dateIniEncApag = dateInicialEA.getRawValue();
+                        dateFinEncApag = dateFinalEA.getRawValue();
+                        horaIniEncApag = timeIniEA.getRawValue();
+                        horaFinEncApag = timeFinEA.getRawValue();
                         empresEncApag = cbxEmpreEnergDese.getRawValue();
                         obtenerRepEncApag();
                     } else {
@@ -201,7 +206,7 @@ Ext.onReady(function() {
     });
 });
 function limpiar_datosEnc() {
-    contenedorwinEnc.getForm().reset();
+    contenedorwinEA.getForm().reset();
     if (winEnc) {
         winEnc.hide();
     }
@@ -218,7 +223,7 @@ function ventanaEncendidoApagado() {
             height: 320,
             closeAction: 'hide',
             plain: false,
-            items: contenedorwinEnc,
+            items: contenedorwinEA,
             listeners: {
                 close: function(panel, eOpts) {
                     limpiar_datosEnc();
@@ -226,12 +231,12 @@ function ventanaEncendidoApagado() {
             }
         });
     }
-    contenedorwinEnc.getForm().reset();
+    contenedorwinEA.getForm().reset();
     winEnc.show();
 }
 
 function obtenerRepEncApag() {
-    var form = contenedorwinEnc.getForm();
+    var form = contenedorwinEA.getForm();
     //reporte por limites
     if (tipoReportEnc === 1) {//reporte de tipo general
         form.submit({
@@ -251,7 +256,6 @@ function obtenerRepEncApag() {
                 });
             },
             success: function(form, action) {
-//                console.log(action.result.data);
                 var storeDataGeneralEncApag = Ext.create('Ext.data.JsonStore', {
                     data: action.result.data,
                     proxy: {

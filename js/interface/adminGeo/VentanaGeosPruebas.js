@@ -7,7 +7,7 @@ var gridStoreGeocercas;
 var listVehiculos = "";
 var drawRoute;
 var geometria;
-var id_empresageos;
+var id_empresageos=0;
 var vistaVehiculosGeocercas;
 
 
@@ -50,7 +50,8 @@ Ext.onReady(function() {
             {name: 'desc_geo'},
             {name: 'empresa'},
             {name: 'listVeh'},
-            {name: 'areaGeocerca'}
+            {name: 'areaGeocerca'},
+            {name:'idPrueba', type:'string'}
         ]
     });
 
@@ -64,7 +65,7 @@ Ext.onReady(function() {
             type: 'ajax',
             api: {
                 read: 'php/administracion/geos/read.php',
-                create: 'php/administracion/geos/create.php?id_empresa=' + id_empresageos,
+                create: 'php/administracion/geos/create.php',
                 update: 'php/administracion/geos/update.php'
 //                destroy: 'php/administracion/personal/destroy.php'
             },
@@ -228,6 +229,8 @@ Ext.onReady(function() {
                         tooltip: 'Guardar Geocerca',
                         handler: function() {
                             Ext.getCmp('vistavehiculosgeos').hide();
+                             var idEmpresaGeoss = vistaVehiculosGeocercas.down('[name=cbxEmpresasgeos]').getValue();
+                          
                         }
                     }, {
                         iconCls: 'icon-cancelar',
@@ -367,7 +370,7 @@ Ext.onReady(function() {
                                                     drawRoute = true;
                                                 }
                                             }]
-                                    }
+                                    },vistaVehiculosGeocercas
                                     ,
                                     {
                                         xtype: 'button',
@@ -377,10 +380,10 @@ Ext.onReady(function() {
                                         text: 'Asignar Vehiculos',
                                         handler: function() {
                                             vistaVehiculosGeocercas.show();
+//                                             Ext.getCmp('idempresageos').setValue('1');
 //                                            Ext.getCmp(idvehiculo).setValue(['2', '3']);
                                         }
                                     }
-
 //                                    {
 //                                iconCls: 'icon-add',
 //                                text: 'Agregar Vehiculos ',
@@ -526,11 +529,11 @@ function onUpdatePerson() {
 }
 
 function onCreatePerson() {
+     var idGeocerca = vistaVehiculosGeocercas.down('[name=cbxEmpresasgeos]').getValue();
+
+     Ext.getCmp('myFieldId').setValue(idGeocerca);
     var form = formGeocercas.getForm();
     if (form.isValid()) {
-        var idEmpresaGeoss = vistaVehiculosGeocercas.down('[name=idPrueba]').getValue();
-        console.log(idEmpresaGeoss);
-        id_empresageos = idEmpresaGeoss;
         formGeocercas.fireEvent('create', formGeocercas, form.getValues());
         formGeocercas.down('#updateGeo').disable();
         form.reset();

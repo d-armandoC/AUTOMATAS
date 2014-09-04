@@ -8,8 +8,9 @@ if (!$mysqli = getConectionDb()) {
 
     $consultaSql = "SELECT gh.id_geocerca, g.geocerca, gh.id_vehiculo, gh.estado, gh.fecha_hora_registro, v.placa, v.vehiculo 
 FROM karviewhistoricodb.historial_geocercas gh, karviewdb.geocercas g, karviewdb.vehiculos v 
-where gh.id_geocerca=g.id_geocerca and gh.id_vehiculo=v.id_vehiculo and gh.id_vehiculo='$cbxVeh' and gh.id_geocerca='$cbxGeo' and gh.fecha_hora_registro BETWEEN concat('$fechaIni') and concat('$fechaFin')";
-    $result = $mysqli->query($consultaSql);
+where gh.id_geocerca=g.id_geocerca and gh.id_vehiculo=v.id_vehiculo and gh.id_vehiculo='$cbxVeh' and gh.id_geocerca='$cbxGeo' and (gh.fecha_hora_registro BETWEEN '$fechaIni' and '$fechaFin')";
+    $result = $mysqli->query($consultaSql);                                                                                                                    
+
     $haveData = false;
     if ($result->num_rows > 0) {
         $haveData = true;

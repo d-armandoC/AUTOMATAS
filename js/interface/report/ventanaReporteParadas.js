@@ -11,6 +11,8 @@ var storeDataParada;
 var idEmpresa = 1;
 var cbxEmpresasParada;
 var modal;
+var reg_empresa;
+var id_vehiculo_paradas;
 Ext.onReady(function() {
     storeViewParadas = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
@@ -27,7 +29,7 @@ Ext.onReady(function() {
 
     cbxEmpresasParada = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Cooperativa',
-        name: 'idCompanyExcesos',
+        name: 'idempresaparada',
         store: storeEmpresas,
         valueField: 'id',
         displayField: 'text',
@@ -42,54 +44,54 @@ Ext.onReady(function() {
             }
         }
     });
-    var dateIni = Ext.create('Ext.form.field.Date', {
+    var dateIniparadas = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
-        id: 'fechaIniExcesos',
-        name: 'fechaIniExcesos',
+        id: 'fechaIniPradas',
+        name: 'fechaIniParadas',
         value: new Date(),
         maxText: 'La fecha debe ser igual o anterior a <br> {0}',
         allowBlank: false,
-        endDateField: 'fechaFinExcesos',
+        endDateField: 'fechaFinParadas',
         emptyText: 'Fecha Inicial...'
     });
-    var dateFin = Ext.create('Ext.form.field.Date', {
+    var dateFinParadas = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Hasta el',
         format: 'Y-m-d',
-        id: 'fechaFinExcesos',
-        name: 'fechaFinExcesos',
-        vtype: 'daterange',
+        id: 'fechaFinParadas',
+        name: 'fechaFinParadas',
+//        vtype: 'daterange',
         value: new Date(),
-        maxValue: new Date(),
+     maxValue: new Date(),
         allowBlank: false,
-        startDateField: 'fechaIniExcesos',
+        startDateField: 'fechaIniParadas',
         emptyText: 'Fecha Final...'
     });
-    var btnToday = Ext.create('Ext.button.Button', {
+    var btnTodayparadas = Ext.create('Ext.button.Button', {
         text: 'Hoy',
         iconCls: 'icon-today',
         handler: function() {
             var nowDate = new Date();
-            dateIni.setValue(nowDate);
-            dateFin.setValue(nowDate);
+            dateIniparadas.setValue(nowDate);
+            dateFinParadas.setValue(nowDate);
         }
     });
-    var btnYesterday = Ext.create('Ext.button.Button', {
+    var btnYesterdayparadas = Ext.create('Ext.button.Button', {
         text: 'Ayer',
         iconCls: 'icon-yesterday',
         handler: function() {
             var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
-            dateIni.setValue(yestDate);
-            dateFin.setValue(yestDate);
+            dateIniparadas.setValue(yestDate);
+            dateFinParadas.setValue(yestDate);
         }
     });
-    var panelButtons = Ext.create('Ext.panel.Panel', {
+    var panelButtonsparadas = Ext.create('Ext.panel.Panel', {
         layout: 'hbox',
         padding: '0 0 5 0',
         defaults: {
             margin: '0 5 0 0'
         },
-        items: [btnToday, btnYesterday]
+        items: [btnTodayparadas, btnYesterdayparadas]
     });
     formularioParadas = Ext.create('Ext.form.Panel', {
         bodyPadding: '10 10 0 10',
@@ -102,17 +104,15 @@ Ext.onReady(function() {
                 title: '<b>Datos</b>',
                 items: [{
                         xtype: 'radiogroup',
-// fieldLabel: ' ',
-// Arrange radio buttons into two columns, distributed vertically
                         columns: 2,
                         vertical: true,
                         items: [
-                            {boxLabel: 'General ', name: 'rb', inputValue: '1', checked: true},
-                            {boxLabel: 'Por Empresa', name: 'rb', inputValue: '2'},
+                            {boxLabel: 'General ', name: 'rb1', inputValue: '1', checked: true},
+                            {boxLabel: 'Por Empresa', name: 'rb1', inputValue: '2'}
                         ],
                         listeners: {
                             change: function(field, newValue, oldValue) {
-                                switch (parseInt(newValue['rb'])) {
+                                switch (parseInt(newValue['rb1'])) {
                                     case 1:
                                         idEmpresa = 0;
                                         cbxEmpresasParada.disable();
@@ -131,9 +131,9 @@ Ext.onReady(function() {
                 xtype: 'fieldset',
                 title: '<b>Fechas</b>',
                 items: [
-                    dateIni,
-                    dateFin,
-                    panelButtons,
+                    dateIniparadas,
+                    dateFinParadas,
+//                    panelButtons,
                 ]
             }
         ],
@@ -141,8 +141,8 @@ Ext.onReady(function() {
                 text: 'Obtener',
                 iconCls: 'icon-obtener',
                 handler: function() {
-                    fechaInicio = dateIni.getRawValue();
-                    fechaFin = dateFin.getRawValue();
+                    fechaInicio = dateIniparadas.getRawValue();
+                    fechaFin = dateFinParadas.getRawValue();
                     var form = formularioParadas.getForm();
                     if (form.isValid()) {
                             form.submit({
@@ -164,11 +164,11 @@ Ext.onReady(function() {
                                         },
                                         fields: ['id_empresa','id_vehiculo','empresa','vehiculo','equipo','placa', 'totalEventos']
                                     });
-                                    var gridDataMantenimiento = Ext.create('Ext.grid.Panel', {
+                                    var gridDataMantenimientoparadas = Ext.create('Ext.grid.Panel', {
                                         region: 'west',
                                         frame: true,
                                         width: '48%',
-                                        title: '<center>Mantenimientos Totales: ' + '<br>Desde: ' + fechaInicio + ' | Hasta: ' + fechaFin + '</center>',
+                                        title: '<center>Reporte de Pradas de los Equipos: ' + '<br>Desde: ' + fechaInicio + ' | Hasta: ' + fechaFin + '</center>',
                                         store: storeDataReporteDetallado,
                                         features: [filters],
                                         multiSelect: true,
@@ -181,87 +181,87 @@ Ext.onReady(function() {
                                             {text: 'Vehiculo', width: 100, dataIndex: 'vehiculo', align: 'center'},
                                             {text: 'Equipo', width: 100, dataIndex: 'equipo', align: 'center'},
                                             {text: 'Placa', width: 100, dataIndex: 'placa', align: 'center'},
-                                            {text: 'Cantidad Eventos', width: 100, dataIndex: 'totalEventos', align: 'center'}
+                                            {text: 'Cantidad Eventos', width: 150, dataIndex: 'totalEventos', align: 'center'}
                                         ],
-                                        tbar: [{
+                                         tbar: [{
                                                 xtype: 'button',
                                                 iconCls: 'icon-excel',
                                                 text: 'Exportar a Excel',
                                                 handler: function() {
-                                                    var h0, h1, h2, h3, h4, h5, h6, h7;
-                                                    h0 = h1 = h2 = h3 = h4 = h5 = h6 = h7 = true;
                                                     if (storeDataReporteDetallado.getCount() > 0) {
                                                         if (getNavigator() === 'img/chrome.png') {
                                                             var a = document.createElement('a');
-//getting data from our div that contains the HTML table
                                                             var data_type = 'data:application/vnd.ms-excel';
-//var table_div = document.getElementById('exportar');
-//var table_html = table_div.outerHTML.replace(/ /g, '%20');
+                                                            var numFil = storeDataReporteDetallado.data.length;
+                                                            var numCol = 5;
                                                             var tiLetra = 'Calibri';
-                                                            var table_div = "<meta charset='UTF-8'><body>" +
-                                                                    "<font face='" + tiLetra + "'><table>" +
-                                                                    "<tr><th colspan='7'>Mantenimientos Totales" + "</th></tr>" +
-                                                                    "<tr><th colspan='7'>Desde " + fechaInicio + " hasta " + fechaFin + "</th></tr>" +
-                                                                    "<tr></tr>";
-                                                            table_div += "<tr>";
-                                                            if (h1)
-                                                                table_div += "<th align=left>Empresa</th>";
-                                                            if (h1)
-                                                                table_div += "<th align=left>Vehículo</th>";
-                                                            if (h3)
-                                                                table_div += "<th align=left>Total</th>";
-
-
-                                                            table_div += "</tr>";
-                                                            for (var i = 0; i < storeDataReporteDetallado.data.length; i++) {
-                                                                table_div += "<tr>";
-                                                                if (h0)
-                                                                    table_div += "<td align=lef>" + storeDataReporteDetallado.data.items[i].data.empresa + "</td>";
-                                                                if (h1)
-                                                                    table_div += "<td align=lef>" + storeDataReporteDetallado.data.items[i].data.vehiculo + "</td>";
-                                                                if (h3)
-                                                                    table_div += "<td align=lef>" + storeDataReporteDetallado.data.items[i].data.total + "</td>";
-
-                                                                table_div += "</tr>";
+                                                            var titulo = 'Registro de Paradas'
+                                                            var table_div = "<?xml version='1.0'?><?mso-application progid='Excel.Sheet'?><Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'><DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'><Author>KRADAC SOLUCIONES TECNOLÃ“GICAS</Author><LastAuthor>KRADAC SOLUCIONES TECNOLÃ“GICAS</LastAuthor><Created>2014-08-20T15:33:48Z</Created><Company>KRADAC</Company><Version>15.00</Version>";
+                                                            table_div += "</DocumentProperties> " +
+                                                                    "<Styles> " +
+                                                                    "<Style ss:ID='Default' ss:Name='Normal'>   <Alignment ss:Vertical='Bottom'/>   <Borders/>   <Font ss:FontName='" + tiLetra + "' x:Family='Swiss' ss:Size='11' ss:Color='#000000'/>   <Interior/>   <NumberFormat/>   <Protection/>  </Style>  " +
+                                                                    "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
+                                                                    "<Style ss:ID='datos'><NumberFormat ss:Format='@'/></Style> " +
+                                                                    "</Styles>";
+                                                            //Definir el numero de columnas y cantidad de filas de la hoja de calculo (numFil + 2))
+                                                            table_div += "<Worksheet ss:Name='Datos'>";//Nombre de la hoja
+                                                            table_div += "<Table ss:ExpandedColumnCount='" + numCol + "' ss:ExpandedRowCount='" + (numFil + 2) + "' x:FullColumns='1' x:FullRows='1' ss:DefaultColumnWidth='60' ss:DefaultRowHeight='15'>";
+                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='121.5'/>";
+                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                            table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
+                                                            table_div += "<Row ss:AutoFitHeight='0'>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Empresa</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Vehiculo</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Equipo</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Placa</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Total Eventos</Data></Cell>" +
+                                                                    "</Row>";
+                                                            for (var i = 0; i < numFil; i++) {
+                                                                table_div += "<Row ss:AutoFitHeight='0'>" +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.empresa + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.vehiculo + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.equipo + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.placa+ " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.totalEventos + " </Data></Cell > " +
+                                                                        "</Row>";
                                                             }
-                                                            ;
-                                                            table_div += "</table></font></body>";
-                                                            var table_html = table_div.replace(/ /g, '%20');
-                                                            a.href = data_type + ', ' + table_html;
-//setting the file name
-                                                            a.download = 'Mantenimiento Total' + fechaInicio + '_' + fechaFin + '.xls';
-//triggering the function
+                                                            table_div += "</Table> </Worksheet></Workbook>";
+                                                            var table_xml = table_div.replace(/ /g, '%20');
+                                                            a.href = data_type + ', ' + table_xml;
+                                                            a.download = 'Registro de Paradas' + '.xml';
                                                             a.click();
                                                         } else {
                                                             Ext.MessageBox.show({
                                                                 title: 'Error',
-                                                                msg: 'El Servicio para este navegador no permitido,<br> use un navegador como Google Chrome ',
+                                                                msg: '<center> El servicio para este navegador no esta disponible <br> Use un navegador como Google Chrome </center>',
                                                                 buttons: Ext.MessageBox.OK,
                                                                 icon: Ext.MessageBox.ERROR
                                                             });
-
                                                         }
                                                     } else {
                                                         Ext.MessageBox.show({
-                                                            title: 'Error...',
+                                                            title: 'Mensaje',
                                                             msg: 'No hay datos en la Lista a Exportar',
                                                             buttons: Ext.MessageBox.OK,
                                                             icon: Ext.MessageBox.ERROR
                                                         });
                                                     }
                                                 }
-                                            }], listeners: {
+                                            }]
+                                        , listeners: {
                                             itemclick: function(thisObj, record, item, index, e, eOpts) {
-//Id del despacho que se esta realizando 
-                                                var reg = record.get('empresa');
-                                                var id_vehiculo = record.get('id_vehiculo');
+                                                 reg_empresa = record.get('empresa');
+                                                id_vehiculo_paradas = record.get('id_vehiculo');
                                                 banderaParadas = 1;
-                                                gridViewDataParadas.setTitle('<center>Lista de Mnatenimientos por Vehicuculo <br>Empresa: ' + reg + ' Desde: ' + fechaInicio + ' Hasta:' + fechaFin + '</center>');
                                                 storeViewParadas.load({
                                                     params: {
-                                                        idVehiculo: id_vehiculo
+                                                        idVehiculo: id_vehiculo_paradas
                                                     }
                                                 });
+                                            gridViewDataParadas.setTitle('<center>Lista de Equipos que Reportan Enento de Prada : <br>Empresa: ' + reg_empresa + ' Desde: ' + fechaInicio + ' Hasta:' + fechaFin + '</center>');
                                             }
                                         }
                                     });
@@ -269,7 +269,7 @@ Ext.onReady(function() {
                                         region: 'center',
                                         frame: true,
                                         width: '52%',
-                                        title: '<center>Servicios Mantenimientos Detallado: ',
+                                        title: '<center>Reporte de Paradas: ',
                                         store: storeViewParadas,
                                         features: [filters],
                                         multiSelect: true,
@@ -298,54 +298,87 @@ Ext.onReady(function() {
                                                 iconCls: 'icon-excel',
                                                 text: 'Exportar a Excel',
                                                 handler: function() {
-                                                    if (banderaParadas === 1) {
-                                                        if (storeViewParadas.getCount() > 0) {
-                                                             if (getNavigator() === 'img/chrome.png') {
+                                                    if (storeViewParadas.getCount() > 0) {
+                                                        if (getNavigator() === 'img/chrome.png') {
                                                             var a = document.createElement('a');
-//getting data from our div that contains the HTML table
                                                             var data_type = 'data:application/vnd.ms-excel';
-//var table_div = document.getElementById('exportar');
-//var table_html = table_div.outerHTML.replace(/ /g, '%20');
+                                                            var numFil = storeViewParadas.data.length;
+                                                            var numCol = 13;
                                                             var tiLetra = 'Calibri';
-                                                            var table_div = "<meta charset='UTF-8'><body>" +
-                                                                    "<font face='" + tiLetra + "'><table>" +
-                                                                    "<tr><th colspan='7'>MANTENIMIENTO POR VEHÍCULO: " + personaParadas + "</th></tr>" +
-                                                                    "<tr><th colspan='7'>DESDE" + fechaInicio + "HASTA" + fechaFin + "</th></tr>" +
-                                                                    "<tr></tr>";
-                                                            table_div += "<tr>";
-                                                            table_div += "<th align=left>PLACA</th>";
-                                                            table_div += "<th align=left>MARCA </th>";
-                                                            table_div += "<th align=left>ESTANDAR</th>";
-                                                            table_div += "<th align=left>TIPO SERVICIO </th>";
-                                                            table_div += "</tr>";
-                                                            for (var i = 0; i < storeViewParadas.data.length; i++) {
-                                                                table_div += "<tr>";
-                                                                table_div += "<td align=lef>" + storeViewParadas.data.items[i].data.placa + "</td>";
-                                                                table_div += "<td align=lef>" + storeViewParadas.data.items[i].data.marca + "</td>";
-                                                                table_div += "<td align=lef>" + storeViewParadas.data.items[i].data.estandar + "</td>";
-                                                                table_div += "<td align=lef>" + storeViewParadas.data.items[i].data.idTipoServicio + "</td>";
-                                                                table_div += "</tr>";
+                                                            var titulo = 'Registro de Paradas'
+                                                            var table_div = "<?xml version='1.0'?><?mso-application progid='Excel.Sheet'?><Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'><DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'><Author>KRADAC SOLUCIONES TECNOLÃ“GICAS</Author><LastAuthor>KRADAC SOLUCIONES TECNOLÃ“GICAS</LastAuthor><Created>2014-08-20T15:33:48Z</Created><Company>KRADAC</Company><Version>15.00</Version>";
+                                                            table_div += "</DocumentProperties> " +
+                                                                    "<Styles> " +
+                                                                    "<Style ss:ID='Default' ss:Name='Normal'>   <Alignment ss:Vertical='Bottom'/>   <Borders/>   <Font ss:FontName='" + tiLetra + "' x:Family='Swiss' ss:Size='11' ss:Color='#000000'/>   <Interior/>   <NumberFormat/>   <Protection/>  </Style>  " +
+                                                                    "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
+                                                                    "<Style ss:ID='datos'><NumberFormat ss:Format='@'/></Style> " +
+                                                                    "</Styles>";
+                                                            //Definir el numero de columnas y cantidad de filas de la hoja de calculo (numFil + 2))
+                                                            table_div += "<Worksheet ss:Name='Datos'>";//Nombre de la hoja
+                                                            table_div += "<Table ss:ExpandedColumnCount='" + numCol + "' ss:ExpandedRowCount='" + (numFil + 2) + "' x:FullColumns='1' x:FullRows='1' ss:DefaultColumnWidth='60' ss:DefaultRowHeight='15'>";
+                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='121.5'/>";
+                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                            table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
+                                                            table_div += "<Row ss:AutoFitHeight='0'>" +
+                                                                    +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Empresa</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Vehiculo</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Placa</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Latitud</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Longitud</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Fecha</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Hora</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Velocidad</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Bateria</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>GSM</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>GPS</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>IGN</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Evento</Data></Cell>" +
+                                                                    "</Row>";
+                                                            for (var i = 0; i < numFil; i++) {
+                                                                table_div += "<Row ss:AutoFitHeight='0'>" +{text: 'Empresa', width: 130, dataIndex: 'empresa', align: 'center'},
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.empresa + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.vehiculo + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.placa+ " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.latitud+ " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.longitud + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.fecha + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.hora + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.velocidad + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.bateria+ " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.gsm+ " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.gps + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.ign+ " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.sky_evento + " </Data></Cell > " +
+                                                                        "</Row>";
                                                             }
-                                                            table_div += "</table></font></body>";
-                                                            var table_html = table_div.replace(/ /g, '%20');
-                                                            a.href = data_type + ', ' + table_html;
-//setting the file name
-                                                            a.download = 'Mantenimiento por vehiculo' + fechaInicio + '_' + fechaFin + '.xls';
-//triggering the function
-                                                              a.click();
-                                                            } else {
+                                                            table_div += "</Table> </Worksheet></Workbook>";
+                                                            var table_xml = table_div.replace(/ /g, '%20');
+                                                            a.href = data_type + ', ' + table_xml;
+                                                            a.download = 'Registro de Paradas Deetallado' + '.xml';
+                                                            a.click();
+                                                        } else {
                                                             Ext.MessageBox.show({
                                                                 title: 'Error',
-                                                                msg: 'El Servicio para este navegador no permitido,<br> use un navegador como Google Chrome ',
+                                                                msg: '<center> El servicio para este navegador no esta disponible <br> Use un navegador como Google Chrome </center>',
                                                                 buttons: Ext.MessageBox.OK,
                                                                 icon: Ext.MessageBox.ERROR
                                                             });
-
-                                                        }
                                                         }
                                                     } else {
                                                         Ext.MessageBox.show({
-                                                            title: 'Error...',
+                                                            title: 'Mensaje',
                                                             msg: 'No hay datos en la Lista a Exportar',
                                                             buttons: Ext.MessageBox.OK,
                                                             icon: Ext.MessageBox.ERROR
@@ -363,7 +396,7 @@ Ext.onReady(function() {
                                         height: 485,
                                         width: 2000,
                                         region: 'center',
-                                        items: [gridDataMantenimiento, gridViewDataParadas]
+                                        items: [gridDataMantenimientoparadas, gridViewDataParadas]
                                     });
                                     panelTabMapaAdmin.add(tabExces);
                                     panelTabMapaAdmin.setActiveTab(tabExces);

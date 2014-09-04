@@ -27,6 +27,8 @@
 .icon-obtener {background-image: url(../img/obtener.png) !important;}
 .icon-cantidad {background-image: url(../img/table_refresh.png) !important;}
 .icon-cancel {background-image: url(../img/cross.gif) !important;}
+.icon-acept {background-image: url(../img/accept.png) !important;}
+.icon-invalid{background-image: url(../img/invalid.png) !important;}
 
 
 /*Estilos para Papeletas*/

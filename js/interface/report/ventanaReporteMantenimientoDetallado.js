@@ -11,7 +11,7 @@ var storeViewExcesosMantenimiento;
 var storeDataMantenimiento;
 var empresaMantenimiento = 1;
 var cbxEmpresasMantenimiento;
-var vistaVistaRegistros;
+var vistaVistaRegistrosMantenimiento;
 var empresa;
 var id_vehiculo;
 var vehiculo;
@@ -30,7 +30,7 @@ Ext.onReady(function() {
         fields: [  'vehiculo' ,'placa',
             'marca',
             'estendar',
-            'idTipoServicio']
+            'idTipoServicio','responsable']
     });
 
     cbxEmpresasMantenimiento = Ext.create('Ext.form.ComboBox', {
@@ -135,7 +135,7 @@ Ext.onReady(function() {
                             }
                         }
                     },
-                    cbxEmpresasMantenimiento,
+                    cbxEmpresasMantenimiento
                 ]
             }, {
                 xtype: 'fieldset',
@@ -178,7 +178,6 @@ Ext.onReady(function() {
                     var form = formularioMantenimientoDetallado.getForm();
                     if (form.isValid()) {
                         if (isDetallado) {
-                            console.log('Detallado');
                             form.submit({
                                 url: 'php/interface/report/getObtenerReportGeneralDetallado.php',
                                 waitTitle: 'Procesando...',
@@ -187,7 +186,6 @@ Ext.onReady(function() {
 //                                    idCompanyExcesos: empresaMantenimiento,
 //                                },
                                 success: function(form, action) {
-                                    console.log(action.result.countByMantenimiento);
                                     personaMantenimiento;
                                     gridViewDataMantenimiento;
                                     fechaIn = fechaInigsm.getRawValue();
@@ -203,7 +201,7 @@ Ext.onReady(function() {
                                         region: 'west',
                                         frame: true,
                                         width: '40%',
-                                        title: '<center>Mantenimientos Totales: ' + '<br>Desde: ' + fechaIni + ' | Hasta: ' + fechaFin + '</center>',
+                                        title: '<center>Mantenimientos Totales: ' + '<br>Desde: ' +  fechaInicio + ' | Hasta: ' + fechaFinal+ '</center>',
                                         store: storeDataReporteDetallado,
                                         features: [filters],
                                         multiSelect: true,
@@ -300,13 +298,11 @@ Ext.onReady(function() {
                                                             text: 'Ver Detalles',
                                                             disabled: false,
                                                             handler: function(widget, event) {
-                                                                if (vistaVistaRegistros) {
-                                                                    vistaVistaRegistros.hide();
+                                                                if (vistaVistaRegistrosMantenimiento) {
+                                                                    vistaVistaRegistrosMantenimiento.hide();
                                                                 }
-                                                                console.log(record.get('vehiculo') + 'hhh');
-                                                                console.log(record.data.fechaSeguroReg + 'hhh');
                                                                 metodoRegistros(record.data.empresa, record.data.vehiculo, record.data.total, record.data.fechaSoatReg, record.data.fechaSoatVenc, record.data.descripSoat, record.data.fechaMatriculaReg, record.data.fechaMatriculaVenc, record.data.descripMatricula, record.data.fechaSeguroReg, record.data.fechaSeguroVenc, record.data.descripSeguro);
-                                                                vistaVistaRegistros.show();
+                                                                vistaVistaRegistrosMantenimiento.show();
                                                             }
                                                         })
                                                     ]
@@ -317,7 +313,6 @@ Ext.onReady(function() {
                                                 empresa = record.get('empresa');
                                                 id_vehiculo = record.get('id_vehiculo');
                                                 vehiculo = record.get('vehiculo');
-                                                console.log(vehiculo);
                                                 banderaMantenimiento = 1;
                                                 
                                                 gridViewDataMantenimiento.setTitle('<center>Lista de Mnatenimientos por Vehicuculo <br>Empresa: ' + empresa + ' Desde: ' + fechaInicio + ' Hasta:' + fechaFinal + '</center>');
@@ -345,7 +340,8 @@ Ext.onReady(function() {
                                             {text: 'Placa', width: 130, dataIndex: 'placa', align: 'center'},
                                             {text: 'Marca', width: 200, dataIndex: 'marca', align: 'center'},
                                             {text: 'Estandar', width: 200, dataIndex: 'estandar', align: 'center'},
-                                            {text: 'Tipo Servicio', width: 200, dataIndex: 'idTipoServicio', align: 'center', renderer: formatTipoServicio}
+                                            {text: 'Tipo Servicio', width: 200, dataIndex: 'idTipoServicio', align: 'center', renderer: formatTipoServicio},
+                                            {text: 'Responsable', width: 200, dataIndex: 'responsable', align: 'center'}
                                         ],
                                         tbar: [{
                                                 xtype: 'button',
@@ -359,7 +355,7 @@ Ext.onReady(function() {
                                                             var numFil = storeViewMantenimiento.data.length;
                                                             var numCol = 4;
                                                             var tiLetra = 'Calibri';
-                                                            var titulo = 'Registro de Mantenimientos del Vehiculo'
+                                                            var titulo = 'Registro de Mantenimientos del Vehiculo:'+storeViewMantenimiento.data.items[0].data.placa;
                                                             var table_div = "<?xml version='1.0'?><?mso-application progid='Excel.Sheet'?><Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'><DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'><Author>KRADAC SOLUCIONES TECNOLÃ“GICAS</Author><LastAuthor>KRADAC SOLUCIONES TECNOLÃ“GICAS</LastAuthor><Created>2014-08-20T15:33:48Z</Created><Company>KRADAC</Company><Version>15.00</Version>";
                                                             table_div += "</DocumentProperties> " +
                                                                     "<Styles> " +
@@ -374,11 +370,12 @@ Ext.onReady(function() {
                                                             table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
                                                             table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
                                                             table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-
+                                                     
                                                             table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
-                                                            "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Placa</Data></Cell>" +
+                                                            table_div += "<Row ss:AutoFitHeight='0'>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Placa</Data></Cell>" +
                                                                     "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Marca</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Estandar Matenimientos</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Estandar</Data></Cell>" +
                                                                     "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Tipo Servicio</Data></Cell>" +
                                                                     "</Row>";
                                                             for (var i = 0; i < numFil; i++) {
@@ -585,8 +582,8 @@ Ext.onReady(function() {
 
 
 function limpiarPanelG() {
-    if (vistaVistaRegistros) {
-        vistaVistaRegistros.hide();
+    if (vistaVistaRegistrosMantenimiento) {
+        vistaVistaRegistrosMantenimiento.hide();
     }
 
 }
@@ -594,7 +591,7 @@ function limpiarPanelG() {
 
 function metodoRegistros(empresa, vehiculo, total, fechaSoatReg, fechaSoatVenc, descripSoat, fechaMatriculaReg,
         fechaMatriculaVenc, descripMatricula, fechaSeguroReg, fechaSeguroVenc, descripSeguro) {
-    vistaVistaRegistros = Ext.create('Ext.window.Window', {
+    vistaVistaRegistrosMantenimiento = Ext.create('Ext.window.Window', {
         layout: 'fit',
         title: 'Estado de Equipos',
         iconCls: 'icon-company',

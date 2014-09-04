@@ -1,10 +1,12 @@
 
+
+
 var formularioGSM;
 var VentanaGSM;
 var banderaGSM = 0;
 var storeViewGSM;
 var fechaIni;
-var fechaFin;
+var fechaFinperdgsm;
 var personaGSM;
 var gridViewDataGSM;
 var storeViewExcesosGSM;
@@ -16,10 +18,10 @@ var fechaInigsm;
 var fechaFingsm;
 var timeInigsm;
 var timeFingsm;
-var btn_Hoy;
-var bt_Hayer;
-var fechaIn;
-var fechaFn;
+var btn_Hoygsm;
+var bt_Hayergsm;
+var fechaInperdgsm;
+var fechaFngsm;
 Ext.onReady(function() {
 
     storeViewGSM = Ext.create('Ext.data.JsonStore', {
@@ -92,7 +94,7 @@ Ext.onReady(function() {
         emptyText: 'Fecha Final...'
     });
 
-    btn_Hoy = Ext.create('Ext.button.Button', {
+    btn_Hoygsm = Ext.create('Ext.button.Button', {
         text: 'Hoy',
         iconCls: 'icon-today',
         handler: function() {
@@ -104,7 +106,7 @@ Ext.onReady(function() {
 
         }
     });
-    bt_Hayer = Ext.create('Ext.button.Button', {
+    bt_Hayergsm = Ext.create('Ext.button.Button', {
         text: 'Ayer',
         iconCls: 'icon-yesterday',
         handler: function() {
@@ -148,12 +150,12 @@ Ext.onReady(function() {
             {
                 baseCls: 'x-plain',
                 bodyStyle: 'padding:0 5px 0 0',
-                items: [btn_Hoy
+                items: [btn_Hoygsm
                 ]
             }, {
                 baseCls: 'x-plain',
                 bodyStyle: 'padding:0 5px 0 0',
-                items: [bt_Hayer]
+                items: [bt_Hayergsm]
             }
 
         ]
@@ -210,8 +212,8 @@ Ext.onReady(function() {
                 iconCls: 'icon-obtener',
                 handler: function() {
 
-                    fechaIn = fechaInigsm.getRawValue();
-                    fechaFn = fechaFingsm.getRawValue();
+                    fechaInperdgsm = fechaInigsm.getRawValue();
+                    fechaFngsm = fechaFingsm.getRawValue();
                     horaIni = timeInigsm.getRawValue();
                     horaFin = timeFingsm.getRawValue();
                     var form = formularioGSM.getForm();
@@ -222,8 +224,8 @@ Ext.onReady(function() {
                             waitMsg: 'Obteniendo Información',
                             params: {
                                 cbxEmpresasPan: id_empresagsms,
-                                fechaIni: fechaIn,
-                                fechaFin: fechaFn,
+                                fechaIni: fechaInperdgsm,
+                                fechaFin: fechaFngsm,
                                 horaIni: horaIni,
                                 horaFin: horaFin
                             },
@@ -241,11 +243,11 @@ Ext.onReady(function() {
 
 
 
-                                var gridDataMantenimiento = Ext.create('Ext.grid.Panel', {
+                                var gridDataGSM = Ext.create('Ext.grid.Panel', {
                                     region: 'west',
                                     frame: true,
                                     width: '40%',
-                                    title: '<center>GPS Totales: ' + '<br>Desde: ' + fechaIn + ' | Hasta: ' + fechaFn + '</center>',
+                                    title: '<center>GPS Totales: ' + '<br>Desde: ' + fechaInperdgsm + ' | Hasta: ' + fechaFngsm + '</center>',
                                     store: storeDataReporteDetallado,
                                     features: [filters],
                                     multiSelect: true,
@@ -255,7 +257,7 @@ Ext.onReady(function() {
                                     columns: [
                                         Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
                                         {text: 'Equipo', width: 150, dataIndex: 'id_equipo', align: 'center'},
-                                        {text: 'Total Perdida GSM', width: 150, dataIndex: 'total', align: 'center'}
+                                        {text: 'Total Perdida', width: 150, dataIndex: 'total', align: 'center'}
                                     ],
                                     stripeRows: true,
                                     margins: '0 2 0 0',
@@ -323,12 +325,12 @@ Ext.onReady(function() {
                                         itemclick: function(thisObj, record, item, index, e, eOpts) {
                                             var id_equipo = record.get('id_equipo');
                                             banderaGSM = 1;
-                                            gridViewDataGSM.setTitle('<center>Lista de Datos Perdida GPS  <br>Empresa: ' + 'fechaInigsm' + ' Desde: ' + fechaIn + ' Hasta:' + fechaFn + '</center>');
+                                            gridViewDataGSM.setTitle('<center>Lista de Datos Perdida GPS  <br>Empresa: ' + 'fechaInigsm' + ' Desde: ' + fechaInperdgsm + ' Hasta:' + fechaFngsm + '</center>');
                                             storeViewGSM.load({
                                                 params: {
                                                     cbxEmpresasPan: id_empresagsms,
-                                                    fechaIni: fechaIn,
-                                                    fechaFin: fechaFn,
+                                                    fechaIni: fechaInperdgsm,
+                                                    fechaFin: fechaFngsm,
                                                     horaIni: horaIni,
                                                     horaFin: horaFin,
                                                     id_equipo: id_equipo
@@ -459,7 +461,7 @@ Ext.onReady(function() {
                                         }]
                                 });
                                 var tabExces = Ext.create('Ext.container.Container', {
-                                    title: 'Perdida GPS',
+                                    title: 'Perdida GPS y GSM',
                                     closable: true,
                                     iconCls: 'icon-servicios',
                                     layout: 'border',
@@ -467,7 +469,7 @@ Ext.onReady(function() {
                                     height: 485,
                                     width: 2000,
                                     region: 'center',
-                                    items: [gridDataMantenimiento, gridViewDataGSM]
+                                    items: [gridDataGSM, gridViewDataGSM]
                                 });
                                 panelTabMapaAdmin.add(tabExces);
                                 panelTabMapaAdmin.setActiveTab(tabExces);
@@ -499,7 +501,7 @@ function ReporteWinperdidaGSM() {
     if (!VentanaGSM) {
         VentanaGSM = Ext.create('Ext.window.Window', {
             layout: 'fit',
-            title: 'Perdida GSM',
+            title: 'Perdida GPS Y GSM',
             iconCls: 'icon-servicios',
             resizable: false,
             width: 350,

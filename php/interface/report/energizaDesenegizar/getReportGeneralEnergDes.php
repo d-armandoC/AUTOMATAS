@@ -1,6 +1,6 @@
 <?php
 
-extract($_GET);
+extract($_POST);
 include ('../../../../dll/config.php');
 
 if (!$mysqli = getConectionDb()) {
@@ -10,37 +10,30 @@ if (!$mysqli = getConectionDb()) {
         FROM karviewdb.vehiculos v ,karviewdb.empresas emp , karviewdb.personas p,karviewdb.equipos e, 
 	karviewhistoricodb.dato_spks  sk 
         where    v.id_empresa=emp.id_empresa and v.id_persona=p.id_persona and v.id_equipo=e.id_equipo and  
-        sk.id_sky_evento in(6,7) and v.id_equipo=sk.id_equipo and sk.fecha between ? and ? and sk.hora between ? and ?
+        sk.id_sky_evento in(6,7) and v.id_equipo=sk.id_equipo and sk.fecha between '$fechaInimanten' and '$fechaFinManten'
         group by v.id_vehiculo";
-    $stmt = $mysqli->prepare($consultaSql);
-
-    if ($stmt) {
-        /* ligar parámetros para marcadores */
-        $stmt->bind_param("ssss", $fechaIniED, $fechaFinED, $horaIniED, $horaFinED);
-        /* ejecutar la consulta */
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $stmt->close();
-        $mysqli->close();
-        if ($result->num_rows > 0) {
-            $isFirst = false;
-            $json = "data: [";
-            while ($myrow = $result->fetch_assoc()) {
-                $json .= "{"
+    
+    $result = $mysqli->query($consultaSql);
+    $haveData = false;
+    if ($result->num_rows > 0) {
+        $haveData = true;
+        $objJson = "data: [";
+        while ($myrow = $result->fetch_assoc()) {
+            $objJson .= "{"
                         . "empresaEneDes:'" . utf8_encode($myrow["empresa"]) . "',"
                         . "personaEneDes:'" . utf8_encode($myrow["persona"]) . "',"
                         . "placaEneDes:'" . $myrow["placa"] . "',"
                         . "idEquipoEneDes:'" . $myrow["id_equipo"] . "',"
                         . "equipoEneDes:'" . $myrow["equipo"] . "',"
                         . "totalEneDes:'" . $myrow["total"] . "'"
-                        . "},";
-            }
-            $json .="]";
-            echo "{success: true, $json}";
-        } else {
-            echo "{failure: true, message:'No hay datos entre estas Fechas y Horas.'}";
+                    . "},";
         }
-    } else {
-        echo "{failure: true, message: 'Problemas en la Construcción de la Consulta.'}";
+        $objJson .="]";
     }
+    if ($haveData) {
+        echo "{success: true,$objJson}";
+    } else {
+        echo "{failure: true, msg: 'No hay Datos quee mostrar'}";
+    }
+    $mysqli->close();
 }

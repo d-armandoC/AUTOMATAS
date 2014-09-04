@@ -18,7 +18,7 @@ if (!$mysqli = getConectionDb()) {
             from karviewhistoricodb.dato_spks ds, sky_eventos se, equipos eq, vehiculos v
             where ds.id_sky_evento = se.id_sky_evento and ds.id_equipo = eq.id_equipo
             and eq.id_equipo = v.id_equipo
-            and (((ds.gsm = 0)and ((ds.fecha between '$fechaIni' AND '$fechaFin')
+            and (((ds.gsm = 0)and (ds.gps = 0)and ((ds.fecha between '$fechaIni' AND '$fechaFin')
             and (ds.hora between '$horaIni' AND '$horaFin')))and v.id_empresa='$cbxEmpresasPan')AND eq.equipo='$id_equipo' order by ds.id_equipo";
 
     $result = $mysqli->query($consultaSql);
@@ -36,7 +36,7 @@ if (!$mysqli = getConectionDb()) {
                             . "velocidad:" . $myrow["velocidad"] . ","
                             . "bat:" . $myrow["bateria"] . ","
                             . "gsm:" . $myrow["gsm"] . ","
-                            . "gps2:" . $myrow["gps"] . ","
+                            . "gps:" . $myrow["gps"] . ","
                             . "ign:" . $myrow["ign"] . ","
                             . "direccion:'" . utf8_encode($myrow["direccion"]) . "',"
                             . "evento:'" . utf8_encode($myrow["sky_evento"]) . "',"

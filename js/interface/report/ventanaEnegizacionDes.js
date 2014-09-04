@@ -39,7 +39,7 @@ Ext.onReady(function() {
         format: 'Y-m-d',
         id: 'fechaIniED',
         name: 'fechaIni',
-        vtype: 'daterange',
+       // vtype: 'daterange',
         value: new Date(),
         allowBlank: false,
         endDateField: 'fechaFinEnc',
@@ -50,7 +50,7 @@ Ext.onReady(function() {
         format: 'Y-m-d',
         id: 'fechaFinED',
         name: 'fechaFin',
-        vtype: 'daterange',
+        //vtype: 'daterange',
         value: new Date(),
         allowBlank: false,
         startDateField: 'fechaIniEnc',
@@ -250,13 +250,14 @@ function obtenerRepEnergDes() {
                 });
             },
             success: function(form, action) {
-//                console.log(action.result.data);
+                
                 var storeDataGeneralEnergia = Ext.create('Ext.data.JsonStore', {
                     data: action.result.data,
                     proxy: {
                         type: 'ajax',
                         reader: 'array'
                     },
+                    
                     fields: ['empresaEneDes', 'personaEneDes', 'placaEneDes', 'idEquipoEneDes', 'equipoEneDes', 'totalEneDes']
                 });
                 var gridGeneralEneDes = Ext.create('Ext.grid.Panel', {
