@@ -834,7 +834,7 @@ Ext.onReady(function() {
     });
 
     var gridEventos = Ext.create('Ext.grid.GridPanel', {
-        region: 'south',
+        region: 'north',
         title: "Ultimos Reportes de Vehiculos",
         collapsible: true,
         collapsed: true,
@@ -867,7 +867,7 @@ Ext.onReady(function() {
         items: [
             toolBarOnMap,
             panelTabMapaAdmin,
-            gridEventos
+            //gridEventos
         ]
     });
 
