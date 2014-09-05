@@ -44,6 +44,7 @@ Ext.onReady(function() {
         format: 'Y-m-d',
         id: 'fechaIniEx',
         name: 'fechaIniEx',
+        value: new Date(),
         vtype: 'daterange',
         allowBlank: false,
         endDateField: 'fechaFinEx',
@@ -55,6 +56,7 @@ Ext.onReady(function() {
         format: 'Y-m-d', //YYYY-MMM-DD
         id: 'fechaFinEx',
         name: 'fechaFinEx',
+        value: new Date(),
         vtype: 'daterange',
         allowBlank: false,
         startDateField: 'fechaIniEx',
