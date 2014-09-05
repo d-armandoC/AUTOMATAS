@@ -367,9 +367,6 @@ Ext.onReady(function() {
         scope: this,
         iconCls: 'icon-config',
         menu: [
-//            {text: 'Vehiculos en Lugares', iconCls: 'icon-vehiculos_lugar', handler: function() {
-//                    ventanaVehLugares();
-//                }},
             {text: 'Modificar usuario', iconCls: 'icon-personal', handler: function() {
                     ventanaModificarUsuario();
                 }},
@@ -448,7 +445,6 @@ Ext.onReady(function() {
                                     ventanaBanderas();
                                 }},
                             {text: 'Perdida de GPS y GSM', iconCls: 'icon-flota', handler: function() {
-                                    //ReporteWinperdidaGSM();
                                     reporteWinperdidaGSM();
                                 }},
                             {text: 'Reporte de Paradas', iconCls: 'icon-unlock', handler: function() {
@@ -464,7 +460,6 @@ Ext.onReady(function() {
                                     showWinencendidoapagado();
                                 }},
                             {text: 'Conexion y desconexion enegia de Equipo', iconCls: 'icon-on-off', handler: function() {
-                                    //ventanaEnegizacion();
                                     showWinEnergizcion();
                                 }},
                             {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
@@ -472,17 +467,11 @@ Ext.onReady(function() {
                                 }}
                         ]
                     },
-//                    {text: 'Estadisticas', iconCls: 'icon-statistics', handler: function() {
-//                            window.open('statistics.php');
-//                        }}, '-',
                     {text: 'Limpiar Mapa', iconCls: 'icon-limpiar-mapa', handler: function() {
                             clearLienzoPointTravel();
                             var lonlatCenter = new OpenLayers.LonLat(0, 100000000);
                             map.setCenter(lonlatCenter, 7);
                         }}
-//                    {text: 'Simbologia', iconCls: 'icon-edit', handler: function() {
-//                            ventanaSimbologia();
-//                        }}
                 ]
             },
             herraminetas,

@@ -4,9 +4,15 @@ include ('../../../dll/config.php');
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-    $consultaSql ="SELECT m.id_vehiculo, vh.placa, vh.marca, emp.empresa, count(*) as totalMantenimiento, "
-            . "m.fechaSoatReg, m.fechaSoatVenc,m.descripSoat,m.fechaMatriculaReg ,m.fechaMatriculaVenc, m.descripMatricula, "
-            . "m.fechaSeguroReg, m.fechaSeguroVenc , m.descripSeguro   FROM karviewdb.mantenimiento m, karviewdb.vehiculos vh, karviewdb.empresas emp where m.id_vehiculo=vh.id_vehiculo and vh.id_empresa= emp.id_empresa group by id_vehiculo";
+    if($rb==1){
+    $consultaSql ="SELECT m.id_vehiculo, vh.placa, vh.marca, emp.empresa, count(*) as totalMantenimiento, 
+            m.fechaSoatReg, m.fechaSoatVenc,m.descripSoat,m.fechaMatriculaReg ,m.fechaMatriculaVenc, m.descripMatricula, 
+            m.fechaSeguroReg, m.fechaSeguroVenc , m.descripSeguro   FROM karviewdb.mantenimiento m, karviewdb.vehiculos vh, karviewdb.empresas emp where m.id_vehiculo=vh.id_vehiculo and vh.id_empresa= emp.id_empresa and (m.fecha between '$fechaInimanten' and '$fechaFinManten')  group by id_vehiculo";
+    }else{
+    $consultaSql ="SELECT m.id_vehiculo, vh.placa, vh.marca, emp.empresa, count(*) as totalMantenimiento, 
+            m.fechaSoatReg, m.fechaSoatVenc,m.descripSoat,m.fechaMatriculaReg ,m.fechaMatriculaVenc, m.descripMatricula, 
+            m.fechaSeguroReg, m.fechaSeguroVenc , m.descripSeguro   FROM karviewdb.mantenimiento m, karviewdb.vehiculos vh, karviewdb.empresas emp where m.id_vehiculo=vh.id_vehiculo and vh.id_empresa= emp.id_empresa and vh.id_empresa='$idCompanyExcesos' and (m.fecha between '$fechaInimanten' and '$fechaFinManten')  group by id_vehiculo";
+    }
     $result = $mysqli->query($consultaSql);
     $haveData = false;
     $empresa=" ";
@@ -39,6 +45,5 @@ if (!$mysqli = getConectionDb()) {
     } else {
         echo "{failure: true, msg: 'No hay Datos que Mostrar'}";
     }
-
-    $mysqli->close();
+        $mysqli->close();
 }

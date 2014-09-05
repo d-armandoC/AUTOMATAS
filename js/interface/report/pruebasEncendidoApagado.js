@@ -74,31 +74,31 @@ Ext.onReady(function() {
         startDateField: 'fechaInimanten',
         emptyText: 'Fecha Final...'
     });
-    var btn_HoyEA = Ext.create('Ext.button.Button', {
+    var btn_HoyEApagado = Ext.create('Ext.button.Button', {
         text: 'Hoy',
         iconCls: 'icon-today',
         handler: function() {
-            var nowDate = new Date();
-            fechaIniEA.setValue(nowDate);
-            fechaFinEA.setValue(nowDate);
+            var nowDates = new Date();
+            fechaIniEA.setValue(nowDates);
+            fechaFinEA.setValue(nowDates);
         }
     });
-    var bt_HayerEA = Ext.create('Ext.button.Button', {
+    var bt_HayerEApagado = Ext.create('Ext.button.Button', {
         text: 'Ayer',
         iconCls: 'icon-yesterday',
         handler: function() {
-            var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
-            fechaIniEA.setValue(yestDate);
-            fechaFinEA.setValue(yestDate);
+            var yestDates = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
+            fechaIniEA.setValue(yestDates);
+            fechaFinEA.setValue(yestDates);
         }
     });
-    var panel_BotonesEA = Ext.create('Ext.panel.Panel', {
+    var panel_BotonEA = Ext.create('Ext.panel.Panel', {
         layout: 'hbox',
         padding: '0 0 5 0',
         defaults: {
             margin: '0 5 0 0'
         },
-        items: [btn_HoyEA, bt_HayerEA]
+        items: [btn_HoyEApagado, bt_HayerEApagado]
     });
     formularioEA = Ext.create('Ext.form.Panel', {
         bodyPadding: '10 10 0 10',
@@ -111,8 +111,6 @@ Ext.onReady(function() {
                 title: '<b>Datos</b>',
                 items: [{
                         xtype: 'radiogroup',
-// fieldLabel: ' ',
-// Arrange radio buttons into two columns, distributed vertically
                         columns: 2,
                         vertical: true,
                         items: [
@@ -142,12 +140,12 @@ Ext.onReady(function() {
                 items: [
                     fechaIniEA,
                     fechaFinEA,
-                    panel_BotonesEA
+                    panel_BotonEA
                 ]
             }],
         buttons: [{
                 text: 'Obtener',
-                iconCls: 'icon-obtener',
+                iconCls: 'icon-consultas',
                 handler: function() {
                     var id_valor = this.up('form').down('[name=rb]').getValue();
                     fechaInicioEA = fechaIniEA.getRawValue();
@@ -732,91 +730,13 @@ Ext.onReady(function() {
             }
             , {
                 text: 'Cancelar',
-                iconCls: 'icon-cancel',
+                iconCls: 'icon-cancelar',
                 handler: function() {
                     VentanaEA.hide();
                 }
             }]
     });
 });
-
-
-//function limpiarPanelG() {
-//    if (vistaVistaRegistrosEA) {
-//        vistaVistaRegistrosEA.hide();
-//    }
-//
-//}
-
-
-//function metodoRegistros(empresa, vehiculo, total, fechaSoatReg, fechaSoatVenc, descripSoat, fechaMatriculaReg,
-//        fechaMatriculaVenc, descripMatricula, fechaSeguroReg, fechaSeguroVenc, descripSeguro) {
-//    vistaVistaRegistrosEA = Ext.create('Ext.window.Window', {
-//        layout: 'fit',
-//        title: 'Estado de Equipos',
-//        iconCls: 'icon-company',
-//        resizable: true,
-//        width: 400,
-//        height: 300,
-//        closeAction: 'hide',
-//        plain: true,
-//        items: [{
-//                xtype: 'form',
-////                id: 'contenedoresg',
-////                name: 'contenedoresg',
-//                autoScroll: true,
-//                width: 300,
-//                height: 390,
-//                items: [
-//                    {html: '<TABLE id="tablestados">' +
-//                                '<TR class="alt"> ' +
-//                                '   <TD> <IMG SRC="img/icon_empresa.png"> <b>EMPRESA:</b></td>' +
-//                                '   <TD align="CENTER ">' + empresa + '</TD> ' +
-//                                '</TR> ' +
-//                                '<TR class="alt"> ' +
-//                                '   <TD> <IMG SRC="img/icon_car.png"> <b>VEHICULO:</b></td>' +
-//                                '   <TD align="CENTER ">' + vehiculo + '</TD> ' +
-//                                '</TR> ' +
-//                                '<TR class="alt"> ' +
-//                                '   <TD> <IMG SRC="img/icon-accept.png"> <b>Registro de SOAT:</b></td>' +
-//                                '   <TD align="CENTER ">' + fechaSoatReg + '</TD> ' +
-//                                '</TR> ' +
-//                                '<TR class="alt"> ' +
-//                                '   <TD> <IMG SRC="img/icon-accept.png"> <b>Vencimiento de SOAT:</b></td>' +
-//                                '   <TD align="CENTER ">' + fechaSoatReg + '</TD> ' +
-//                                '</TR> ' +
-//                                '<TR class="alt"> ' +
-//                                '   <TD> <IMG SRC="img/icon-accept.png"> <b>Registro de Matricula:</b></td>' +
-//                                '   <TD align="CENTER ">' + fechaMatriculaReg + '</TD> ' +
-//                                '</TR> ' +
-//                                '<TR class="alt"> ' +
-//                                '   <TD> <IMG SRC="img/icon-accept.png"> <b>Vencimiento de Matricula:</b></td>' +
-//                                '   <TD align="CENTER ">' + fechaMatriculaVenc + '</TD> ' +
-//                                '</TR> ' +
-//                                '<TR class="alt"> ' +
-//                                '   <TD> <IMG SRC="img/icon-accept.png"> <b>Registro de Seguro:</b></td>' +
-//                                '   <TD align="CENTER ">' + fechaSeguroReg + '</TD> ' +
-//                                '</TR> ' +
-//                                '<TR class="alt"> ' +
-//                                '   <TD> <IMG SRC="img/icon-accept.png"> <b>Vencimiento de Seguro:</b></td>' +
-//                                '   <TD align="CENTER ">' + fechaSeguroVenc + '</TD> ' +
-//                                '</TR> ' +
-//                                ' </TABLE>'
-//                    }
-//                ]
-//                ,
-//                buttons: [
-//                    {
-//                        text: 'Cerrar',
-//                        tooltip: 'Cerrar',
-//                        handler: limpiarPanelG
-//                    }
-//                ]}
-//
-//        ]
-//    });
-//}
-
 
 
 function showWinencendidoapagado() {
@@ -827,7 +747,7 @@ function showWinencendidoapagado() {
             iconCls: 'icon-on-off',
             resizable: false,
             width: 350,
-            height: 350,
+            height: 300,
             closeAction: 'hide',
             plain: false,
             items: formularioEA

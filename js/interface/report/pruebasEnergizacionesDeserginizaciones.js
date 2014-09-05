@@ -147,7 +147,7 @@ Ext.onReady(function() {
             }],
         buttons: [{
                 text: 'Obtener',
-                iconCls: 'icon-obtener',
+                iconCls: 'icon-consultas',
                 handler: function() {
                     var id_valor = this.up('form').down('[name=rb]').getValue();
                     fechaInicioEnerg = fechaIniEnerg.getRawValue();
@@ -717,91 +717,13 @@ Ext.onReady(function() {
             }
             , {
                 text: 'Cancelar',
-                iconCls: 'icon-cancel',
+                iconCls: 'icon-cancelar',
                 handler: function() {
                     VentanaEnerg.hide();
                 }
             }]
     });
 });
-
-
-//function limpiarPanelG() {
-//    if (vistaVistaRegistrosEnerg) {
-//        vistaVistaRegistrosEnerg.hide();
-//    }
-//
-//}
-
-//
-//function metodoRegistros(empresa, vehiculo, total, fechaSoatReg, fechaSoatVenc, descripSoat, fechaMatriculaReg,
-//        fechaMatriculaVenc, descripMatricula, fechaSeguroReg, fechaSeguroVenc, descripSeguro) {
-//    vistaVistaRegistrosEnerg = Ext.create('Ext.window.Window', {
-//        layout: 'fit',
-//        title: 'Estado de Equipos',
-//        iconCls: 'icon-company',
-//        resizable: true,
-//        width: 400,
-//        height: 300,
-//        closeAction: 'hide',
-//        plain: true,
-//        items: [{
-//                xtype: 'form',
-////                id: 'contenedoresg',
-////                name: 'contenedoresg',
-//                autoScroll: true,
-//                width: 300,
-//                height: 390,
-//                items: [
-//                    {html: '<TABLE id="tablestados">' +
-//                                '<TR class="alt"> ' +
-//                                '   <TD> <IMG SRC="img/icon_empresa.png"> <b>EMPRESA:</b></td>' +
-//                                '   <TD align="CENTER ">' + empresa + '</TD> ' +
-//                                '</TR> ' +
-//                                '<TR class="alt"> ' +
-//                                '   <TD> <IMG SRC="img/icon_car.png"> <b>VEHICULO:</b></td>' +
-//                                '   <TD align="CENTER ">' + vehiculo + '</TD> ' +
-//                                '</TR> ' +
-//                                '<TR class="alt"> ' +
-//                                '   <TD> <IMG SRC="img/icon-accept.png"> <b>Registro de SOAT:</b></td>' +
-//                                '   <TD align="CENTER ">' + fechaSoatReg + '</TD> ' +
-//                                '</TR> ' +
-//                                '<TR class="alt"> ' +
-//                                '   <TD> <IMG SRC="img/icon-accept.png"> <b>Vencimiento de SOAT:</b></td>' +
-//                                '   <TD align="CENTER ">' + fechaSoatReg + '</TD> ' +
-//                                '</TR> ' +
-//                                '<TR class="alt"> ' +
-//                                '   <TD> <IMG SRC="img/icon-accept.png"> <b>Registro de Matricula:</b></td>' +
-//                                '   <TD align="CENTER ">' + fechaMatriculaReg + '</TD> ' +
-//                                '</TR> ' +
-//                                '<TR class="alt"> ' +
-//                                '   <TD> <IMG SRC="img/icon-accept.png"> <b>Vencimiento de Matricula:</b></td>' +
-//                                '   <TD align="CENTER ">' + fechaMatriculaVenc + '</TD> ' +
-//                                '</TR> ' +
-//                                '<TR class="alt"> ' +
-//                                '   <TD> <IMG SRC="img/icon-accept.png"> <b>Registro de Seguro:</b></td>' +
-//                                '   <TD align="CENTER ">' + fechaSeguroReg + '</TD> ' +
-//                                '</TR> ' +
-//                                '<TR class="alt"> ' +
-//                                '   <TD> <IMG SRC="img/icon-accept.png"> <b>Vencimiento de Seguro:</b></td>' +
-//                                '   <TD align="CENTER ">' + fechaSeguroVenc + '</TD> ' +
-//                                '</TR> ' +
-//                                ' </TABLE>'
-//                    }
-//                ]
-//                ,
-//                buttons: [
-//                    {
-//                        text: 'Cerrar',
-//                        tooltip: 'Cerrar',
-//                        handler: limpiarPanelG
-//                    }
-//                ]}
-//
-//        ]
-//    });
-//}
-
 
 
 function showWinEnergizcion() {

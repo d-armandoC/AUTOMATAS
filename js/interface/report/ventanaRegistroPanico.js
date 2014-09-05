@@ -140,7 +140,7 @@ Ext.onReady(function() {
             }],
         buttons: [{
                 text: 'Obtener',
-                iconCls: 'icon-obtener',
+                iconCls: 'icon-consultas',
                 handler: function() {
                     dateStart = dateIni.getRawValue();
                     dateFinish = dateFin.getRawValue();
@@ -359,7 +359,7 @@ Ext.onReady(function() {
             }
             , {
                 text: 'Cancelar',
-                iconCls: 'icon-cancel',
+                iconCls: 'icon-cancelar',
                 handler: function() {
                     winPanico.hide();
                 }
@@ -374,7 +374,7 @@ function showWinPanicosDaily() {
             iconCls: 'icon-reset',
             resizable: false,
             width: 350,
-            height: 350,
+            height: 300,
             closeAction: 'hide',
             plain: false,
             items: formPanico

@@ -45,7 +45,7 @@ Ext.onReady(function() {
         id: 'fechaIniEx',
         name: 'fechaIniEx',
         value: new Date(),
-        vtype: 'daterange',
+//        vtype: 'daterange',
         allowBlank: false,
         endDateField: 'fechaFinEx',
         emptyText: 'Fecha Inicial...'
@@ -57,7 +57,7 @@ Ext.onReady(function() {
         id: 'fechaFinEx',
         name: 'fechaFinEx',
         value: new Date(),
-        vtype: 'daterange',
+//        vtype: 'daterange',
         allowBlank: false,
         startDateField: 'fechaIniEx',
         emptyText: 'Fecha Final...'
@@ -90,6 +90,7 @@ Ext.onReady(function() {
     timeIniExcesos = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
         name: 'horaIniExcesos',
+        value: '00:01',
         format: 'H:i',
         allowBlank: false,
         emptyText: 'Hora Inicial...',
@@ -100,6 +101,7 @@ Ext.onReady(function() {
     timeFinExcesos = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Hasta las',
         name: 'horaFinExcesos',
+         value: '00:01',
         format: 'H:i',
         allowBlank: false,
         emptyText: 'Hora final...',
@@ -178,7 +180,7 @@ Ext.onReady(function() {
         buttons: [
             {
                 text: 'Obtener',
-                iconCls: 'icon-obtener',
+                iconCls: 'icon-consultas',
                 handler: function() {
 
                     fechaInExcesos = fechaIniExcesos.getRawValue();
@@ -188,13 +190,13 @@ Ext.onReady(function() {
                     var form = formularioExcesos.getForm();
                     if (form.isValid()) {
                         form.submit({
-                             url: 'php/interface/report/getdataExcesVelocidad.php',
+                            url: 'php/interface/report/getdataExcesVelocidad.php',
                             method: 'POST',
                             waitMsg: 'Comprobando Datos...',
                             params: {
                                 cbxEmpresasExcesos: id_empresaExcesos,
                             },
-                           failure: function(form, action) {
+                            failure: function(form, action) {
                                 Ext.MessageBox.hide();
                                 Ext.MessageBox.show({
                                     title: 'Info',
@@ -204,10 +206,10 @@ Ext.onReady(function() {
                                 });
                             },
                             success: function(form, action) {
-                                  if (winExcesos) {
+                                if (winExcesos) {
                                     winExcesos.hide();
                                 }
-                               Ext.MessageBox.hide();
+                                Ext.MessageBox.hide();
                                 var resultado = action.result;
                                 var datos = Ext.JSON.decode(resultado.string).data;
                                 cargardatosalGrid(datos);
@@ -221,7 +223,7 @@ Ext.onReady(function() {
 
             , {
                 text: 'Cancelar',
-                iconCls: 'icon-cancel',
+                iconCls: 'icon-cancelar',
                 handler: function() {
                     winExcesos.hide();
                 }
@@ -256,7 +258,7 @@ function cargardatosalGrid(datos) {
         groupHeaderTpl: 'Registro de : {name} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})',
     });
 
-    var columnRecaudo = [
+    var columnExcesosVelocidad = [
         {text: 'Empresa', flex: 80, dataIndex: 'empresa', filter: {type: 'string'}},
         {text: 'Placa', flex: 80, dataIndex: 'placa', filter: {type: 'string'}},
         {text: 'Velocidad', flex: 80, dataIndex: 'velocidad', filter: {type: 'string'}},
@@ -264,13 +266,13 @@ function cargardatosalGrid(datos) {
         {text: 'Evento', flex: 80, dataIndex: 'acronimo', filter: {type: 'string'}},
     ];
 
-    
+
     var dateStart = fechaIniExcesos.getRawValue();
     var dateFinish = fechaFinExcesos.getRawValue();
     var timeStart = timeIniExcesos.getRawValue();
     var timeFinish = timeFinExcesos.getRawValue();
 
-    var gridRecaudo = Ext.create('Ext.grid.Panel', {
+    var gridExcesosVelocidad = Ext.create('Ext.grid.Panel', {
         layout: 'fit',
         region: 'center',
         title: '<center> Registros del  Sistema<br>Desde: ' + dateStart + ' | Hasta: ' + dateFinish + ' Desde las: ' + timeStart + ' | Hasta las: ' + timeFinish + '</center>',
@@ -285,25 +287,25 @@ function cargardatosalGrid(datos) {
         dockedItems: [{
                 dock: 'top',
                 xtype: 'toolbar',
-                items: [ {xtype: 'button', text: 'Imprimir', icon: 'img/excel.png', handler: function() {
-                    generarExcelRecorrido(datos);
-                }},
-            {xtype: 'button', id: 'btng', text: 'Lista', iconCls: 'icon-servicios', handler: function() {
-                    if (bandera) {
-                        groupingFeature.disable();
-                        Ext.getCmp('btng').setIconCls("icon-cancelar");
-                        bandera = false;
-                    } else {
-                        groupingFeature.enable();
-                        Ext.getCmp('btng').setIconCls("icon-servicios");
-                        bandera = true;
-                    }
-                }}]
+                items: [{xtype: 'button', text: 'Imprimir', icon: 'img/excel.png', handler: function() {
+                            generarExcelRecorrido(datos);
+                        }},
+                    {xtype: 'button', id: 'btng', text: 'Lista', iconCls: 'icon-servicios', handler: function() {
+                            if (bandera) {
+                                groupingFeature.disable();
+                                Ext.getCmp('btng').setIconCls("icon-cancelar");
+                                bandera = false;
+                            } else {
+                                groupingFeature.enable();
+                                Ext.getCmp('btng').setIconCls("icon-servicios");
+                                bandera = true;
+                            }
+                        }}]
             }],
-        columns: columnRecaudo
+        columns: columnExcesosVelocidad
     });
 
-    var tabRecaudo = Ext.create('Ext.container.Container', {
+    var tabExcesosVelocidad = Ext.create('Ext.container.Container', {
         title: 'Reporte de Ecxesos de velocidad',
         closable: true,
         iconCls: 'icon-exceso-vel',
@@ -311,7 +313,7 @@ function cargardatosalGrid(datos) {
         items: [{
                 layout: 'border',
                 xtype: 'panel',
-                items: gridRecaudo,
+                items: gridExcesosVelocidad,
                 region: 'center',
                 autoScroll: true,
                 columnLines: true,
@@ -320,8 +322,8 @@ function cargardatosalGrid(datos) {
         ]
     });
 
-    panelTabMapaAdmin.add(tabRecaudo);
-    panelTabMapaAdmin.setActiveTab(tabRecaudo);
+    panelTabMapaAdmin.add(tabExcesosVelocidad);
+    panelTabMapaAdmin.setActiveTab(tabExcesosVelocidad);
 }
 
 function ventanaexcesosvelociadadWin() {
@@ -330,9 +332,9 @@ function ventanaexcesosvelociadadWin() {
             //layout : 'fit',
             title: 'Excesos de Velocidad',
             iconCls: 'icon-exceso-vel',
-           resizable: false,
+            resizable: false,
             width: 350,
-            height: 350,
+            height: 360,
             autoHeight: true,
             closeAction: 'hide',
             plain: false,
@@ -349,7 +351,7 @@ function generarExcelRecorrido(store) {
 //    var fecha_recaudo_inicial = Ext.getCmp('fechaInisR').getValue();
 //    var fecha_recaudo_final = Ext.getCmp('fechaFinsR').getValue();
 //    var records = store.length;
-console.log(store);
+    console.log(store);
     if (store.length > 0) {
         if (getNavigator() === 'img/chrome.png') {
             var a = document.createElement('a');

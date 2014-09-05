@@ -177,7 +177,7 @@ Ext.onReady(function() {
         buttons: [
             {
                 text: 'Obtener',
-                iconCls: 'icon-obtener',
+                iconCls: 'icon-consultas',
                 handler: function() {
 
                     fechaInperdgsm = fechaInigsm.getRawValue();
@@ -220,7 +220,7 @@ Ext.onReady(function() {
 
             , {
                 text: 'Cancelar',
-                iconCls: 'icon-cancel',
+                iconCls: 'icon-cancelar',
                 handler: function() {
                     VentanaGSM.hide();
                 }
@@ -320,8 +320,6 @@ function cargardatosalGridGpsGsm(datos) {
     panelTabMapaAdmin.add(tabGpsGsm);
     panelTabMapaAdmin.setActiveTab(tabGpsGsm);
 }
-
-
 function reporteWinperdidaGSM() {
     if (!VentanaGSM) {
         VentanaGSM = Ext.create('Ext.window.Window', {

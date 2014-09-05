@@ -70,7 +70,6 @@
         <script type="text/javascript" src="js/interface/report/ventanaAsignacion.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaBanderas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaEstadoVeh.js"></script>
-        <script type="text/javascript" src="js/interface/report/ventanaExcesosVelocidad.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaFranjasHorarias.js"></script>        
         <script type="text/javascript" src="js/interface/report/ventanaNoAtendidas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaRutas.js"></script>
@@ -92,7 +91,6 @@
         <script type="text/javascript" src="js/interface/report/ventanaPerdidaGsmGps.js"></script>
         <script type="text/javascript" src="js/interface/report/pruebasEncendidoApagado.js"></script>
         <script type="text/javascript" src="js/interface/report/pruebasEnergizacionesDeserginizaciones.js"></script>
-        <script type="text/javascript" src="js/interface/report/ventanaExcesosVelocidad.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaReporteExcesosVelocidadNew.js"></script>
       
 

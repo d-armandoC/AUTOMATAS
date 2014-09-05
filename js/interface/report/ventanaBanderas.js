@@ -49,6 +49,7 @@ Ext.onReady(function() {
         format: 'Y-m-d',
         id: 'fechaIniBan',
         name: 'fechaIni',
+        value: new Date(),
         vtype: 'daterange',
         allowBlank: false,
         endDateField: 'fechaFinBan',
@@ -63,6 +64,7 @@ Ext.onReady(function() {
         format: 'Y-m-d',
         id: 'fechaFinBan',
         name: 'fechaFin',
+        value: new Date(),
         vtype: 'daterange',
         allowBlank: false,
         startDateField: 'fechaIniBan',
@@ -489,7 +491,7 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
         store: storeFlags,
         columnLines: true,
         autoScroll: true,
-        height: 435,
+        height: 425,
         width: 800,
         viewConfig: {
             emptyText: 'No hay datos que Mostrar'

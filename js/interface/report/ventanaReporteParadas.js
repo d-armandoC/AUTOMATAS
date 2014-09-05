@@ -139,7 +139,7 @@ Ext.onReady(function() {
         ],
         buttons: [{
                 text: 'Obtener',
-                iconCls: 'icon-obtener',
+                iconCls: 'icon-consultas',
                 handler: function() {
                     fechaInicio = dateIniparadas.getRawValue();
                     fechaFin = dateFinParadas.getRawValue();
@@ -424,7 +424,7 @@ Ext.onReady(function() {
             }
             , {
                 text: 'Cancelar',
-                iconCls: 'icon-cancel',
+                iconCls: 'icon-cancelar',
                 handler: function() {
                     Ventanaparadas.hide();
                 }
