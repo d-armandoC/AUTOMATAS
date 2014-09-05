@@ -5,6 +5,7 @@ var storeViewPanico;
 var dateStart;
 var dateFinish;
 var persona;
+var idEquipoPanico;
 var gridViewDataPanico;
 var gridViewDataPanicoTotal;
 var gridViewDataPanicoGeneral;
@@ -16,6 +17,7 @@ var empresaNom = 'KRADAC';
 var cbxEmpresasBDPanico;
 Ext.onReady(function() {
     storeViewPanico = Ext.create('Ext.data.JsonStore', {
+        autoLoad: true,
         autoDestroy: true,
         proxy: {
             type: 'ajax',
@@ -103,8 +105,6 @@ Ext.onReady(function() {
                 title: '<b>Datos</b>',
                 items: [{
                         xtype: 'radiogroup',
-// fieldLabel: ' ',
-// Arrange radio buttons into two columns, distributed vertically
                         columns: 2,
                         vertical: true,
                         items: [
@@ -144,9 +144,9 @@ Ext.onReady(function() {
                 handler: function() {
                     dateStart = dateIni.getRawValue();
                     dateFinish = dateFin.getRawValue();
-                    var form = formPanico.getForm();
+                    var formulario = formPanico.getForm();
 
-                    form.submit({
+                    formulario.submit({
                         url: 'php/interface/report/panicos/getPanicos.php',
                         waitTitle: 'Procesando...',
                         waitMsg: 'Obteniendo Información',
@@ -242,16 +242,16 @@ Ext.onReady(function() {
                                         }
                                     }], listeners: {
                                     itemclick: function(thisObj, record, item, index, e, eOpts) {
-//Id del despacho que se esta realizando
-                                        var reg = record.get('idEquipoPanicos');
+                                        idEquipoPanico = record.get('idEquipoPanicos');
+                                        console.log(idEquipoPanico);
                                         persona = record.get('personaPanicos');
                                         bandera = 1;
-                                        gridViewDataPanico.setTitle('<center>Vista de Panicos: ' + persona + ' <br> Equipo: ' + reg + ' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
+                                        gridViewDataPanico.setTitle('<center>Vista de Panicos: ' + persona + ' <br> Equipo: ' + idEquipoPanico + ' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
                                         storeViewPanico.load({
                                             params: {
-                                                idEquipo: reg,
-                                                fechaIni: dateStart,
-                                                fechaFin: dateFinish
+                                                idEquipo: idEquipoPanico,
+                                                fechaIni: dateIni.getRawValue(),
+                                                fechaFin: dateFin.getRawValue()
                                             }
                                         });
                                     }
@@ -263,8 +263,8 @@ Ext.onReady(function() {
                                 width: '60%',
                                 title: '<center>Panicos Totales: ',
                                 store: storeViewPanico,
-                                features: [filters],
-                                multiSelect: true,
+//                                features: [filters],
+//                                multiSelect: true,
                                 viewConfig: {
                                     emptyText: 'No hay datos que Mostrar'
                                 },
@@ -286,10 +286,7 @@ Ext.onReady(function() {
                                             if (bandera === 1) {
                                                 if (storeViewPanico.getCount() > 0) {
                                                     var a = document.createElement('a');
-//getting data from our div that contains the HTML table
                                                     var data_type = 'data:application/vnd.ms-excel';
-//var table_div = document.getElementById('exportar');
-//var table_html = table_div.outerHTML.replace(/ /g, '%20');
                                                     var tiLetra = 'Calibri';
                                                     var table_div = "<meta charset='UTF-4'><body>" +
                                                             "<font face='" + tiLetra + "'><table>" +
@@ -319,9 +316,7 @@ Ext.onReady(function() {
                                                     table_div += "</table></font></body>";
                                                     var table_html = table_div.replace(/ /g, '%20');
                                                     a.href = data_type + ', ' + table_html;
-//setting the file name
                                                     a.download = 'Excesos de Velocidad' + '.xls';
-//triggering the function
                                                     a.click();
                                                 }
                                             } else {
@@ -362,7 +357,6 @@ Ext.onReady(function() {
 
                 }
             }
-
             , {
                 text: 'Cancelar',
                 iconCls: 'icon-cancel',
@@ -386,7 +380,7 @@ function showWinPanicosDaily() {
             items: formPanico
         });
     }
-    formPanico.getForm().reset();
-    cbxEmpresasBDPanico.disable();
     winPanico.show();
+    cbxEmpresasBDPanico.disable();
+    formPanico.getForm().reset();
 }

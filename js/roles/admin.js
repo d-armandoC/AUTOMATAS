@@ -343,14 +343,15 @@ Ext.onReady(function() {
                 }},
             {text: 'Vehiculos', iconCls: 'icon-car', handler: function() {
                     ventanaAddVehiculos();
-                }}, {
+                }}, 
+            {
                 text: 'Geocercas',
                 iconCls: 'icon-geocerca',
                 menu: [
-                    {text: 'Administracion', iconCls: 'icon-find-geo', handler: function() {
-                            //ventanaAddGeo();
-                            ventanaGeocerca();
-                        }},
+//                    {text: 'Administracion', iconCls: 'icon-find-geo', handler: function() {
+//                            //ventanaAddGeo();
+//                            ventanaGeocerca();
+//                        }},
                     {text: 'Envio Correos', iconCls: 'icon-email', handler: function() {
                             visualizarEnviosGeoCercas();
                         }}
@@ -438,28 +439,18 @@ Ext.onReady(function() {
                                     showWinPanicosDaily();
                                 }},
                             {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function() {
-                                    //  ventanaExcesoVelocidad();
-                                   showWinExcesosDaily();
-                                  // showExcesosVelociad();
-                                }}
-                            , {text: 'Vista Ejemplo', iconCls: 'icon-config', handler: function() {
-//                                   ventRecaudo();
-                                }}
-                            , {text: 'Mantenimiento Detallado', iconCls: 'icon-servicios', handler: function() {
+                                  ventanaexcesosvelociadadWin();
+                                }}, 
+                            {text: 'Mantenimiento Detallado', iconCls: 'icon-servicios', handler: function() {
                                     showWinMantenimientoGeneral();
-                                }}
-                            ,
+                                }},
                             {text: 'Recorridos General', iconCls: 'icon-all-flags', handler: function() {
                                     ventanaBanderas();
                                 }},
-                            {text: 'Perdiad de GSM', iconCls: 'icon-flota', handler: function() {
-                                    //ventanaPerdidaGSM();
-                                    ReporteWinperdidaGSM();
-                                }}
-                            ,
-//                            {text: 'Consume de Combustible', iconCls: 'icon-flota', handler: function() {
-//                                   // ventanaConsumoCombustibles();
-//                                }},
+                            {text: 'Perdida de GPS y GSM', iconCls: 'icon-flota', handler: function() {
+                                    //ReporteWinperdidaGSM();
+                                    reporteWinperdidaGSM();
+                                }},
                             {text: 'Reporte de Paradas', iconCls: 'icon-unlock', handler: function() {
                                     showWinPradas();
                                 }},
@@ -866,7 +857,7 @@ Ext.onReady(function() {
         layout: 'border',
         items: [
             toolBarOnMap,
-            panelTabMapaAdmin,
+            panelTabMapaAdmin
             //gridEventos
         ]
     });

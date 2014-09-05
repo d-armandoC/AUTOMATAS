@@ -550,6 +550,8 @@ function onResetPerson() {
     Ext.getCmp('btn-delete-route').disable();
     Ext.getCmp('btn-draw-edit-route').setIconCls("icon-add");
     drawRoute = true;
+    
+     //id: 'btn-draw-edit-route',
 }
 
 function clearWinPerson() {

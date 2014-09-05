@@ -6,10 +6,9 @@ include ('../../../../dll/config.php');
 if (!$mysqli = getConectionDb()) {
     echo "{failure: true, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-    $consultaSql = "SELECT  concat(p.nombres,' ', p.apellidos)as persona, v.placa, sk.id_equipo, e.equipo, count(*) as total 
-        FROM karviewhistoricodb.dato_spks  sk,karviewdb.vehiculos v ,karviewdb.personas p, karviewdb.equipos e
-        where sk.id_equipo=v.id_equipo=e.id_equipo and sk.id_sky_evento=12 and v.id_persona=p.id_persona and v.id_empresa=? 
-        and sk.fecha between ? and ? and sk.hora between ? and ? ";
+    $consultaSql = "SELECT eq.equipo, emp.empresa, vh.placa, skp.velocidad, skp.fecha,skp.hora , skev.sky_evento  "
+            . "FROM karviewhistoricodb.dato_spks skp, karviewdb.equipos eq, karviewdb.empresas emp, karviewdb.vehiculos vh, karviewdb.sky_eventos skev   "
+            . "where skp.id_equipo=eq.id_equipo and eq.id_equipo=vh.id_equipo and vh.id_empresa=emp.id_empresa and skp.id_sky_evento= skev.id_sky_evento and skp.fecha between '2014-01-03' and '2014-07-30'and skp.id_sky_evento=21 ;";
     $stmt = $mysqli->prepare($consultaSql);
     if ($stmt) {
         /* ligar parámetros para marcadores */
