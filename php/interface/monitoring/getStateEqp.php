@@ -42,11 +42,11 @@ if (!$mysqli = getConectionDb()) {
         while ($myrow = $result->fetch_assoc()) {
             $usuarioE = $myrow["usuarioEquipo"];
             $usuarioV = $myrow["usuarioVehiculo"];
-            $consultaSql1 = "select concat(p.nombres, ' ', p.apellidos)as persona from usuarios u, kbusdb.personas p where u.id_persona=p.id_persona and u.id_usuario='$usuarioE'";
+            $consultaSql1 = "select concat(p.nombres, ' ', p.apellidos)as persona from usuarios u, karviewdb.personas p where u.id_persona=p.id_persona and u.id_usuario='$usuarioE'";
             $result1 = $mysqli->query($consultaSql1);
             $myrow1 = $result1->fetch_assoc();
             $usuarioE = $myrow1['persona'];
-            $consultaSql1 = "select concat(p.nombres, ' ', p.apellidos)as persona from usuarios u, kbusdb.personas p where u.id_persona=p.id_persona and u.id_usuario='$usuarioV'";
+            $consultaSql1 = "select concat(p.nombres, ' ', p.apellidos)as persona from usuarios u, karviewdb.personas p where u.id_persona=p.id_persona and u.id_usuario='$usuarioV'";
             $result1 = $mysqli->query($consultaSql1);
             $myrow1 = $result1->fetch_assoc();
             $usuarioV = $myrow1['persona'];
