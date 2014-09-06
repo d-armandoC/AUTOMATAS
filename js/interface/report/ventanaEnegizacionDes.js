@@ -39,8 +39,9 @@ Ext.onReady(function() {
         format: 'Y-m-d',
         id: 'fechaIniED',
         name: 'fechaIni',
-       // vtype: 'daterange',
+        // vtype: 'daterange',
         value: new Date(),
+        maxValue: new Date(),
         allowBlank: false,
         endDateField: 'fechaFinEnc',
         emptyText: 'Fecha Inicial...'
@@ -52,6 +53,7 @@ Ext.onReady(function() {
         name: 'fechaFin',
         //vtype: 'daterange',
         value: new Date(),
+        maxValue: new Date(),
         allowBlank: false,
         startDateField: 'fechaIniEnc',
         emptyText: 'Fecha Final...'
@@ -244,20 +246,19 @@ function obtenerRepEnergDes() {
             failure: function(form, action) {
                 Ext.MessageBox.show({
                     title: 'Información',
-                    msg:  action.result.message,
+                    msg: action.result.message,
                     buttons: Ext.MessageBox.OK,
                     icon: Ext.MessageBox.INFO
                 });
             },
             success: function(form, action) {
-                
+
                 var storeDataGeneralEnergia = Ext.create('Ext.data.JsonStore', {
                     data: action.result.data,
                     proxy: {
                         type: 'ajax',
                         reader: 'array'
                     },
-                    
                     fields: ['empresaEneDes', 'personaEneDes', 'placaEneDes', 'idEquipoEneDes', 'equipoEneDes', 'totalEneDes']
                 });
                 var gridGeneralEneDes = Ext.create('Ext.grid.Panel', {
@@ -531,7 +532,7 @@ function obtenerRepEnergDes() {
             failure: function(form, action) {
                 Ext.MessageBox.show({
                     title: 'Información',
-                    msg:  action.result.message,
+                    msg: action.result.message,
                     buttons: Ext.MessageBox.OK,
                     icon: Ext.MessageBox.INFO
                 });

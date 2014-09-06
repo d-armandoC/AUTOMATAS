@@ -11,7 +11,7 @@ var timeFinCar;
 Ext.onReady(function() {
 
     cbxEmpresasBDCar = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Cooperativa',        
+        fieldLabel: 'Cooperativa',
         name: 'cbxEmpresasCar',
         store: storeEmpresas,
         valueField: 'id',
@@ -47,7 +47,7 @@ Ext.onReady(function() {
         editable: false,
         allowBlank: false,
         listConfig: {
-            minWidth : 300
+            minWidth: 300
         }
     });
 
@@ -56,6 +56,8 @@ Ext.onReady(function() {
         format: 'Y-m-d',
         id: 'fechaIniCar',
         name: 'fechaIni',
+        value: new Date(),
+        maxValue: new Date(),
         vtype: 'daterange',
         allowBlank: false,
         endDateField: 'fechaFinCar',
@@ -68,6 +70,8 @@ Ext.onReady(function() {
         id: 'fechaFinCar',
         name: 'fechaFin',
         vtype: 'daterange',
+        value: new Date(),
+        maxValue: new Date(),
         allowBlank: false,
         startDateField: 'fechaIniCar',
         emptyText: 'Fecha Final...'
@@ -91,7 +95,7 @@ Ext.onReady(function() {
 
     var btn1RecMCar = Ext.create('Ext.button.Button', {
         text: 'Hoy',
-        iconCls : 'icon-today',
+        iconCls: 'icon-today',
         handler: function() {
             var nowDate = new Date();
 
@@ -105,7 +109,7 @@ Ext.onReady(function() {
 
     var btn2RecMCar = Ext.create('Ext.button.Button', {
         text: 'Ayer',
-        iconCls : 'icon-yesterday',
+        iconCls: 'icon-yesterday',
         handler: function() {
             var nowDate = new Date();
             var año = nowDate.getFullYear();
@@ -146,7 +150,7 @@ Ext.onReady(function() {
         fieldDefaults: {
             labelAlign: 'left',
             labelWidth: 70,
-            width : 260
+            width: 260
         },
         items: [{
                 layout: 'column',

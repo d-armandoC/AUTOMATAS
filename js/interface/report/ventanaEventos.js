@@ -76,6 +76,8 @@ Ext.onReady(function() {
         format: 'Y-m-d',
         id: 'fechaIniEvt',
         name: 'fechaIni',
+        value: new Date(),
+        maxValue: new Date(),
         vtype: 'daterange',
         allowBlank: false,
         endDateField: 'fechaFinEvt',
@@ -87,6 +89,8 @@ Ext.onReady(function() {
         format: 'Y-m-d',
         id: 'fechaFinEvt',
         name: 'fechaFin',
+        value: new Date(),
+        maxValue: new Date(),
         vtype: 'daterange',
         allowBlank: false,
         startDateField: 'fechaIniEvt',
@@ -162,8 +166,8 @@ Ext.onReady(function() {
     });
 
     contenedorwinEvt = Ext.create('Ext.form.Panel', {
-        bodyStyle : 'padding: 10px; background-color: #DFE8F6',
-        baseCls : 'x-plain',
+        bodyStyle: 'padding: 10px; background-color: #DFE8F6',
+        baseCls: 'x-plain',
         frame: false,
         padding: '5 5 5 5',
         items: [{
@@ -292,7 +296,7 @@ function ventanaEventos() {
 
 
 function loadGridEvents() {
-    
+
     var empresa = contenedorwinEvt.down('[name=cbxEmpresas]').getValue();
     var listVeh = contenedorwinEvt.down('[name=listVeh]').getValue();
     var listEvt = contenedorwinEvt.down('[name=listEvt]').getValue();
@@ -323,7 +327,7 @@ function loadGridEvents() {
         autoLoad: true,
         proxy: {
             type: 'ajax',
-            url: 'php/interface/report/getReportEvent.php?cbxEmpresas='+empresa +
+            url: 'php/interface/report/getReportEvent.php?cbxEmpresas=' + empresa +
                     '&listVeh=' + listVeh +
                     '&listEvt=' + listEvt +
                     '&fechaIni=' + fi +
@@ -340,8 +344,8 @@ function loadGridEvents() {
             load: function(thisObject, records, successful, eOpts) {
 
                 Ext.MessageBox.hide();
-               
-                if (records !== null && records.length>0) {
+
+                if (records !== null && records.length > 0) {
                     var columnEvets = [
                         Ext.create('Ext.grid.RowNumberer', {text: 'N°', width: 48}),
                         {text: '<b>Vehiculo</b>', width: 200, dataIndex: 'vehiculor', tooltip: 'vehiculo de la Empresa'},
@@ -399,7 +403,7 @@ function loadGridEvents() {
                         buttons: Ext.MessageBox.OK,
                         icon: Ext.MessageBox.ERROR
                     });
-                   
+
                 }
 
             }

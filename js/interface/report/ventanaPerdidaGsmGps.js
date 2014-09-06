@@ -45,6 +45,8 @@ Ext.onReady(function() {
         format: 'Y-m-d',
         id: 'fechaIniAsi',
         name: 'fechaIni',
+        value: new Date(),
+        maxValue: new Date(),
         vtype: 'daterange',
         allowBlank: false,
         endDateField: 'fechaFinAsi',
@@ -56,6 +58,8 @@ Ext.onReady(function() {
         format: 'Y-m-d', //YYYY-MMM-DD
         id: 'fechaFinAsi',
         name: 'fechaFin',
+        value: new Date(),
+        maxValue: new Date(),
         vtype: 'daterange',
         allowBlank: false,
         startDateField: 'fechaIniAsi',
@@ -193,7 +197,7 @@ Ext.onReady(function() {
                             params: {
                                 cbxEmpresasPan: id_empresagsms,
                             },
-                           failure: function(form, action) {
+                            failure: function(form, action) {
                                 Ext.MessageBox.hide();
                                 Ext.MessageBox.show({
                                     title: 'Info',
@@ -203,10 +207,10 @@ Ext.onReady(function() {
                                 });
                             },
                             success: function(form, action) {
-                                  if (VentanaGSM) {
+                                if (VentanaGSM) {
                                     VentanaGSM.hide();
                                 }
-                               Ext.MessageBox.hide();
+                                Ext.MessageBox.hide();
                                 var resultado = action.result;
                                 var datos = Ext.JSON.decode(resultado.string).data;
                                 cargardatosalGridGpsGsm(datos);
@@ -232,7 +236,7 @@ Ext.onReady(function() {
 function cargardatosalGridGpsGsm(datos) {
     Ext.define('Registros', {
         extend: 'Ext.data.Model',
-        fields: ['empresa', 'equipo', 'placa', 'latitud', 'longitud','fecha','velocidad' ,'gsm', 'tipo_respuesta']
+        fields: ['empresa', 'equipo', 'placa', 'latitud', 'longitud', 'fecha', 'velocidad', 'gsm', 'tipo_respuesta']
     });
     var storeRecaudo = Ext.create('Ext.data.JsonStore', {
         data: datos,
@@ -256,7 +260,7 @@ function cargardatosalGridGpsGsm(datos) {
         {text: 'Empresa', flex: 80, dataIndex: 'empresa', filter: {type: 'string'}},
         {text: 'Equipo', flex: 80, dataIndex: 'equipo', filter: {type: 'string'}},
         {text: 'Placa', flex: 80, dataIndex: 'placa', filter: {type: 'string'}},
-        {text: 'Señal', flex: 80, dataIndex: 'tipo_respuesta', filter: {type: 'string'},renderer: sinGSM},
+        {text: 'Señal', flex: 80, dataIndex: 'tipo_respuesta', filter: {type: 'string'}, renderer: sinGSM},
         {text: 'Latitud', flex: 80, dataIndex: 'latitud', filter: {type: 'string'}},
         {text: 'Longitu', flex: 80, dataIndex: 'longitud', filter: {type: 'string'}},
         {text: 'Fecha', flex: 80, dataIndex: 'fecha', filter: {type: 'string'}},
@@ -282,20 +286,20 @@ function cargardatosalGridGpsGsm(datos) {
         dockedItems: [{
                 dock: 'top',
                 xtype: 'toolbar',
-                items: [ {xtype: 'button', text: 'Imprimir', icon: 'img/excel.png', handler: function() {
-                    generarExcelGSM(datos);
-                }},
-            {xtype: 'button', id: 'btn', text: 'Lista', iconCls: 'icon-servicios', handler: function() {
-                    if (bandera) {
-                        groupingFeature.disable();
-                        Ext.getCmp('btn').setIconCls("icon-cancelar");
-                        bandera = false;
-                    } else {
-                        groupingFeature.enable();
-                        Ext.getCmp('btn').setIconCls("icon-servicios");
-                        bandera = true;
-                    }
-                }}]
+                items: [{xtype: 'button', text: 'Imprimir', icon: 'img/excel.png', handler: function() {
+                            generarExcelGSM(datos);
+                        }},
+                    {xtype: 'button', id: 'btn', text: 'Lista', iconCls: 'icon-servicios', handler: function() {
+                            if (bandera) {
+                                groupingFeature.disable();
+                                Ext.getCmp('btn').setIconCls("icon-cancelar");
+                                bandera = false;
+                            } else {
+                                groupingFeature.enable();
+                                Ext.getCmp('btn').setIconCls("icon-servicios");
+                                bandera = true;
+                            }
+                        }}]
             }],
         columns: columnGsmGps
     });
@@ -325,7 +329,7 @@ function reporteWinperdidaGSM() {
         VentanaGSM = Ext.create('Ext.window.Window', {
             layout: 'fit',
             title: 'Perdida GPS Y GSM',
-           iconCls: 'icon-flota',
+            iconCls: 'icon-flota',
             resizable: false,
             width: 350,
             height: 350,
@@ -382,7 +386,7 @@ function generarExcelGSM(store) {
                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store[i].empresa + " </Data></Cell > " +
                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store[i].equipo + " </Data></Cell > " +
                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store[i].placa + " </Data></Cell > " +
-                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " +sinGSM(store[i].tipo_respuesta) + " </Data></Cell > " +
+                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + sinGSM(store[i].tipo_respuesta) + " </Data></Cell > " +
                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store[i].latitud + " </Data></Cell > " +
                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store[i].longitud + " </Data></Cell > " +
                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store[i].fecha + " </Data></Cell > " +
@@ -414,12 +418,12 @@ function generarExcelGSM(store) {
 
 
 function sinGSM(value) {
-    if(value==='GSM'){
-         return "<span style='color:RED'>" + 'SIN GSM' + "</span>";
-    }else{
-         return "<span style='color:RED'>" + 'SIN GPS' + "</span>";
+    if (value === 'GSM') {
+        return "<span style='color:RED'>" + 'SIN GSM' + "</span>";
+    } else {
+        return "<span style='color:RED'>" + 'SIN GPS' + "</span>";
     }
-   
+
 }
 
 

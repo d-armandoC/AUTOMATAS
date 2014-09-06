@@ -4,22 +4,24 @@ var winFlota;
 Ext.onReady(function() {
 
     var storeVeh = Ext.create('Ext.data.JsonStore', {
-        autoDestroy : true,
-        proxy : {
-            type : 'ajax',
-            url:'php/combobox/comboVeh.php',
-            reader : {
-                type : 'json',
+        autoDestroy: true,
+        proxy: {
+            type: 'ajax',
+            url: 'php/combobox/comboVeh.php',
+            reader: {
+                type: 'json',
                 root: 'veh'
             }
         },
-        fields : [{name:'value',mapping:'id'}, {name:'text',mapping:'nombre'}]
+        fields: [{name: 'value', mapping: 'id'}, {name: 'text', mapping: 'nombre'}]
     });
 
     var dateIni = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
         id: 'fechaIniFlota',
+        value: new Date(),
+        maxValue: new Date(),
         name: 'fechaIni',
         vtype: 'daterange',
         allowBlank: false,
@@ -32,6 +34,8 @@ Ext.onReady(function() {
         format: 'Y-m-d',
         id: 'fechaFinFlota',
         name: 'fechaFin',
+        value: new Date(),
+        maxValue: new Date(),
         vtype: 'daterange',
         allowBlank: false,
         startDateField: 'fechaIniFlota',
@@ -56,7 +60,7 @@ Ext.onReady(function() {
 
     var today = Ext.create('Ext.button.Button', {
         text: 'Hoy',
-        iconCls : 'icon-today',
+        iconCls: 'icon-today',
         handler: function() {
             var nowDate = new Date();
 
@@ -70,7 +74,7 @@ Ext.onReady(function() {
 
     var yesterday = Ext.create('Ext.button.Button', {
         text: 'Ayer',
-        iconCls : 'icon-yesterday',
+        iconCls: 'icon-yesterday',
         handler: function() {
             var nowDate = new Date();
             var año = nowDate.getFullYear();
@@ -96,121 +100,119 @@ Ext.onReady(function() {
         layout: 'column',
         baseCls: 'x-plain',
         items: [{
-            baseCls: 'x-plain',
-            bodyStyle: 'padding:0 5px 0 0',
-            items: [today]
-        }, {
-            baseCls: 'x-plain',
-            bodyStyle: 'padding:0 5px 0 0',
-            items: [yesterday]
-        }]
+                baseCls: 'x-plain',
+                bodyStyle: 'padding:0 5px 0 0',
+                items: [today]
+            }, {
+                baseCls: 'x-plain',
+                bodyStyle: 'padding:0 5px 0 0',
+                items: [yesterday]
+            }]
     });
 
-    contenedorWinFlota = Ext.create('Ext.form.Panel', {        
-        bodyStyle : 'padding: 10px; background-color: #DFE8F6',
-        baseCls : 'x-plain',
-        
+    contenedorWinFlota = Ext.create('Ext.form.Panel', {
+        bodyStyle: 'padding: 10px; background-color: #DFE8F6',
+        baseCls: 'x-plain',
         items: [{
-            xtype : 'form',            
-            baseCls : 'x-plain',
-            fieldDefaults: {
-                labelAlign: 'left',
-                labelWidth: 70,
-                width : 260
-            },
-            items : [{
-                xtype : 'combobox',
-                fieldLabel: 'Cooperativa',            
-                name: 'cbxEmpresas',
-                store : storeEmpresas,
-                valueField : 'id',
-                displayField : 'text',
-                queryMode : 'local',
-                editable : false,
-                allowBlank : false,
-                emptyText : 'Seleccionar Cooperativa...',                    
-                listeners: {
-                    select: function(combo, records, eOpts) {
+                xtype: 'form',
+                baseCls: 'x-plain',
+                fieldDefaults: {
+                    labelAlign: 'left',
+                    labelWidth: 70,
+                    width: 260
+                },
+                items: [{
+                        xtype: 'combobox',
+                        fieldLabel: 'Cooperativa',
+                        name: 'cbxEmpresas',
+                        store: storeEmpresas,
+                        valueField: 'id',
+                        displayField: 'text',
+                        queryMode: 'local',
+                        editable: false,
+                        allowBlank: false,
+                        emptyText: 'Seleccionar Cooperativa...',
+                        listeners: {
+                            select: function(combo, records, eOpts) {
 
-                        //var listSelected = Ext.getCmp('itemselector-field');
-                        var listSelected = contenedorWinFlota.down('[name=listVeh]');
-                        listSelected.clearValue();
-                        listSelected.fromField.store.removeAll();
+                                //var listSelected = Ext.getCmp('itemselector-field');
+                                var listSelected = contenedorWinFlota.down('[name=listVeh]');
+                                listSelected.clearValue();
+                                listSelected.fromField.store.removeAll();
 
-                        storeVeh.load({
-                            params: {
-                                cbxEmpresas: records[0].data.id
+                                storeVeh.load({
+                                    params: {
+                                        cbxEmpresas: records[0].data.id
+                                    }
+                                });
                             }
-                        });
-                    }
-                }
-            }]
-        },{
-            xtype : 'form',            
-            bodyStyle : 'padding: 10px 0 10px 0',
-            width : 570,
-            baseCls: 'x-plain',
-            items : [{
-                xtype: 'itemselector',            
-                name: 'listVeh',                
-                anchor : '97%',
-                height : 170,
-                store: storeVeh,
-                displayField: 'text',
-                valueField: 'value',            
-                allowBlank: false,
-                msgTarget: 'side',
-                fromTitle: 'Vehiculos',
-                toTitle: 'Seleccionados'
-            }]
-        },{            
-            xtype : 'form',
-            baseCls : 'x-plain',
-            fieldDefaults: {
-                labelAlign: 'left',
-                labelWidth: 70,
-                width : 260
-            },
-            items : [{
-                layout: 'column',
+                        }
+                    }]
+            }, {
+                xtype: 'form',
+                bodyStyle: 'padding: 10px 0 10px 0',
+                width: 570,
                 baseCls: 'x-plain',
                 items: [{
-                    columnWidth: .5,
-                    baseCls: 'x-plain',
-                    items: [                    
-                        dateIni,
-                        timeIni
-                    ]
-                }, {
-                    columnWidth: .5,
-                    baseCls: 'x-plain',
-                    items: [                    
-                        dateFin,
-                        timeFin
-                    ]            
-                }]
-            }]            
-        }, panelBotones],
-
+                        xtype: 'itemselector',
+                        name: 'listVeh',
+                        anchor: '97%',
+                        height: 170,
+                        store: storeVeh,
+                        displayField: 'text',
+                        valueField: 'value',
+                        allowBlank: false,
+                        msgTarget: 'side',
+                        fromTitle: 'Vehiculos',
+                        toTitle: 'Seleccionados'
+                    }]
+            }, {
+                xtype: 'form',
+                baseCls: 'x-plain',
+                fieldDefaults: {
+                    labelAlign: 'left',
+                    labelWidth: 70,
+                    width: 260
+                },
+                items: [{
+                        layout: 'column',
+                        baseCls: 'x-plain',
+                        items: [{
+                                columnWidth: .5,
+                                baseCls: 'x-plain',
+                                items: [
+                                    dateIni,
+                                    timeIni
+                                ]
+                            }, {
+                                columnWidth: .5,
+                                baseCls: 'x-plain',
+                                items: [
+                                    dateFin,
+                                    timeFin
+                                ]
+                            }]
+                    }]
+            }, panelBotones],
         buttons: [{
-            text: 'Obtener',
-            iconCls: 'icon-consultas',
-            handler: function() {
-                if (contenedorWinFlota.getForm().isValid()) {
-                    loadGridFlota();                        
+                text: 'Obtener',
+                iconCls: 'icon-consultas',
+                handler: function() {
+                    if (contenedorWinFlota.getForm().isValid()) {
+                        loadGridFlota();
+                    }
                 }
-            }
-        }, {
-            text: 'Cancelar',
-            iconCls: 'icon-cancelar',
-            handler: limpiar_datosFlota
-        }]
+            }, {
+                text: 'Cancelar',
+                iconCls: 'icon-cancelar',
+                handler: limpiar_datosFlota
+            }]
     });
 });
 
 function limpiar_datosFlota() {
     lienzoGeoCercas.destroyFeatures();
-    contenedorWinFlota.getForm().reset();   
+    contenedorWinFlota.getForm().reset();
 
     //contenedorWinFlota.down('[name=listVeh]').clearValue();
     //contenedorWinFlota.down('[name=listVeh]').fromField.store.removeAll();
@@ -232,8 +234,8 @@ function ventanaFlota() {
             closeAction: 'hide',
             plain: false,
             items: [contenedorWinFlota],
-            listeners : {
-                close : function(panel, eOpts) {
+            listeners: {
+                close: function(panel, eOpts) {
                     limpiar_datosFlota();
                 }
             }
@@ -245,19 +247,19 @@ function ventanaFlota() {
 
 function loadGridFlota() {
     var empresa = contenedorWinFlota.down('[name=cbxEmpresas]').getValue();
-    var listVeh = contenedorWinFlota.down('[name=listVeh]').getValue();    
+    var listVeh = contenedorWinFlota.down('[name=listVeh]').getValue();
     var fi = formatoFecha(contenedorWinFlota.down('[name=fechaIni]').getValue());
     var ff = formatoFecha(contenedorWinFlota.down('[name=fechaFin]').getValue());
     var hi = formatoHora(contenedorWinFlota.down('[name=horaIni]').getValue());
     var hf = formatoHora(contenedorWinFlota.down('[name=horaFin]').getValue());
 
     Ext.MessageBox.show({
-        title : "Obteniendo Datos",
-        msg : "Reportes",
-        progressText : "Obteniendo...",                        
-        wait : true,
-        waitConfig : {
-            interval:200
+        title: "Obteniendo Datos",
+        msg: "Reportes",
+        progressText: "Obteniendo...",
+        wait: true,
+        waitConfig: {
+            interval: 200
         }
     });
 
@@ -281,9 +283,9 @@ function loadGridFlota() {
         listeners: {
             load: function(thisObject, records, successful, eOpts) {
 
-                Ext.MessageBox.hide();                
+                Ext.MessageBox.hide();
 
-                if (records.length > 0) {                    
+                if (records.length > 0) {
                     var columnFlota = [
                         Ext.create('Ext.grid.RowNumberer'),
                         {text: 'Vehiculo', flex: 60, dataIndex: 'vehiculo'},
@@ -294,7 +296,7 @@ function loadGridFlota() {
                         {text: 'Tiempo Detenido', flex: 30, dataIndex: 'time_detenido', align: 'center'},
                         {text: 'Paradas', flex: 20, dataIndex: 'paradas', align: 'center'},
                         {text: '% Rodando', flex: 30, dataIndex: 'percent_rodando', align: 'center'},
-                        {text: '% Detenido', flex: 30, dataIndex: 'percent_detenido', align: 'center'}                        
+                        {text: '% Detenido', flex: 30, dataIndex: 'percent_detenido', align: 'center'}
                     ]
 
                     var gridFlota = Ext.create('Ext.grid.Panel', {
@@ -330,7 +332,7 @@ function loadGridFlota() {
                         icon: Ext.MessageBox.ERROR
                     });
                 }
-                
+
             }
         }
     });

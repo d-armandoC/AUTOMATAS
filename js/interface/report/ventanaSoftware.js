@@ -55,6 +55,8 @@ Ext.onReady(function() {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
         id: 'fechaIniSof',
+        value: new Date(),
+        maxValue: new Date(),
         name: 'fechaIni',
         vtype: 'daterange',
         allowBlank: false,
@@ -67,6 +69,8 @@ Ext.onReady(function() {
         format: 'Y-m-d', //YYYY-MMM-DD
         id: 'fechaFinSof',
         name: 'fechaFin',
+        value: new Date(),
+        maxValue: new Date(),
         vtype: 'daterange',
         allowBlank: false,
         startDateField: 'fechaIniSof',
@@ -194,7 +198,7 @@ Ext.onReady(function() {
                             },
                             success: function(form, action) {
                                 var resultado = action.result;
-                                loadRacesMade(resultado.getCarreras,resultado.nameEmpresa,cbxBusesBDSof.getValue());
+                                loadRacesMade(resultado.getCarreras, resultado.nameEmpresa, cbxBusesBDSof.getValue());
                                 contenedorWinSof.getForm().reset();
                                 winSof.hide();
                             }
@@ -221,7 +225,7 @@ function foramtoCampo(val) {
 
 
 
-function loadRacesMade(datos, empresa,unidad) {
+function loadRacesMade(datos, empresa, unidad) {
     var arrayColumn = new Array();
     for (var i = 0; i <= 9; i++) {
         arrayColumn[i] = 1;
@@ -237,7 +241,7 @@ function loadRacesMade(datos, empresa,unidad) {
             {name: 'sector_company'}, {name: 'address_company'}, {name: 'vehiculo'}, {name: 'minute'}, {name: 'time_asig'}, {name: 'num_house', type: 'string'}],
         listeners: {///El Load  Obtiene los datos en arreglo 
             load: function(thisObj, records, successful, eOpts) {
-             console.log("function");
+                console.log("function");
             }
         }
 
@@ -257,11 +261,11 @@ function loadRacesMade(datos, empresa,unidad) {
         {text: '<b>Direccion</b>', flex: 135, dataIndex: 'address_company', tooltip: 'Direcciòn'},
         {text: '<b>Vehiculo</b>', flex: 53, dataIndex: 'vehiculo', tooltip: 'Vehiculo'},
         {text: '<b>Minutos</b>', flex: 52, dataIndex: 'minute', tooltip: 'Minutos'},
-        {text: '<b>Num Casa</b>', flex:90, dataIndex: 'num_house', renderer: foramtoCampo, tooltip: 'Nùmero de casa'}
+        {text: '<b>Num Casa</b>', flex: 90, dataIndex: 'num_house', renderer: foramtoCampo, tooltip: 'Nùmero de casa'}
     ];
     var gridCarreras = Ext.create('Ext.grid.Panel', {
         region: 'center',
-        title: '<center><b>Empresa </b> :'+empresa+'       '+' '+'     <b>Vehiculo:</b>: '+unidad,
+        title: '<center><b>Empresa </b> :' + empresa + '       ' + ' ' + '     <b>Vehiculo:</b>: ' + unidad,
         store: storCarreras,
         columnLines: true,
         autoScroll: true,
@@ -296,7 +300,6 @@ function loadRacesMade(datos, empresa,unidad) {
     var barCarrera = Ext.create('Ext.Container', {
         title: 'Reporte Careras ',
         fullscreen: true,
-        
         layout: 'hbox',
         closable: true,
         items: [gridCarreras

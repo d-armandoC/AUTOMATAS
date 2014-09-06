@@ -4,7 +4,7 @@ var winPar;
 Ext.onReady(function() {
 
     var cbxEmpresasBD = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Cooperativa',        
+        fieldLabel: 'Cooperativa',
         name: 'cbxEmpresas',
         store: storeEmpresas,
         valueField: 'id',
@@ -28,7 +28,7 @@ Ext.onReady(function() {
     });
 
     var cbxVehBD = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Vehículo:',        
+        fieldLabel: 'Vehículo:',
         name: 'cbxVeh',
         store: storeVeh,
         valueField: 'id',
@@ -39,13 +39,15 @@ Ext.onReady(function() {
         editable: false,
         allowBlank: false,
         listConfig: {
-            minWidth : 300
+            minWidth: 300
         }
     });
 
     var dateIni = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
+        value: new Date(),
+        maxValue: new Date(),
         id: 'fechaIniPar',
         name: 'fechaIni',
         vtype: 'daterange',
@@ -58,6 +60,8 @@ Ext.onReady(function() {
         fieldLabel: 'Hasta el',
         format: 'Y-m-d',
         id: 'fechaFinPar',
+        value: new Date(),
+        maxValue: new Date(),
         name: 'fechaFin',
         vtype: 'daterange',
         allowBlank: false,
@@ -83,7 +87,7 @@ Ext.onReady(function() {
 
     var today = Ext.create('Ext.button.Button', {
         text: 'Hoy',
-        iconCls : 'icon-today',
+        iconCls: 'icon-today',
         handler: function() {
             var nowDate = new Date();
 
@@ -97,7 +101,7 @@ Ext.onReady(function() {
 
     var yesterdey = Ext.create('Ext.button.Button', {
         text: 'Ayer',
-        iconCls : 'icon-yesterday',
+        iconCls: 'icon-yesterday',
         handler: function() {
             var nowDate = new Date();
             var año = nowDate.getFullYear();
@@ -123,14 +127,14 @@ Ext.onReady(function() {
         layout: 'column',
         baseCls: 'x-plain',
         items: [{
-            baseCls: 'x-plain',
-            bodyStyle: 'padding:0 5px 0 0',
-            items: [today]
-        }, {
-            baseCls: 'x-plain',
-            bodyStyle: 'padding:0 5px 0 0',
-            items: [yesterdey]
-        }]
+                baseCls: 'x-plain',
+                bodyStyle: 'padding:0 5px 0 0',
+                items: [today]
+            }, {
+                baseCls: 'x-plain',
+                bodyStyle: 'padding:0 5px 0 0',
+                items: [yesterdey]
+            }]
     });
 
     contenedorWinPar = Ext.create('Ext.form.Panel', {
@@ -138,36 +142,36 @@ Ext.onReady(function() {
         fieldDefaults: {
             labelAlign: 'left',
             labelWidth: 70,
-            width : 260
+            width: 260
         },
         items: [{
-            layout: 'column',
-            baseCls: 'x-plain',
-            items: [{
-                columnWidth: .5,
+                layout: 'column',
                 baseCls: 'x-plain',
-                items: [
-                    cbxEmpresasBD,
-                    dateIni,
-                    timeIni
-                ]            
-            },{
-                columnWidth: .5,
-                baseCls: 'x-plain',
-                items: [
-                    cbxVehBD,
-                    dateFin,
-                    timeFin
-                ]
-            }]
-        },
-        panelBotones],
+                items: [{
+                        columnWidth: .5,
+                        baseCls: 'x-plain',
+                        items: [
+                            cbxEmpresasBD,
+                            dateIni,
+                            timeIni
+                        ]
+                    }, {
+                        columnWidth: .5,
+                        baseCls: 'x-plain',
+                        items: [
+                            cbxVehBD,
+                            dateFin,
+                            timeFin
+                        ]
+                    }]
+            },
+            panelBotones],
         buttons: [{
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
                 handler: function() {
                     if (contenedorWinPar.getForm().isValid()) {
-                        loadGridStop();                        
+                        loadGridStop();
                     }
                 }
             }, {
@@ -199,8 +203,8 @@ function ventanaParadas() {
             closeAction: 'hide',
             plain: false,
             items: [contenedorWinPar],
-            listeners : {
-                close : function(panel, eOpts) {
+            listeners: {
+                close: function(panel, eOpts) {
                     limpiar_datosPar();
                 }
             }
@@ -213,7 +217,7 @@ function ventanaParadas() {
 
 function loadGridStop() {
     var empresa = contenedorWinPar.down('[name=cbxEmpresas]').getValue();
-    var idEqp = contenedorWinPar.down('[name=cbxVeh]').getValue();    
+    var idEqp = contenedorWinPar.down('[name=cbxVeh]').getValue();
     var fi = formatoFecha(contenedorWinPar.down('[name=fechaIni]').getValue());
     var ff = formatoFecha(contenedorWinPar.down('[name=fechaFin]').getValue());
     var hi = formatoHora(contenedorWinPar.down('[name=horaIni]').getValue());
@@ -222,12 +226,12 @@ function loadGridStop() {
     var vehiculo = contenedorWinPar.down('[name=cbxVeh]').getRawValue();
 
     Ext.MessageBox.show({
-        title : "Obteniendo Datos",
-        msg : "Reportes",
-        progressText : "Obteniendo...",                        
-        wait : true,
-        waitConfig : {
-            interval:200
+        title: "Obteniendo Datos",
+        msg: "Reportes",
+        progressText: "Obteniendo...",
+        wait: true,
+        waitConfig: {
+            interval: 200
         }
     });
 
@@ -253,9 +257,9 @@ function loadGridStop() {
 
                 Ext.MessageBox.hide();
 
-                if (records.length > 0) {                    
+                if (records.length > 0) {
                     var columnEvets = [
-                        Ext.create('Ext.grid.RowNumberer'),                        
+                        Ext.create('Ext.grid.RowNumberer'),
                         {text: 'Fecha', xtype: 'datecolumn', format: 'd-m-Y', width: 75, dataIndex: 'fecha_hora', align: 'center'},
                         {text: 'Hora', xtype: 'datecolumn', format: 'H:i:s', width: 75, dataIndex: 'fecha_hora', align: 'center'},
                         {text: 'Vel. (Km/h)', dataIndex: 'velocidad', align: 'right', width: 75, cls: 'listview-filesize'},
@@ -281,8 +285,8 @@ function loadGridStop() {
                             emptyText: 'No hay datos que Mostrar'
                         },
                         columns: columnEvets,
-                        listeners : {
-                            itemcontextmenu : function( thisObj, record, item, index, e, eOpts ){
+                        listeners: {
+                            itemcontextmenu: function(thisObj, record, item, index, e, eOpts) {
                                 panelMapa.setActiveTab('panelMapaTab');
                                 localizarDireccion(record.data.longitud, record.data.latitud, 17);
                             }
@@ -308,7 +312,7 @@ function loadGridStop() {
                         icon: Ext.MessageBox.ERROR
                     });
                 }
-                
+
             }
         }
     });
