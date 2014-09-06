@@ -1,9 +1,6 @@
 var panel_Cambiar_Usuario;
 var winusuario_usuario;
 
-
-
-
 Ext.onReady(function() {
 
 
@@ -37,6 +34,7 @@ Ext.onReady(function() {
                         afterLabelTextTpl: required,
                         name: 'new_usuario',
                         itemId: 'n_usuario',
+                        blankText: 'Este campo es obligatorio',
                         id: 'new_user',
                         emptyText: 'Ingrese nuevo usuario...',
                         allowBlank: false,
@@ -48,6 +46,7 @@ Ext.onReady(function() {
                         xtype: 'textfield',
                         afterLabelTextTpl: required,
                         name: 'confirm_usuario',
+                        blankText: 'Este campo es obligatorio',
                         itemId: 'conf_usuario',
                         id: 'id_usuarioNuevo',
                         vtype: 'password',
@@ -56,7 +55,7 @@ Ext.onReady(function() {
                         anchor: '100%'
                     },
                     {xtype: 'button',
-                        margin: '20 45 9 150',
+                        margin: '30 0 0 80',
                         text: 'Actualizar ',
                         iconCls: 'icon-update',
                         handler: function() {
@@ -123,7 +122,7 @@ Ext.onReady(function() {
 
                     },
                     {xtype: 'button',
-                        margin: '10 0 0 0',
+                        margin: '20 0 0 85',
                         text: 'Cancelar',
                         iconCls: 'icon-cancelar',
                         handler: function() {
@@ -155,5 +154,4 @@ function ventanaModificarUsuario() {
     }
     panel_Cambiar_Usuario.getForm().reset();
     winusuario_usuario.show();
-
 }
