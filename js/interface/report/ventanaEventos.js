@@ -253,6 +253,14 @@ Ext.onReady(function() {
                 handler: function() {
                     if (contenedorwinEvt.getForm().isValid()) {
                         loadGridEvents();
+                    }else{
+                        Ext.MessageBox.show({
+                        title: 'Atencion',
+                        msg: 'LLene los espacios vacios',
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
+                        
                     }
                 }
             }, {
@@ -367,7 +375,7 @@ function loadGridEvents() {
 //                        height: 485,
                         collapsible: true,
                         autoScroll: true,
-                        height: 435,
+                        height: 420,
                         //width: 800,
                         title: '<center>Reporte de Eventos: ' + nameEmp + '</center>',
                         store: store,
