@@ -403,7 +403,7 @@ Ext.onReady(function() {
                             failure: function(form, action) {
                                 Ext.MessageBox.show({
                                     title: 'Información',
-                                    msg: action.result.message,
+                                    msg: action.result.msg,
                                     buttons: Ext.MessageBox.OK,
                                     icon: Ext.MessageBox.INFO
                                 });

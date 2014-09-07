@@ -175,7 +175,7 @@ Ext.onReady(function() {
                                         region: 'west',
                                         frame: true,
                                         width: '40%',
-                                        title: '<center>Registro de Eventos de Encendido y Apagado ' + '<br>Desde: ' + fechaInicioEnerg + ' | Hasta: ' + fechaFinalEnerg + '</center>',
+                                        title: '<center>Evento de Energización ' + '<br>Desde: ' + fechaInicioEnerg + ' | Hasta: ' + fechaFinalEnerg + '</center>',
                                         store: storeDataReporteDetallado,
                                         features: [filters],
                                         multiSelect: true,
@@ -300,7 +300,7 @@ Ext.onReady(function() {
                                         region: 'center',
                                         frame: true,
                                         width: '60%',
-                                        title: '<center>Evento de Encendido y Apagado: ',
+                                        title: '<center>Evento de Energización ',
                                         store: storeViewEnerg,
                                         features: [filters],
                                         multiSelect: true,
@@ -454,7 +454,7 @@ Ext.onReady(function() {
                                         region: 'west',
                                         frame: true,
                                         width: '40%',
-                                        title: '<center>Registro de Eventos de Encendido y Apagado ' + '<br>Desde: ' + fechaInicioEnerg + ' | Hasta: ' + fechaFinalEnerg + '</center>',
+                                        title: '<center>Registro de EEvento de Energización ' + '<br>Desde: ' + fechaInicioEnerg + ' | Hasta: ' + fechaFinalEnerg + '</center>',
                                         store: storeDataReporteDetallado,
                                         features: [filters],
                                         multiSelect: true,
@@ -463,7 +463,7 @@ Ext.onReady(function() {
                                         },
                                         columns: [
                                             Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 40, align: 'center'}),
-                                            {text: 'Empresa', width: 290, dataIndex: 'empresaEneDes', align: 'center'},
+                                            {text: 'Empresa', width: 100, dataIndex: 'empresaEneDes', align: 'center'},
                                             {text: 'Persona', width: 290, dataIndex: 'personaEneDes', align: 'center'},
                                             {text: 'Placa', width: 130, dataIndex: 'placaEneDes', align: 'center'},
                                             {text: 'Equipo', width: 130, dataIndex: 'equipoEneDes', align: 'center'},
@@ -492,7 +492,7 @@ Ext.onReady(function() {
                                                             //Definir el numero de columnas y cantidad de filas de la hoja de calculo (numFil + 2))
                                                             table_div += "<Worksheet ss:Name='Datos'>";//Nombre de la hoja
                                                             table_div += "<Table ss:ExpandedColumnCount='" + numCol + "' ss:ExpandedRowCount='" + (numFil + 2) + "' x:FullColumns='1' x:FullRows='1' ss:DefaultColumnWidth='60' ss:DefaultRowHeight='15'>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='121.5'/>";
+                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='80'/>";
                                                             table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
                                                             table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
                                                             table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
@@ -507,8 +507,8 @@ Ext.onReady(function() {
                                                                     "</Row>";
                                                             for (var i = 0; i < numFil; i++) {
                                                                 table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.mpresaEneDes + " </Data></Cell > " +
                                                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.personaEneDes + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.empresaEneDes + " </Data></Cell > " +
                                                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.placaEneDes + " </Data></Cell > " +
                                                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.equipoEneDes + " </Data></Cell > " +
                                                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.totalEneDes + " </Data></Cell > " +
@@ -579,7 +579,7 @@ Ext.onReady(function() {
                                         region: 'center',
                                         frame: true,
                                         width: '60%',
-                                        title: '<center>Evento de Encendido y Apagado: ',
+                                        title: '<center>Evento de Energización',
                                         store: storeViewEnerg,
                                         features: [filters],
                                         multiSelect: true,
@@ -685,7 +685,7 @@ Ext.onReady(function() {
                                             }]
                                     });
                                     var tabExces = Ext.create('Ext.container.Container', {
-                                        title: 'Encenddos y Apagados',
+                                        title: 'Evento de Energización',
                                         closable: true,
                                         iconCls: 'icon-servicios',
                                         layout: 'border',
