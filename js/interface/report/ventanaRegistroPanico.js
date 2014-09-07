@@ -53,6 +53,7 @@ Ext.onReady(function() {
         id: 'fechaIniPanico',
         name: 'fechaIni',
         value: new Date(),
+        maxValue: new Date(),
         allowBlank: false,
         endDateField: 'fechaFinPanico',
         emptyText: 'Fecha Inicial...'
@@ -64,6 +65,7 @@ Ext.onReady(function() {
         name: 'fechaFin',
         vtype: 'daterange',
         value: new Date(),
+        maxValue: new Date(),
         allowBlank: false,
         startDateField: 'fechaIniPanico',
         emptyText: 'Fecha Final...'

@@ -11,7 +11,7 @@ var timeFin;
 Ext.onReady(function() {
 
     cbxEmpresasBD = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Cooperativa',        
+        fieldLabel: 'Cooperativa',
         name: 'cbxEmpresas',
         store: storeEmpresas,
         valueField: 'id',
@@ -47,7 +47,7 @@ Ext.onReady(function() {
         editable: false,
         allowBlank: false,
         listConfig: {
-            minWidth : 300
+            minWidth: 300
         }
     });
 
@@ -55,6 +55,8 @@ Ext.onReady(function() {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
         id: 'fechaIni',
+        value: new Date(),
+        maxValue: new Date(),
         name: 'fechaIni',
         vtype: 'daterange',
         allowBlank: false,
@@ -67,6 +69,8 @@ Ext.onReady(function() {
         format: 'Y-m-d', //YYYY-MMM-DD
         id: 'fechaFin',
         name: 'fechaFin',
+        value: new Date(),
+        maxValue: new Date(),
         vtype: 'daterange',
         allowBlank: false,
         startDateField: 'fechaIni',
@@ -91,7 +95,7 @@ Ext.onReady(function() {
 
     var btn1RecM = Ext.create('Ext.button.Button', {
         text: 'Hoy',
-        iconCls : 'icon-today',
+        iconCls: 'icon-today',
         handler: function() {
             var nowDate = new Date();
 
@@ -105,7 +109,7 @@ Ext.onReady(function() {
 
     var btn2RecM = Ext.create('Ext.button.Button', {
         text: 'Ayer',
-        iconCls : 'icon-yesterday',
+        iconCls: 'icon-yesterday',
         handler: function() {
             var nowDate = new Date();
             var año = nowDate.getFullYear();
@@ -146,7 +150,7 @@ Ext.onReady(function() {
         fieldDefaults: {
             labelAlign: 'left',
             labelWidth: 70,
-            width : 260
+            width: 260
         },
         items: [{
                 layout: 'column',
@@ -229,7 +233,7 @@ function ventanaRutas() {
     if (!win) {
         win = Ext.create('Ext.window.Window', {
             layout: 'fit',
-            title: 'Recorrido Historico',            
+            title: 'Recorrido Historico',
             iconCls: 'icon-general',
             resizable: false,
             width: 560,

@@ -50,6 +50,7 @@ Ext.onReady(function() {
         id: 'fechaIniBan',
         name: 'fechaIni',
         value: new Date(),
+        maxValue: new Date(),
         vtype: 'daterange',
         allowBlank: false,
         endDateField: 'fechaFinBan',
@@ -65,6 +66,7 @@ Ext.onReady(function() {
         id: 'fechaFinBan',
         name: 'fechaFin',
         value: new Date(),
+        maxValue: new Date(),
         vtype: 'daterange',
         allowBlank: false,
         startDateField: 'fechaIniBan',
@@ -196,7 +198,7 @@ Ext.onReady(function() {
                 iconCls: 'icon-edit',
                 tooltip: 'Simbologia',
                 handler: ventanaSimbologia
-            },'->', 
+            }, '->',
             {
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
@@ -206,8 +208,8 @@ Ext.onReady(function() {
                         var reporte_ruta = this.up('form').down('[name=reporte_ruta]').getValue();
                         var fechaInicial = this.up('form').down('[name=fechaIni]').getValue();
                         var fechaFinal = this.up('form').down('[name=fechaFin]').getValue();
-                        
-                        
+
+
                         if (trazar_ruta || reporte_ruta) {
 
                             contenedorWinBan.getForm().submit({
@@ -237,18 +239,18 @@ Ext.onReady(function() {
                                         clearLienzoPointTravel();
                                         drawPointsRoute(resultado.puntos, "Puntos");
                                         drawRutaMapa(resultado.puntos);
-                                        
+
                                         var galones = obtenerGalones(resultado.puntos);
                                         var litros = obtenerLitros(resultado.puntos);
                                         var kilometraje = kilometrajeRecorrido(resultado.puntos);
-                                        
+
                                         var velMaxima = velocidadmaxima(resultado.puntos);
                                         var velMinima = velocidadMinimo(resultado.puntos);
                                         var velMedia = velociadadMedia(resultado.puntos);
-                                        
+
                                         var mayor60 = velociadadMayor60(resultado.puntos);
                                         var mayor90 = velociadadMayor90(resultado.puntos);
-                                        
+
                                         tabpanelContain = Ext.create('Ext.form.Panel', {
                                             closable: true,
                                             title: '<b>Informe Tecnico</b>',
@@ -264,17 +266,17 @@ Ext.onReady(function() {
                                                 {
                                                     xtype: 'fieldset',
                                                     autoHeight: true,
-                                                     border:false,
+                                                    border: false,
                                                     disable: true,
                                                     layout: 'hbox',
                                                     padding: '5 5 5 15',
-                                                          items: [
+                                                    items: [
                                                         {
                                                             xtype: 'fieldset',
                                                             flex: 2,
-                                                           title: '<b>Datos del Recorrido</b>',
+                                                            title: '<b>Datos del Recorrido</b>',
                                                             padding: '5 5 5 5',
-                                                            border:false,
+                                                            border: false,
                                                             layout: 'anchor',
                                                             defaults: {
                                                                 anchor: '100%',
@@ -284,11 +286,11 @@ Ext.onReady(function() {
                                                                     html: '<TABLE id="tablestados">' +
                                                                             '<TR class="alt"> ' +
                                                                             '   <TD> <IMG SRC="img/inicio.png"> <b>FECHA DE NICIO:</b></td>' +
-                                                                            '   <TD align="CENTER ">' + formatoFecha(fechaInicial)+ '</TD> ' +
+                                                                            '   <TD align="CENTER ">' + formatoFecha(fechaInicial) + '</TD> ' +
                                                                             '</TR> ' +
                                                                             '<TR class="alt"> ' +
                                                                             '   <TD> <IMG SRC="img/inicio.png"> <b>FECHA FIN:</b></td>' +
-                                                                            '   <TD align="CENTER ">' + formatoFecha(fechaFinal )+ '</TD> ' +
+                                                                            '   <TD align="CENTER ">' + formatoFecha(fechaFinal) + '</TD> ' +
                                                                             '</TR> ' +
                                                                             '<TR class="alt"> ' +
                                                                             '   <TD> <IMG SRC="img/inicio.png"> <b>DISTANCIA RECORRIDA:</b></td>' +
@@ -296,7 +298,7 @@ Ext.onReady(function() {
                                                                             '</TR> ' +
                                                                             '<TR class="alt"> ' +
                                                                             '   <TD> <IMG SRC="img/inicio.png"> <b>CONSUMO DE COMBUSTIBLE:</b></td>' +
-                                                                            '   <TD align="CENTER ">' + litros+'LT' +' | '+ galones+'GL'+ '</TD> ' +
+                                                                            '   <TD align="CENTER ">' + litros + 'LT' + ' | ' + galones + 'GL' + '</TD> ' +
                                                                             '</TR> ' +
                                                                             ' </TABLE>'
                                                                 }]},
@@ -305,7 +307,7 @@ Ext.onReady(function() {
                                                             flex: 2,
                                                             title: '<b>Velocidades del Recorido:</b>',
                                                             padding: '5 5 5 15',
-                                                            border:false,
+                                                            border: false,
                                                             layout: 'anchor',
                                                             defaults: {
                                                                 anchor: '100%',
@@ -313,14 +315,14 @@ Ext.onReady(function() {
                                                             },
                                                             items: [
                                                                 {
-                                                                      html: '<TABLE id="tablestados">' +
+                                                                    html: '<TABLE id="tablestados">' +
                                                                             '<TR class="alt"> ' +
                                                                             '   <TD> <IMG SRC="img/inicio.png"> <b>MAXIMA:</b></td>' +
                                                                             '   <TD align="CENTER ">' + velMaxima + ' KM/H' + '</TD> ' +
                                                                             '</TR> ' +
                                                                             '<TR class="alt"> ' +
                                                                             '   <TD> <IMG SRC="img/inicio.png"> <b>MINIMA:</b></td>' +
-                                                                            '   <TD align="CENTER ">' + velMinima + ' KM/hH'+ '</TD> ' +
+                                                                            '   <TD align="CENTER ">' + velMinima + ' KM/hH' + '</TD> ' +
                                                                             '</TR> ' +
                                                                             '<TR class="alt"> ' +
                                                                             '   <TD> <IMG SRC="img/inicio.png"> <b>PROMEDIO:</b></td>' +
@@ -334,17 +336,17 @@ Ext.onReady(function() {
                                                 {
                                                     xtype: 'fieldset',
                                                     autoHeight: true,
-                                                     border:false,
+                                                    border: false,
                                                     disable: true,
                                                     layout: 'hbox',
                                                     padding: '5 5 5 15',
-                                                          items: [
+                                                    items: [
                                                         {
                                                             xtype: 'fieldset',
                                                             flex: 2,
-                                                           title: '<b>Excesos de Velocidad del Recorrido</b>',
+                                                            title: '<b>Excesos de Velocidad del Recorrido</b>',
                                                             padding: '5 5 5 5',
-                                                            border:false,
+                                                            border: false,
                                                             layout: 'anchor',
                                                             defaults: {
                                                                 anchor: '100%',
@@ -354,11 +356,11 @@ Ext.onReady(function() {
                                                                     html: '<TABLE id="tablestados">' +
                                                                             '<TR class="alt"> ' +
                                                                             '   <TD> <IMG SRC="img/inicio.png"> <b>MAYOR A 60 KM/h:</b></td>' +
-                                                                            '   <TD align="CENTER "> ' +  mayor60+ ' ' + '</TD> ' +
+                                                                            '   <TD align="CENTER "> ' + mayor60 + ' ' + '</TD> ' +
                                                                             '</TR> ' +
                                                                             '<TR class="alt"> ' +
                                                                             '   <TD> <IMG SRC="img/inicio.png"> <b>MAYOR A 90 KM/H:</b></td>' +
-                                                                            '   <TD align="CENTER "> ' + mayor90+ ' ' + '</TD> ' +
+                                                                            '   <TD align="CENTER "> ' + mayor90 + ' ' + '</TD> ' +
                                                                             '</TR> ' +
                                                                             ' </TABLE>'
                                                                 }]}
@@ -497,7 +499,7 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
             emptyText: 'No hay datos que Mostrar'
         },
         columns: columnFlags,
-             listeners: {
+        listeners: {
             itemcontextmenu: function(thisObj, record, item, index, e, eOpts) {
                 e.stopEvent();
                 Ext.create('Ext.menu.Menu', {
@@ -519,7 +521,7 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
     });
 
     panelGrid = Ext.create('Ext.tab.Panel', {
-       title: '<center>Recorridos Historico: ' + vehiculo + '<br>Desde: ' + fi + ' ' + hi + ' | Hasta: ' + ff + ' ' + hf + '</center>',
+        title: '<center>Recorridos Historico: ' + vehiculo + '<br>Desde: ' + fi + ' ' + hi + ' | Hasta: ' + ff + ' ' + hf + '</center>',
         region: 'center',
         frame: true,
         deferreRender: false,

@@ -13,7 +13,7 @@ var horaFinEncApag;
 
 
 Ext.onReady(function() {
-    
+
     storeDataDetalladoOnOff = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
         proxy: {
@@ -26,8 +26,8 @@ Ext.onReady(function() {
         },
         fields: ['fechaEA', 'horaEA', 'eventoEA', 'velocidadEA', 'latitudEA', 'longitudEA', 'bateriaEA', 'gsmEA', 'gpsEA', 'direccionEA']
     });
-    
- 
+
+
     cbxEmpresaEA = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Cooperativa',
         name: 'cbxEmpresaEnc',
@@ -46,6 +46,7 @@ Ext.onReady(function() {
         name: 'fechaIni',
 //        vtype: 'daterange',
         value: new Date(),
+        maxValue: new Date(),
         allowBlank: false,
         endDateField: 'fechaFinEnc',
         emptyText: 'Fecha Inicial...'
@@ -57,6 +58,7 @@ Ext.onReady(function() {
         name: 'fechaFin',
 //        vtype: 'daterange',
         value: new Date(),
+        maxValue: new Date(),
         allowBlank: false,
         startDateField: 'fechaIniEnc',
         emptyText: 'Fecha Final...'
@@ -250,7 +252,7 @@ function obtenerRepEncApag() {
             failure: function(form, action) {
                 Ext.MessageBox.show({
                     title: 'Información',
-                    msg:  action.result.message,
+                    msg: action.result.message,
                     buttons: Ext.MessageBox.OK,
                     icon: Ext.MessageBox.INFO
                 });
@@ -538,7 +540,7 @@ function obtenerRepEncApag() {
             failure: function(form, action) {
                 Ext.MessageBox.show({
                     title: 'Información',
-                    msg:  action.result.message,
+                    msg: action.result.message,
                     buttons: Ext.MessageBox.OK,
                     icon: Ext.MessageBox.INFO
                 });

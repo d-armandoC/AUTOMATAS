@@ -25,15 +25,15 @@ if (!$mysqli = getConectionDb()) {
             $result1 = $mysqli->query($consul1);
             $myrow1 = $result1->fetch_assoc();
             $id_usuario = $myrow1['id_usuario'];
-            echo $id_usuario;
 
             $insertSql = "UPDATE usuarios SET usuario='$confirm_usuario' WHERE id_usuario = '$id_usuario'";
 
             if (!$mysqli->query($insertSql)) {
                 echo "{failure: true, msg: 'Problemas al modificar en la base de datos.'}";
             } else {
-                $_SESSION["USERKARVIEW"] = $confirm_usuario;
+
                 echo '{success: true, msg: "Usuario modificado correctamente."}';
+                $_SESSION["USERKARVIEW"] = $confirm_usuario;
             }
         }
     }

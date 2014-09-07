@@ -154,4 +154,6 @@ function ventanaModificarUsuario() {
     }
     panel_Cambiar_Usuario.getForm().reset();
     winusuario_usuario.show();
+
+
 }
