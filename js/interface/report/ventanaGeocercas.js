@@ -394,15 +394,15 @@ function loadGridGeo() {
                             }]
                     });
 
-                    var tab = Ext.create('Ext.form.Panel', {
+                    var tabGeocercas = Ext.create('Ext.form.Panel', {
                         title: 'Reporte de Geocercas',
                         closable: true,
                         iconCls: 'icon-report-geo',
                         items: gridGeocerca
                     });
                     limpiar_datosGeocercas();
-                    panelTabMapaAdmin.add(tab);
-                    panelTabMapaAdmin.setActiveTab(tab);
+                    panelTabMapaAdmin.add(tabGeocercas);
+                    panelTabMapaAdmin.setActiveTab(tabGeocercas);
                 } else {
                     Ext.MessageBox.show({
                         title: 'Error...',

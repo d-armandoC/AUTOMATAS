@@ -409,7 +409,7 @@ Ext.onReady(function() {
                                             }]
                                     });
                                     var tabExces = Ext.create('Ext.container.Container', {
-                                        title: 'Encenddos y Apagados',
+                                        title: 'Encendido y Apagado',
                                         closable: true,
                                         iconCls: 'icon-servicios',
                                         layout: 'border',
@@ -697,7 +697,7 @@ Ext.onReady(function() {
                                             }]
                                     });
                                     var tabExces = Ext.create('Ext.container.Container', {
-                                        title: 'Encenddos y Apagados',
+                                        title: 'Encendido y Apagados',
                                         closable: true,
                                         iconCls: 'icon-servicios',
                                         layout: 'border',

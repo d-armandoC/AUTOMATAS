@@ -163,7 +163,7 @@ Ext.onReady(function() {
                                     personaEnerg;
                                     gridViewDataEnerg;
                                     fechaIn = fechaInigsm.getRawValue();
-                                    var storeDataReporteDetallado = Ext.create('Ext.data.JsonStore', {
+                                    var storeDataReporteenergizacionDetalladoo = Ext.create('Ext.data.JsonStore', {
                                         data: action.result.data,
                                         proxy: {
                                             type: 'ajax',
@@ -171,12 +171,12 @@ Ext.onReady(function() {
                                         },
                                         fields: ['empresaEneDes', 'personaEneDes', 'placaEneDes', 'idEquipoEneDes', 'equipoEneDes', 'totalEneDes']
                                     });
-                                    var gridDataMantenimiento = Ext.create('Ext.grid.Panel', {
+                                    var gridEnergizacion = Ext.create('Ext.grid.Panel', {
                                         region: 'west',
                                         frame: true,
                                         width: '40%',
                                         title: '<center>Evento de Energización ' + '<br>Desde: ' + fechaInicioEnerg + ' | Hasta: ' + fechaFinalEnerg + '</center>',
-                                        store: storeDataReporteDetallado,
+                                        store: storeDataReporteenergizacionDetalladoo,
                                         features: [filters],
                                         multiSelect: true,
                                         viewConfig: {
@@ -188,18 +188,18 @@ Ext.onReady(function() {
                                             {text: 'Persona', width: 290, dataIndex: 'personaEneDes', align: 'center'},
                                             {text: 'Placa', width: 130, dataIndex: 'placaEneDes', align: 'center'},
                                             {text: 'Equipo', width: 130, dataIndex: 'equipoEneDes', align: 'center'},
-                                            {text: 'Cantidad', width: 130, dataIndex: 'totalEneDes', align: 'center'},
+                                            {text: 'Cantidad', width: 130, dataIndex: 'totalEneDes', align: 'center'}
                                         ],
                                         tbar: [{
                                                 xtype: 'button',
                                                 iconCls: 'icon-excel',
                                                 text: 'Exportar a Excel',
                                                 handler: function() {
-                                                    if (storeDataReporteDetallado.getCount() > 0) {
+                                                    if (storeDataReporteenergizacionDetalladoo.getCount() > 0) {
                                                         if (getNavigator() === 'img/chrome.png') {
                                                             var a = document.createElement('a');
                                                             var data_type = 'data:application/vnd.ms-excel';
-                                                            var numFil = storeDataReporteDetallado.data.length;
+                                                            var numFil = storeDataReporteenergizacionDetalladoo.data.length;
                                                             var numCol = 5;
                                                             var tiLetra = 'Calibri';
                                                             var titulo = 'Cantidad de Equipos de Registro de Conectado y Desconectado'
@@ -228,11 +228,11 @@ Ext.onReady(function() {
                                                                     "</Row>";
                                                             for (var i = 0; i < numFil; i++) {
                                                                 table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.mpresaEneDes + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.personaEneDes + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.placaEneDes + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.equipoEneDes + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.totalEneDes + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetalladoo.data.items[i].data.mpresaEneDes + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetalladoo.data.items[i].data.personaEneDes + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetalladoo.data.items[i].data.placaEneDes + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetalladoo.data.items[i].data.equipoEneDes + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetalladoo.data.items[i].data.totalEneDes + " </Data></Cell > " +
                                                                         "</Row>";
                                                             }
                                                             table_div += "</Table> </Worksheet></Workbook>";
@@ -259,33 +259,13 @@ Ext.onReady(function() {
                                                 }
                                             }],
                                         listeners: {
-                                            itemcontextmenu: function(thisObj, record, item, index, e, eOpts) {
-                                                e.stopEvent();
-                                                Ext.create('Ext.menu.Menu', {
-                                                    items: [
-                                                        Ext.create('Ext.Action', {
-                                                            iconCls: 'icon-vehiculos_lugar', // Use a URL in the icon config
-                                                            text: 'Ver Detalles',
-                                                            disabled: false,
-                                                            handler: function(widget, event) {
-//                                                                if (vistaVistaRegistrosEnerg) {
-//                                                                    vistaVistaRegistrosEnerg.hide();
-//                                                                }
-//                                                                metodoRegistros(record.data.empresa, record.data.vehiculo, record.data.total, record.data.fechaSoatReg, record.data.fechaSoatVenc, record.data.descripSoat, record.data.fechaMatriculaReg, record.data.fechaMatriculaVenc, record.data.descripMatricula, record.data.fechaSeguroReg, record.data.fechaSeguroVenc, record.data.descripSeguro);
-//                                                                vistaVistaRegistrosEnerg.show();
-                                                            }
-                                                        })
-                                                    ]
-                                                }).showAt(e.getXY());
-                                                return false;
-                                            },
                                             itemclick: function(thisObj, record, item, index, e, eOpts) {
                                                 modalEleccionBusqEnerg = record.get('mpresaEneDes');
                                                 vehiculoEnerg = record.get('vehiculo');
                                                 var equipo = record.get('idEquipoEneDes');
                                                 banderaEnerg = 1;
 
-                                                gridViewDataEnerg.setTitle('<center>Lista de Equipos con Evento de Encendido y Apagado <br>Empresa: ' + modalEleccionBusqEnerg + ' Desde: ' + fechaInicioEnerg + ' Hasta:' + fechaFinalEnerg + '</center>');
+                                                gridViewDataEnerg.setTitle('<center>Lista de Equipos <br>Empresa: ' + modalEleccionBusqEnerg + ' Desde: ' + fechaInicioEnerg + ' Hasta:' + fechaFinalEnerg + '</center>');
                                                 storeViewEnerg.load({
                                                     params: {
                                                         dateIniEncApag: fechaIniEnerg.getRawValue(),
@@ -414,7 +394,7 @@ Ext.onReady(function() {
                                         height: 485,
                                         width: 2000,
                                         region: 'center',
-                                        items: [gridDataMantenimiento, gridViewDataEnerg]
+                                        items: [gridEnergizacion, gridViewDataEnerg]
                                     });
                                     panelTabMapaAdmin.add(tabExces);
                                     panelTabMapaAdmin.setActiveTab(tabExces);
@@ -684,10 +664,10 @@ Ext.onReady(function() {
                                                 }
                                             }]
                                     });
-                                    var tabExces = Ext.create('Ext.container.Container', {
+                                    var tabEnergiacion = Ext.create('Ext.container.Container', {
                                         title: 'Evento de Energización',
                                         closable: true,
-                                        iconCls: 'icon-servicios',
+                                        iconCls: 'icon-conexcion',
                                         layout: 'border',
                                         fullscreen: true,
                                         height: 485,
@@ -695,8 +675,8 @@ Ext.onReady(function() {
                                         region: 'center',
                                         items: [gridDataMantenimiento, gridViewDataEnerg]
                                     });
-                                    panelTabMapaAdmin.add(tabExces);
-                                    panelTabMapaAdmin.setActiveTab(tabExces);
+                                    panelTabMapaAdmin.add(tabEnergiacion);
+                                    panelTabMapaAdmin.setActiveTab(tabEnergiacion);
                                     VentanaEnerg.hide();
                                 },
                                 failure: function(form, action) {
@@ -726,7 +706,7 @@ Ext.onReady(function() {
 });
 
 
-function showWinEnergizcion() {
+function showWinEnergizar() {
     if (!VentanaEnerg) {
         VentanaEnerg = Ext.create('Ext.window.Window', {
             layout: 'fit',
