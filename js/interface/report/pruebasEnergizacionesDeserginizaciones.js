@@ -163,7 +163,7 @@ Ext.onReady(function() {
                                     personaEnerg;
                                     gridViewDataEnerg;
                                     fechaIn = fechaInigsm.getRawValue();
-                                    var storeDataReporteenergizacionDetalladoo = Ext.create('Ext.data.JsonStore', {
+                                    var storeDataReporteenergizacionDetallado = Ext.create('Ext.data.JsonStore', {
                                         data: action.result.data,
                                         proxy: {
                                             type: 'ajax',
@@ -176,7 +176,7 @@ Ext.onReady(function() {
                                         frame: true,
                                         width: '40%',
                                         title: '<center>Evento de Energización ' + '<br>Desde: ' + fechaInicioEnerg + ' | Hasta: ' + fechaFinalEnerg + '</center>',
-                                        store: storeDataReporteenergizacionDetalladoo,
+                                        store: storeDataReporteenergizacionDetallado,
                                         features: [filters],
                                         multiSelect: true,
                                         viewConfig: {
@@ -195,11 +195,11 @@ Ext.onReady(function() {
                                                 iconCls: 'icon-excel',
                                                 text: 'Exportar a Excel',
                                                 handler: function() {
-                                                    if (storeDataReporteenergizacionDetalladoo.getCount() > 0) {
+                                                    if (storeDataReporteenergizacionDetallado.getCount() > 0) {
                                                         if (getNavigator() === 'img/chrome.png') {
                                                             var a = document.createElement('a');
                                                             var data_type = 'data:application/vnd.ms-excel';
-                                                            var numFil = storeDataReporteenergizacionDetalladoo.data.length;
+                                                            var numFil = storeDataReporteenergizacionDetallado.data.length;
                                                             var numCol = 5;
                                                             var tiLetra = 'Calibri';
                                                             var titulo = 'Cantidad de Equipos de Registro de Conectado y Desconectado'
@@ -228,11 +228,11 @@ Ext.onReady(function() {
                                                                     "</Row>";
                                                             for (var i = 0; i < numFil; i++) {
                                                                 table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetalladoo.data.items[i].data.mpresaEneDes + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetalladoo.data.items[i].data.personaEneDes + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetalladoo.data.items[i].data.placaEneDes + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetalladoo.data.items[i].data.equipoEneDes + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetalladoo.data.items[i].data.totalEneDes + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetallado.data.items[i].data.empresaEneDes + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetallado.data.items[i].data.personaEneDes + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetallado.data.items[i].data.placaEneDes + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetallado.data.items[i].data.equipoEneDes + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetallado.data.items[i].data.totalEneDes + " </Data></Cell > " +
                                                                         "</Row>";
                                                             }
                                                             table_div += "</Table> </Worksheet></Workbook>";
@@ -385,10 +385,10 @@ Ext.onReady(function() {
                                                 }
                                             }]
                                     });
-                                    var tabExces = Ext.create('Ext.container.Container', {
-                                        title: 'Encenddos y Apagados',
+                                    var tabEnergizacion = Ext.create('Ext.container.Container', {
+                                        title: 'Reporte de Energización',
                                         closable: true,
-                                        iconCls: 'icon-servicios',
+                                        iconCls: 'icon-conexcion',
                                         layout: 'border',
                                         fullscreen: true,
                                         height: 485,
@@ -396,8 +396,8 @@ Ext.onReady(function() {
                                         region: 'center',
                                         items: [gridEnergizacion, gridViewDataEnerg]
                                     });
-                                    panelTabMapaAdmin.add(tabExces);
-                                    panelTabMapaAdmin.setActiveTab(tabExces);
+                                    panelTabMapaAdmin.add(tabEnergizacion);
+                                    panelTabMapaAdmin.setActiveTab(tabEnergizacion);
                                     VentanaEnerg.hide();
                                 },
                                 failure: function(form, action) {
