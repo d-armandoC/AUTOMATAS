@@ -35,7 +35,7 @@ Ext.onReady(function() {
 
     cbxEmpresasEnerg = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Cooperativa',
-        name: 'idCompanyExcesos',
+        name: 'idCompanyEnerg',
         store: storeEmpresas,
         valueField: 'id',
         displayField: 'text',
@@ -54,24 +54,24 @@ Ext.onReady(function() {
     var fechaIniEnerg = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
-        id: 'fechaInimanten',
-        name: 'fechaInimanten',
+        id: 'fechaIniEnerg',
+        name: 'fechaIniEnerg',
         value: new Date(),
         maxText: 'La fecha debe ser igual o anterior a <br> {0}',
         allowBlank: false,
-        endDateField: 'fechaFinExcesos',
+        endDateField: 'fechaFinEnerg',
         emptyText: 'Fecha Inicial...'
     });
     var fechaFinEnerg = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Hasta el',
         format: 'Y-m-d',
-        id: 'fechaFinManten',
-        name: 'fechaFinManten',
+        id: 'fechaFinEnerg',
+        name: 'fechaFinEnerg',
         vtype: 'daterange',
         value: new Date(),
         maxValue: new Date(),
         allowBlank: false,
-        startDateField: 'fechaInimanten',
+        startDateField: 'fechaIniEnerg',
         emptyText: 'Fecha Final...'
     });
     var btn_HoyEnerg = Ext.create('Ext.button.Button', {
@@ -423,7 +423,7 @@ Ext.onReady(function() {
                                 failure: function(form, action) {
                                     Ext.MessageBox.show({
                                         title: 'Información',
-                                        msg: action.result.message,
+                                        msg: action.result.msg,
                                         buttons: Ext.MessageBox.OK,
                                         icon: Ext.MessageBox.INFO
                                     });
@@ -702,7 +702,7 @@ Ext.onReady(function() {
                                 failure: function(form, action) {
                                     Ext.MessageBox.show({
                                         title: 'Información',
-                                        msg: action.result.message,
+                                        msg: action.result.msg,
                                         buttons: Ext.MessageBox.OK,
                                         icon: Ext.MessageBox.INFO
                                     });
@@ -731,10 +731,10 @@ function showWinEnergizcion() {
         VentanaEnerg = Ext.create('Ext.window.Window', {
             layout: 'fit',
             title: ' Evento de Energización',
-            iconCls: 'icon-on-off',
+            iconCls: 'icon-conexcion',
             resizable: false,
             width: 350,
-            height: 350,
+            height: 300,
             closeAction: 'hide',
             plain: false,
             items: formularioEnerg

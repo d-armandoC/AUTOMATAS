@@ -11,7 +11,6 @@ var storeViewExcesosEA;
 var storeDataea;
 var empresaEA = 1;
 var cbxEmpresasEA;
-//var vistaVistaRegistrosEA;
 var modalEleccionBusqueda = 1;
 var id_vehiculoEA;
 var vehiculoEA;
@@ -282,13 +281,13 @@ Ext.onReady(function() {
                                                 return false;
                                             },
                                             itemclick: function(thisObj, record, item, index, e, eOpts) {
-                                                modalEleccionBusqueda = record.get('empresa');
+                                               var empresa = record.get('empresaEncApag');
                                                 id_vehiculoEA = record.get('id_vehiculo');
                                                 vehiculoEA = record.get('vehiculo');
                                                 var equipo = record.get('idEquipoEncApag');
                                                 banderaEA = 1;
 
-                                                gridViewDataEA.setTitle('<center>Lista de Equipos con Evento de Encendido y Apagado <br>Empresa: ' + modalEleccionBusqueda + ' Desde: ' + fechaInicioEA + ' Hasta:' + fechaFinalEA + '</center>');
+                                                gridViewDataEA.setTitle('<center>Lista de Equipos con Evento de Encendido y Apagado <br>Empresa: ' + empresa + ' Desde: ' + fechaInicioEA + ' Hasta:' + fechaFinalEA + '</center>');
                                                 storeViewEA.load({
                                                     params: {
                                                         dateIniEncApag: fechaIniEA.getRawValue(),
@@ -427,7 +426,7 @@ Ext.onReady(function() {
                                 failure: function(form, action) {
                                     Ext.MessageBox.show({
                                         title: 'Información',
-                                        msg: action.result.message,
+                                        msg: action.result.msg,
                                         buttons: Ext.MessageBox.OK,
                                         icon: Ext.MessageBox.INFO
                                     });
@@ -570,13 +569,13 @@ Ext.onReady(function() {
                                                 return false;
                                             },
                                             itemclick: function(thisObj, record, item, index, e, eOpts) {
-                                                modalEleccionBusqueda = record.get('empresa');
+                                                var empresa = record.get('empresaEncApag');
                                                 id_vehiculoEA = record.get('id_vehiculo');
                                                 vehiculoEA = record.get('vehiculo');
                                                 var equipo = record.get('idEquipoEncApag');
                                                 banderaEA = 1;
 
-                                                gridViewDataEA.setTitle('<center>Lista de Equipos con Evento de Encendido y Apagado <br>Empresa: ' + modalEleccionBusqueda + ' Desde: ' + fechaInicioEA + ' Hasta:' + fechaFinalEA + '</center>');
+                                                gridViewDataEA.setTitle('<center>Lista de Equipos con Evento de Encendido y Apagado <br>Empresa: ' + empresa + ' Desde: ' + fechaInicioEA + ' Hasta:' + fechaFinalEA + '</center>');
                                                 storeViewEA.load({
                                                     params: {
                                                         dateIniEncApag: fechaIniEA.getRawValue(),
@@ -715,7 +714,7 @@ Ext.onReady(function() {
                                 failure: function(form, action) {
                                     Ext.MessageBox.show({
                                         title: 'Información',
-                                        msg: action.result.message,
+                                        msg: action.result.msg,
                                         buttons: Ext.MessageBox.OK,
                                         icon: Ext.MessageBox.INFO
                                     });
@@ -744,7 +743,7 @@ function showWinencendidoapagado() {
         VentanaEA = Ext.create('Ext.window.Window', {
             layout: 'fit',
             title: ' Evento de Encendido y Apagado',
-            iconCls: 'icon-on-off',
+            iconCls: 'icon-encendido',
             resizable: false,
             width: 350,
             height: 300,

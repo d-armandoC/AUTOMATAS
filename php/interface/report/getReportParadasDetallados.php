@@ -7,15 +7,12 @@ include ('../../../dll/config.php');
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.'}";
 } else {
-    $consultaSql = "SELECT emp.id_empresa,v.id_vehiculo,emp.empresa ,eq.equipo,V.placa, V.vehiculo, R.latitud,R.longitud,R.fecha,R.hora,R.velocidad,R.bateria,R.gsm,R.gps,R.ign,SE.sky_evento
-    FROM karviewhistoricodb.dato_spks R, karviewdb.sky_eventos SE, karviewdb.vehiculos v, karviewdb.equipos eq, karviewdb.empresas emp
-    WHERE  R.ID_EQUIPO  =V.ID_EQUIPO and eq.id_equipo=v.id_equipo and R.id_sky_evento=SE.id_sky_evento and v.id_empresa=emp.id_empresa and SE.id_sky_evento= 13 and v.id_vehiculo='$idVehiculo'";
+    $consultaSql = "SELECT emp.id_empresa,v.id_vehiculo,emp.empresa ,eq.equipo,V.placa, V.vehiculo, skp.latitud,skp.longitud,skp.fecha,skp.hora,skp.velocidad,skp.bateria,skp.gsm,skp.gps,skp.ign,SE.sky_evento
+    FROM karviewhistoricodb.dato_spks skp, karviewdb.sky_eventos SE, karviewdb.vehiculos v, karviewdb.equipos eq, karviewdb.empresas emp
+    WHERE  skp.ID_EQUIPO  =V.ID_EQUIPO and eq.id_equipo=v.id_equipo and skp.id_sky_evento=SE.id_sky_evento and v.id_empresa=emp.id_empresa 
+    and (skp.fecha between '$fechainiParadas' and '$fechafinParadas') and SE.id_sky_evento= 13 and v.id_vehiculo='$idVehiculo'";
     $result = $mysqli->query($consultaSql);
-
-
-    $mysqli->close();
-
-    if (($result->num_rows > 0) || ($result1->num_rows > 0)) {
+    if (($result->num_rows > 0)) {
 
         $json = "data: [";
         while ($myrow = $result->fetch_assoc()) {
@@ -42,5 +39,5 @@ if (!$mysqli = getConectionDb()) {
     } else {
         echo "{failure: true, message:'No hay datos entre estas Fechas y Horas.'}";
     }
-
+    $mysqli->close();
 }

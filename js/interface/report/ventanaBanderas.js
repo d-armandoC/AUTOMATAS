@@ -51,7 +51,7 @@ Ext.onReady(function() {
         name: 'fechaIni',
         value: new Date(),
         maxValue: new Date(),
-        vtype: 'daterange',
+//        vtype: 'daterange',
         allowBlank: false,
         endDateField: 'fechaFinBan',
         emptyText: 'Fecha Inicial...',

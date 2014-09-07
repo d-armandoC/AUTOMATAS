@@ -76,7 +76,7 @@ Ext.onReady(function() {
         value: new Date(),
         maxValue: new Date(),
         name: 'fechaIni',
-        vtype: 'daterange',
+//        vtype: 'daterange',
         allowBlank: false,
         endDateField: 'fechaFinGeo',
         emptyText: 'Fecha Inicial...'

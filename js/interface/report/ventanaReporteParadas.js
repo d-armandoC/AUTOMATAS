@@ -134,7 +134,7 @@ Ext.onReady(function() {
                 items: [
                     dateIniparadas,
                     dateFinParadas,
-//                    panelButtons,
+                    panelButtonsparadas,
                 ]
             }
         ],
@@ -151,7 +151,7 @@ Ext.onReady(function() {
                             waitTitle: 'Procesando...',
                             waitMsg: 'Obteniendo Información',
                             params: {
-                                idEmpresas: idEmpresa
+                                idEmpresas: idEmpresa,
                             },
                             success: function(form, action) {
                                 console.log(action.result.countByParadas);
@@ -259,7 +259,9 @@ Ext.onReady(function() {
                                             banderaParadas = 1;
                                             storeViewParadas.load({
                                                 params: {
-                                                    idVehiculo: id_vehiculo_paradas
+                                                    idVehiculo: id_vehiculo_paradas,
+                                                    fechainiParadas: fechaInicio,
+                                                    fechafinParadas: fechaFin
                                                 }
                                             });
                                             gridViewDataParadas.setTitle('<center>Lista de Equipos que Reportan Enento de Prada : <br>Empresa: ' + reg_empresa + ' Desde: ' + fechaInicio + ' Hasta:' + fechaFin + '</center>');

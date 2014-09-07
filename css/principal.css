@@ -141,6 +141,10 @@ td.tabla_titulo h3{
 .icon-mantenimiento {background-image: url(../img/icon_terracan.png) !important;}
 .icon-limpiar {background-image: url(../img/fin.png) !important;}
 .icon-ir {background-image: url(../img/inicio.png) !important;}
+.icon-act-mapa {background-image: url(../img/update.png) !important;}
+.icon-encendido {background-image: url(../img/icon_estado_veh.png) !important;}
+.icon-conexcion {background-image: url(../img/feed_add.png) !important;}
+
 
 #icono{
 	position: absolute;	

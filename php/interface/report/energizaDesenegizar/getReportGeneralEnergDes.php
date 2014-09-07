@@ -10,7 +10,7 @@ if (!$mysqli = getConectionDb()) {
         FROM karviewdb.vehiculos v ,karviewdb.empresas emp , karviewdb.personas p,karviewdb.equipos e, 
 	karviewhistoricodb.dato_spks  sk 
         where    v.id_empresa=emp.id_empresa and v.id_persona=p.id_persona and v.id_equipo=e.id_equipo and  
-        sk.id_sky_evento in(6,7) and v.id_equipo=sk.id_equipo and sk.fecha between '$fechaInimanten' and '$fechaFinManten'
+        sk.id_sky_evento in(6,7) and v.id_equipo=sk.id_equipo and sk.fecha between '$fechaIniEnerg' and '$fechaFinEnerg'
         group by v.id_vehiculo";
     
     $result = $mysqli->query($consultaSql);

@@ -32,7 +32,7 @@ Ext.onReady(function() {
 
     var cbxEmpresasBD = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Cooperativa',
-        name: 'cbxEmpresas',
+        name: 'cbxEmpresasEvent',
         store: storeEmpresas,
         valueField: 'id',
         displayField: 'text',
@@ -42,7 +42,7 @@ Ext.onReady(function() {
         allowBlank: false,
         listeners: {
             select: function(combo, records, eOpts) {
-                var listSelected = contenedorwinEvt.down('[name=listVeh]');
+                var listSelected = contenedorwinEvt.down('[name=listVehEvent]');
                 listSelected.clearValue();
                 listSelected.fromField.store.removeAll();
 
@@ -54,10 +54,10 @@ Ext.onReady(function() {
             }
         }
     });
-
+    
     var cbxVehBD = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Vehículo:',
-        name: 'cbxVeh',
+        name: 'cbxVehEvent',
         store: storeVeh,
         valueField: 'id',
         displayField: 'text',
@@ -74,32 +74,32 @@ Ext.onReady(function() {
     var dateIni = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
-        id: 'fechaIniEvt',
-        name: 'fechaIni',
+        id: 'fechaIniEvent',
+        name: 'fechaIniEvent',
         value: new Date(),
         maxValue: new Date(),
-        vtype: 'daterange',
+        //vtype: 'daterange',
         allowBlank: false,
-        endDateField: 'fechaFinEvt',
+        endDateField: 'fechaFinEvent',
         emptyText: 'Fecha Inicial...'
     });
 
     var dateFin = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Hasta el',
         format: 'Y-m-d',
-        id: 'fechaFinEvt',
-        name: 'fechaFin',
+        id: 'fechaFinEvent',
+        name: 'fechaFinEvent',
         value: new Date(),
         maxValue: new Date(),
         vtype: 'daterange',
         allowBlank: false,
-        startDateField: 'fechaIniEvt',
+        startDateField: 'fechaIniEvent',
         emptyText: 'Fecha Final...'
     });
 
     var timeIni = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
-        name: 'horaIni',
+        name: 'horaIniEvent',
         format: 'H:i',
         allowBlank: false,
         emptyText: 'Hora Inicial...'
@@ -107,7 +107,7 @@ Ext.onReady(function() {
 
     var timeFin = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Hasta las',
-        name: 'horaFin',
+        name: 'horaFinEvent',
         format: 'H:i',
         allowBlank: false,
         emptyText: 'Hora Final...'
@@ -196,7 +196,7 @@ Ext.onReady(function() {
                 baseCls: 'x-plain',
                 items: [{
                         xtype: 'itemselector',
-                        name: 'listVeh',
+                        name: 'listVehEvent',
                         anchor: '97%',
                         height: 150,
                         store: storeVeh,
@@ -297,14 +297,14 @@ function ventanaEventos() {
 
 function loadGridEvents() {
 
-    var empresa = contenedorwinEvt.down('[name=cbxEmpresas]').getValue();
-    var listVeh = contenedorwinEvt.down('[name=listVeh]').getValue();
+    var empresa = contenedorwinEvt.down('[name=cbxEmpresasEvent]').getValue();
+    var listVeh = contenedorwinEvt.down('[name=listVehEvent]').getValue();
     var listEvt = contenedorwinEvt.down('[name=listEvt]').getValue();
-    var fi = formatoFecha(contenedorwinEvt.down('[name=fechaIni]').getValue());
-    var ff = formatoFecha(contenedorwinEvt.down('[name=fechaFin]').getValue());
-    var hi = formatoHora(contenedorwinEvt.down('[name=horaIni]').getValue());
-    var hf = formatoHora(contenedorwinEvt.down('[name=horaFin]').getValue());
-    var nameEmp = contenedorwinEvt.down('[name=cbxEmpresas]').getRawValue();
+    var fi = formatoFecha(contenedorwinEvt.down('[name=fechaIniEvent]').getValue());
+    var ff = formatoFecha(contenedorwinEvt.down('[name=fechaFinEvent]').getValue());
+    var hi = formatoHora(contenedorwinEvt.down('[name=horaIniEvent]').getValue());
+    var hf = formatoHora(contenedorwinEvt.down('[name=horaFinEvent]').getValue());
+    var nameEmp = contenedorwinEvt.down('[name=cbxEmpresasEvent]').getRawValue();
 
     Ext.MessageBox.show({
         title: "Cargando....",

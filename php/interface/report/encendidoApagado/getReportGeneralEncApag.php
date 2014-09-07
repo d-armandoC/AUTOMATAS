@@ -33,7 +33,7 @@ if (!$mysqli = getConectionDb()) {
     if ($haveData) {
         echo "{success: true,$objJson}";
     } else {
-        echo "{failure: true, msg: 'No hay Datos quee mostrar'}";
+        echo "{failure: true, msg: 'No hay datos que mostrar en estas Fechas'}";
     }
     $mysqli->close();
 } 

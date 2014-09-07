@@ -52,7 +52,7 @@ Ext.onReady(function() {
         name: 'fechaIni',
         value: new Date(),
         maxValue: new Date(),
-        vtype: 'daterange',
+//        vtype: 'daterange',
         allowBlank: false,
         endDateField: 'fechaFinCmdHist',
         emptyText: 'Fecha Inicial...'
@@ -252,15 +252,6 @@ function loadGridCmdHist() {
                 root: 'cmd_hist'
             }
         },
-//         "usuario:'" . utf8_encode($myrow["usuario"]) . "',"
-//                . "comando:'" . utf8_encode($myrow["comando"]) . "',"
-//                . "respuesta:'" . utf8_encode($myrow["respuesta"]) . "',"
-//                . "fecha_creacion:'" . $myrow["fecha_hora_registro"] . "',"
-//                . "fecha_envio:'" .$myrow["fecha_hora_envio"] . "',"
-//                . "estado:'" . $myrow["estado"] . "'"
-
-
-
 
         fields: ['usuario', 'comando', 'respuesta', 'fecha_creacion', 'fecha_envio', 'estado'],
         listeners: {

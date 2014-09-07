@@ -153,7 +153,7 @@ Ext.onReady(function() {
             }
             return true;
         },
-        emailNuevoText: 'Dede ingresar segun el formato kradac@kradac.com <br>sin caracteres especiales',
+        emailNuevoText: 'Debe ingresar segun el formato kradac@kradac.com <br>sin caracteres especiales',
         campos: function(val, field) {
             if (!/^[-0-9.A-Z.a-z./áéíóúñÑ\s*]{2,45}$/.test(val)) {
                 return false;
@@ -257,14 +257,14 @@ Ext.onReady(function() {
             }
             return true;
         },
-        num1Text: 'Solo carateres numéricos',
+        num1Texto: 'Solo carateres numéricos',
 //para numeros 3-45
-                num2: function(val, field) {
-                    if (!/^[0-9]{3,45}$/.test(val)) {
-                        return false;
-                    }
-                    return true;
-                },
+        num2: function(val, field) {
+            if (!/^[0-9]{3,45}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
         num2Text: 'Solo carateres numéricos mínimo 3 y un máximo de 45',
         camposRegMun: function(val, field) {
             if (!/^[-0-9A-Za-z]{3,10}$/.test(val)) {
@@ -313,6 +313,7 @@ Ext.onReady(function() {
     var administracion = Ext.create('Ext.button.Button', {
         text: 'Administración',
         iconCls: 'icon-direccion',
+        tooltip: 'Administración de Usuarios, Equipos y Vehiculos',
         scope: this,
         menu: [
             {text: 'Empresas', iconCls: 'icon-central', handler: function() {
@@ -343,7 +344,7 @@ Ext.onReady(function() {
                 }},
             {text: 'Vehiculos', iconCls: 'icon-car', handler: function() {
                     ventanaAddVehiculos();
-                }}, 
+                }},
             {
                 text: 'Geocercas',
                 iconCls: 'icon-geocerca',
@@ -365,6 +366,7 @@ Ext.onReady(function() {
     var herraminetas = Ext.create('Ext.button.Button', {
         text: 'Herramintas',
         scope: this,
+        tooltip: 'Herramintas de Acceso Rapido',
         iconCls: 'icon-config',
         menu: [
             {text: 'Modificar usuarios', iconCls: 'icon-personal', handler: function() {
@@ -392,8 +394,7 @@ Ext.onReady(function() {
     });
 
     var editPosEmp = Ext.create('Ext.button.Button', {
-        text: 'Editar Empresas',
-        iconCls: 'icon-edit',
+        iconCls: '.icon-act-mapa',
         scope: this,
         handler: function() {
             // ventanaEditarPuntos();
@@ -401,7 +402,9 @@ Ext.onReady(function() {
     });
 
     var monitoreo = Ext.create('Ext.button.Button', {
-        text: 'Monitoreo', iconCls: 'icon-monitoreo', handler: function() {
+        text: 'Monitoreo',
+        tooltip: 'Estado Actual de los Vehiculos y Equipos',
+        iconCls: 'icon-monitoreo', handler: function() {
             window.open('monitorTeam.php');
         }
 
@@ -411,6 +414,7 @@ Ext.onReady(function() {
         id: 'custom',
         text: 'Salir',
         scope: this,
+         tooltip: 'Salir del Sistema',
         icon: 'img/salir.png',
         handler: function() {
             Ext.MessageBox.confirm('SALIR', 'Desea Salir del Sistema ?', function(choice) {
@@ -428,6 +432,7 @@ Ext.onReady(function() {
         items: [{
                 text: 'Menú',
                 icon: 'img/menu.png',
+                tooltip: 'Reportes Informativos',
                 menu: [{
                         text: 'Reportes',
                         iconCls: 'icon-general',
@@ -436,8 +441,8 @@ Ext.onReady(function() {
                                     showWinPanicosDaily();
                                 }},
                             {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function() {
-                                  ventanaexcesosvelociadadWin();
-                                }}, 
+                                    ventanaexcesosvelociadadWin();
+                                }},
                             {text: 'Mantenimiento Detallado', iconCls: 'icon-servicios', handler: function() {
                                     showWinMantenimientoGeneral();
                                 }},
@@ -456,28 +461,34 @@ Ext.onReady(function() {
                             {text: 'CMD Enviados', iconCls: 'icon-cmd-hist', handler: function() {
                                     ventanaCmdHistorial();
                                 }},
-                            {text: 'Reporte de Encendido y Apagado', iconCls: 'icon-on-off', handler: function() {
+                            {text: 'Reporte de Encendido y Apagado', iconCls: 'icon-encendido', handler: function() {
                                     showWinencendidoapagado();
                                 }},
-                            {text: 'Conexion y desconexion enegia de Equipo', iconCls: 'icon-on-off', handler: function() {
+                            {text: 'Conexion y desconexion enegia de Equipo', iconCls: 'icon-conexcion', handler: function() {
                                     showWinEnergizcion();
                                 }},
                             {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
                                     ventanaEventos();
                                 }}
                         ]
-                    },
-                    {text: 'Limpiar Mapa', iconCls: 'icon-limpiar-mapa', handler: function() {
-                            clearLienzoPointTravel();
-                            var lonlatCenter = new OpenLayers.LonLat(0, 100000000);
-                            map.setCenter(lonlatCenter, 7);
-                        }}
+                    }
+
                 ]
             },
             herraminetas,
             monitoreo,
             administracion
                     , '->',
+            {
+                xtype: 'button',
+                iconCls: 'icon-act-mapa',
+                tooltip: 'Limpiar Mapa',
+                handler: function() {
+                    clearLienzoPointTravel();
+                    var lonlatCenter = new OpenLayers.LonLat(0, 100000000);
+                    map.setCenter(lonlatCenter, 7);
+
+                }},
             salir,
             {
                 xtype: 'label',
@@ -779,6 +790,7 @@ Ext.onReady(function() {
                 xtype: 'splitbutton',
                 text: 'Cooperativas',
                 iconCls: 'icon-central',
+                tooltip: 'Empresas Asociadas',
                 menu: menuCoop,
                 handler: function() {
                     this.showMenu();
@@ -847,7 +859,7 @@ Ext.onReady(function() {
         items: [
             toolBarOnMap,
             panelTabMapaAdmin
-            //gridEventos
+                    //gridEventos
         ]
     });
 
