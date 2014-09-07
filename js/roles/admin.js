@@ -367,7 +367,7 @@ Ext.onReady(function() {
         scope: this,
         iconCls: 'icon-config',
         menu: [
-            {text: 'Modificar usuario', iconCls: 'icon-personal', handler: function() {
+            {text: 'Modificar usuarios', iconCls: 'icon-personal', handler: function() {
                     ventanaModificarUsuario();
                 }},
             {text: 'Cambiar contraseña', iconCls: 'icon-key', handler: function() {
@@ -380,14 +380,14 @@ Ext.onReady(function() {
 //                    ventanaActualizarEmail();
 //                }},
             '-',
-            {text: 'Videos',
-                iconCls: 'icon-video',
-                handler: showVideo
-            },
-            {text: 'Creditos', iconCls: 'icon-credits', handler: function() {
-                    credits();
-                    spot.show('panel-credit');
-                }}
+//            {text: 'Videos',
+//                iconCls: 'icon-video',
+//                handler: showVideo
+//            },
+//            {text: 'Creditos', iconCls: 'icon-credits', handler: function() {
+//                    credits();
+//                    spot.show('panel-credit');
+//                }}
         ]
     });
 
