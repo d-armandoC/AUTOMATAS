@@ -438,7 +438,7 @@ Ext.onReady(function() {
                         iconCls: 'icon-general',
                         menu: [
                             {text: 'Registros de Panico', iconCls: 'icon-reset', handler: function() {
-                                    showWinPanicosDaily();
+                                   showWinPanicosDaily();
                                 }},
                             {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function() {
                                     ventanaexcesosvelociadadWin();

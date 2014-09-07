@@ -350,9 +350,6 @@ function ventanaexcesosvelociadadWin() {
 
 
 function generarExcelRecorrido(store) {
-//    var fecha_recaudo_inicial = Ext.getCmp('fechaInisR').getValue();
-//    var fecha_recaudo_final = Ext.getCmp('fechaFinsR').getValue();
-//    var records = store.length;
     console.log(store);
     if (store.length > 0) {
         if (getNavigator() === 'img/chrome.png') {
