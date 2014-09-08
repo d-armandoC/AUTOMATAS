@@ -245,68 +245,6 @@ Ext.onReady(function() {
                                             }
                                         }
                                     }],
-//                                tbar: [{
-//                                        xtype: 'button',
-//                                        iconCls: 'icon-excel',
-//                                        text: 'Exportar a Excel',
-//                                        handler: function() {
-//                                            var h0, h1, h2, h3, h4, h5, h6, h7;
-//                                            h0 = h1 = h2 = h3 = h4 = h5 = h6 = h7 = true;
-//                                            if (storeDataExcesos.getCount() > 0) {
-//                                                var a = document.createElement('a');
-////getting data from our div that contains the HTML table
-//                                                var data_type = 'data:application/vnd.ms-excel';
-////var table_div = document.getElementById('exportar');
-////var table_html = table_div.outerHTML.replace(/ /g, '%20');
-//                                                var tiLetra = 'Calibri';
-//                                                var table_div = "<meta charset='UTF-8'><body>" +
-//                                                        "<font face='" + tiLetra + "'><table>" +
-//                                                        "<tr><th colspan='7'>Panicos de Equipos" + "</th></tr>" +
-//                                                        "<tr><th colspan='7'>Desde " + dateStart + " hasta " + dateFinish + "</th></tr>" +
-//                                                        "<tr></tr>";
-//                                                table_div += "<tr>";
-//                                                if (h1)
-//                                                    table_div += "<th align=left>Empresa</th>";
-//                                                if (h1)
-//                                                    table_div += "<th align=left>Persona</th>";
-//                                                if (h3)
-//                                                    table_div += "<th align=left>Placa</th>";
-//                                                if (h5)
-//                                                    table_div += "<th align=left>Cantidad</th>";
-//
-//                                                table_div += "</tr>";
-//                                                for (var i = 0; i < storeDataExcesos.data.length; i++) {
-//                                                    table_div += "<tr>";
-//                                                    if (h0)
-//                                                        table_div += "<td align=lef>" + storeDataExcesos.data.items[i].data.empresaPanicos + "</td>";
-//                                                    if (h1)
-//                                                        table_div += "<td align=lef>" + storeDataExcesos.data.items[i].data.personaPanicos + "</td>";
-//                                                    if (h3)
-//                                                        table_div += "<td align=lef>" + storeDataExcesos.data.items[i].data.placaPanicos + "</td>";
-//                                                    if (h5)
-//                                                        table_div += "<td align=lef>" + storeDataExcesos.data.items[i].data.cantidadPanicos + "</td>";
-//                                                    table_div += "</tr>";
-//                                                }
-//                                                ;
-//                                                table_div += "</table></font></body>";
-//                                                var table_html = table_div.replace(/ /g, '%20');
-//                                                a.href = data_type + ', ' + table_html;
-////setting the file name
-//                                                a.download = 'Panicos' + dateStart + '_' + dateFinish + '.xls';
-////triggering the function
-//                                                a.click();
-//                                            } else {
-//                                                Ext.MessageBox.show({
-//                                                    title: 'Error...',
-//                                                    msg: 'No hay datos en la Lista a Exportar',
-//                                                    buttons: Ext.MessageBox.OK,
-//                                                    icon: Ext.MessageBox.ERROR
-//                                                });
-//                                            }
-//                                        }
-//                                    }]
-
-
                                  listeners: {
                                     itemclick: function(thisObj, record, item, index, e, eOpts) {
                                         idEquipoPanico = record.get('idEquipoPanicos');
