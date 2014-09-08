@@ -507,6 +507,7 @@ Ext.onReady(function() {
         store: storeListaNegra,
         iconCls: 'icon-estado-veh',
         columnLines: true,
+        
         multiSelect: true,
         features: [filters],
         listeners: {
@@ -514,6 +515,7 @@ Ext.onReady(function() {
             console.log('selccionado');
             }
         },
+        
         viewConfig: {
             emptyText: '<center>No hay datos que Mostrar</center>',
             loadMask: false,
