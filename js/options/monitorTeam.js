@@ -5,6 +5,12 @@ Ext.Loader.setConfig({
 var refresh = false;
 var timeRefresh = 15;
 var bandera = false;
+var labelInformativo = Ext.create('Ext.form.Label', {
+    text: '',
+    style: {
+        color: 'black'
+    }
+});
 var labelDatos = Ext.create('Ext.form.Label', {
     text: 'DATOS:',
     style: {
@@ -56,6 +62,7 @@ Ext.require([
 ]);
 var cantidadMegas;
 var tabla = '';
+var tabla1 = '';
 var mensajeTabla = '';
 var cantidadPrecio;
 var storeStateEqp;
@@ -141,7 +148,6 @@ Ext.onReady(function() {
             'fechaEstado', 'gsm', 'gps2', 'vel', 'ign', 'taximetro', 'panico', {name: 'equipo', type: 'string'}, 'estadoE', 'estadoV', 'fecha_hora_estadoE', 'fecha_hora_estadoV']/*,
              groupField: 'empresa'*/
     });
-
 //lista negra
 
     var storeListaNegra = Ext.create('Ext.data.JsonStore', {
@@ -199,7 +205,6 @@ Ext.onReady(function() {
         },
         fields: ['conect', 'desco', 'total', 'empresa']
     });
-
     var storeUserConect = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
         autoLoad: true,
@@ -214,7 +219,6 @@ Ext.onReady(function() {
         fields: ['usuarioConect', 'rolConect', 'empresaConect', 'fechaHoraConect', 'conectadoConect', 'ipConect', 'longitudConect', 'latitudConect'
         ]
     });
-
     var ActionVista = Ext.create('Ext.Action', {
         iconCls: 'icon-info', // Use a URL in the icon config
         text: 'Mostrar Información',
@@ -234,7 +238,6 @@ Ext.onReady(function() {
             ActionVista
         ]
     });
-
     gridStateEqpSKP = Ext.create('Ext.grid.Panel', {
         region: 'center',
         title: '<b>Estado de Equipos</b>',
@@ -372,7 +375,6 @@ Ext.onReady(function() {
             }
         }
     });
-
     ///equiposPsivos
     //
 
@@ -507,6 +509,11 @@ Ext.onReady(function() {
         columnLines: true,
         multiSelect: true,
         features: [filters],
+        listeners: {
+            select: function() {
+            console.log('selccionado');
+            }
+        },
         viewConfig: {
             emptyText: '<center>No hay datos que Mostrar</center>',
             loadMask: false,
@@ -649,11 +656,9 @@ Ext.onReady(function() {
             activate: function(este, eOpts) {
                 panelOeste.hide();
                 winReporte.hide();
-
             }}
 
     });
-
     var panelCentral = Ext.create('Ext.tab.Panel', {
         region: 'center',
         deferreRender: false,
@@ -751,11 +756,12 @@ Ext.onReady(function() {
         width: 350,
         height: 70
     });
-    panelOeste = Ext.create('Ext.form.Panel', {region: 'east',
+    panelOeste = Ext.create('Ext.form.Panel', {
+        region: 'east',
         title: 'Configuración',
         iconCls: 'icon-config',
         name: 'panelEste',
-        width: '40%',
+        width: '30%',
         frame: true,
         split: true,
         collapsible: true,
@@ -828,17 +834,29 @@ Ext.onReady(function() {
                         },
                         items: [labelDatos, estado, labelRegistro, labelEquipo,
                             labelFecha, labelUsuario]
-                    }
+                    }, labelInformativo
                 ],
                 dockedItems: [{
                         xtype: 'toolbar',
                         dock: 'bottom',
                         ui: 'footer',
                         items: [{
+                                xtype: 'button',
                                 iconCls: 'icon-vita-eqp',
                                 tooltip: '<b>Agregar Bitácora</b>',
                                 text: 'Bitácora',
                                 id: 'b1',
+                                listeners: {
+                                    mouseover: function() {
+                                        if (!this.mousedOver) {
+                                            var string = "***********************************************************************\n                                                                      Visualizar Los comentarios de la Bitacora";
+                                            labelInformativo.setText('');
+                                            labelInformativo.setText(string);
+                                        } else {
+                                            labelInformativo.setText('');
+                                        }
+                                    }
+                                },
                                 handler: function() {
                                     var form = this.up('form').getForm();
                                     if (form.isValid()) {
@@ -900,14 +918,24 @@ Ext.onReady(function() {
                                 }
                             },
                             {
-                                iconCls: 'icon-acept',
-                                tooltip: '<b>Agregar Bitácora</b>',
+                                iconCls: 'icon-list',
                                 id: 'poner',
-//                                text: 'Agregar',
-                                tooltip: '<b>Agregar Unidad a Lista Negra</b>',
+                                listeners: {
+                                    mouseover: function() {
+                                        if (!this.mousedOver) {
+                                            var string = "***********************************************************************\n                                                                    \n\
+                                                                  Enviar Equipo a Lista Negra";
+                                            labelInformativo.setText('');
+                                            labelInformativo.setText(string);
+                                            labelInformativo.setText('');
+                                            labelInformativo.setText(string);
+                                        } else {
+                                            labelInformativo.setText('');
+                                        }
+                                    }
+                                },
                                 handler: function() {
                                     var form = this.up('form').getForm();
-
                                     if (form.isValid()) {
                                         form.submit({
                                             url: 'php/interface/monitoring/setEstado.php',
@@ -928,21 +956,29 @@ Ext.onReady(function() {
                                                 storeStateEqpPasivos.reload();
                                                 storeStateEqp.reload();
                                                 storeListaNegra.reload();
-
-
                                             }
                                         });
                                     }
 
                                 }
                             }, {
-                                iconCls: 'icon-invalid',
-                                tooltip: '<b>Quitar Unidad a Lista Negra</b>',
+                                iconCls: 'icon-acept',
                                 id: 'quitar',
-                                //text: 'Quitar',
+                                listeners: {
+                                    mouseover: function() {
+                                        if (!this.mousedOver) {
+                                            var string = "***********************************************************************\n                                                                    \n\
+                                                                 Quitar el Equipo de Lista Negra";
+                                            labelInformativo.setText('');
+                                            labelInformativo.setText('');
+                                            labelInformativo.setText(string);
+                                        } else {
+                                            labelInformativo.setText('');
+                                        }
+                                    }
+                                },
                                 handler: function() {
                                     var form = this.up('form').getForm();
-
                                     if (form.isValid()) {
                                         form.submit({
                                             url: 'php/interface/monitoring/setEstado.php',
@@ -961,40 +997,6 @@ Ext.onReady(function() {
                                                 storeStateEqpPasivos.reload();
                                                 storeStateEqp.reload();
                                                 storeListaNegra.reload();
-
-                                            }
-                                        });
-                                    }
-
-                                }
-                            }, {
-                                iconCls: 'icon-unlock',
-                                id: 'desbloquear',
-                                text: 'Desbloquear',
-                                tooltip: '<b>Desbloquear Unidad</b>',
-                                handler: function() {
-                                    var form = this.up('form').getForm();
-
-                                    if (form.isValid()) {
-                                        form.submit({
-                                            url: 'php/interface/monitoring/setBloqueo.php',
-                                            params: {
-                                                bloqueo: 1,
-                                                idEquipo: idEquipo1
-                                            },
-                                            failure: function(form, action) {
-                                                Ext.MessageBox.show({
-                                                    title: 'Error...',
-                                                    msg: 'No fue posible Actualizar Estado',
-                                                    buttons: Ext.MessageBox.OK,
-                                                    icon: Ext.MessageBox.ERROR
-                                                });
-                                            },
-                                            success: function(form, action) {
-                                                Ext.example.msg("Mensaje", 'Vehiculo Desbloqueado Correctamente...');
-                                                storeStateEqpPasivos.reload();
-                                                storeStateEqp.reload();
-
                                             }
                                         });
                                     }
@@ -1003,11 +1005,20 @@ Ext.onReady(function() {
                             }, {
                                 iconCls: 'icon-lock',
                                 id: 'bloquear',
-                                text: 'Bloquear',
-                                tooltip: '<b>Bloquear Unidad</b>',
+                                listeners: {
+                                    mouseover: function() {
+                                        if (!this.mousedOver) {
+                                            var string = "***********************************************************************\n                                                                    \n\
+                                            Enviar a Estado pasivo el Equipo";
+                                            labelInformativo.setText('');
+                                            labelInformativo.setText(string);
+                                        } else {
+                                            labelInformativo.setText('');
+                                        }
+                                    }
+                                },
                                 handler: function() {
                                     var form = this.up('form').getForm();
-
                                     if (form.isValid()) {
                                         form.submit({
                                             url: 'php/interface/monitoring/setBloqueo.php',
@@ -1028,7 +1039,48 @@ Ext.onReady(function() {
                                                 Ext.example.msg("Mensaje", 'Vehiculo Bloqueado Correctamente...');
                                                 storeStateEqpPasivos.reload();
                                                 storeStateEqp.reload();
+                                            }
+                                        });
+                                    }
 
+                                }
+                            }, {
+                                iconCls: 'icon-unlock',
+                                id: 'desbloquear',
+                                tooltip: '<b>Desbloquear Unidad</b>',
+                                listeners: {
+                                    mouseover: function() {
+                                        if (!this.mousedOver) {
+                                            var string = "***********************************************************************\n                                                                    \n\
+                                                Volver a Estado Activo el Equipo";
+                                            labelInformativo.setText('');
+                                            labelInformativo.setText(string);
+                                        } else {
+                                            labelInformativo.setText('');
+                                        }
+                                    }
+                                },
+                                handler: function() {
+                                    var form = this.up('form').getForm();
+                                    if (form.isValid()) {
+                                        form.submit({
+                                            url: 'php/interface/monitoring/setBloqueo.php',
+                                            params: {
+                                                bloqueo: 1,
+                                                idEquipo: idEquipo1
+                                            },
+                                            failure: function(form, action) {
+                                                Ext.MessageBox.show({
+                                                    title: 'Error...',
+                                                    msg: 'No fue posible Actualizar Estado',
+                                                    buttons: Ext.MessageBox.OK,
+                                                    icon: Ext.MessageBox.ERROR
+                                                });
+                                            },
+                                            success: function(form, action) {
+                                                Ext.example.msg("Mensaje", 'Vehiculo Desbloqueado Correctamente...');
+                                                storeStateEqpPasivos.reload();
+                                                storeStateEqp.reload();
                                             }
                                         });
                                     }
@@ -1038,6 +1090,18 @@ Ext.onReady(function() {
                                 text: 'Asignar',
                                 id: 'b2',
                                 iconCls: 'icon-check',
+                                listeners: {
+                                    mouseover: function() {
+                                        if (!this.mousedOver) {
+                                            var string = "***********************************************************************\n                                                                    \n\
+                                               Asignar Comentario a los Equipos";
+                                            labelInformativo.setText('');
+                                            labelInformativo.setText(string);
+                                        } else {
+                                            labelInformativo.setText('');
+                                        }
+                                    }
+                                },
                                 handler: function() {
                                     var form = this.up('form').getForm();
                                     var comentario = panelOeste.down('[name=stadoEqp]').getValue();
