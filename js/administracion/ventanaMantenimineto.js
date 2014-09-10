@@ -75,11 +75,9 @@ Ext.onReady(function() {
             {name: 'descripSoat', type: 'string'},
             {name: 'fechaSoatReg', type: 'date', dateFormat: 'c'},
             {name: 'fechaSoatVenc', type: 'date', dateFormat: 'c'},
-            
             {name: 'descripMatricula', type: 'string'},
             {name: 'fechaMatriculaReg', type: 'date', dateFormat: 'c'},
             {name: 'repaFecha', type: 'date', dateFormat: 'c'},
-            
             {name: 'descripSeguro', type: 'string'},
             {name: 'repaFecha', type: 'date', dateFormat: 'c'},
             {name: 'repaFecha', type: 'date', dateFormat: 'c'}
@@ -190,7 +188,7 @@ Ext.onReady(function() {
         items: [
             {
                 xtype: 'fieldset',
-                title: '<b>Registro de Mantenimineto</b>',
+                title: '<b>Registro de Mantenimiento</b>',
                 collapsible: true,
                 layout: 'vbox',
 //                padding: '0 0 0 10',
@@ -238,14 +236,13 @@ Ext.onReady(function() {
                                                 displayField: 'text',
                                                 queryMode: 'local',
                                                 emptyText: 'Seleccionar Cooperativa...',
-                                                editable: false,
                                                 allowBlank: false,
                                                 width: 250,
                                                 listeners: {
                                                     select: function(combo, records, eOpts) {
-                                                        var listSelected = contenedorwinEvt.down('[name=listVeh]');
+                                                        var listSelected = formRecordsVehiculos.down('[name=idvehiculo]');
                                                         listSelected.clearValue();
-                                                        listSelected.fromField.store.removeAll();
+                                                        listSelected.store.removeAll();
                                                         obj_empresa = combo.getValue();
                                                         storeVeh.load({
                                                             params: {
@@ -274,9 +271,10 @@ Ext.onReady(function() {
                                                     select: {
                                                         fn: function(combo, records, index) {
                                                             obj_vehiculos = combo.getValue();
-                                                        }
+                                                        }   
                                                     }
-                                                }},
+                                                }
+                                            },
                                             {
                                                 xtype: 'combobox',
                                                 fieldLabel: '<b>Servicio</b>',
@@ -289,7 +287,6 @@ Ext.onReady(function() {
                                                 emptyText: 'Seleccionar el Servicio...',
                                                 queryMode: 'local',
                                                 allowBlank: false,
-                                                editable: false,
                                                 width: 250,
                                                 listConfig: {
                                                     minWidth: 350
@@ -328,7 +325,7 @@ Ext.onReady(function() {
                                         layout: 'anchor',
                                         items: [
                                             {
-                                                boxLabel: 'Manteninimiento',
+                                                boxLabel: 'Mantenimiento',
                                                 id: 's1',
                                                 name: 'valorTipoServicio',
                                                 inputValue: '1',
@@ -343,7 +340,7 @@ Ext.onReady(function() {
                                                     }
                                                 }
                                             }, {
-                                                boxLabel: 'Reparacion',
+                                                boxLabel: 'Reparación',
                                                 id: 's2',
                                                 name: 'valorTipoServicio',
                                                 inputValue: '2',
@@ -387,7 +384,7 @@ Ext.onReady(function() {
                                         items: [
                                             {
                                                 xtype: 'textfield',
-                                                fieldLabel: 'Descripcion',
+                                                fieldLabel: 'Descripción',
                                                 padding: '0 10 5 0 ',
                                                 name: 'descripSoat',
                                                 id: 'descripSoat',
@@ -449,7 +446,7 @@ Ext.onReady(function() {
                                             {
                                                 xtype: 'textfield',
                                                 padding: '0 0 5 0',
-                                                fieldLabel: 'Descripcion',
+                                                fieldLabel: 'Descripción',
                                                 name: 'descripMatricula',
                                                 id: 'matricula',
                                                 emptyText: 'Descripción Matricula'
@@ -517,7 +514,6 @@ Ext.onReady(function() {
                                                     }
                                                 }
                                             },
-                                            
                                             {
                                                 fieldLabel: 'Vencimiento',
                                                 padding: '0 0 5 0',
@@ -936,7 +932,7 @@ function ventAddMantenimientos() {
     if (!winAddVehiculos) {
         winAddVehiculos = Ext.create('Ext.window.Window', {
             layout: 'fit',
-            title: 'Servicio de Mnatenimiento',
+            title: 'Servicio  de Mantenimiento',
             iconCls: 'icon-mantenimiento',
             resizable: false,
             width: 1200,
