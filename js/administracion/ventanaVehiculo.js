@@ -320,7 +320,6 @@ Ext.onReady(function() {
                                 valueField: 'id',
                                 displayField: 'text',
                                 queryMode: 'local',
-                                editable: false,
                                 allowBlank: false,
                                 emptyText: 'Escoger Empresa...',
                                 listConfig: {
@@ -359,7 +358,6 @@ Ext.onReady(function() {
                                                 valueField: 'id',
                                                 displayField: 'text',
                                                 queryMode: 'local',
-                                                editable: false,
                                                 emptyText: 'Escoger Equipo...',
                                                 listeners: {
                                                     select: function(combo, records, eOpts) {
@@ -409,6 +407,7 @@ Ext.onReady(function() {
                                 valueField: 'id',
                                 store: storeclasseVehiculo,
                                 emptyText: 'Escoger Clase Vehiculo...',
+                                 queryMode: 'local',
                                 allowBlank: false,
                                 listConfig: {
                                     minWidth: 100
@@ -473,7 +472,7 @@ Ext.onReady(function() {
                             }
                             , {
                                 xtype: 'textfield',
-                                fieldLabel: '<b>Vehiculo</b>',
+                                fieldLabel: '<b>Alias</b>',
                                 afterLabelTextTpl: required,
                                 blankText: 'Este campo es Obligatorio',
                                 vtype: 'campos',
