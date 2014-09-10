@@ -523,7 +523,7 @@ Ext.onReady(function() {
                         html: '<a href="http://www.kradac.com" target="_blank"><img src="img/logo.png" width="250" height="64"></a>'
                     }, {
                         xtype: 'label',
-                        padding: '15 0 0 0',
+                        padding: '15 0 0 150',
                         style: {
                             color: '#157fcc'
                         },
