@@ -100,6 +100,7 @@ Ext.onReady(function() {
         items: [btn_HoyEApagado, bt_HayerEApagado]
     });
     formularioEA = Ext.create('Ext.form.Panel', {
+        xtype:'form',
         bodyPadding: '10 10 0 10',
         fieldDefaults: {
             labelAlign: 'left',

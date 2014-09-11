@@ -40,7 +40,7 @@ if (!$mysqli = getConectionDb()) {
             gsmr:'". $myrow["GSM"] . "',
             gps2r:'". $myrow["GPS"] . "',                
             ignr:'". $myrow["IGN"] . "',
-            evtr:'". $myrow["sky_evento"] . "',
+            evtr:'". utf8_encode($myrow["sky_evento"]) . "',
             direccionr:'". utf8_encode($myrow["DIRECCION"]) . "'
         },";
         }

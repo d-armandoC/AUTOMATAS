@@ -184,7 +184,7 @@ Ext.onReady(function() {
         title: '<b>Servicio Mantenimiento</b>',
         activeRecord: null,
         bodyStyle: 'padding: 10px; background-color: #DFE8F6',
-        labelWidth: 110,
+        labelWidth: 30,
         hight: 150,
         margins: '0 0 0 0',
         items: [
