@@ -64,7 +64,7 @@ Ext.onReady(function() {
         displayField: 'nombre',
         queryMode: 'local',
         emptyText: 'Seleccionar Comando...',
-        editable: false,
+//        editable: false,
         allowBlank: false        
     });
 

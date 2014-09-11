@@ -34,7 +34,7 @@ Ext.onReady(function() {
 
     cbxEmpresasEA = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Cooperativa',
-        name: 'idCompanyExcesos',
+        name: 'idCompanyEncApg',
         store: storeEmpresas,
         valueField: 'id',
         displayField: 'text',
@@ -53,7 +53,7 @@ Ext.onReady(function() {
     var fechaIniEA = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
-        id: 'fechaInimanten',
+        id: 'fechaIniEncApg',
         name: 'fechaInimanten',
         value: new Date(),
         maxText: 'La fecha debe ser igual o anterior a <br> {0}',
@@ -64,7 +64,7 @@ Ext.onReady(function() {
     var fechaFinEA = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Hasta el',
         format: 'Y-m-d',
-        id: 'fechaFinManten',
+        id: 'fechaFinEncApg',
         name: 'fechaFinManten',
         vtype: 'daterange',
         value: new Date(),

@@ -83,7 +83,7 @@ Ext.onReady(function() {
             {header: "Cedula", width: 100, sortable: true, dataIndex: 'cedula', filter: {type: 'string'}, align: 'center'},
             {header: "Apellidos", width: 100, sortable: true, dataIndex: 'apellidos', filter: {type: 'string'}},
             {header: "Nombres", width: 100, sortable: true, dataIndex: 'nombres', filter: {type: 'string'}},
-            {header: "Ingresado Por", width: 100, sortable: true, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}}
+            {header: "Ingresado por", width: 110, sortable: true, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}}
         ],
         enableDragDrop: true,
         stripeRows: true,
@@ -292,7 +292,7 @@ Ext.onReady(function() {
                 items: ['->',
                     {iconCls: 'icon-update', itemId: 'updatePerson', text: 'Actualizar', scope: this, tooltip: 'Actualizar Datos', handler: onUpdatePersona},
                     {iconCls: 'icon-user-add', itemId: 'createPerson', text: 'Crear', scope: this, tooltip: 'Crear Persona', handler: onCreatePersona},
-                    {iconCls: 'icon-delete', itemId: 'deletePerson', text: 'Eliminar', scope: this, tooltip: 'Eliminar Persona', handler: onDeleteClicket},
+//                    {iconCls: 'icon-delete', itemId: 'deletePerson', text: 'Eliminar', scope: this, tooltip: 'Eliminar Persona', handler: onDeleteClicket},
                     {iconCls: 'icon-limpiar', text: 'Limpiar', tooltip: 'Limpiar Campos', scope: this, handler: onResetPersona},
                     {iconCls: 'icon-cancelar', tooltip: 'Cancelar', scope: this, handler: function() {
                             winAddPesonal.hide();
@@ -327,7 +327,7 @@ function ventAddPersonal() {
     storePersonas.reload();
     formPersona.down('#updatePerson').disable();
     formPersona.down('#createPerson').enable();
-    formPersona.down('#deletePerson').disable();
+//    formPersona.down('#deletePerson').disable();
 
     if (gridPersona.getStore().getCount() == 0) {
         gridPersona.getStore().load();
@@ -350,7 +350,7 @@ function ventAddPersonal() {
 
             formPersona.down('#updatePerson').enable();
             formPersona.down('#createPerson').disable();
-            formPersona.down('#deletePerson').enable();
+//            formPersona.down('#deletePerson').enable();
             return true;
         }
     });
@@ -361,7 +361,7 @@ function setActiveRecords(record) {
     if (record) {
         formPersona.down('#updatePerson').enable();
         formPersona.down('#createPerson').disable();
-        formPersona.down('#deletePerson').enable();
+//        formPersona.down('#deletePerson').enable();
         formPersona.getForm().loadRecord(record);
     } else {
         formPersona.down('#updatePerson').disable();
@@ -400,13 +400,13 @@ function onCreatePersona() {
 
 function onResetPersona() {
     setActiveRecords(null);
-    formPersona.down('#deletePerson').disable();
+//    formPersona.down('#deletePerson').disable();
     formPersona.down('#createPerson').enable();
     formPersona.getForm().reset();
 }
 
 function clearWinPersona() {
-    formPersona.down('#deletePerson').disable();
+//    formPersona.down('#deletePerson').disable();
     formPersona.down('#createPerson').enable();
 }
 
@@ -416,7 +416,7 @@ function onDeleteClicket() {
             var selection = gridPersona.getView().getSelectionModel().getSelection()[0];
             if (selection) {
                 gridPersona.store.remove(selection);
-                formPersona.down('#deletePerson').disable();
+//                formPersona.down('#deletePerson').disable();
                 formPersona.down('#createPerson').enable();
             }
         }
