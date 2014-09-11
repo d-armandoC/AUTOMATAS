@@ -169,7 +169,7 @@ Ext.onReady(function() {
                                     region: 'west',
                                     frame: true,
                                     width: '48%',
-                                    title: '<center>Reporte de Pradas de los Equipos: ' + '<br>Desde: ' + fechaInicio + ' | Hasta: ' + fechaFin + '</center>',
+                                    title: '<center>Reporte de Paradas de los Equipos: ' + '<br>Desde: ' + fechaInicio + ' | Hasta: ' + fechaFin + '</center>',
                                     store: storeDataReporteDetallado,
                                     features: [filters],
                                     multiSelect: true,
@@ -264,7 +264,7 @@ Ext.onReady(function() {
                                                     fechafinParadas: fechaFin
                                                 }
                                             });
-                                            gridViewDataParadas.setTitle('<center>Lista de Equipos que Reportan Enento de Prada : <br>Empresa: ' + reg_empresa + ' Desde: ' + fechaInicio + ' Hasta:' + fechaFin + '</center>');
+                                            gridViewDataParadas.setTitle('<center>Lista de Equipos que Reportan Evento de Parada : <br>Empresa: ' + reg_empresa + ' Desde: ' + fechaInicio + ' Hasta:' + fechaFin + '</center>');
                                         }
                                     }
                                 });

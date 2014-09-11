@@ -260,7 +260,7 @@ Ext.onReady(function() {
                                             }],
                                         listeners: {
                                             itemclick: function(thisObj, record, item, index, e, eOpts) {
-                                                modalEleccionBusqEnerg = record.get('mpresaEneDes');
+                                                modalEleccionBusqEnerg = record.get('empresaEneDes');
                                                 vehiculoEnerg = record.get('vehiculo');
                                                 var equipo = record.get('idEquipoEneDes');
                                                 banderaEnerg = 1;
@@ -434,7 +434,7 @@ Ext.onReady(function() {
                                         region: 'west',
                                         frame: true,
                                         width: '40%',
-                                        title: '<center>Registro de EEvento de Energización ' + '<br>Desde: ' + fechaInicioEnerg + ' | Hasta: ' + fechaFinalEnerg + '</center>',
+                                        title: '<center>Registro de Evento de Energización ' + '<br>Desde: ' + fechaInicioEnerg + ' | Hasta: ' + fechaFinalEnerg + '</center>',
                                         store: storeDataReporteDetallado,
                                         features: [filters],
                                         multiSelect: true,
@@ -539,7 +539,7 @@ Ext.onReady(function() {
                                                 return false;
                                             },
                                             itemclick: function(thisObj, record, item, index, e, eOpts) {
-                                                modalEleccionBusqEnerg = record.get('mpresaEneDes');
+                                                modalEleccionBusqEnerg = record.get('empresaEneDes');
                                                 vehiculoEnerg = record.get('vehiculo');
                                                 var equipo = record.get('idEquipoEneDes');
                                                 banderaEnerg = 1;
