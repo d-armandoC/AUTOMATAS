@@ -190,6 +190,20 @@ Ext.onReady(function() {
             return true;
         },
         camposVehicleMax45Text: 'Solo carateres alfa numéricos<br> Tamaño min de 5 y un máx de 45 carateres',
+        camposAcronimo: function(val, field) {
+            if (!/^[A-Z.a-z]{1}[-0-9.A-Z.a-z.áéíóúñ\s*]{3}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        camposAcronimoText: 'El primer caracter deberá ser una LETRA <br> Solo caracteres alfanumericas <br>  el tamaño deberá ser de 4 caracteres',
+        camposEmpresa: function(val, field) {
+            if (!/^[A-Z.a-z]{1}[-0-9.A-Z.a-z.áéíóúñ\s*]{3,30}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        camposEmpresaText: 'El primer caracter deberá ser una LETRA <br> Solo caracteres alfanumericas <br> tamaño minimo de 4 caracteres ',
         campos1: function(val, field) {
             if (!/^[-0-9.A-Z.a-z.áéíóúñ\s*]{2,80}$/.test(val)) {
                 return false;
