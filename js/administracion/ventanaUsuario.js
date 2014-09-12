@@ -80,7 +80,7 @@ Ext.onReady(function() {
             {header: "Cedula", width: 100, sortable: true, dataIndex: 'cedula', filter: {type: 'string'}},
             {header: "Usuario", width: 100, sortable: true, dataIndex: 'usuario', filter: {type: 'string'}},
             {header: "Persona", width: 200, sortable: true, dataIndex: 'person', filter: {type: 'string'}},
-            {header: "Empresa", width: 100, sortable: true, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}},
+            {header: "Organización", width: 110, sortable: true, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}},
             {header: "Rol", width: 100, sortable: true, dataIndex: 'rol', filter: {type: 'list', store: storeRolUserList}}
         ],
         enableDragDrop: true,
@@ -211,7 +211,7 @@ Ext.onReady(function() {
                                 items: [
                                     {
                                         xtype: 'combobox',
-                                        fieldLabel: '<b>Empresa</b>',
+                                        fieldLabel: '<b>Organización</b>',
                                         afterLabelTextTpl: required,
                                         blankText: 'Este campo es Obligatorio',
                                         name: 'idEmp',
@@ -221,7 +221,7 @@ Ext.onReady(function() {
                                         queryMode: 'local',
                                         editable: false,
                                         allowBlank: false,
-                                        emptyText: 'Escoja la Empresa...',
+                                        emptyText: 'Escoja la Organización...'
                                     }
                                 ]
                             }, {
@@ -231,7 +231,7 @@ Ext.onReady(function() {
                                     {
                                         xtype: 'button',
                                         iconCls: 'icon-central',
-                                        tooltip: 'Agregar Nueva Empresa',
+                                        tooltip: 'Agregar Nueva Organización',
                                         handler: function() {
                                             showWinAdminCompany();
                                         }

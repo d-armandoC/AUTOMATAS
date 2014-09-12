@@ -24,19 +24,19 @@ Ext.onReady(function() {
         tbar: [{
                 xtype: 'label',
                 padding: '0 0 0 5',
-                html: '<b>Escoja la Cooperativa de la Cual desea recibir los Mails.</b>'
+                html: '<b>Escoja la Organización de la Cual desea recibir los Mails.</b>'
             }, '->', {
                 xtype: 'combobox',
                 padding: '5 5 5 0',
                 labelWidth: 75,
                 width: 250,
-                fieldLabel: '<b>Cooperativa</b>',
+                fieldLabel: '<b>Organización</b>',
                 name: 'cbxEmpresas',
                 store: storeEmpresas,
                 valueField: 'id',
                 displayField: 'text',
                 queryMode: 'local',
-                emptyText: 'Seleccionar Cooperativa...',
+                emptyText: 'Seleccionar Organización...',
                 editable: false,
                 allowBlank: false,
                 listeners: {

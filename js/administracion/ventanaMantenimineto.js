@@ -132,7 +132,7 @@ Ext.onReady(function() {
         }
     });
     var columnsRecords = [
-        {header: "<b>Empresa</b>", width: 100, sortable: true, dataIndex: 'empresa'},
+        {header: "<b>Organización</b>", width: 110, sortable: true, dataIndex: 'empresa'},
         {header: "<b>Propietario</b>", width: 160, sortable: true, dataIndex: 'propietario'},
         {header: "<b>Vehiculo</b>", width: 150, sortable: true, dataIndex: 'vehiculo'},
         {header: "<b>Servicio</b>", width: 250, sortable: true, dataIndex: 'servicio'},
@@ -227,7 +227,7 @@ Ext.onReady(function() {
                                         items: [
                                             {
                                                 xtype: 'combobox',
-                                                fieldLabel: '<b>Empresa</b>',
+                                                fieldLabel: '<b>Organización</b>',
                                                 name: 'idempresa',
                                                 afterLabelTextTpl: required,
                                                 id: 'idempresa',
@@ -235,7 +235,7 @@ Ext.onReady(function() {
                                                 valueField: 'id',
                                                 displayField: 'text',
                                                 queryMode: 'local',
-                                                emptyText: 'Seleccionar Cooperativa...',
+                                                emptyText: 'Seleccionar Organización...',
                                                 allowBlank: false,
                                                 width: 250,
                                                 listeners: {

@@ -64,7 +64,7 @@ Ext.onReady(function() {
         store: gridStore,
         columns: [
             {header: "<b>Acrónimo</b>", width: 100, align: 'center', sortable: true, dataIndex: 'acronimo'},
-            {header: "<b>Empresa</b>", align: 'center', width: 180, sortable: true, dataIndex: 'empresa', renderer: formatCompany},
+            {header: "<b>Organización</b>", align: 'center', width: 180, sortable: true, dataIndex: 'empresa', renderer: formatCompany},
             {header: "<b>Dirección</b>", width: 130, sortable: true, align: 'center', dataIndex: 'direccion'},
             {header: "<b>Celular</b>", width: 350, sortable: true, align: 'center', dataIndex: 'telefono'},
             {header: "<b>Correo</b>", width: 200, sortable: true, dataIndex: 'correo', align: 'center'},
@@ -91,10 +91,10 @@ Ext.onReady(function() {
 
                             var table_div = "<meta charset='UTF-8'><body>" +
                                     "<font face='" + tiLetra + "'><table>" +
-                                    "<tr><th colspan='7'>EMPRESAS" + "</th></tr>" +
+                                    "<tr><th colspan='7'>Organización" + "</th></tr>" +
                                     "<tr></tr>";
                             table_div += "<tr>";
-                            table_div += "<th align=left>EMPRESA</th>";
+                            table_div += "<th align=left>O</th>";
                             table_div += "<th align=left>ACRONIMO </th>";
                             table_div += "<th align=left>DIRECCION </th>";
                             table_div += "<th align=left>TELÉFONO </th>";
@@ -165,7 +165,7 @@ Ext.onReady(function() {
                 blankText: 'Este campo es obligatorio',
                 vtype: 'camposEmpresa',
                 allowOnlyWhitespace: false,
-                emptyText: 'Ingresar Empresa...'
+                emptyText: 'Ingresar Organización...'
             }, {
                 fieldLabel: 'Acrónimo',
                 afterLabelTextTpl: required,
