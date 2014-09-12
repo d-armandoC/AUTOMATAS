@@ -63,7 +63,7 @@ Ext.onReady(function() {
     gridAdminCompany = Ext.create('Ext.grid.Panel', {
         store: gridStore,
         columns: [                                                          
-            {header: "<b>Acronimo</b>", width: 100, align: 'center', sortable: true, dataIndex: 'acronimo'},
+            {header: "<b>Acrónimo</b>", width: 100, align: 'center', sortable: true, dataIndex: 'acronimo'},
             {header: "<b>Empresa</b>", align: 'center', width: 180, sortable: true, dataIndex: 'empresa', renderer: formatCompany},
             {header: "<b>Dirección</b>", width: 130, sortable: true, align: 'center', dataIndex: 'direccion'},
             {header: "<b>Teléfono</b>", width: 350, sortable: true, align: 'center', dataIndex: 'telefono'},
@@ -145,10 +145,10 @@ Ext.onReady(function() {
     });
     formAdminCompany = Ext.create('Ext.form.Panel', {
         region: 'center',
-        title: 'Ingresar Datos de la Empresa ',
+        title: 'Ingresar datos de la empresa ',
         activeRecord: null,
         bodyStyle: 'padding: 10px; background-color: #DFE8F6',
-        margins: '0 0 0 3',
+//        margins: '0 0 0 3',
         defaultType: 'textfield',
         layout: 'anchor',
         
@@ -164,21 +164,23 @@ Ext.onReady(function() {
                 name: 'empresa',
                 allowBlank: false,
                 blankText: 'Este campo es obligatorio',
-                vtype: 'campos',
+                vtype: 'camposEmpresa',
                 allowOnlyWhitespace: false,
                 emptyText: 'Ingresar Empresa...'
             }, {
                 fieldLabel: 'Acrónimo',
                 afterLabelTextTpl: required,
-                vtype: 'camposMin',
+                vtype: 'camposAcronimo',
                 allowBlank: false,
                 blankText: 'Este campo es obligatorio',
                 allowOnlyWhitespace: false,
-                name: 'acronimo',
+                anchor: '72%',
+               name: 'acronimo',
                 emptyText: 'Ingresar Acrónimo...'
             }, {
                 fieldLabel: 'Dirección',
                 name: 'direccion',
+                height : 40,
                 vtype: 'campos',
                 emptyText: 'Ingresar Dirección...'
             }, {
@@ -187,7 +189,7 @@ Ext.onReady(function() {
                 vtype: 'numeroTelefono',
                 emptyText: '0991540427 (10 dígitos)'
             }, {
-                fieldLabel: 'Email',
+                fieldLabel: 'email',
                 name: 'correo',
                 vtype: 'emailNuevo',
                 emptyText: 'kradac@kradac.com'
@@ -241,7 +243,7 @@ function showWinAdminCompany() {
     if (!winAdminCompany) {
         winAdminCompany = Ext.create('Ext.window.Window', {
             layout: 'fit',
-            title: 'Administración de Empresas',
+            title: 'Administración de empresas',
             iconCls: 'icon-central',
             resizable: false,
             width: 700,
