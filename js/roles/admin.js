@@ -364,7 +364,7 @@ Ext.onReady(function() {
 
 
     var herraminetas = Ext.create('Ext.button.Button', {
-        text: 'Herramintas',
+        text: 'Herramientas',
         scope: this,
         tooltip: 'Herramintas de Acceso Rapido',
         iconCls: 'icon-config',
