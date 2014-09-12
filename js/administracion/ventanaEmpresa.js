@@ -5,7 +5,7 @@ Ext.onReady(function() {
     Ext.define('DataCompany', {
         extend: 'Ext.data.Model',
         fields: [
-             {name: 'id', mapping :'id_empresa', type : 'int'},
+            {name: 'id', mapping: 'id_empresa', type: 'int'},
             {name: 'acronimo', type: 'string'},
             {name: 'empresa', type: 'string'},
             {name: 'direccion', type: 'string'},
@@ -20,7 +20,7 @@ Ext.onReady(function() {
         proxy: {
             type: 'ajax',
             api: {
-                 read: 'php/administracion/empresa/read.php',
+                read: 'php/administracion/empresa/read.php',
                 create: 'php/administracion/empresa/create.php',
                 update: 'php/administracion/empresa/update.php',
                 destroy: 'php/administracion/empresa/destroy.php'
@@ -32,7 +32,7 @@ Ext.onReady(function() {
                 messageProperty: 'message'
             },
             writer: {
-              type: 'json',
+                type: 'json',
                 writeAllFields: false
             },
             listeners: {
@@ -62,11 +62,11 @@ Ext.onReady(function() {
 
     gridAdminCompany = Ext.create('Ext.grid.Panel', {
         store: gridStore,
-        columns: [                                                          
+        columns: [
             {header: "<b>Acrónimo</b>", width: 100, align: 'center', sortable: true, dataIndex: 'acronimo'},
             {header: "<b>Empresa</b>", align: 'center', width: 180, sortable: true, dataIndex: 'empresa', renderer: formatCompany},
             {header: "<b>Dirección</b>", width: 130, sortable: true, align: 'center', dataIndex: 'direccion'},
-            {header: "<b>Teléfono</b>", width: 350, sortable: true, align: 'center', dataIndex: 'telefono'},
+            {header: "<b>Celular</b>", width: 350, sortable: true, align: 'center', dataIndex: 'telefono'},
             {header: "<b>Correo</b>", width: 200, sortable: true, dataIndex: 'correo', align: 'center'},
         ],
         stripeRows: true,
@@ -101,8 +101,8 @@ Ext.onReady(function() {
                             table_div += "<th align=left>CORREO</th>";
                             table_div += "</tr>";
                             for (var i = 0; i < gridStore.data.length; i++) {
-                                                                        
-                                table_div += "<tr>";   
+
+                                table_div += "<tr>";
                                 table_div += "<td align=lef>" + gridStore.data.items[i].data.empresa + "</td>";
                                 table_div += "<td align=lef>" + gridStore.data.items[i].data.acronimo + "</td>";
                                 table_div += "<td align=lef>" + gridStore.data.items[i].data.direccion + "</td>";
@@ -151,7 +151,6 @@ Ext.onReady(function() {
 //        margins: '0 0 0 3',
         defaultType: 'textfield',
         layout: 'anchor',
-        
         fieldDefaults: {
             msgTarget: 'side'
         },
@@ -174,20 +173,21 @@ Ext.onReady(function() {
                 allowBlank: false,
                 blankText: 'Este campo es obligatorio',
                 allowOnlyWhitespace: false,
-                anchor: '72%',
-               name: 'acronimo',
+                anchor: '75%',
+                name: 'acronimo',
                 emptyText: 'Ingresar Acrónimo...'
             }, {
                 fieldLabel: 'Dirección',
                 name: 'direccion',
-                height : 40,
+                height: 40,
                 vtype: 'campos',
                 emptyText: 'Ingresar Dirección...'
             }, {
                 fieldLabel: 'Celular',
                 name: 'telefono',
                 vtype: 'numeroTelefono',
-                emptyText: '0991540427 (10 dígitos)'
+                anchor: '75%',
+                emptyText: '0991540427'
             }, {
                 fieldLabel: 'email',
                 name: 'correo',
@@ -221,7 +221,7 @@ Ext.onReady(function() {
                     }, {
                         iconCls: 'icon-delete',
                         text: 'Eliminar',
-                        disabled:true,
+                        disabled: true,
                         itemId: 'delete',
                         tooltip: 'Eliminar Usuario',
                         handler: onDeleteCompany
@@ -297,7 +297,6 @@ function onUpdateCompany() {
 function onCreateCompany() {
     var form = formAdminCompany.getForm();
     if (form.isValid()) {
-        console.log("creando");
         formAdminCompany.fireEvent('create', formAdminCompany, form.getValues());
         formAdminCompany.down('#update').disable();
         form.reset();
