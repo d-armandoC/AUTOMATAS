@@ -11,13 +11,13 @@ var timeFin;
 Ext.onReady(function() {
 
     cbxEmpresasBD = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Cooperativa',
+        fieldLabel: 'Organización',
         name: 'cbxEmpresas',
         store: storeEmpresas,
         valueField: 'id',
         displayField: 'text',
         queryMode: 'local',
-        emptyText: 'Seleccionar Empresa...',
+        emptyText: 'Seleccionar Organización...',
         editable: false,
         allowBlank: false,
         listeners: {

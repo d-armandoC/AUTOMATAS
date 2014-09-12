@@ -158,7 +158,7 @@ Ext.onReady(function() {
             anchor: '100%'
         },
         items: [{
-                fieldLabel: 'Empresa',
+                fieldLabel: 'Organización',
                 afterLabelTextTpl: required,
                 name: 'empresa',
                 allowBlank: false,
@@ -239,11 +239,11 @@ Ext.onReady(function() {
             }]
     });
 });
-function showWinAdminCompany() {
+function showWinAdminOrganizacion() {
     if (!winAdminCompany) {
         winAdminCompany = Ext.create('Ext.window.Window', {
             layout: 'fit',
-            title: 'Administración de empresas',
+            title: 'Administrar Organización',
             iconCls: 'icon-central',
             resizable: false,
             width: 700,

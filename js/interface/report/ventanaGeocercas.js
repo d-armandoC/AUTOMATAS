@@ -4,13 +4,13 @@ var winRepGeocerca;
 Ext.onReady(function() {
 
     var cbxEmpresas = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Cooperativa',
+        fieldLabel: 'Organización',
         name: 'cbxEmpresas',
         store: storeEmpresas,
         valueField: 'id',
         displayField: 'text',
         queryMode: 'local',
-        emptyText: 'Seleccionar Cooperativa...',
+        emptyText: 'Seleccionar Organización...',
         editable: false,
         allowBlank: false,
         listeners: {

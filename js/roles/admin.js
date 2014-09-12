@@ -330,8 +330,8 @@ Ext.onReady(function() {
         tooltip: 'Administración de Usuarios, Equipos y Vehiculos',
         scope: this,
         menu: [
-            {text: 'Empresas', iconCls: 'icon-central', handler: function() {
-                    showWinAdminCompany();
+            {text: 'Organización', iconCls: 'icon-central', handler: function() {
+                    showWinAdminOrganizacion();
 
                 }},
             {text: 'Equipos',

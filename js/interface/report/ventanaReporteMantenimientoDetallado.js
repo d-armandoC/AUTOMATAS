@@ -34,13 +34,13 @@ Ext.onReady(function() {
     });
 
     cbxEmpresasMantenimiento = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Cooperativa',
+        fieldLabel: 'Organización',
         name: 'idCompanyExcesos',
         store: storeEmpresas,
         valueField: 'id',
         displayField: 'text',
         queryMode: 'local',
-        emptyText: 'Seleccionar Empresa...',
+        emptyText: 'Seleccionar Organización...',
         editable: false,
         allowBlank: false,
         value: 1,
@@ -117,7 +117,7 @@ Ext.onReady(function() {
                         vertical: true,
                         items: [
                             {boxLabel: 'General ', name: 'rb', inputValue: '1', checked: true},
-                            {boxLabel: 'Por Cooperativa', name: 'rb', inputValue: '2'},
+                            {boxLabel: 'Por Organización', name: 'rb', inputValue: '2'},
                         ],
                         listeners: {
                             change: function(field, newValue, oldValue) {

@@ -9,13 +9,13 @@ Ext.onReady(function() {
 
 
     cbxEmpresasBDTax = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Cooperativa',
+        fieldLabel: 'Organización',
         name: 'empresaTax',
         store: storeEmpresas,
         valueField: 'id',
         displayField: 'text',
         queryMode: 'local',
-        emptyText: 'Seleccionar Cooperativa...',
+        emptyText: 'Seleccionar Organización...',
         editable: false,
         allowBlank: false,
         listeners: {

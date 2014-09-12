@@ -24,13 +24,13 @@ Ext.onReady(function() {
         fields: ['fechaED', 'horaED', 'eventoED', 'velocidadED', 'latitudED', 'longitudED', 'bateriaED', 'gsmED', 'gpsED', 'direccionED']
     });
     cbxEmpreEnergDese = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Cooperativa',
+        fieldLabel: 'Organización',
         name: 'cbxEmpresaED',
         store: storeEmpresas,
         valueField: 'id',
         displayField: 'text',
         queryMode: 'local',
-        emptyText: 'Seleccionar Cooperativa...',
+        emptyText: 'Seleccionar Organización...',
         editable: false,
         allowBlank: false,
     });
@@ -140,7 +140,7 @@ Ext.onReady(function() {
                         vertical: true,
                         items: [
                             {boxLabel: 'General ', name: 'tipoRepED', inputValue: '1'},
-                            {boxLabel: 'Por Cooperativa', name: 'tipoRepED', inputValue: '2', checked: true},
+                            {boxLabel: 'Por Organización', name: 'tipoRepED', inputValue: '2', checked: true},
                         ],
                         listeners: {
                             change: function(field, newValue, oldValue) {

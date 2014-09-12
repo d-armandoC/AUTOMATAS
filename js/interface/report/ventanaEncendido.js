@@ -29,13 +29,13 @@ Ext.onReady(function() {
 
 
     cbxEmpresaEA = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Cooperativa',
+        fieldLabel: 'Organización',
         name: 'cbxEmpresaEnc',
         store: storeEmpresas,
         valueField: 'id',
         displayField: 'text',
         queryMode: 'local',
-        emptyText: 'Seleccionar Cooperativa...',
+        emptyText: 'Seleccionar Organización...',
         editable: false,
         allowBlank: false
     });
@@ -145,7 +145,7 @@ Ext.onReady(function() {
                         vertical: true,
                         items: [
                             {boxLabel: 'General ', name: 'tipoRepEA', inputValue: '1'},
-                            {boxLabel: 'Por Cooperativa', name: 'tipoRepEA', inputValue: '2', checked: true},
+                            {boxLabel: 'Por Organización', name: 'tipoRepEA', inputValue: '2', checked: true},
                         ],
                         listeners: {
                             change: function(field, newValue, oldValue) {

@@ -123,7 +123,7 @@ Ext.onReady(function() {
                 },
                 items: [{
                         xtype: 'combobox',
-                        fieldLabel: 'Cooperativa',
+                        fieldLabel: 'Organización',
                         name: 'cbxEmpresas',
                         store: storeEmpresas,
                         valueField: 'id',
@@ -131,7 +131,7 @@ Ext.onReady(function() {
                         queryMode: 'local',
                         editable: false,
                         allowBlank: false,
-                        emptyText: 'Seleccionar Cooperativa...',
+                        emptyText: 'Seleccionar Organización...',
                         listeners: {
                             select: function(combo, records, eOpts) {
 
