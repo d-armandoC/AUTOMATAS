@@ -197,7 +197,7 @@ Ext.onReady(function() {
                 labelWidth: 95,
                 emptyText: '0991540427'
             }, {
-                fieldLabel: 'email',
+                fieldLabel: 'Email',
                 name: 'correo',
                 vtype: 'emailNuevo',
                 labelWidth: 95,
