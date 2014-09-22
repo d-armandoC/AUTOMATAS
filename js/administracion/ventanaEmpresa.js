@@ -155,13 +155,15 @@ Ext.onReady(function() {
             msgTarget: 'side'
         },
         defaults: {
-            anchor: '100%'
+            anchor: '90%'
         },
         items: [{
                 fieldLabel: 'Organización',
                 afterLabelTextTpl: required,
                 name: 'empresa',
                 allowBlank: false,
+                labelWidth: 95,
+                 margins: '0 0 0 50',
                 blankText: 'Este campo es obligatorio',
                 vtype: 'camposEmpresa',
                 allowOnlyWhitespace: false,
@@ -173,25 +175,32 @@ Ext.onReady(function() {
                 allowBlank: false,
                 blankText: 'Este campo es obligatorio',
                 allowOnlyWhitespace: false,
-                anchor: '75%',
+                labelWidth: 95,
+                //anchor: '75%',
                 name: 'acronimo',
                 emptyText: 'Ingresar Acrónimo...'
-            }, {
+            }, 
+            {
+                xtype: 'textarea',
                 fieldLabel: 'Dirección',
                 name: 'direccion',
-                height: 40,
+                labelWidth: 95,
+                height: 15,
                 vtype: 'campos',
                 emptyText: 'Ingresar Dirección...'
-            }, {
+            },
+            {
                 fieldLabel: 'Celular',
                 name: 'telefono',
                 vtype: 'numeroTelefono',
-                anchor: '75%',
+                //anchor: '75%',
+                labelWidth: 95,
                 emptyText: '0991540427'
             }, {
                 fieldLabel: 'email',
                 name: 'correo',
                 vtype: 'emailNuevo',
+                labelWidth: 95,
                 emptyText: 'kradac@kradac.com'
             }
         ],
@@ -226,7 +235,7 @@ Ext.onReady(function() {
                         tooltip: 'Eliminar Usuario',
                         handler: onDeleteCompany
                     }, {
-                        iconCls: 'icon-limpiar',
+                        iconCls: 'icon-cleans',
                         tooltip: 'Limpiar Campos',
                         handler: onResetCompany
                     }, {
@@ -260,7 +269,6 @@ function showWinAdminOrganizacion() {
                 }]
         });
     }
-
     onResetCompany();
     winAdminCompany.show();
 }
