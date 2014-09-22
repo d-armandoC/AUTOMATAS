@@ -182,7 +182,7 @@ Ext.onReady(function() {
                                         },
                                         columns: [
                                             Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                            {text: 'Empresa', width: 150, dataIndex: 'empresaEncApag', align: 'center'},
+                                            {text: 'Organización', width: 150, dataIndex: 'empresaEncApag', align: 'center'},
                                             {text: 'Persona', width: 150, dataIndex: 'personaEncApag', align: 'center'},
                                             {text: 'placa', width: 130, dataIndex: 'placaEncApag', align: 'center'},
                                             {text: 'Id Equipo', width: 165, dataIndex: 'idEquipoEncApag', align: 'center'},
@@ -220,7 +220,7 @@ Ext.onReady(function() {
                                                             table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
                                                             table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
                                                             table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Empresa</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Organización</Data></Cell>" +
                                                                     "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Persona</Data></Cell>" +
                                                                     "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Placa</Data></Cell>" +
                                                                     "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Id Equipo</Data></Cell>" +

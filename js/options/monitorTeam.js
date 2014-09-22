@@ -679,7 +679,7 @@ Ext.onReady(function() {
                 columnLines: true,
                 store: storeCantEqp,
                 columns: [
-                    {text: 'Empresa', width: 150, dataIndex: 'empresa', renderer: formatCompany},
+                    {text: 'Organización ', width: 150, dataIndex: 'empresa', renderer: formatCompany},
                     {text: 'Conectados', width: 100, dataIndex: 'conect', align: 'center'},
                     {text: 'Desconectados', width: 150, dataIndex: 'desco', align: 'center'},
                     {text: 'Total', width: 100, dataIndex: 'total', align: 'center'}

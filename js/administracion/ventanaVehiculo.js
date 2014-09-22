@@ -106,7 +106,7 @@ Ext.onReady(function() {
     // Column Model shortcut array
     var columns = [
         {header: "Equipo", width: 80, sortable: true, dataIndex: 'equipo', filter: {type: 'string'}},
-        {header: "Empresa", width: 100, sortable: true, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}},
+        {header: "Organización", width: 110, sortable: true, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}},
         {header: "Vehiculo", width: 100, sortable: true, dataIndex: 'vehiculo', filter: {type: 'string'}},
         {header: "Placa", width: 80, sortable: true, dataIndex: 'placa', filter: {type: 'string'}},
         {header: "Propietario", width: 200, sortable: true, dataIndex: 'persona', filter: {type: 'string'}},
@@ -312,8 +312,8 @@ Ext.onReady(function() {
                                 emptyText: 'LBA1791'
                             }, {
                                 xtype: 'combobox',
-                                fieldLabel: '<b>Empresa</b>',
-                                afterLabelTextTpl: required,
+                                fieldLabel: '<b>Organización</b>',
+                                AllowSelection:false,
                                 blankText: 'Este campo es Obligatorio',
                                 name: 'idEmpresa',
                                 store: storeEmpresas,
@@ -321,7 +321,7 @@ Ext.onReady(function() {
                                 displayField: 'text',
                                 queryMode: 'local',
                                 allowBlank: false,
-                                emptyText: 'Escoger Empresa...',
+                                emptyText: 'Escoger Organización...',
                                 listConfig: {
                                     minWidth: 160
                                 }

@@ -12,7 +12,7 @@ Ext.onReady(function() {
         valueField: 'id',
         displayField: 'text',
         queryMode: 'local',
-        emptyText: 'Seleccionar Empresa...',
+        emptyText: 'Seleccionar Geocerca...',
         editable: false,
         allowBlank: false,
         listeners: {

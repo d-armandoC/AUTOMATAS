@@ -563,13 +563,13 @@ Ext.onReady(function() {
                 frame: true,
                 items: [{
                         xtype: 'combobox',
-                        fieldLabel: 'Cooperativa',
+                        fieldLabel: 'Organización',
                         name: 'cbxEmpresas',
                         store: storeEmpresas,
                         valueField: 'id',
                         displayField: 'text',
                         queryMode: 'local',
-                        emptyText: 'Seleccionar Cooperativa...',
+                        emptyText: 'Seleccionar Organización...',
                         editable: false,
                         allowBlank: false,
                         listConfig: {
@@ -637,7 +637,7 @@ Ext.onReady(function() {
                 xtype: 'treepanel',
                 id: 'veh-taxis-tree',
                 rootVisible: false,
-                title: 'Empresas',
+                title: 'Organización',
                 autoScroll: true,
                 iconCls: 'icon-tree-company',
                 store: storeTreeVehTaxis,
@@ -764,34 +764,37 @@ Ext.onReady(function() {
     var toolBarOnMap = Ext.create('Ext.toolbar.Toolbar', {
         region: 'north',
         border: true,
-        items: [{
-                xtype: 'combo',
-                width: '86%',
-                padding: '0 0 0 5',
-                store: storeDirecciones,
-                fieldLabel: '<b>Dirección</b>',
-                displayField: 'todo',
-                typeAhead: false,
-                hideTrigger: true,
-                emptyText: 'Ciudad,Barrio,Avenida Principal,Avenida Secundaria',
-                listConfig: {
-                    loadingText: 'Buscando...',
-                    emptyText: 'No ha encontrado resultados parecidos.',
-                    // Custom rendering template for each item
-                    getInnerTpl: function() {
-                        return '<b>{pais} , {ciudad}:</b><br>{barrio} , {avenidaP} , {avenidaS}';
-                    }
-                },
-//                listeners: {
-//                    select: function(thisObject, record, eOpts) {
-//                        var longitud = record[0].data.longitud;
-//                        var latitud = record[0].data.latitud;
-//                        var zoom = 18;
-//                        localizarDireccion(longitud, latitud, zoom);
+        items: [
+//            {
+//                xtype: 'combo',
+//                width: '86%',
+//                padding: '0 0 0 5',
+//                store: storeDirecciones,
+//                fieldLabel: '<b>Dirección</b>',
+//                displayField: 'todo',
+//                typeAhead: false,
+//                hideTrigger: true,
+//                emptyText: 'Ciudad,Barrio,Avenida Principal,Avenida Secundaria',
+//                listConfig: {
+//                    loadingText: 'Buscando...',
+//                    emptyText: 'No ha encontrado resultados parecidos.',
+//                    // Custom rendering template for each item
+//                    getInnerTpl: function() {
+//                        return '<b>{pais} , {ciudad}:</b><br>{barrio} , {avenidaP} , {avenidaS}';
 //                    }
 //                },
-                pageSize: 10
-            }, {
+////                listeners: {
+////                    select: function(thisObject, record, eOpts) {
+////                        var longitud = record[0].data.longitud;
+////                        var latitud = record[0].data.latitud;
+////                        var zoom = 18;
+////                        localizarDireccion(longitud, latitud, zoom);
+////                    }
+////                },
+//                pageSize: 10
+//            },
+            '->'
+            ,{
                 xtype: 'button',
                 iconCls: 'icon-geoloc',
                 tooltip: 'Ubicar mi Posición',
@@ -802,9 +805,9 @@ Ext.onReady(function() {
                 }
             }, {
                 xtype: 'splitbutton',
-                text: 'Cooperativas',
+                text: 'Organización',
                 iconCls: 'icon-central',
-                tooltip: 'Empresas Asociadas',
+                tooltip: 'Organizaciones Asociadas',
                 menu: menuCoop,
                 handler: function() {
                     this.showMenu();

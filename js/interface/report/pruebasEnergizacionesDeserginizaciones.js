@@ -184,7 +184,7 @@ Ext.onReady(function() {
                                         },
                                         columns: [
                                             Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 40, align: 'center'}),
-                                            {text: 'Empresa', width: 290, dataIndex: 'empresaEneDes', align: 'center'},
+                                            {text: 'Organización', width: 290, dataIndex: 'empresaEneDes', align: 'center'},
                                             {text: 'Persona', width: 290, dataIndex: 'personaEneDes', align: 'center'},
                                             {text: 'Placa', width: 130, dataIndex: 'placaEneDes', align: 'center'},
                                             {text: 'Equipo', width: 130, dataIndex: 'equipoEneDes', align: 'center'},
@@ -220,7 +220,7 @@ Ext.onReady(function() {
                                                             table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
                                                             table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
                                                             table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Empresa</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Organización</Data></Cell>" +
                                                                     "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Persona</Data></Cell>" +
                                                                     "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Placa</Data></Cell>" +
                                                                     "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Equipo</Data></Cell>" +
@@ -479,7 +479,7 @@ Ext.onReady(function() {
                                                             table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
                                                             table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
                                                             table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Empresa</Data></Cell>" +
+                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Organización</Data></Cell>" +
                                                                     "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Persona</Data></Cell>" +
                                                                     "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Placa</Data></Cell>" +
                                                                     "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Equipo</Data></Cell>" +

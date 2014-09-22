@@ -83,7 +83,7 @@ Ext.onReady(function() {
             {header: "Cedula", width: 100, sortable: true, dataIndex: 'cedula', filter: {type: 'string'}, align: 'center'},
             {header: "Apellidos", width: 100, sortable: true, dataIndex: 'apellidos', filter: {type: 'string'}},
             {header: "Nombres", width: 100, sortable: true, dataIndex: 'nombres', filter: {type: 'string'}},
-            {header: "Ingresado por", width: 110, sortable: true, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}}
+            {header: "Ingresado por", width: 110, sortable: true, dataIndex: 'empresa',tooltip: 'Responsable quién Ingreso\n\ a esta persona ',renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}}
         ],
         enableDragDrop: true,
         stripeRows: true,
