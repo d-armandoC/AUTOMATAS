@@ -31,7 +31,7 @@ Ext.onReady(function() {
                         xtype: 'label',
                         afterLabelTextTpl: required,
                         name: 'email_actual',
-                        text: email,
+                        text: correo,
                         id: 'id_email',
                         anchor: '90%'
                     },
@@ -115,7 +115,9 @@ Ext.onReady(function() {
                                             panel_Cambiar_Email.getForm().reset();
                                             Ext.getCmp('id_mensaje').setText('Email actual:');
                                             Ext.getCmp('id_email').setText(email);
+                                            
                                             winusuario_email.hide();
+                                        
                                         },
                                         failure: function(form, action) {
                                             switch (action.failureType) {
@@ -171,7 +173,6 @@ Ext.onReady(function() {
                             panel_Cambiar_Email.getForm().reset();
                             winusuario_email.hide();
                         }
-
                     }
                 ]
 

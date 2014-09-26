@@ -16,7 +16,7 @@ function credits(){
                 'bruno.valarezo@kradac.com <br>'+
                 'hugo.ramirez@kradac.com <br>'+
                 'dalton.agila@kradac.com <br>'+
-                '</center><br><br><p align=right>K-TAXY</p>'+
+                '</center><br><br><p align=right>Karview</p>'+
                 '</div>'
             }],
             buttonAlign:"center",
@@ -35,7 +35,7 @@ function credits(){
             title:"Creditos",
             resizable:false,
             width:300,
-            height:250,
+            height:280,
             closeAction:"hide",
             plain:true,
             items:[contenedorWinC],

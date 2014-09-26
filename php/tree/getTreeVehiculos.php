@@ -19,17 +19,7 @@ if (!$mysqli = getConectionDb()) {
             AND v.id_persona = p.id_persona
              ORDER BY e.empresa, v.vehiculo"
         ;
-    } if ($idRol == 2 ) {
-        $expand = 'false';
-        $consultaSql = 
-            "SELECT v.id_vehiculo, v.id_equipo, v.vehiculo, v.icono, 
-            e.id_empresa, e.empresa, p.nombres, p.apellidos
-            FROM vehiculos v, empresas e, personas p
-            WHERE v.id_empresa = e.id_empresa
-            AND v.id_persona = p.id_persona and e.id_usuarioAsignado=$idPersona
-             ORDER BY e.empresa, v.vehiculo"
-        ;
-    } else if ($idRol == 3) {
+    }  else if ($idRol == 2) {
         $expand = 'true';
         $consultaSql = 
             "SELECT v.id_vehiculo,v.id_equipo, v.vehiculo, v.icono,
@@ -39,7 +29,7 @@ if (!$mysqli = getConectionDb()) {
             AND v.id_persona = p.id_persona
             AND e.id_empresa = '$idEmpresa'
             ORDER BY v.vehiculo";
-    } else if ($idRol == 4) {
+    } else if ($idRol == 3) {
           $expand = 'true';
         $consultaSql = 
             "SELECT v.id_vehiculo,v.id_equipo, v.vehiculo, v.icono, 

@@ -63,14 +63,10 @@ if (!$mysqli = getConectionDb()) {
                             echo "<script type='text/javascript'>location.href='../../index_admin.php'</script>";
                             break;
                         case 2:
-                            $_SESSION["NAMESESIONKARVIEW"] = "index_intermediario.php";
-                            echo "<script type='text/javascript'>location.href='../../index_intermediario.php'</script>";
-                            break;
-                        case 3:
                             $_SESSION["NAMESESIONKARVIEW"] = "index_empresas.php";
                             echo "<script type='text/javascript'>location.href='../../index_empresas.php'</script>";
                             break;
-                        case 4:
+                        case 3:
                             $_SESSION["NAMESESIONKARVIEW"] = "index_propietario.php";
                             echo "<script type='text/javascript'>location.href='../../index_propietario.php'</script>";
                             break;

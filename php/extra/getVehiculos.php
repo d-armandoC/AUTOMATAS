@@ -1,79 +1,64 @@
 <?php
-require_once('../../dll/conect.php');
+
+include('../login/isLogin.php');
+include ('../../dll/config.php');
 
 extract($_POST);
-
-$coord = explode(";", $coord);
-$numVer = count($coord);
-
-for ($i=0; $i < count($coord); $i++) { 
-	$data = explode(",", $coord[$i]);
-	$vertx[$i] = $data[0];
-	$verty[$i] = $data[1];
-}
-
-$consultaSql = 
-	"SELECT ID_EQUIPO, FECHA, HORA, VELOCIDAD, LATITUD, LONGITUD, BAT, IGN, GSM, GPS2, G2
-	FROM RECORRIDOS WHERE FECHA = '$fecha'
-	AND HORA BETWEEN '$horaIni' AND '$horaFin'"
-;
-
-consulta($consultaSql);
-$resulset = variasFilas();
-
-if (count($resulset) > 0) {
-	$existVehiculos = false;
-
-	$json = "{puntos: [";
-
-	for ($i = 0; $i < count($resulset); $i++) {
-	    $fila = $resulset[$i];
-
-	    if (pointOnVertice($numVer, $verty, $vertx, $fila["LATITUD"], $fila["LONGITUD"])) {
-	    	$json .= "{
-	            idEquipo:'" . utf8_encode($fila["ID_EQUIPO"]) . "',
-	            fecha_hora:'" . $fila["FECHA"]. ' '. $fila["HORA"] . "',
-	            velocidad:" . $fila["VELOCIDAD"]. ",
-	            latitud:" . $fila["LATITUD"]. ",
-	            longitud:" . $fila["LONGITUD"]. ",
-                    bateria:" . $fila["BAT"]. ",
-                    ign:" . $fila["IGN"]. ",
-                    gsm:" . $fila["GSM"]. ",
-                    gps2:" . $fila["GPS2"]. ",
-                    taximetro:" . $fila["G2"]. "
-	        }";
-		    if ($i != count($resulset) - 1) {
-		        $json .= ",";
-		    }
-		    $existVehiculos = true;
-	    }
-	}
-
-	$json .="]}";
-
-	$json = preg_replace("[\n|\r|\n\r]", "", $json);        
-
-    $salida = "{success:true, string: ".json_encode($json)."}";
-
-	if (!$existVehiculos) {
-		$salida = "{failure:true}";
-	}	
+if (!$mysqli = getConectionDb()) {
+    echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-	$salida = "{failure:true}";
+    $coord = explode(";", $coord);
+    $numVer = count($coord);
+
+    for ($i = 0; $i < count($coord); $i++) {
+        $data = explode(",", $coord[$i]);
+        $vertx[$i] = $data[0];
+        $verty[$i] = $data[1];
+    }
+
+    $consultaSql = "SELECT dskp.ID_EQUIPO, dskp.FECHA, dskp.HORA, dskp.VELOCIDAD, dskp.LATITUD, dskp.LONGITUD, dskp.bateria, dskp.IGN, dskp.GSM, dskp.GPS, dskp.G2
+	FROM karviewhistoricodb.dato_spks dskp WHERE FECHA = '2014-09-08'
+	AND HORA BETWEEN '00:00' AND '11:15'";
+    $result = $mysqli->query($consultaSql);
+    $mysqli->close();
+    $haveData = false;
+    if ($result->num_rows > 0) {
+        $haveData = true;
+        $objJson = "{puntos: [";
+        while ($myrow = $result->fetch_assoc()) {
+            if (pointOnVertice($numVer, $verty, $vertx, $myrow["LATITUD"], $myrow["LONGITUD"])) {
+                  $objJson .= "{"
+                    . "idEquipo:" . $myrow["ID_EQUIPO"] . ","
+                    . "fecha_hora:'" .$myrow["FECHA"] . ' ' . $myrow["HORA"]. "',"
+                    . "velocidad:'" . $myrow["VELOCIDAD"] . "',"
+                    . "latitud:'" . $myrow["LATITUD"] . "',"
+                    . "longitud:'" . $myrow["LONGITUD"] . "',"
+                    . "bateria:'" . $myrow["bateria"] . "',"
+                    . "ign:'" . $myrow["IGN"] . "',"
+                    . "gsm:'" .  $myrow["GSM"] . "',"
+                    . "gps2:'" . $myrow["GPS"] . "',"
+                    . "G2:'" . $myrow["G2"] . "'"
+                    . "},";
+            }
+        }
+        $objJson .="]}";
+    }
+    if ($haveData) {
+        echo "{success:true, string: " . json_encode($objJson) . "}";
+    } else {
+        echo "{failure: true, msg: 'Problemas al Obtener los  Datos'}";
+    }
 }
 
-echo $salida;
 
 function pointOnVertice($numVer, $verty, $vertx, $testy, $testx) {
     $c = false;
-    for ($i=0, $j = $numVer-1; $i < $numVer; $j = $i++) { 
-        if ((($vertx[$i] > $testx) != ($vertx[$j] > $testx)) 
-            && ($testy < ($verty[$j] - $verty[$i])
-            * ($testx - $vertx[$i])
-            / ($vertx[$j] - $vertx[$i]) + $verty[$i])) {
+    for ($i = 0, $j = $numVer - 1; $i < $numVer; $j = $i++) {
+        if ((($vertx[$i] > $testx) != ($vertx[$j] > $testx)) && ($testy < ($verty[$j] - $verty[$i]) * ($testx - $vertx[$i]) / ($vertx[$j] - $vertx[$i]) + $verty[$i])) {
             $c = !$c;
         }
     }
     return $c;
 }
+
 ?>

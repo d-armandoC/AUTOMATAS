@@ -39,6 +39,8 @@
                 var userKarview = '".$_SESSION["USERKARVIEW"]."';
                 var idRolKarview = ".$_SESSION["IDROLKARVIEW"].";
                 var personKarview = '".$_SESSION["PERSONKARVIEW"]."';
+                var correo = '".$_SESSION["EMAIL"]."';
+                    
                 ";
             ?>
         </script>

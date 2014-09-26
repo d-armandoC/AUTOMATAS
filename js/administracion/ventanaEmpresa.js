@@ -63,11 +63,11 @@ Ext.onReady(function() {
     gridAdminCompany = Ext.create('Ext.grid.Panel', {
         store: gridStore,
         columns: [
-            {header: "<b>Acrónimo</b>", width: 100, align: 'center', sortable: true, dataIndex: 'acronimo'},
-            {header: "<b>Organización</b>", align: 'center', width: 180, sortable: true, dataIndex: 'empresa', renderer: formatCompany},
-            {header: "<b>Dirección</b>", width: 130, sortable: true, align: 'center', dataIndex: 'direccion'},
-            {header: "<b>Celular</b>", width: 350, sortable: true, align: 'center', dataIndex: 'telefono'},
-            {header: "<b>Correo</b>", width: 200, sortable: true, dataIndex: 'correo', align: 'center'},
+            {header: "<b>Acrónimo</b>", width: 100, align: 'center', sortable: true, dataIndex: 'acronimo',filter: {type: 'string'}},
+            {header: "<b>Organización</b>", align: 'center', width: 180, sortable: true, dataIndex: 'empresa', renderer: formatCompany,filter: {type: 'string'}},
+            {header: "<b>Dirección</b>", width: 130, sortable: true, align: 'center', dataIndex: 'direccion',filter: {type: 'string'}},
+            {header: "<b>Celular</b>", width: 350, sortable: true, align: 'center', dataIndex: 'telefono',filter: {type: 'string'}},
+            {header: "<b>Correo</b>", width: 200, sortable: true, dataIndex: 'correo', align: 'center',filter: {type: 'string'}},
         ],
         stripeRows: true,
         width: '50%',

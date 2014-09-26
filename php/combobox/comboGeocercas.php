@@ -12,11 +12,11 @@ if (!$mysqli = getConectionDb()) {
     $idPersona = $_SESSION["IDPERSONKARVIEW"];
     $idRol = $_SESSION["IDROLKARVIEW"];
 
-    if ($idRol == 1) {
+    if ($idRol == 1 ) {
         $consultaSql = "select id_geocerca, geocerca FROM GEOCERCAS";
-    } else {
-        $consultaSql = "SELECT ID_GEOCERCA, geocerca
-    FROM GEOCERCAS WHERE ID_EMPRESA = '$idEmpresa'";
+    }else if($idRol == 2){
+        $consultaSql = "SELECT id_geocerca, geocerca
+    FROM GEOCERCAS WHERE id_empresa = '$idEmpresa'";
     }
     $haveData = false;
     $result = $mysqli->query($consultaSql);

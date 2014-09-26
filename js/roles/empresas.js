@@ -340,9 +340,9 @@ Ext.onReady(function() {
                     ventAddPersonal();
 
                 }},
-             {text: 'Envio Correos', iconCls: 'icon-email', handler: function() {
-                            visualizarEnviosGeoCercas();
-                        }},
+            {text: 'Envio Correos', iconCls: 'icon-email', handler: function() {
+                    visualizarEnviosGeoCercas();
+                }},
 //            {text: 'Usuarios', iconCls: 'icon-user', handler: function() {
 //                    ventAddUser();
 //                }},
@@ -444,7 +444,7 @@ Ext.onReady(function() {
                                 }},
                             {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function() {
 //                                    ventanaExcesoVelocidad();
-                                     showWinExcesosDaily();
+                                    showWinExcesosDaily();
                                 }}
                             , {text: 'Mantenimiento General', iconCls: 'icon-config', handler: function() {
                                     ventanaMantenimiento();
@@ -467,9 +467,9 @@ Ext.onReady(function() {
 //                                    ventanaReporteGeocerca();
 ////                                  
 //                                }}, ,
-                                    {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
-                                            ventanaEventos();
-                                        }},
+                            {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
+                                    ventanaEventos();
+                                }},
                             {text: 'CMD Enviados', iconCls: 'icon-cmd-hist', handler: function() {
                                     ventanaCmdHistorial();
                                 }},
@@ -490,9 +490,20 @@ Ext.onReady(function() {
             administracion,
             salir, '->',
             {
+                xtype: 'button',
+                iconCls: 'icon-act-mapa',
+                tooltip: 'Limpiar Mapa',
+                handler: function() {
+                    clearLienzoPointTravel();
+                    var lonlatCenter = new OpenLayers.LonLat(0, 100000000);
+                    map.setCenter(lonlatCenter, 7);
+
+                }},
+            salir,
+            {
                 xtype: 'label',
                 html: '<section id="panelNorte">' +
-                        '<center><strong id="name"> ' + (diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear()) + '</strong></center>' +
+                        '<center><strong id="name"><FONT SIZE=3  COLOR="blue">' + (diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()]) + '  ' + '</FONT><iframe src="http://free.timeanddate.com/clock/i3x5kb7x/n190/tlec4/fn12/fs18/tct/pct/ftb/bas0/bat0/th1"  frameborder="0" width="96"  height="15" allowTransparency="true" ></iframe>' + '</strong></center>' +
                         '</section>'
             },
             {
@@ -502,9 +513,6 @@ Ext.onReady(function() {
                 height: 16,
                 margin: '0 5 0 0'
             }
-
-
-
         ]
     });
 
@@ -522,7 +530,7 @@ Ext.onReady(function() {
                         html: '<a href="http://www.kradac.com" target="_blank"><img src="img/logo.png" width="250" height="64"></a>'
                     }, {
                         xtype: 'label',
-                        padding: '15 0 0 0',
+                        padding: '15 0 0 150',
                         style: {
                             color: '#157fcc'
                         },
@@ -882,6 +890,6 @@ Ext.onReady(function() {
         layout: 'border',
         items: [panelMenu, panelEste, panelCentral]
     });
-     storeEmpresas.load();
+    storeEmpresas.load();
     loadMap();
 });

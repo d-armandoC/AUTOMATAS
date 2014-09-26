@@ -9,7 +9,7 @@ Ext.onReady(function() {
         fieldLabel: 'Fecha',
         format: 'Y-m-d',
         name: 'fecha',
-        value : new Date(),
+        value: new Date(),
         allowBlank: false,
         emptyText: 'Fecha de Busqueda...'
     });
@@ -35,7 +35,7 @@ Ext.onReady(function() {
             type: 'ajax',
             reader: 'array'
         },
-        fields: ['idEquipo','fecha_hora', 'velocidad', 'latitud', 'longitud', 'bateria', 'ign', 'gsm', 'gps2', 'taximetro']
+        fields: ['idEquipo', 'fecha_hora', 'velocidad', 'latitud', 'longitud', 'bateria', 'ign', 'gsm', 'gps2', 'G2']
     });
 
     gridVehiculos = Ext.create('Ext.grid.Panel', {
@@ -47,45 +47,67 @@ Ext.onReady(function() {
             emptyText: 'No hay datos que Mostrar'
         },
         columns: [
-            Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width : 40}),
-            { text: 'Equipo', width: 75, dataIndex: 'idEquipo', align: 'center'},
-            { text: 'Fecha', xtype: 'datecolumn', format: 'd-m-Y', width: 75, dataIndex: 'fecha_hora', align: 'center'},
-            { text: 'Hora', xtype: 'datecolumn', format: 'H:i:s', width: 75, dataIndex: 'fecha_hora', align: 'center'},
-            { text: 'Vel. (Km/h)', dataIndex: 'velocidad', align: 'center', width: 75, renderer: formatSpeed},
-            { text: 'Bateria', width: 50, dataIndex: 'bateria', renderer: formatBatIgnGsmGps2},
-            { text: 'IGN', width: 50, dataIndex: 'ign', renderer: formatBatIgnGsmGps2},
-            { text: 'GSM', width: 50, dataIndex: 'gsm', renderer: formatBatIgnGsmGps2},
-            { text: 'GPS2', width: 50, dataIndex: 'gps2', renderer: formatBatIgnGsmGps2},
-            { text: 'Taximetro', width: 90, dataIndex: 'taximetro', renderer: formatStateTaxy}
+            Ext.create('Ext.grid.RowNumberer', {text: '<b>Nº</b>', align: 'center', width: 40}),
+            {text: 'Equipo', width: 100, dataIndex: 'idEquipo', align: 'center'},
+            {text: 'Fecha', xtype: 'datecolumn', format: 'd-m-Y', width: 100, dataIndex: 'fecha_hora', align: 'center'},
+            {text: 'Hora', xtype: 'datecolumn', format: 'H:i:s', width: 100, dataIndex: 'fecha_hora', align: 'center'},
+            {text: 'Vel. (Km/h)', dataIndex: 'velocidad', align: 'center', width: 100, renderer: formatSpeed},
+            {text: 'Bateria', width: 70, dataIndex: 'bateria', renderer: formatBatIgnGsmGps2},
+            {text: 'IGN', width: 70, dataIndex: 'ign', renderer: formatBatIgnGsmGps2},
+            {text: 'GSM', width: 70, dataIndex: 'gsm', renderer: formatBatIgnGsmGps2},
+            {text: 'GPS2', width: 70, dataIndex: 'gps2', renderer: formatBatIgnGsmGps2},
+            {text: 'G2', width: 100, dataIndex: 'G2', renderer: formatStateTaxy}
         ],
-        listeners : {
-            itemcontextmenu : function( thisObj, record, item, index, e, eOpts ){
-                localizarDireccion(record.data.longitud, record.data.latitud, 17);
+        listeners: {
+            itemcontextmenu: function(thisObj, record, item, index, e, eOpts) {
+                e.stopEvent();
+                Ext.create('Ext.menu.Menu', {
+                    items: [
+                        Ext.create('Ext.Action', {
+                            iconCls: 'icon-vehiculos_lugar', // Use a URL in the icon config
+                            text: 'Ver Ubicación en el Mapa',
+                            disabled: false,
+                            handler: function(widget, event) {
+                                panelTabMapaAdmin.setActiveTab('panelMapaTab');
+                                localizarDireccion(record.data.longitud, record.data.latitud, 17);
+//                                clearLienzoTravel();
+//                                clearLienzoPointTravel();
+//                                drawPointsRoute(record.data, "Puntos");
+//                                drawRutaMapa(record.data);
+                            }
+                        })
+                    ]
+                }).showAt(e.getXY());
+                return false;
             }
-        },
+        }
     });
 
     panelVehiculosLugares = Ext.create('Ext.form.Panel', {
-        padding : '5 5 5 5',
-        layout : 'border',
-        items : [{
-            region : 'north',
-            xtype : 'form',
-            frame : true,
-            items : [date, timeIni, timeFin],
-            buttons : [{
-                text : 'Trazar Lugar',
-                iconCls : 'icon-trazar',
-                handler : function() {
-                    if (this.up('form').getForm().isValid()) {
-                        trazando = 1;
-                        isLugar = true;
-                        estadoControlD("polygon");
-                        winVehiculosLugares.hide();
-                    }
-                }
-            }]
-        }, gridVehiculos]
+        padding: '5 5 5 5',
+        layout: 'border',
+        items: [{
+                region: 'north',
+                xtype: 'form',
+                frame: true,
+                items: [date, timeIni, timeFin],
+                buttons: [{
+                        text: 'Trazar Lugar',
+                        iconCls: 'icon-trazar',
+                        handler: function() {
+                            if (this.up('form').getForm().isValid()) {
+//                        trazando = 1;
+//                        isLugar = true;
+//                        estadoControlD("polygon");
+//                        winVehiculosLugares.hide();
+                                drawRoute = true;
+                                vehiLugares = true;
+                                drawLine.activate();
+                                winVehiculosLugares.hide();
+                            }
+                        }
+                    }]
+            }, gridVehiculos]
     });
 });
 

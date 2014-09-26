@@ -391,6 +391,7 @@ Ext.onReady(function() {
                                                             a.download = 'Registro de Encenedido y Apagado' + '.xml';
                                                             a.click();
                                                         } else {
+                                                            
                                                             Ext.MessageBox.show({
                                                                 title: 'Error',
                                                                 msg: '<center> El servicio para este navegador no esta disponible <br> Use un navegador como Google Chrome </center>',

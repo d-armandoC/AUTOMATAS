@@ -334,27 +334,28 @@ Ext.onReady(function() {
                                                 handler: function() {
                                                     if (drawRoute === true) {
                                                         drawLine.activate();
-                                                    } else {
-                                                        modifyLine.activate();
-                                                        modifyLine.activate();
-                                                        Ext.create('Ext.menu.Menu', {
-                                                            width: 100,
-                                                            floating: true, // usually you want this set to True (default)
-                                                            renderTo: 'map', // usually rendered by it's containing componen
-                                                            items: [{
-                                                                    iconCls: 'icon-valid',
-                                                                    text: 'Terminar',
-                                                                    handler: function() {
-                                                                        geometria = lines.features[0].geometry; //figura
-                                                                        var area = geometria.getArea() / 1000;
-                                                                        area = Math.round(area * 100) / 100;
-                                                                        Ext.getCmp('numberfield-point-route').setValue(area + ' km2');
-                                                                        modifyLine.deactivate();
-                                                                        winAddGeocerca.show();
-                                                                    }
-                                                                }]
-                                                        }).show();
-                                                    }
+                                                    } 
+//                                                    else {
+//                                                        modifyLine.activate();
+//                                                        modifyLine.activate();
+//                                                        Ext.create('Ext.menu.Menu', {
+//                                                            width: 100,
+//                                                            floating: true, // usually you want this set to True (default)
+//                                                            renderTo: 'map', // usually rendered by it's containing componen
+//                                                            items: [{
+//                                                                    iconCls: 'icon-valid',
+//                                                                    text: 'Terminar',
+//                                                                    handler: function() {
+//                                                                        geometria = lines.features[0].geometry; //figura
+//                                                                        var area = geometria.getArea() / 1000;
+//                                                                        area = Math.round(area * 100) / 100;
+//                                                                        Ext.getCmp('numberfield-point-route').setValue(area + ' km2');
+//                                                                        modifyLine.deactivate();
+//                                                                        winAddGeocerca.show();
+//                                                                    }
+//                                                                }]
+//                                                        }).show();
+//                                                    }
                                                     winAddGeocerca.hide();
                                                 }
                                             }, {

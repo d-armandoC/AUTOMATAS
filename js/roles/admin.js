@@ -363,10 +363,10 @@ Ext.onReady(function() {
                 text: 'Geocercas',
                 iconCls: 'icon-geocerca',
                 menu: [
-//                    {text: 'Administracion', iconCls: 'icon-find-geo', handler: function() {
-//                            //ventanaAddGeo();
-//                            ventanaGeocerca();
-//                        }},
+                    {text: 'Administracion', iconCls: 'icon-find-geo', handler: function() {
+                            //ventanaAddGeo();
+                            ventanaGeocerca();
+                        }},
                     {text: 'Envio Correos', iconCls: 'icon-email', handler: function() {
                             visualizarEnviosGeoCercas();
                         }}
@@ -383,6 +383,7 @@ Ext.onReady(function() {
         tooltip: 'Herramintas de Acceso Rapido',
         iconCls: 'icon-config',
         menu: [
+            
             {text: 'Modificar usuarios', iconCls: 'icon-personal', handler: function() {
                     ventanaModificarUsuario();
                 }},
@@ -392,18 +393,21 @@ Ext.onReady(function() {
             {text: 'Mantenimientos', iconCls: 'icon-mantenimiento', handler: function() {
                     ventAddMantenimientos();
                 }},
-//            {text: 'Actualizar email', iconCls: 'icon-email', handler: function() {
-//                    ventanaActualizarEmail();
-//                }},
+               {text: 'Vehiculos en Lugares', iconCls: 'icon-vehiculos_lugar', handler: function() {
+                    ventanaVehLugares();
+                }},
+            {text: 'Actualizar email', iconCls: 'icon-email', handler: function() {
+                    ventanaActualizarEmail();
+                }},
             '-',
-//            {text: 'Videos',
-//                iconCls: 'icon-video',
-//                handler: showVideo
-//            },
-//            {text: 'Creditos', iconCls: 'icon-credits', handler: function() {
-//                    credits();
-//                    spot.show('panel-credit');
-//                }}
+            {text: 'Videos',
+                iconCls: 'icon-video',
+                handler: showVideo
+            },
+            {text: 'Creditos', iconCls: 'icon-credits', handler: function() {
+                    credits();
+                    spot.show('panel-credit');
+                }}
         ]
     });
 

@@ -3,7 +3,7 @@
 if (!isset($_SESSION)) {
 	session_start();
 } else {
-	//$rutaPrincipal = "http://200.0.29.121:8080/k-taxy/";
+	//$rutaPrincipal = "";
 	$rutaPrincipal = "index.php";
 
 	//Comprobar si esta logeado

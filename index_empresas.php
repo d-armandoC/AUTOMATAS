@@ -40,6 +40,7 @@
                 var userKarview = '".$_SESSION["USERKARVIEW"]."';
                 var idRolKarview = ".$_SESSION["IDROLKARVIEW"].";
                 var personKarview = '".$_SESSION["PERSONKARVIEW"]."';
+                var correo = '".$_SESSION["EMAIL"]."';
                 ";
             ?>
         </script>
@@ -66,14 +67,14 @@
         <script type="text/javascript" src="js/interface/report/ventanaAsignacion.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaBanderas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaEstadoVeh.js"></script>
-        <script type="text/javascript" src="js/interface/report/ventanaExcesosVelocidad.js"></script>
+        <!--<script type="text/javascript" src="js/interface/report/ventanaExcesosVelocidad.js"></script>-->
         <script type="text/javascript" src="js/interface/report/ventanaFranjasHorarias.js"></script>        
         <script type="text/javascript" src="js/interface/report/ventanaNoAtendidas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaRutas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaServicios.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaSoftware.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaTaximetro.js"></script>
-        <script type="text/javascript" src="js/interface/report/ventanaTrabajoFlota.js"></script>
+        <!--<script type="text/javascript" src="js/interface/report/ventanaTrabajoFlota.js"></script>-->
         <script type="text/javascript" src="js/interface/report/ventanaEventos.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaGeocercas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaSimbologia.js"></script>
@@ -82,7 +83,7 @@
         <script type="text/javascript" src="js/interface/report/ventanaReporteMantenimientoDetallado.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaCmdHist.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaReporteParadas.js"></script>
-        <script type="text/javascript" src="js/interface/report/ventanaReporteConsumoCombustible.js"></script>
+        <!--<script type="text/javascript" src="js/interface/report/ventanaReporteConsumoCombustible.js"></script>-->
         <script type="text/javascript" src="js/interface/adminGeo/ventanaSendMailGeoPrueba.js"></script>
 
         <script type="text/javascript" src="js/interface/adminGeo/ventanaVerGeo.js"></script>

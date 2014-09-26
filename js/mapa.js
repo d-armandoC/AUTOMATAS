@@ -7,6 +7,9 @@ var lienzoLineTravel;
 var lienzoLineRouteManual;
 var lienzoEstaciones;
 var lienzoVehicle;
+//para controlar la busqueda de los vehiculos en lugares
+var vehiLugares = false;
+
 
 var markerInicioFin;
 var dragFeature;
@@ -388,6 +391,7 @@ function graficarCoop() {
         });
     }
     setTimeout(function() {
+
         graficarCoop(coopToShow);
     }
     , 5 * 1000);
@@ -812,78 +816,7 @@ function localizarDireccion(ln, lt, zoom) {
     pulsate(circle);
 }
 
-function estadoControlD(flag) {
-    for (var key in drawControls) {
-        var control = drawControls[key];
-        if (flag == key) {
-            if (control.active == null || !control.active) {
-                control.activate();
-                lienzoGeoCercas.destroyFeatures(); // borrar capa
-            } else {
-                control.deactivate();
-            }
-        }
-    }
-}
 
-
-function getDateGeo(fig) {
-
-    trazando = 0;
-
-    estadoControlD('polygon');
-
-    var geom = fig.geometry; //figura
-    var area = geom.getArea() / 1000     //area km
-    var vert = geom.getVertices();  //vertices
-
-    area = Math.round(area * 100) / 100;
-
-    contenedorWinAddGeo.down('[name=area]').setValue(area + ' km2');
-    console.log(area + ' km2');
-    var coordP = '';
-
-    for (var i = 0; i < vert.length; i++) {
-        vert[i] = vert[i].transform(new OpenLayers.Projection('EPSG:900913'),
-                new OpenLayers.Projection('EPSG:4326'));
-        coordP += vert[i].x + ',' + vert[i].y;
-
-        if (i != vert.length - 1) {
-            coordP += ';';
-        }
-
-    }
-
-    vertPolygon = coordP;
-    if (isLugar) {
-        winVehiculosLugares.show();
-        panelVehiculosLugares.submit({
-            url: 'php/extra/getVehiculos.php',
-            waitMsg: 'Comprobando Datos...',
-            params: {
-                coord: vertPolygon
-            },
-            failure: function(form, action) {
-                Ext.MessageBox.show({
-                    title: "Problemas",
-                    msg: "No se ha encontrado vehiculos en esas horas.",
-                    buttons: Ext.MessageBox.OK,
-                    icon: Ext.MessageBox.ERROR
-                })
-            },
-            success: function(form, action) {
-                Ext.example.msg('Mensaje', 'Vehiculos Encontrados.');
-                var resultado = action.result;
-                var puntos = Ext.JSON.decode(resultado.string).puntos;
-                gridVehiculos.getStore().loadData(puntos);
-            }
-        });
-
-        isLugar = false;
-    } else {
-        winAddGeo.show();
-    }
-}
 
 
 
@@ -979,6 +912,8 @@ function drawLineRoute(json, idRuta) {
         });
     }
 }
+
+
 ////////////////
 function drawRutaMapa(json) {
     iconosInicioFin(json);
@@ -1018,8 +953,6 @@ function drawRutaMapa(json) {
 
 
 function drawLineTravel(json, isSkp) {
-
-
     var puntosRec = new Array();
     for (var i = 0; i < json.length; i++) {
         var dataRec = json[i];
@@ -1475,22 +1408,134 @@ function dibujarPerimetro(m, ypos, xpos) {
     lienzoPointRoute.addFeatures(lineFeature);
 }
 
-function getDataRoute(fig) {
+function estadoControlD(flag) {
+    for (var key in drawControls) {
+        var control = drawControls[key];
+        if (flag == key) {
+            if (control.active == null || !control.active) {
+                control.activate();
+                lienzoGeoCercas.destroyFeatures(); // borrar capa
+            } else {
+                console.log('activando');
+                control.deactivate();
+            }
+        }
+    }
+}
+
+
+function getDateGeo(fig) {
+
+    trazando = 0;
+
+    estadoControlD('polygon');
 
     var geom = fig.geometry; //figura
     var area = geom.getArea() / 1000     //area km
+    var vert = geom.getVertices();  //vertices
+
     area = Math.round(area * 100) / 100;
-    Ext.getCmp('numberfield-point-route').setValue(area + ' km2');
+
+    contenedorWinAddGeo.down('[name=area]').setValue(area + ' km2');
     console.log(area + ' km2');
-//    var listPoint = fig.geometry.getVertices();
-//    Ext.getCmp('numberfield-point-route').setValue(listPoint.length);
-    drawRoute = false;
-    Ext.getCmp('btn-draw-edit-route').setIconCls("icon-update");
-    Ext.getCmp('btn-delete-route').enable();
-    drawLine.deactivate();
-    winAddGeocerca.show();
-    /*for (var i = 0; i < listPoint.length; i++) {
-     var pointConvert = listPoint[i].transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:4326'));
-     console.log("Latitud: " + pointConvert.y + " --:-- Longitud: " + pointConvert.x);
-     }*/
+    var coordP = '';
+
+    for (var i = 0; i < vert.length; i++) {
+        vert[i] = vert[i].transform(new OpenLayers.Projection('EPSG:900913'),
+                new OpenLayers.Projection('EPSG:4326'));
+        coordP += vert[i].x + ',' + vert[i].y;
+
+        if (i != vert.length - 1) {
+            coordP += ';';
+        }
+
+    }
+
+    vertPolygon = coordP;
+    if (isLugar) {
+
+        winVehiculosLugares.show();
+        panelVehiculosLugares.submit({
+            url: 'php/extra/getVehiculos.php',
+            waitMsg: 'Comprobando Datos...',
+            params: {
+                coord: vertPolygon
+            },
+            failure: function(form, action) {
+                Ext.MessageBox.show({
+                    title: "Problemas",
+                    msg: "No se ha encontrado vehiculos en esas horas.",
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                })
+            },
+            success: function(form, action) {
+                Ext.example.msg('Mensaje', 'Vehiculos Encontrados.');
+                var resultado = action.result;
+                var puntos = Ext.JSON.decode(resultado.string).puntos;
+                gridVehiculos.getStore().loadData(puntos);
+            }
+        });
+
+        isLugar = false;
+    } else {
+        winAddGeo.show();
+    }
+}
+
+var vertPolygon;
+
+function getDataRoute(fig) {
+    var geom = fig.geometry; //figura
+    if (vehiLugares) {
+        var vert = geom.getVertices();
+        var coordP = '';
+        for (var i = 0; i < vert.length; i++) {
+            vert[i] = vert[i].transform(new OpenLayers.Projection('EPSG:900913'),
+                    new OpenLayers.Projection('EPSG:4326'));
+            coordP += vert[i].x + ',' + vert[i].y;
+            if (i != vert.length - 1) {
+                coordP += ';';
+            }
+        }
+        vertPolygon = coordP;
+        winVehiculosLugares.show();
+        panelVehiculosLugares.submit({
+            url: 'php/extra/getVehiculos.php',
+            waitMsg: 'Comprobando Datos...',
+            params: {
+                coord: vertPolygon
+            },
+            failure: function(form, action) {
+                Ext.MessageBox.show({
+                    title: "Problemas",
+                    msg: "No se ha encontrado vehiculos en esas horas.",
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                })
+            },
+            success: function(form, action) {
+                Ext.example.msg('Mensaje', 'Vehiculos Encontrados.');
+                var resultado = action.result;
+                var puntos = Ext.JSON.decode(resultado.string).puntos;
+                gridVehiculos.getStore().loadData(puntos);
+            }
+        });
+        drawLine.deactivate();
+        winVehiculosLugares.show();
+        vehiLugares = false;
+        clearLienzoTravel();
+         clearLienzoPointTravel();
+    } else {
+        var area = geom.getArea() / 1000     //area km
+        area = Math.round(area * 100) / 100;
+        Ext.getCmp('numberfield-point-route').setValue(area + ' km2');
+        //console.log(area + ' km2');
+        drawRoute = false;
+        Ext.getCmp('btn-draw-edit-route').setIconCls("icon-update");
+        Ext.getCmp('btn-delete-route').enable();
+        drawLine.deactivate();
+        winAddGeocerca.show();
+    }
+
 }

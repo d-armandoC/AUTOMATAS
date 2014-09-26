@@ -3,6 +3,16 @@ include('../login/isLogin.php');
 include ('../../dll/config.php');
 
 extract($_GET);
+if (!$mysqli = getConectionDb()) {
+    echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
+} else {
+    
+    
+    
+}
+
+
+
 
 $salida = "{failure:true}";
 

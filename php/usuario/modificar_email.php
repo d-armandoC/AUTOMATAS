@@ -3,7 +3,6 @@
 extract($_POST);
 include("../login/isLogin.php");
 $userKarview = $_SESSION["USERKARVIEW"];
-//echo $userKTaxy;
 
 include ('../../dll/config.php');
 
