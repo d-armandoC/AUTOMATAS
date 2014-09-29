@@ -135,74 +135,79 @@ Ext.onReady(function() {
                 iconCls: 'icon-excel',
                 text: 'Exportar a Excel',
                 handler: function() {
-
                     if (gridStoreVehiculo.getCount() > 0) {
                         if (getNavigator() === 'img/chrome.png') {
                             var a = document.createElement('a');
-                            //getting data from our div that contains the HTML table
                             var data_type = 'data:application/vnd.ms-excel';
-                            //var table_div = document.getElementById('exportar');
-                            //var table_html = table_div.outerHTML.replace(/ /g, '%20');
+                            var numFil = gridStoreVehiculo.data.length;
+                            var numCol = 11;
                             var tiLetra = 'Calibri';
-                            var table_div = "<meta charset='UTF-8'><body>" +
-                                    "<font face='" + tiLetra + "'><table>" +
-                                    "<tr><th colspan='7'>VEHICULOS" + "</th></tr>" +
-                                    "<tr></tr>";
-                            table_div += "<tr>";
-                            table_div += "<th align=left>EMPRESA</th>";
-                            table_div += "<th align=left>PROPIETARIO </th>";
-                            table_div += "<th align=left>EQUIPO</th>";
-                            table_div += "<th align=left>PLACA</th>";
-                            table_div += "<th align=left>Clase Vehículo</th>";
-                            table_div += "<th align=left>MARCA </th>";
-                            table_div += "<th align=left>MODELO</th>";
-                            table_div += "<th align=left>VEHÍCULO</th>";
-                            table_div += "<th align=left>NUM.  MOTOR</th>";
-                            table_div += "<th align=left>NUM. CHASIS</th>";
-                            table_div += "<th align=left>AÑO</th>";
-
-                            table_div += "</tr>";
-                            for (var i = 0; i < gridStoreVehiculo.data.length; i++) {
-
-                                table_div += "<tr>";
-                                table_div += "<td align=lef>" + gridStoreVehiculo.data.items[i].data.empresa + "</td>";
-                                table_div += "<td align=lef>" + gridStoreVehiculo.data.items[i].data.persona + "</td>";
-                                table_div += "<td align=lef>" + gridStoreVehiculo.data.items[i].data.equipo + "</td>";
-                                table_div += "<td align=lef>" + gridStoreVehiculo.data.items[i].data.placa + "</td>";
-                                table_div += "<td align=lef>" + gridStoreVehiculo.data.items[i].data.clase_vehiculo + "</td>";
-                                table_div += "<td align=lef>" + gridStoreVehiculo.data.items[i].data.marca + "</td>";
-                                table_div += "<td align=lef>" + gridStoreVehiculo.data.items[i].data.modelo + "</td>";
-                                table_div += "<td align=lef>" + gridStoreVehiculo.data.items[i].data.vehiculo + "</td>";
-                                table_div += "<td align=lef>" + gridStoreVehiculo.data.items[i].data.numMotor + "</td>";
-                                table_div += "<td align=lef>" + gridStoreVehiculo.data.items[i].data.numChasis + "</td>";
-                                table_div += "<td align=lef>" + gridStoreVehiculo.data.items[i].data.year + "</td>";
-
-
-                                table_div += "</tr>";
+                            var titulo = 'Vehiculos';
+                            var table_div = "<?xml version='1.0'?><?mso-application progid='Excel.Sheet'?><Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'><DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'><Author>KRADAC SOLUCIONES TECNOLÃ“GICAS</Author><LastAuthor>KRADAC SOLUCIONES TECNOLÃ“GICAS</LastAuthor><Created>2014-08-20T15:33:48Z</Created><Company>KRADAC</Company><Version>15.00</Version>";
+                            table_div += "</DocumentProperties> " +
+                                    "<Styles> " +
+                                    "<Style ss:ID='Default' ss:Name='Normal'>   <Alignment ss:Vertical='Bottom'/>   <Borders/>   <Font ss:FontName='" + tiLetra + "' x:Family='Swiss' ss:Size='11' ss:Color='#000000'/>   <Interior/>   <NumberFormat/>   <Protection/>  </Style>  " +
+                                    "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
+                                    "<Style ss:ID='datos'><NumberFormat ss:Format='@'/></Style> " +
+                                    "</Styles>";
+                            //Definir el numero de columnas y cantidad de filas de la hoja de calculo (numFil + 2))
+                            table_div += "<Worksheet ss:Name='Datos'>";//Nombre de la hoja
+                            table_div += "<Table ss:ExpandedColumnCount='" + numCol + "' ss:ExpandedRowCount='" + (numFil + 2) + "' x:FullColumns='1' x:FullRows='1' ss:DefaultColumnWidth='60' ss:DefaultRowHeight='15'>";
+                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='121.5'/>";
+                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                            table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
+                            table_div += "<Row ss:AutoFitHeight='0'>" +
+                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Empresa</Data></Cell>" +
+                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Propietario</Data></Cell>" +
+                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Equipo</Data></Cell>" +
+                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Placa</Data></Cell>" +
+                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Clase</Data></Cell>" +
+                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Marca</Data></Cell>" +
+                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Modelo</Data></Cell>" +
+                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Vehiculo</Data></Cell>" +
+                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Num. Motor</Data></Cell>" +
+                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Num. Chasis</Data></Cell>" +
+                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Año</Data></Cell>" +
+                                    "</Row>";
+                            
+                            for (var i = 0; i < numFil; i++) {
+                                console.log(gridStoreVehiculo.data.items[i].data);
+                                table_div += "<Row ss:AutoFitHeight='0'>" +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.empresa + " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.persona+ " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.equipo + " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.placa + " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.clase_vehiculo + " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.marca + " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.modelo + " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.vehiculo + " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.numMotor + " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.numChasis + " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.year+ " </Data></Cell > " +
+                                        "</Row>";
                             }
-                            table_div += "</table></font></body>";
-                            var table_html = table_div.replace(/ /g, '%20');
-                            a.href = data_type + ', ' + table_html;
-                            //setting the file name
-                            a.download = 'Vehiculos' + '.xls';
-                            //triggering the function
+                            table_div += "</Table> </Worksheet></Workbook>";
+                            var table_xml = table_div.replace(/ /g, '%20');
+                            a.href = data_type + ', ' + table_xml;
+                            a.download = 'Vehiculos' + '.xml';
                             a.click();
                         } else {
                             Ext.MessageBox.show({
-                                title: 'Atención',
-                                msg: '<center> El Servicio para este navegador no esta disponible <br> Use un navegador como Google Chrome </center>',
+                                title: 'Error',
+                                msg: '<center> El servicio para este navegador no esta disponible <br> Use un navegador como Google Chrome </center>',
                                 buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.INFO
+                                icon: Ext.MessageBox.ERROR
                             });
-
                         }
-                    } else {
-                        Ext.MessageBox.show({
-                            title: 'Error...',
-                            msg: 'No hay datos en la Lista a Exportar',
-                            buttons: Ext.MessageBox.OK,
-                            icon: Ext.MessageBox.ERROR
-                        });
                     }
                 }
             }],
@@ -313,7 +318,7 @@ Ext.onReady(function() {
                             }, {
                                 xtype: 'combobox',
                                 fieldLabel: '<b>Organización</b>',
-                                AllowSelection:false,
+                                AllowSelection: false,
                                 blankText: 'Este campo es Obligatorio',
                                 name: 'idEmpresa',
                                 store: storeEmpresas,
@@ -407,7 +412,7 @@ Ext.onReady(function() {
                                 valueField: 'id',
                                 store: storeclasseVehiculo,
                                 emptyText: 'Escoger Clase Vehiculo...',
-                                 queryMode: 'local',
+                                queryMode: 'local',
                                 allowBlank: false,
                                 listConfig: {
                                     minWidth: 100

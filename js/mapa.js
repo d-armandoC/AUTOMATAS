@@ -1499,7 +1499,6 @@ function getDataRoute(fig) {
             }
         }
         vertPolygon = coordP;
-        winVehiculosLugares.show();
         panelVehiculosLugares.submit({
             url: 'php/extra/getVehiculos.php',
             waitMsg: 'Comprobando Datos...',

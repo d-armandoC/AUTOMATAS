@@ -58,7 +58,7 @@ Ext.onReady(function() {
         value: new Date(),
         maxText: 'La fecha debe ser igual o anterior a <br> {0}',
         allowBlank: false,
-        endDateField: 'fechaFinExcesos',
+        endDateField: 'fechaFinEncApg',
         emptyText: 'Fecha Inicial...'
     });
     var fechaFinEA = Ext.create('Ext.form.field.Date', {
@@ -70,7 +70,7 @@ Ext.onReady(function() {
         value: new Date(),
         maxValue: new Date(),
         allowBlank: false,
-        startDateField: 'fechaInimanten',
+        startDateField: 'fechaIniEncApg',
         emptyText: 'Fecha Final...'
     });
     var btn_HoyEApagado = Ext.create('Ext.button.Button', {
