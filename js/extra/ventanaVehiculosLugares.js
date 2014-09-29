@@ -104,6 +104,8 @@ Ext.onReady(function() {
                                 vehiLugares = true;
                                 drawLine.activate();
                                 winVehiculosLugares.hide();
+                            }else{
+                                
                             }
                         }
                     }]

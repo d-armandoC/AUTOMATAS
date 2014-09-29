@@ -85,61 +85,122 @@ Ext.onReady(function() {
                 iconCls: 'icon-excel',
                 text: 'Exportar a Excel',
                 handler: function() {
-
-                    if (gridStore.getCount() > 0) {
+                        if (gridStore.getCount() > 0) {
                         if (getNavigator() === 'img/chrome.png') {
-                        var a = document.createElement('a');
-                        //getting data from our div that contains the HTML table
-                        var data_type = 'data:application/vnd.ms-excel';
-                        //var table_div = document.getElementById('exportar');
-                        //var table_html = table_div.outerHTML.replace(/ /g, '%20');
-                        var tiLetra = 'Calibri';
-                        var table_div = "<meta charset='UTF-8'><body>" +
-                                "<font face='" + tiLetra + "'><table>" +
-                                "<tr><th colspan='7'>EQUIPOS" + "</th></tr>" +
-                                "<tr></tr>";
-                        table_div += "<tr>";
-                        table_div += "<th align=left>TIPO DE EQUIPO</th>";
-                        table_div += "<th align=left>EQUIPO </th>";
-                        table_div += "<th align=left>SERIE</th>";
-                        table_div += "<th align=left>NÚMERO DE CHIP</th>";
-                        table_div += "<th align=left>IMEI DE CHIP</th>";
-                        table_div += "</tr>";
-                        for (var i = 0; i < gridStore.data.length; i++) {
+                            var a = document.createElement('a');
+                            var data_type = 'data:application/vnd.ms-excel';
+                            var numFil = gridStore.data.length;
+                            var numCol = 5;
+                            var tiLetra = 'Calibri';
+                            var titulo = ' Equipos';
+                            var table_div = "<?xml version='1.0'?><?mso-application progid='Excel.Sheet'?><Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'><DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'><Author>KRADAC SOLUCIONES TECNOLÃ“GICAS</Author><LastAuthor>KRADAC SOLUCIONES TECNOLÃ“GICAS</LastAuthor><Created>2014-08-20T15:33:48Z</Created><Company>KRADAC</Company><Version>15.00</Version>";
+                            table_div += "</DocumentProperties> " +
+                                    "<Styles> " +
+                                    "<Style ss:ID='Default' ss:Name='Normal'>   <Alignment ss:Vertical='Bottom'/>   <Borders/>   <Font ss:FontName='" + tiLetra + "' x:Family='Swiss' ss:Size='11' ss:Color='#000000'/>   <Interior/>   <NumberFormat/>   <Protection/>  </Style>  " +
+                                    "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
+                                    "<Style ss:ID='datos'><NumberFormat ss:Format='@'/></Style> " +
+                                    "</Styles>";
+                            //Definir el numero de columnas y cantidad de filas de la hoja de calculo (numFil + 2))
+                            table_div += "<Worksheet ss:Name='Datos'>";//Nombre de la hoja
+                            table_div += "<Table ss:ExpandedColumnCount='" + numCol + "' ss:ExpandedRowCount='" + (numFil + 2) + "' x:FullColumns='1' x:FullRows='1' ss:DefaultColumnWidth='60' ss:DefaultRowHeight='15'>";
+                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='121.5'/>";
+                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
 
-
-                            table_div += "<tr>";
-                            table_div += "<td align=lef>" + gridStore.data.items[i].data.typeDevice + "</td>";
-                            table_div += "<td align=lef>" + gridStore.data.items[i].data.deviceDevice + "</td>";
-                            table_div += "<td align=lef>" + gridStore.data.items[i].data.serieDevice + "</td>";
-                            table_div += "<td align=lef>" + gridStore.data.items[i].data.numberChipDevice + "</td>";
-                            table_div += "<td align=lef>" + gridStore.data.items[i].data.imeiChipDevice + "</td>";
-                            table_div += "</tr>";
-                        }
-                        table_div += "</table></font></body>";
-                        var table_html = table_div.replace(/ /g, '%20');
-                        a.href = data_type + ', ' + table_html;
-                        //setting the file name
-                        a.download = 'Equipos' + '.xls';
-                        //triggering the function
-                        a.click();
+                            table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
+                            table_div += "<Row ss:AutoFitHeight='0'>" +
+                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Tipo de Equipo</Data></Cell>" +
+                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Equipo</Data></Cell>" +
+                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Serie</Data></Cell>" +
+                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Número de Chip</Data></Cell>" +
+                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Imei de Chip</Data></Cell>" +
+                                    "</Row>";
+                            for (var i = 0; i < numFil; i++) {
+                                table_div += "<Row ss:AutoFitHeight='0'>" +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStore.data.items[i].data.typeDevice  + " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStore.data.items[i].data.deviceDevice + " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStore.data.items[i].data.serieDevice + " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStore.data.items[i].data.numberChipDevice + " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStore.data.items[i].data.imeiChipDevice  + " </Data></Cell > " +
+                                        "</Row>";
+                            }
+                            table_div += "</Table> </Worksheet></Workbook>";
+                            var table_xml = table_div.replace(/ /g, '%20');
+                            a.href = data_type + ', ' + table_xml;
+                            a.download = 'Equipos' + '.xml';
+                            a.click();
                         } else {
                             Ext.MessageBox.show({
                                 title: 'Error',
-                                msg: 'El Servicio para este navegador no permitido',
+                                msg: '<center> El servicio para este navegador no esta disponible <br> Use un navegador como Google Chrome </center>',
                                 buttons: Ext.MessageBox.OK,
                                 icon: Ext.MessageBox.ERROR
                             });
-
                         }
                     } else {
                         Ext.MessageBox.show({
-                            title: 'Error...',
+                            title: 'Mensaje',
                             msg: 'No hay datos en la Lista a Exportar',
                             buttons: Ext.MessageBox.OK,
                             icon: Ext.MessageBox.ERROR
                         });
                     }
+//                    if (gridStore.getCount() > 0) {
+//                        if (getNavigator() === 'img/chrome.png') {
+//                        var a = document.createElement('a');
+//                        //getting data from our div that contains the HTML table
+//                        var data_type = 'data:application/vnd.ms-excel';
+//                        //var table_div = document.getElementById('exportar');
+//                        //var table_html = table_div.outerHTML.replace(/ /g, '%20');
+//                        var tiLetra = 'Calibri';
+//                        var table_div = "<meta charset='UTF-8'><body>" +
+//                                "<font face='" + tiLetra + "'><table>" +
+//                                "<tr><th colspan='7'>EQUIPOS" + "</th></tr>" +
+//                                "<tr></tr>";
+//                        table_div += "<tr>";
+//                        table_div += "<th align=left>TIPO DE EQUIPO</th>";
+//                        table_div += "<th align=left>EQUIPO </th>";
+//                        table_div += "<th align=left>SERIE</th>";
+//                        table_div += "<th align=left>NÚMERO DE CHIP</th>";
+//                        table_div += "<th align=left>IMEI DE CHIP</th>";
+//                        table_div += "</tr>";
+//                        for (var i = 0; i < gridStore.data.length; i++) {
+//
+//
+//                            table_div += "<tr>";
+//                            table_div += "<td align=lef>" + gridStore.data.items[i].data.typeDevice + "</td>";
+//                            table_div += "<td align=lef>" + gridStore.data.items[i].data.deviceDevice + "</td>";
+//                            table_div += "<td align=lef>" + gridStore.data.items[i].data.serieDevice + "</td>";
+//                            table_div += "<td align=lef>" + gridStore.data.items[i].data.numberChipDevice + "</td>";
+//                            table_div += "<td align=lef>" + gridStore.data.items[i].data.imeiChipDevice + "</td>";
+//                            table_div += "</tr>";
+//                        }
+//                        table_div += "</table></font></body>";
+//                        var table_html = table_div.replace(/ /g, '%20');
+//                        a.href = data_type + ', ' + table_html;
+//                        //setting the file name
+//                        a.download = 'Equipos' + '.xls';
+//                        //triggering the function
+//                        a.click();
+//                        } else {
+//                            Ext.MessageBox.show({
+//                                title: 'Error',
+//                                msg: 'El Servicio para este navegador no permitido',
+//                                buttons: Ext.MessageBox.OK,
+//                                icon: Ext.MessageBox.ERROR
+//                            });
+//
+//                        }
+//                    } else {
+//                        Ext.MessageBox.show({
+//                            title: 'Error...',
+//                            msg: 'No hay datos en la Lista a Exportar',
+//                            buttons: Ext.MessageBox.OK,
+//                            icon: Ext.MessageBox.ERROR
+//                        });
+//                    }
                 }
             }],
         listeners: {
@@ -256,7 +317,7 @@ function showWinAdminDevice() {
         winAdminDevice = Ext.create('Ext.window.Window', {
             layout: 'fit',
             title: 'Administración de Equipos',
-            iconCls: 'icon-device',
+            iconCls: 'icon-credits',
             resizable: false,
             width: 790,
             height: 360,
