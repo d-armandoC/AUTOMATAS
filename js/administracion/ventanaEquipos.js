@@ -64,7 +64,7 @@ Ext.onReady(function() {
             }
         }
     });
-   
+
     gridAdminDevice = Ext.create('Ext.grid.Panel', {
         store: gridStore,
         columns: [
@@ -73,7 +73,9 @@ Ext.onReady(function() {
             {header: "Tipo de equipo", width: 150, sortable: true, dataIndex: 'typeDevice', filter: {type: 'string'}, align: 'center'},
             {header: "Serie", width: 150, sortable: true, dataIndex: 'serieDevice', filter: {type: 'string'}},
             {header: "Número de Chip", width: 150, sortable: true, dataIndex: 'numberChipDevice', filter: {type: 'string'}},
-            {header: "Imei de Chip", width: 150, sortable: true, dataIndex: 'imeiChipDevice', filter: {type: 'string'}}
+            {header: "Imei de Chip", width: 150, sortable: true, dataIndex: 'imeiChipDevice', filter: {type: 'string'}},
+            {header: "Estado", width: 100, sortable: true, dataIndex: 'id', renderer: formatEstadoEquipo, filter: {type: 'string'}}
+
         ],
         stripeRows: true,
         width: '55%',
@@ -86,7 +88,7 @@ Ext.onReady(function() {
                 iconCls: 'icon-excel',
                 text: 'Exportar a Excel',
                 handler: function() {
-                        if (gridStore.getCount() > 0) {
+                    if (gridStore.getCount() > 0) {
                         if (getNavigator() === 'img/chrome.png') {
                             var a = document.createElement('a');
                             var data_type = 'data:application/vnd.ms-excel';
@@ -120,11 +122,11 @@ Ext.onReady(function() {
                                     "</Row>";
                             for (var i = 0; i < numFil; i++) {
                                 table_div += "<Row ss:AutoFitHeight='0'>" +
-                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStore.data.items[i].data.typeDevice  + " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStore.data.items[i].data.typeDevice + " </Data></Cell > " +
                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStore.data.items[i].data.deviceDevice + " </Data></Cell > " +
                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStore.data.items[i].data.serieDevice + " </Data></Cell > " +
                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStore.data.items[i].data.numberChipDevice + " </Data></Cell > " +
-                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStore.data.items[i].data.imeiChipDevice  + " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStore.data.items[i].data.imeiChipDevice + " </Data></Cell > " +
                                         "</Row>";
                             }
                             table_div += "</Table> </Worksheet></Workbook>";
