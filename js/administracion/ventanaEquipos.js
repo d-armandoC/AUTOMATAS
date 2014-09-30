@@ -70,7 +70,7 @@ Ext.onReady(function() {
         columns: [
             Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
             {header: "Equipo", width: 100, sortable: true, dataIndex: 'deviceDevice', filter: {type: 'string'}, align: 'center'},
-            {header: "Tipo de equipo", width: 150, sortable: true, dataIndex: 'typeDevice', filter: {type: 'list', store: storetipo_equipo_vehiculo}, align: 'center'},
+            {header: "Tipo de equipo", width: 150, sortable: true, dataIndex: 'typeDevice', filter: {type: 'string'}, align: 'center'},
             {header: "Serie", width: 150, sortable: true, dataIndex: 'serieDevice', filter: {type: 'string'}},
             {header: "Número de Chip", width: 150, sortable: true, dataIndex: 'numberChipDevice', filter: {type: 'string'}},
             {header: "Imei de Chip", width: 150, sortable: true, dataIndex: 'imeiChipDevice', filter: {type: 'string'}}
