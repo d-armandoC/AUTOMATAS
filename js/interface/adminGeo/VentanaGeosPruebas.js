@@ -7,7 +7,7 @@ var gridStoreGeocercas;
 var listVehiculos = "";
 var drawRoute;
 var geometria;
-var id_empresageos=0;
+var id_empresageos = 0;
 var vistaVehiculosGeocercas;
 
 
@@ -51,7 +51,7 @@ Ext.onReady(function() {
             {name: 'empresa'},
             {name: 'listVeh'},
             {name: 'areaGeocerca'},
-            {name:'idPrueba', type:'string'}
+            {name: 'idPrueba', type: 'string'}
         ]
     });
 
@@ -181,6 +181,7 @@ Ext.onReady(function() {
                                 listeners: {
                                     select: function(combo, records, eOpts) {
                                         var listSelected = Ext.getCmp('idvehiculogeosList');
+                                        console.log(listSelected.items.store.data.items[0].data.text);
                                         listSelected.clearValue();
                                         listSelected.fromField.store.removeAll();
                                         storeVeh.load({
@@ -229,8 +230,10 @@ Ext.onReady(function() {
                         tooltip: 'Guardar Geocerca',
                         handler: function() {
                             Ext.getCmp('vistavehiculosgeos').hide();
-                             var idEmpresaGeoss = vistaVehiculosGeocercas.down('[name=cbxEmpresasgeos]').getValue();
-                          
+                            var idEmpresaGeoss = vistaVehiculosGeocercas.down('[name=cbxEmpresasgeos]').getValue();
+                               //var listSelected = this.up('form').down('[name=listVeh]');
+                               var listSelected = Ext.getCmp('idvehiculogeosList');
+                                      console.log(listSelected);
                         }
                     }, {
                         iconCls: 'icon-cancelar',
@@ -304,8 +307,8 @@ Ext.onReady(function() {
                                     {
                                         xtype: 'label',
                                         forId: 'myFieldId',
-                                        id:'idPrueba',
-                                        name:'idPrueba',
+                                        id: 'idPrueba',
+                                        name: 'idPrueba',
                                         margin: '0 0 0 10'
                                     }
                                     ,
@@ -334,7 +337,7 @@ Ext.onReady(function() {
                                                 handler: function() {
                                                     if (drawRoute === true) {
                                                         drawLine.activate();
-                                                    } 
+                                                    }
 //                                                    else {
 //                                                        modifyLine.activate();
 //                                                        modifyLine.activate();
@@ -371,8 +374,8 @@ Ext.onReady(function() {
                                                     drawRoute = true;
                                                 }
                                             }]
-                                    },vistaVehiculosGeocercas
-                                    ,
+                                    }, 
+                                            ,
                                     {
                                         xtype: 'button',
                                         fieldLabel: '<b>Agregar</b>',
@@ -415,9 +418,8 @@ Ext.onReady(function() {
                                         store: storeVehGeocerca,
                                         height: 132,
                                         valueField: 'id',
-                                        displayField: 'nombre'
-                                                //ddReorder: true
-
+                                        displayField: 'nombre',
+                                        
                                     }
                                 ]
                             }
@@ -530,9 +532,9 @@ function onUpdatePerson() {
 }
 
 function onCreatePerson() {
-     var idGeocerca = vistaVehiculosGeocercas.down('[name=cbxEmpresasgeos]').getValue();
+    var idGeocerca = vistaVehiculosGeocercas.down('[name=cbxEmpresasgeos]').getValue();
 
-     Ext.getCmp('myFieldId').setValue(idGeocerca);
+    //Ext.getCmp('myFieldId').setValue(idGeocerca);
     var form = formGeocercas.getForm();
     if (form.isValid()) {
         formGeocercas.fireEvent('create', formGeocercas, form.getValues());
@@ -546,13 +548,13 @@ function onResetPerson() {
     formGeocercas.down('#deleteGeo').disable();
     formGeocercas.down('#createGeo').enable();
     formGeocercas.getForm().reset();
-    lines.destroyFeatures();
+//    lines.destroyFeatures();
     Ext.getCmp('numberfield-point-route').reset();
     Ext.getCmp('btn-delete-route').disable();
     Ext.getCmp('btn-draw-edit-route').setIconCls("icon-add");
     drawRoute = true;
-    
-     //id: 'btn-draw-edit-route',
+
+    //id: 'btn-draw-edit-route',
 }
 
 function clearWinPerson() {
@@ -569,6 +571,7 @@ function clearWinPerson() {
 
 function onDeleteClick() {
     var selection = gridGeocercas.getView().getSelectionModel().getSelection()[0];
+    
     if (selection) {
         gridGeocercas.store.remove(selection);
         formGeocercas.down('#deleteGeo').disable();

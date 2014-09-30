@@ -357,6 +357,15 @@ function loadMap() {
 
             graficarCoop();
         });
+        
+        
+        
+        
+        
+        
+        
+        
+        
     } else {
         Ext.getCmp('panel-map').add({
             region: 'center',

@@ -889,5 +889,9 @@ Ext.onReady(function() {
         items: [panelMenu, panelEste, panelCentral]
     });
     storeEmpresas.load();
-    loadMap();
+    
+    if(connectionMap()){
+        loadMap();
+    }
+    
 });
