@@ -64,14 +64,15 @@ Ext.onReady(function() {
             }
         }
     });
-
+   
     gridAdminDevice = Ext.create('Ext.grid.Panel', {
         store: gridStore,
         columns: [
+            Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
             {header: "Equipo", width: 100, sortable: true, dataIndex: 'deviceDevice', filter: {type: 'string'}, align: 'center'},
-            {header: "Tipo de Equipo", width: 150, sortable: true, dataIndex: 'typeDevice',filter: {type: 'string'}, align: 'center'},
-            {header: "Serie", width: 175, sortable: true, dataIndex: 'serieDevice', filter: {type: 'string'}},
-            {header: "Numero de Chip", width: 150, sortable: true, dataIndex: 'numberChipDevice', filter: {type: 'string'}},
+            {header: "Tipo de equipo", width: 150, sortable: true, dataIndex: 'typeDevice', filter: {type: 'list', store: storetipo_equipo_vehiculo}, align: 'center'},
+            {header: "Serie", width: 150, sortable: true, dataIndex: 'serieDevice', filter: {type: 'string'}},
+            {header: "Número de Chip", width: 150, sortable: true, dataIndex: 'numberChipDevice', filter: {type: 'string'}},
             {header: "Imei de Chip", width: 150, sortable: true, dataIndex: 'imeiChipDevice', filter: {type: 'string'}}
         ],
         stripeRows: true,
@@ -212,7 +213,7 @@ Ext.onReady(function() {
 
     formAdminDevice = Ext.create('Ext.form.Panel', {
         region: 'center',
-        title: 'Ingresar Datos del Equipo',
+        title: 'Ingresar datos del equipo',
         activeRecord: null,
         bodyStyle: 'padding: 10px; background-color: #DFE8F6',
         bodyPadding: '10 10 10 10',
@@ -227,7 +228,7 @@ Ext.onReady(function() {
         },
         items: [{
                 xtype: 'combobox',
-                fieldLabel: 'Tipo de Equipo',
+                fieldLabel: 'Tipo de equipo',
                 afterLabelTextTpl: required,
                 blankText: 'Este campo es Obligatorio',
                 name: 'idTypeDevice',
@@ -243,7 +244,7 @@ Ext.onReady(function() {
                 fieldLabel: 'Equipo',
                 afterLabelTextTpl: required,
                 blankText: 'Este campo es Obligatorio',
-                vtype: 'campos',
+                vtype: 'camposMin',
                 name: 'deviceDevice',
                 allowBlank: false,
                 allowOnlyWhitespace: false,
@@ -254,9 +255,9 @@ Ext.onReady(function() {
                 emptyText: 'Ingresar Serie de Equipo...',
                 vtype: 'campos',
             }, {
-                fieldLabel: 'Numero de Chip',
+                fieldLabel: 'Número de Chip',
                 name: 'numberChipDevice',
-                vtype: 'campos',
+                vtype: 'numeroChip',
                 emptyText: 'Ingresar Numero de Chip...',
             }, {
                 fieldLabel: 'Imei de Chip',
@@ -371,7 +372,6 @@ function onUpdateDevice() {
 function onCreateDevice() {
     var form = formAdminDevice.getForm();
     if (form.isValid()) {
-        console.log("creando");
         formAdminDevice.fireEvent('create', formAdminDevice, form.getValues());
         formAdminDevice.down('#update').disable();
         form.reset();
