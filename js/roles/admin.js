@@ -164,6 +164,15 @@ Ext.onReady(function() {
             Ext.Msg.alert('Error', 'Solo carateres alfa numéricos');
         },
         camposText: 'Solo carateres alfa numéricos<br> Tamaño min de 2 y un máx de 45 carateres',
+        numeroChip: function(val, field) {
+            if (!/^[-.0-9]{4,45}$/.test(val)) {
+                return false;
+
+            }
+            return true;
+            Ext.Msg.alert('Error', 'Solo carateres numéricos');
+        },
+        numeroChipText: 'Solo carateres numéricos<br> Tamaño min de 4 y un máx de 40 carateres',
 //para direccion
         direccion: function(val, field) {
             if (!/^[-0-9.A-Z.a-z.áéíóúñ()\s*]{2,150}$/.test(val)) {
@@ -337,7 +346,7 @@ Ext.onReady(function() {
             {text: 'Equipos',
                 iconCls: 'icon-servicios',
                 menu: [
-                    {text: 'Equipos', iconCls: 'icon-credits', handler: function() {
+                    {text: 'Adm. Equipos', iconCls: 'icon-credits', handler: function() {
                             showWinAdminDevice();
                         }},
                     {text: 'Enviar CMD', iconCls: 'icon-cmd', handler: function() {
