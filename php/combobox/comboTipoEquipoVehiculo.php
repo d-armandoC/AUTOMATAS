@@ -10,14 +10,14 @@ if (!$mysqli = getConectionDb()) {
     $consultaSql = "SELECT id_tipo_equipo, tipo_equipo FROM karviewdb.tipo_equipos";
     $result = $mysqli->query($consultaSql);
     $mysqli->close();
-    
+
     if ($result->num_rows > 0) {
         $objJson = "{tipo_veh: [";
 
         while ($myrow = $result->fetch_assoc()) {
             $objJson .= "{            
                id:" . $myrow["id_tipo_equipo"] . ",
-            text:'" . utf8_encode($myrow["tipo_equipo"]) . "'
+               text:'" . utf8_encode($myrow["tipo_equipo"]) . "'
             },";
         }
         $objJson .= "]}";
