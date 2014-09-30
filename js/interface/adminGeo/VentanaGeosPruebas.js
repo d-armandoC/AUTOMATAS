@@ -181,7 +181,9 @@ Ext.onReady(function() {
                                 listeners: {
                                     select: function(combo, records, eOpts) {
                                         var listSelected = Ext.getCmp('idvehiculogeosList');
-                                        console.log(listSelected.items.store.data.items[0].data.text);
+                                        //console.log(listSelected);
+                                        // storeDataReporteDetallado.data.items[i].data.empresaEncApag 
+                                        console.log(listSelected);
                                         listSelected.clearValue();
                                         listSelected.fromField.store.removeAll();
                                         storeVeh.load({
