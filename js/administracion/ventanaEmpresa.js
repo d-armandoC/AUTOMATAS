@@ -63,6 +63,7 @@ Ext.onReady(function() {
     gridAdminCompany = Ext.create('Ext.grid.Panel', {
         store: gridStore,
         columns: [
+            Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
             {header: "<b>Acrónimo</b>", width: 100, align: 'center', sortable: true, dataIndex: 'acronimo', filter: {type: 'string'}},
             {header: "<b>Organización</b>", align: 'center', width: 180, sortable: true, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'string'}},
             {header: "<b>Dirección</b>", width: 130, sortable: true, align: 'center', dataIndex: 'direccion', filter: {type: 'string'}},
@@ -81,7 +82,7 @@ Ext.onReady(function() {
                 iconCls: 'icon-excel',
                 text: 'Exportar a Excel',
                 handler: function() {
-                    
+
                     if (gridStore.getCount() > 0) {
                         if (getNavigator() === 'img/chrome.png') {
                             var a = document.createElement('a');
@@ -116,7 +117,7 @@ Ext.onReady(function() {
                                     "</Row>";
                             for (var i = 0; i < numFil; i++) {
                                 table_div += "<Row ss:AutoFitHeight='0'>" +
-                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStore.data.items[i].data.empresa  + " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStore.data.items[i].data.empresa + " </Data></Cell > " +
                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStore.data.items[i].data.acronimo + " </Data></Cell > " +
                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStore.data.items[i].data.direccion + " </Data></Cell > " +
                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStore.data.items[i].data.telefono + " </Data></Cell > " +
@@ -202,6 +203,7 @@ Ext.onReady(function() {
                 fieldLabel: 'Celular',
                 name: 'telefono',
                 vtype: 'numeroTelefono',
+                afterLabelTextTpl: required,
                 //anchor: '75%',
                 labelWidth: 95,
                 emptyText: '0991540427'

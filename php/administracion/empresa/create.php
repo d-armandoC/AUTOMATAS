@@ -15,13 +15,11 @@ if (!$mysqli = getConectionDb()) {
    
    
    
-   
-   
     
-    $existeSql = "SELECT empresa FROM empresas WHERE empresa='".$json["empresa"]."'";
+    $existeSql = "SELECT empresa FROM empresas WHERE empresa='".$json["empresa"]."' or acronimo='".$json["acronimo"]."' ";
     $result = $mysqli->query($existeSql);
     if ($result->num_rows > 0) {
-         echo "{success:true, message:'La empresa Ya Existe.',state: true}";
+         echo "{success:true, message:'La Organizacion ya Existe.',state: true}";
     } else {
         $insertSql = "INSERT INTO empresas (id_empresa,acronimo,empresa,direccion,telefono,correo, id_usuarioAsignado)
             VALUES(?, ?, ?, ?, ?, ?, ?)";
@@ -34,7 +32,7 @@ if (!$mysqli = getConectionDb()) {
             if ($stmt->affected_rows > 0) {
                  echo "{success:true, message:'Datos Insertados Correctamente.',state: true}";
             } else {
-                 echo "{success:true, message:'Problemas al Insertar en la tabla.',state: true}";
+                 echo "{success:true, message:'Problemas al Insertar en la tabla, Numero de Celular ya Existe',state: true}";
             }
             $stmt->close();
         } else {
