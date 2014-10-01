@@ -86,17 +86,17 @@ function kilometrajeRecorrido(json) {
 }
 function obtenerLitros(json) {
     var kilometraje = parseFloat(kilometrajeRecorrido(json));
-    var kilEstimado=100;
-    var litrosEstimadoo=7.5;
-    var litros= kilometraje*litrosEstimadoo/kilEstimado;
+    var kilEstimado = 100;
+    var litrosEstimadoo = 7.5;
+    var litros = kilometraje * litrosEstimadoo / kilEstimado;
     return litros.toFixed(2);
 }
 
 function obtenerGalones(json) {
     var litros = parseFloat(obtenerLitros(json));
-    var litrosEstimado=3.78541178;
-    var galonEstimado=1;
-    var galones= litros*galonEstimado/litrosEstimado;
+    var litrosEstimado = 3.78541178;
+    var galonEstimado = 1;
+    var galones = litros * galonEstimado / litrosEstimado;
     return galones.toFixed(2);
 }
 
@@ -119,8 +119,8 @@ function velocidadmaxima(json) {
     for (var i = 0; i < json.length; i++) {
         var objeto = json[i];
         lat1 = objeto.velocidad;
-        if(objeto.velocidad>maximo){
-            maximo=objeto.velocidad;
+        if (objeto.velocidad > maximo) {
+            maximo = objeto.velocidad;
         }
     }
     return maximo;
@@ -131,8 +131,8 @@ function velocidadMinimo(json) {
     for (var i = 0; i < json.length; i++) {
         var objeto = json[i];
         lat1 = objeto.velocidad;
-        if(objeto.velocidad<minimo){
-            minimo=objeto.velocidad;
+        if (objeto.velocidad < minimo) {
+            minimo = objeto.velocidad;
         }
     }
     return minimo;
@@ -142,9 +142,9 @@ function velociadadMedia(json) {
     var promedio = 0;
     for (var i = 0; i < json.length; i++) {
         var objeto = json[i];
-        promedio = promedio+objeto.velocidad;
+        promedio = promedio + objeto.velocidad;
     }
-    return (promedio/json.length).toFixed(2);
+    return (promedio / json.length).toFixed(2);
 }
 
 function velociadadMayor60(json) {
@@ -152,8 +152,8 @@ function velociadadMayor60(json) {
     for (var i = 0; i < json.length; i++) {
         var objeto = json[i];
         console.log('velocidad de 60');
-        if(objeto.velocidad>60){
-           contmayor=contmayor+1;
+        if (objeto.velocidad > 60) {
+            contmayor = contmayor + 1;
         }
     }
     return contmayor;
@@ -163,8 +163,8 @@ function velociadadMayor90(json) {
     var contmayor = 0;
     for (var i = 0; i < json.length; i++) {
         var objeto = json[i];
-        if(objeto.velocidad>90){
-           contmayor=contmayor+1;
+        if (objeto.velocidad > 90) {
+            contmayor = contmayor + 1;
         }
     }
     return contmayor;
@@ -300,22 +300,22 @@ function formatTipoEstado(val) {
 ////        return '<span style="color:green;">VIGENTE</span>';
 ////    }
 //    
-   
+
 //}
 
 
 
 function formatTipoSeguro(val) {
-     var nowDate = new Date();
-    if(Ext.Date.format(val, 'Y-m-d')===(Ext.Date.format(nowDate, 'Y-m-d'))){
-         return '<span style="color:blue;">CADUCADO</span>';
-    }else if(val==='0000-00-00'){
-         return '<span style="color:blue;">NO REGISTRADO</span>';
-    }else{
+    var nowDate = new Date();
+    if (Ext.Date.format(val, 'Y-m-d') === (Ext.Date.format(nowDate, 'Y-m-d'))) {
+        return '<span style="color:blue;">CADUCADO</span>';
+    } else if (val === '0000-00-00') {
+        return '<span style="color:blue;">NO REGISTRADO</span>';
+    } else {
         return '<span style="color:green;">VIGENTE</span>';
     }
-    
-   
+
+
 }
 
 
@@ -393,6 +393,24 @@ function formatCompany(val) {
         return '<span style="color:green;">' + val + '</span>';
     }
     return val;
+}
+
+function formatEstadoEquipo(val) {
+    var estad = 1;
+    for (var i = 0; i < store_equipo.data.length; i++) {
+        if (store_equipo.getAt(i).data.id === val) {
+//            return storeCompany.getAt(i).data.text;//            
+//            return '<span style="color:blue;">' + 'disponible' + '</span>';
+            estad=0
+        }
+    }
+    if (estad === 0) {
+        return '<span style="color:green;">' + 'Disponible' + '</span>';
+    }
+    if (estad === 1) {
+        return 'Ocupado';
+    }
+    
 }
 
 function formatStateConect(val) {
