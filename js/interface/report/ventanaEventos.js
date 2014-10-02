@@ -118,10 +118,8 @@ Ext.onReady(function() {
         iconCls: 'icon-today',
         handler: function() {
             var nowDate = new Date();
-
             dateIni.setValue(formatoFecha(nowDate));
             dateFin.setValue(formatoFecha(nowDate));
-
             timeIni.setValue('00:01');
             timeFin.setValue('23:59');
         }
@@ -273,7 +271,6 @@ Ext.onReady(function() {
 
 function limpiar_datosEvt() {
     contenedorwinEvt.getForm().reset();
-
     if (winEvt) {
         winEvt.hide();
     }
@@ -307,6 +304,7 @@ function loadGridEvents() {
 
     var empresa = contenedorwinEvt.down('[name=cbxEmpresasEvent]').getValue();
     var listVeh = contenedorwinEvt.down('[name=listVehEvent]').getValue();
+   console.log(listVeh);
     var listEvt = contenedorwinEvt.down('[name=listEvt]').getValue();
     var fi = formatoFecha(contenedorwinEvt.down('[name=fechaIniEvent]').getValue());
     var ff = formatoFecha(contenedorwinEvt.down('[name=fechaFinEvent]').getValue());

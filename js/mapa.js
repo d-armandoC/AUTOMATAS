@@ -1535,9 +1535,23 @@ function getDataRoute(fig) {
         clearLienzoTravel();
          clearLienzoPointTravel();
     } else {
+        
+        var vert = fig.geometry.getVertices();
+        var coor = '';
+        for (var i = 0; i < vert.length; i++) {
+            vert[i] = vert[i].transform(new OpenLayers.Projection('EPSG:900913'),
+                    new OpenLayers.Projection('EPSG:4326'));
+            coor+= vert[i].x + ',' + vert[i].y;
+            if (i != vert.length - 1) {
+                coor += ';';
+            }
+        }
+        console.log("cordenadas"+coor);
+        ///////////////////////////////////////77
         var area = geom.getArea() / 1000     //area km
         area = Math.round(area * 100) / 100;
         Ext.getCmp('numberfield-point-route').setValue(area + ' km2');
+        console.log("area"+area);
         //console.log(area + ' km2');
         drawRoute = false;
         Ext.getCmp('btn-draw-edit-route').setIconCls("icon-update");

@@ -100,6 +100,7 @@
         <script type="text/javascript" src="js/interface/adminGeo/ventanaSendMailGeo.js"></script>
         <script type="text/javascript" src="js/interface/adminGeo/VentanaGeosPruebas.js"></script>
         <script type="text/javascript" src="js/interface/adminGeo/ventanaSendMailGeoPrueba.js"></script>
+        <script type="text/javascript" src="js/interface/adminGeo/vistaVehiculos.js"></script>
 
         <script type="text/javascript" src="js/interface/edit/ventanaEditEmp.js"></script>
         
