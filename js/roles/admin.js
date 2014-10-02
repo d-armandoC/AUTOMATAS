@@ -177,6 +177,16 @@ Ext.onReady(function() {
             Ext.Msg.alert('Error', 'Solo carateres alfa numéricos');
         },
         camposText: 'Solo carateres alfa numéricos<br> Tamaño min de 2 y un máx de 45 carateres',
+        usuario: function(val, field) {
+            if (!/^[0-9.A-Z.a-z.áéíóúñÑ\s]{2,45}$/.test(val)) {
+                return false;
+
+            }
+
+            return true;
+            Ext.Msg.alert('Error', 'Solo carateres alfa numéricos');
+        },
+        usuarioText: 'Solo carateres alfa numéricos<br> Tamaño min de 2 y un máx de 45 carateres',
         numeroChip: function(val, field) {
             if (!/^[-.0-9]{4,45}$/.test(val)) {
                 return false;

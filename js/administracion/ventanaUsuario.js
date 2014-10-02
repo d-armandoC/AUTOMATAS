@@ -306,7 +306,7 @@ Ext.onReady(function() {
                         afterLabelTextTpl: required,
                         blankText: 'Este campo es Obligatorio',
                         name: 'usuario',
-                        vtype: 'campos',
+                        vtype: 'usuario',
                         allowBlank: false,
                         emptyText: 'Ingresar Usuario...',
                     }, {
@@ -442,7 +442,7 @@ function onCreateUser() {
     var form = formularioRegistrosUsuario.getForm();
     if (form.isValid()) {
         formularioRegistrosUsuario.fireEvent('create', formularioRegistrosUsuario, form.getValues());
-        formularioRegistrosUsuario.down('#update').disable();
+        formularioRegistrosUsuario.down('#updateUser').disable();
     } else {
         Ext.example.msg("Alerta", 'Llenar los campos marcados en rojo, correctamente ');
     }
