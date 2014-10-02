@@ -3,9 +3,16 @@ Ext.Loader.setConfig({
 });
 Ext.Loader.setPath('Ext.ux', 'extjs-docs-5.0.0/extjs-build/build/examples/ux');
 Ext.require([
-    'Ext.grid.*',
+     'Ext.grid.*',
     'Ext.data.*',
     'Ext.util.*',
+    'Ext.Action',
+    'Ext.tab.*',
+    'Ext.button.*',
+    'Ext.form.*',
+    'Ext.layout.container.Card',
+    'Ext.layout.container.Border',
+    'Ext.ux.PreviewPlugin',
     'Ext.state.*',
     'Ext.form.*',
     'Ext.ux.form.MultiSelect',
@@ -373,7 +380,7 @@ Ext.onReady(function() {
                 iconCls: 'icon-geocerca',
                 menu: [
                     {text: 'Administracion', iconCls: 'icon-find-geo', handler: function() {
-                            //ventanaAddGeo();
+//                            ventanaAddGeo();
                             ventanaGeocerca();
                         }},
                     {text: 'Envio Correos', iconCls: 'icon-email', handler: function() {

@@ -132,7 +132,6 @@ Ext.onReady(function(){
                 itemId: 'delete',                
                 handler: function(){
                     var form = formSendMailGeo.getForm();
-
                     form.submit({
                         url : "php/interface/adminGeo/email/deletePersonGeo.php",
                         waitMsg : "Guardando...",

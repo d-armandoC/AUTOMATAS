@@ -138,9 +138,10 @@ Ext.onReady(function() {
                     emptyText : 'Escoja la Cooperativa...',                    
                     listeners: {
                         select: function(combo, records, eOpts) {
-                            var listSelected = this.up('form').down('[name=listVeh]');
-                            listSelected.clearValue();
-                            listSelected.fromField.store.removeAll();
+                            
+//                            var listSelected = this.up('form').down('[name=listVeh]');
+//                            listSelected.clearValue();
+//                            listSelected.fromField.store.removeAll();
 
                             storeVeh.load({
                                 params: {
