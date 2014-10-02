@@ -9,6 +9,7 @@ var drawRoute;
 var geometria;
 var id_empresageos = 0;
 var vistaVehiculosGeocercas;
+var storeVehGeocerca;
 var storeVeh = Ext.create('Ext.data.JsonStore', {
     autoDestroy: true,
     proxy: {
@@ -21,7 +22,7 @@ var storeVeh = Ext.create('Ext.data.JsonStore', {
     },
     fields: [{name: 'value', mapping: 'id'}, {name: 'text', mapping: 'nombre'}]
 });
-var storeVehGeocerca = Ext.create('Ext.data.JsonStore', {
+storeVehGeocerca = Ext.create('Ext.data.JsonStore', {
     autoLoad: true,
     proxy: {
         type: 'ajax',
@@ -33,6 +34,7 @@ var storeVehGeocerca = Ext.create('Ext.data.JsonStore', {
     },
     fields: ['id', 'nombre']
 });
+
 Ext.onReady(function() {
 
     //Genera campos de array para usar en el inicio del store por defecto
@@ -132,331 +134,21 @@ Ext.onReady(function() {
             }
         }
     });
-   
-
-    ////////////////////////////////
-    var vistaVehiculosGeocercas = Ext.create('Ext.form.Panel', {
-       frame : true,
-       items: [
-            {
-                items: [
-                    {
-                        xtype: 'fieldset',
-                        title: 'Vehiculos de la Geocerca',
-                        defaultType: 'textfield',
-                        collapsed: false,
-                        layout: 'anchor',
-                        width: 523,
-                        height: 400,
-                        items: [
-                            {
-                                xtype: 'combobox',
-                                fieldLabel: 'Cooperativa',
-                                id: 'idempresageos',
-                                afterLabelTextTpl: required,
-                                forceSelection: true,
-                                padding: '5 5 10 10',
-                                name: 'cbxEmpresasgeos',
-                                store: storeEmpresas,
-                                valueField: 'id',
-                                displayField: 'text',
-                                queryMode: 'local',
-                                editable: false,
-                                allowBlank: false,
-                                emptyText: 'Escoja la Cooperativa...',
-                                listeners: {
-                                    select: function(combo, records, eOpts) {
-                                        var listSelected = Ext.getCmp('idvehiculogeosList');
-                                        //console.log(listSelected);
-                                        // storeDataReporteDetallado.data.items[i].data.empresaEncApag 
-                                        console.log(listSelected);
-                                        listSelected.clearValue();
-                                        listSelected.fromField.store.removeAll();
-                                        storeVeh.load({
-                                            params: {
-                                                cbxEmpresas: records[0].data.id
-                                            }
-                                        });
-                                    }
-                                }
-                            },
-                            {
-                                xtype: 'form',
-                                width: 500,
-                                height: 330,
-                                id: 'fr1',
-                                // bodyPadding: 20,
-                                layout: 'fit',
-                                baseCls: 'x-plain',
-                                items: [
-                                    {
-                                        xtype: 'itemselector',
-                                        name: 'listVeh',
-                                        anchor: '100%',
-                                        id: 'idvehiculogeosList',
-                                        store: storeVeh,
-                                        displayField: 'text',
-                                        valueField: 'value',
-                                        allowBlank: false,
-                                        msgTarget: 'side',
-                                        fromTitle: 'Vehiculos',
-                                        toTitle: 'Seleccionados',
-                                        triggerAction: 'all',
-                                        legendFrom: 'Disponibles',
-                                        legendTo: 'Seleccionados',
-                                        listeners: {
-                                            change: function(thisObject, newValue, oldValue, eOpts) {
-                                                //var listSelected = this.up('form').getForm().getValues();
-                                                var listSelected = vistaVehiculosGeocercas.getForm().getValues();
-//                                                //formItemSelector.getForm().getValues(true)
-//                                                console.log(listSelected);
-//                                                var records = storeVeh.getModifiedRecords();
-//                                                console.log(records.length);
-//                                                //idEqpSelected = newValue;
-
-
-
-
-
-                                            }
-                                        }
-                                    }
-
-
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        ],
-             buttons: [{
-                        text: '<font size=2><b>Guardar</b></font>',
-                        iconCls: 'icon-save',
-                        handler: function() {
-                            var form = vistaVehiculosGeocercas.getForm();
-                            if (form.isValid()) {
-                                console.log(vistaVehiculosGeocercas.getForm());
-                            } else {
-                                Ext.example.msg("Error", "Debe ingresar los Datos");
-                            }
-                        }
-                    }]
-        
-//        items: [{
-//                xtype: 'combobox',
-//                fieldLabel: 'Cooperativa',
-//                id: 'idempresageos',
-//                afterLabelTextTpl: required,
-//                forceSelection: true,
-//                padding: '5 5 10 10',
-//                name: 'cbxEmpresasgeos',
-//                store: storeEmpresas,
-//                valueField: 'id',
-//                displayField: 'text',
-//                queryMode: 'local',
-//                editable: false,
-//                allowBlank: false,
-//                emptyText: 'Escoja la Cooperativa...',
-//                listeners: {
-//                    select: function(combo, records, eOpts) {
-//                        var listSelected = Ext.getCmp('idvehiculogeosList');
-//                        //console.log(listSelected);
-//                        // storeDataReporteDetallado.data.items[i].data.empresaEncApag 
-//                        console.log(listSelected);
-//                        listSelected.clearValue();
-//                        listSelected.fromField.store.removeAll();
-//                        storeVeh.load({
-//                            params: {
-//                                cbxEmpresas: records[0].data.id
-//                            }
-//                        });
-//                    }
-//                }
-//            },{
-//                xtype: 'form',
-//                name: 'f1',
-//                frame: true,
-//                height: 300,
-//                bodyPadding: '0 20px 0 0',
-//                layout: 'fit',
-//                baseCls: 'x-plain',
-//                items: [{
-//                        xtype: 'itemselector',
-//                        name: 'listVeh',
-//                        store: storeVeh,
-//                        displayField: 'text',
-//                        valueField: 'value',
-//                        allowBlank: false,
-//                        msgTarget: 'side',
-//                        fromTitle: 'Vehículos',
-//                        toTitle: 'Seleccionados'
-//                    }],
-//                buttons: [{
-//                        text: '<font size=2><b>Poner en Reten</b></font>',
-//                        iconCls: 'icon-in-reten',
-//                        handler: function() {
-//                            var form = vistaVehiculosGeocercas.getForm();
-//                            if (form.isValid()) {
-//                                cosole.log(vistaVehiculosGeocercas.getForm());
-//                            } else {
-//                                Ext.example.msg("Error", "Debe ingresar los Datos");
-//                            }
-//                        }
-//                    }]}]
-    });
     
-     var vistaVehiculosGeos = Ext.create('Ext.window.Window', {
-        title: 'Vehiculos',
-        layout: 'fit',
-         iconCls: 'icon-car',
-        width: 560,
-        height: 550,
-        closeAction: 'hide',
-        items: [vistaVehiculosGeocercas]
+    
+        var storeVeh = Ext.create('Ext.data.JsonStore', {
+        autoDestroy: true,
+        proxy: {
+            type: 'ajax',
+            url: 'php/combobox/comboVeh.php',
+            reader: {
+                type: 'json',
+                root: 'veh'
+            }
+        },
+        fields: [{name: 'value', mapping: 'id'}, 'text']
     });
 
-    /////////////////////////////////
-
-
-//    vistaVehiculosGeocercas = Ext.create('Ext.form.Panel', {
-////        title: 'Obtener Vehciulo ',
-////        id: 'vistavehiculosgeos',
-////        layout: 'fit',
-////        iconCls: 'icon-car',
-////        padding: '5 5 10 10',
-////        width: 555,
-////        height: 500,
-//////        closeAction: 'hide',
-//        margins: '0 0 0 3',
-//        bodyStyle: 'padding: 10px; background-color: #DFE8F6',
-//        baseCls: 'x-plain',
-//        items: [
-//            {
-//                items: [
-//                    {
-//                        xtype: 'fieldset',
-//                        title: 'Vehiculos de la Geocerca',
-//                        defaultType: 'textfield',
-//                        collapsed: false,
-//                        layout: 'anchor',
-//                        width: 523,
-//                        height: 400,
-//                        items: [
-//                            {
-//                                xtype: 'combobox',
-//                                fieldLabel: 'Cooperativa',
-//                                id: 'idempresageos',
-//                                afterLabelTextTpl: required,
-//                                forceSelection: true,
-//                                padding: '5 5 10 10',
-//                                name: 'cbxEmpresasgeos',
-//                                store: storeEmpresas,
-//                                valueField: 'id',
-//                                displayField: 'text',
-//                                queryMode: 'local',
-//                                editable: false,
-//                                allowBlank: false,
-//                                emptyText: 'Escoja la Cooperativa...',
-//                                listeners: {
-//                                    select: function(combo, records, eOpts) {
-//                                        var listSelected = Ext.getCmp('idvehiculogeosList');
-//                                        //console.log(listSelected);
-//                                        // storeDataReporteDetallado.data.items[i].data.empresaEncApag 
-//                                        console.log(listSelected);
-//                                        listSelected.clearValue();
-//                                        listSelected.fromField.store.removeAll();
-//                                        storeVeh.load({
-//                                            params: {
-//                                                cbxEmpresas: records[0].data.id
-//                                            }
-//                                        });
-//                                    }
-//                                }
-//                            },
-//                            {
-//                                xtype: 'form',
-//                                width: 500,
-//                                height: 330,
-//                                id: 'fr1',
-//                                // bodyPadding: 20,
-//                                layout: 'fit',
-//                                baseCls: 'x-plain',
-//                                items: [
-//                                    {
-//                                        xtype: 'itemselector',
-//                                        name: 'listVeh',
-//                                        anchor: '100%',
-//                                        id: 'idvehiculogeosList',
-//                                        store: storeVeh,
-//                                        displayField: 'text',
-//                                        valueField: 'value',
-//                                        allowBlank: false,
-//                                        msgTarget: 'side',
-//                                        fromTitle: 'Vehiculos',
-//                                        toTitle: 'Seleccionados',
-//                                        triggerAction: 'all',
-//                                        legendFrom: 'Disponibles',
-//                                        legendTo: 'Seleccionados',
-//                                        listeners: {
-//                                            change: function(thisObject, newValue, oldValue, eOpts) {
-//                                                //var listSelected = this.up('form').getForm().getValues();
-//                                                var listSelected = vistaVehiculosGeocercas.getForm().getValues();
-////                                                //formItemSelector.getForm().getValues(true)
-////                                                console.log(listSelected);
-////                                                var records = storeVeh.getModifiedRecords();
-////                                                console.log(records.length);
-////                                                //idEqpSelected = newValue;
-//
-//
-//
-//
-//
-//                                            }
-//                                        }
-//                                    }
-//
-//
-//                                ]
-//                            }
-//                        ]
-//                    }
-//                ]
-//            }
-//        ],
-//        dockedItems: [
-//            {
-//                xtype: 'toolbar',
-//                dock: 'bottom',
-//                ui: 'footer',
-//                items: ['->', {
-//                        iconCls: 'icon-save',
-//                        text: 'Guardar',
-//                        tooltip: 'Guardar Geocerca',
-//                        handler: function() {
-//                            var listSelected = Ext.getCmp('fr1').getForm();
-//                            //var listSelected = vistaVehiculosGeocercas.getForm();
-//                            console.log(listSelected);
-////                            var records = storeVeh.getModifiedRecords();
-////                            console.log(records.length);
-////                            Ext.getCmp('vistavehiculosgeos').hide();
-////                            console.log(Ext.getCmp('idvehiculogeosList').getStore());
-//                        }
-//                    }, {
-//                        iconCls: 'icon-cancelar',
-//                        text: 'Cancelar',
-//                        tooltip: 'Salir de la Ventana',
-//                        handler: function() {
-//                            if (vistaVehiculosGeocercas) {
-////                                Ext.getCmp('idvehiculogeosList').reset();
-////                                Ext.getCmp('idempresageos').reset();
-////                                Ext.getCmp('idvehiculogeosList').fromField.store.removeAll();
-//                                Ext.getCmp('vistavehiculosgeos').hide();
-//                            }
-//                        }
-//                    }]
-//            }]
-//    });
     formGeocercas = Ext.create('Ext.form.Panel', {
         id: 'panel-datos',
         region: 'center',
@@ -581,7 +273,6 @@ Ext.onReady(function() {
                                                 }
                                             }]
                                     },
-                                    ,
                                             {
                                                 xtype: 'button',
                                                 fieldLabel: '<b>Agregar</b>',
@@ -589,18 +280,10 @@ Ext.onReady(function() {
                                                 tooltip: 'Asignar Vehiculos a la Geocerca',
                                                 text: 'Asignar Vehiculos',
                                                 handler: function() {
-                                                    vistaVehiculosGeos.show();
-//                                             Ext.getCmp('idempresageos').setValue('1');
-//                                            Ext.getCmp(idvehiculo).setValue(['2', '3']);
+                                                    ventanaGeocercaVehiculos();
                                                 }
                                             }
-//                                    {
-//                                iconCls: 'icon-add',
-//                                text: 'Agregar Vehiculos ',
-//                                tooltip: 'Agregar Vehiculos',
-//                                scope: this,
-////                                handler: ventanaAddGeo
-//                            }
+// 
                                 ]}]},
                     {
                         items: [{
@@ -708,6 +391,7 @@ function ventanaGeocerca() {
     });
 }
 
+
 function setActiveRecord(record) {
     formGeocercas.activeRecord = record;
     if (record) {
@@ -745,7 +429,7 @@ function onCreatePerson() {
 function onResetPerson() {
 //    var listSelected = formGeocercas.getForm().down('[name=vehiculos]');
 //    listSelected.clearValue();
-//    listSelected.fromField.store.removeAll();
+//    listSelected.fromField.store.removeAll(); Ext.getCmp('multiselectvehiculos1').getStore().removeAll();
 
     Ext.getCmp('multiselectvehiculos1').getStore().removeAll();
     setActiveRecord(null);

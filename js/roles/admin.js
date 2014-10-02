@@ -3,7 +3,7 @@ Ext.Loader.setConfig({
 });
 Ext.Loader.setPath('Ext.ux', 'extjs-docs-5.0.0/extjs-build/build/examples/ux');
 Ext.require([
-     'Ext.grid.*',
+    'Ext.grid.*',
     'Ext.data.*',
     'Ext.util.*',
     'Ext.Action',
@@ -380,8 +380,7 @@ Ext.onReady(function() {
                 iconCls: 'icon-geocerca',
                 menu: [
                     {text: 'Administracion', iconCls: 'icon-find-geo', handler: function() {
-//                            ventanaAddGeo();
-                            ventanaGeocerca();
+                             ventanaGeocerca();
                         }},
                     {text: 'Envio Correos', iconCls: 'icon-email', handler: function() {
                             visualizarEnviosGeoCercas();
@@ -399,7 +398,6 @@ Ext.onReady(function() {
         tooltip: 'Herramintas de Acceso Rapido',
         iconCls: 'icon-config',
         menu: [
-            
             {text: 'Modificar usuarios', iconCls: 'icon-personal', handler: function() {
                     ventanaModificarUsuario();
                 }},
@@ -409,7 +407,7 @@ Ext.onReady(function() {
             {text: 'Mantenimientos', iconCls: 'icon-mantenimiento', handler: function() {
                     ventAddMantenimientos();
                 }},
-               {text: 'Vehiculos en Lugares', iconCls: 'icon-vehiculos_lugar', handler: function() {
+            {text: 'Vehiculos en Lugares', iconCls: 'icon-vehiculos_lugar', handler: function() {
                     ventanaVehLugares();
                 }},
             {text: 'Actualizar email', iconCls: 'icon-email', handler: function() {
@@ -448,7 +446,7 @@ Ext.onReady(function() {
         id: 'custom',
         text: 'Salir',
         scope: this,
-         tooltip: 'Salir del Sistema',
+        tooltip: 'Salir del Sistema',
         icon: 'img/salir.png',
         handler: function() {
             Ext.MessageBox.confirm('SALIR', 'Desea Salir del Sistema ?', function(choice) {
@@ -472,7 +470,7 @@ Ext.onReady(function() {
                         iconCls: 'icon-general',
                         menu: [
                             {text: 'Registros de Panico', iconCls: 'icon-reset', handler: function() {
-                                   showWinPanicosDaily();
+                                    showWinPanicosDaily();
                                 }},
                             {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function() {
                                     ventanaexcesosvelociadadWin();
@@ -814,16 +812,16 @@ Ext.onReady(function() {
 //                pageSize: 10
 //            },
             '->'
-            ,{
-                xtype: 'button',
-                iconCls: 'icon-geoloc',
-                tooltip: 'Ubicar mi Posición',
-                handler: function() {
-                    clearLienzoPointTravel();
-                    getLocation();
-                    panelTabMapaAdmin.setActiveTab(0);
-                }
-            }, {
+                    , {
+                        xtype: 'button',
+                        iconCls: 'icon-geoloc',
+                        tooltip: 'Ubicar mi Posición',
+                        handler: function() {
+                            clearLienzoPointTravel();
+                            getLocation();
+                            panelTabMapaAdmin.setActiveTab(0);
+                        }
+                    }, {
                 xtype: 'splitbutton',
                 text: 'Organización',
                 iconCls: 'icon-central',
@@ -905,9 +903,9 @@ Ext.onReady(function() {
         items: [panelMenu, panelEste, panelCentral]
     });
     storeEmpresas.load();
-    
-    if(connectionMap()){
+
+    if (connectionMap()) {
         loadMap();
     }
-    
+
 });

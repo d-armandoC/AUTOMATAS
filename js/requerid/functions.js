@@ -399,8 +399,6 @@ function formatEstadoEquipo(val) {
     var estad = 1;
     for (var i = 0; i < store_equipo.data.length; i++) {
         if (store_equipo.getAt(i).data.id === val) {
-//            return storeCompany.getAt(i).data.text;//            
-//            return '<span style="color:blue;">' + 'disponible' + '</span>';
             estad=0
         }
     }
@@ -412,6 +410,16 @@ function formatEstadoEquipo(val) {
     }
     
 }
+
+function obtenerVehiculo(val) {
+    for (var i = 0; i <storeVeh.data.length; i++) {
+        if (storeVeh.getAt(i).data.id === val) {
+             return;
+        }
+    }
+}
+
+
 
 function formatStateConect(val) {
     if (val === "1")
