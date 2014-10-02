@@ -76,6 +76,7 @@ Ext.onReady(function() {
         },
         store: gridStoreUsuario,
         columns: [
+                       Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
             {header: "Id", flex: 10, sortable: true, dataIndex: 'id', filterable: true},
             {header: "Cedula", width: 100, sortable: true, dataIndex: 'cedula', filter: {type: 'string'}},
             {header: "Usuario", width: 100, sortable: true, dataIndex: 'usuario', filter: {type: 'string'}},
@@ -241,7 +242,7 @@ Ext.onReady(function() {
                                         iconCls: 'icon-central',
                                         tooltip: 'Agregar Nueva Organización',
                                         handler: function() {
-                                            showWinAdminCompany();
+                                            showWinAdminOrganizacion();
                                         }
                                     }
                                 ]
@@ -305,7 +306,7 @@ Ext.onReady(function() {
                         afterLabelTextTpl: required,
                         blankText: 'Este campo es Obligatorio',
                         name: 'usuario',
-                        vtype: 'campos',
+                        vtype: 'usuario',
                         allowBlank: false,
                         emptyText: 'Ingresar Usuario...',
                     }, {
@@ -441,7 +442,7 @@ function onCreateUser() {
     var form = formularioRegistrosUsuario.getForm();
     if (form.isValid()) {
         formularioRegistrosUsuario.fireEvent('create', formularioRegistrosUsuario, form.getValues());
-        formularioRegistrosUsuario.down('#update').disable();
+        formularioRegistrosUsuario.down('#updateUser').disable();
     } else {
         Ext.example.msg("Alerta", 'Llenar los campos marcados en rojo, correctamente ');
     }

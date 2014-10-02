@@ -396,9 +396,11 @@ function onDeleteDevice() {
         if (choice === 'yes') {
             var selection = gridAdminDevice.getView().getSelectionModel().getSelection()[0];
             if (selection) {
-                gridAdminDevice.store.remove(selection);
-                formAdminDevice.down('#delete').disable();
-                formAdminDevice.down('#create').enable();
+                                Ext.example.msg("Atención", 'Para hacer esta Operacion Consulte con el Administrador ');
+
+//                gridAdminDevice.store.remove(selection);
+//                formAdminDevice.down('#delete').disable();
+//                formAdminDevice.down('#create').enable();
             }
         }
     });
