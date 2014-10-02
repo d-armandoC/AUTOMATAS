@@ -34,9 +34,34 @@ storeVehGeocerca = Ext.create('Ext.data.JsonStore', {
     },
     fields: ['id', 'nombre']
 });
+//para nuevo store que me sirve para llenar los nuevos datos
+Ext.define('Employee', {
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'id', type: 'int'},
+            {name: 'text', type: 'string'},
+        ]
+    });
+//agrego el tipo de store
+    // create the Data Store
+    var mystore = Ext.create('Ext.data.Store', {
+        // destroy the store if the grid is destroyed
+        autoDestroy: true,
+        model: 'Employee',
+        proxy: {
+            type: 'memory'
+        },
+//        data: dataPrueba(),
+        sorters: [{
+                property: 'start',
+                direction: 'ASC'
+            }]
+    });
+
 
 Ext.onReady(function() {
 
+    
     //Genera campos de array para usar en el inicio del store por defecto
     Ext.define('DataObject', {
         extend: 'Ext.data.Model',
@@ -134,9 +159,9 @@ Ext.onReady(function() {
             }
         }
     });
-    
-    
-        var storeVeh = Ext.create('Ext.data.JsonStore', {
+
+
+    var storeVeh = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
         proxy: {
             type: 'ajax',
@@ -273,16 +298,16 @@ Ext.onReady(function() {
                                                 }
                                             }]
                                     },
-                                            {
-                                                xtype: 'button',
-                                                fieldLabel: '<b>Agregar</b>',
-                                                iconCls: 'icon-add',
-                                                tooltip: 'Asignar Vehiculos a la Geocerca',
-                                                text: 'Asignar Vehiculos',
-                                                handler: function() {
-                                                    ventanaGeocercaVehiculos();
-                                                }
-                                            }
+                                    {
+                                        xtype: 'button',
+                                        fieldLabel: '<b>Agregar</b>',
+                                        iconCls: 'icon-add',
+                                        tooltip: 'Asignar Vehiculos a la Geocerca',
+                                        text: 'Asignar Vehiculos',
+                                        handler: function() {
+                                            ventanaGeocercaVehiculos();
+                                        }
+                                    }
 // 
                                 ]}]},
                     {
@@ -304,10 +329,10 @@ Ext.onReady(function() {
                                         msgTarget: 'side',
                                         name: 'vehiculos',
                                         id: 'multiselectvehiculos1',
-                                        store: storeVehGeocerca,
+                                        store: mystore,
                                         height: 132,
                                         valueField: 'id',
-                                        displayField: 'nombre',
+                                        displayField: 'text',
                                     }
                                 ]
                             }
@@ -394,7 +419,9 @@ function ventanaGeocerca() {
 
 function setActiveRecord(record) {
     formGeocercas.activeRecord = record;
+    
     if (record) {
+        console.log(record.data);
         formGeocercas.down('#updateGeo').enable();
         formGeocercas.getForm().loadRecord(record);
     } else {
