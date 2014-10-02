@@ -105,9 +105,10 @@ Ext.onReady(function() {
 
     // Column Model shortcut array
     var columns = [
+         Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
         {header: "Equipo", width: 80, sortable: true, dataIndex: 'equipo', filter: {type: 'string'}},
         {header: "Organización", width: 110, sortable: true, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}},
-        {header: "Vehiculo", width: 100, sortable: true, dataIndex: 'vehiculo', filter: {type: 'string'}},
+        {header: "Alias", width: 100, sortable: true, dataIndex: 'vehiculo', filter: {type: 'string'}},
         {header: "Placa", width: 80, sortable: true, dataIndex: 'placa', filter: {type: 'string'}},
         {header: "Propietario", width: 200, sortable: true, dataIndex: 'persona', filter: {type: 'string'}},
         {header: "Marca de Vehiculo", width: 100, sortable: true, dataIndex: 'marca', filter: {type: 'list', store: storeMarVehList}},
@@ -535,7 +536,7 @@ Ext.onReady(function() {
                     '->',
                     {iconCls: 'icon-update', itemId: 'updateVeh', text: '<b>Actualizar</b>', scope: this, tooltip: 'Actualizar Datos', handler: onUpdateVeh},
                     {iconCls: 'icon-car', itemId: 'createVeh', text: '<b>Crear</b>', scope: this, tooltip: 'Crear Vehiculo', handler: onCreateVeh},
-                    {iconCls: 'icon-delete', text: '<b>Eliminar</b>', itemId: 'deleteVeh', scope: this, tooltip: 'Eliminar Vehiculo', handler: onDeleteClickVeh},
+//                    {iconCls: 'icon-delete', text: '<b>Eliminar</b>', itemId: 'deleteVeh', scope: this, tooltip: 'Eliminar Vehiculo', handler: onDeleteClickVeh},
                     {iconCls: 'icon-cleans', text: '<b>Limpiar</b>', scope: this, tooltip: 'Limpiar Campos', handler: onResetVeh},
                     {iconCls: 'icon-cancelar', text: '<b>Cancelar</b>', tooltip: 'Cancelar', scope: this, handler: clearWinVeh}
                 ]
@@ -574,7 +575,7 @@ function ventanaAddVehiculos() {
 
     formRecordsVeh.down('#updateVeh').disable();/// desabilitar
     formRecordsVeh.down('#createVeh').enable();// habilitar
-    formRecordsVeh.down('#deleteVeh').disable();
+//    formRecordsVeh.down('#deleteVeh').disable();
 
     if (gridRecordsVeh.getStore().getCount() === 0) {
         gridRecordsVeh.getStore().load();
@@ -621,7 +622,7 @@ function setActiveRecordVeh(record) {
     formRecordsVeh.activeRecord = record;
     if (record) {
         formRecordsVeh.down('#updateVeh').enable();
-        formRecordsVeh.down('#deleteVeh').enable();
+//        formRecordsVeh.down('#deleteVeh').enable();
         formRecordsVeh.down('#createVeh').disable();
         formRecordsVeh.getForm().loadRecord(record);
     } else {
@@ -664,13 +665,13 @@ function onCreateVeh() {
 
 function onResetVeh() {
     setActiveRecordVeh(null);
-    formRecordsVeh.down('#deleteVeh').disable();
+//    formRecordsVeh.down('#deleteVeh').disable();
     formRecordsVeh.down('#createVeh').enable();
     formRecordsVeh.getForm().reset();
 }
 
 function clearWinVeh() {
-    formRecordsVeh.down('#deleteVeh').disable();
+//    formRecordsVeh.down('#deleteVeh').disable();
     formRecordsVeh.down('#createVeh').enable();
     winAddVeh.hide();
 }
@@ -681,7 +682,7 @@ function onDeleteClickVeh() {
             var selection = gridRecordsVeh.getView().getSelectionModel().getSelection()[0];
             if (selection) {
                 gridRecordsVeh.store.remove(selection);
-                formRecordsVeh.down('#deleteVeh').disable();
+//                formRecordsVeh.down('#deleteVeh').disable();
                 formRecordsVeh.down('#createVeh').enable();
             }
         }

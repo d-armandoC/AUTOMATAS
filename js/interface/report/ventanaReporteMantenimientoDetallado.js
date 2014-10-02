@@ -290,7 +290,7 @@ Ext.onReady(function() {
                                             vehiculo = record.get('vehiculo');
                                             banderaMantenimiento = 1;
 
-                                            gridViewDataMantenimiento.setTitle('<center>Lista de Mnatenimientos por Vehicuculo <br>Empresa: ' + empresa + ' Desde: ' + fechaInicio + ' Hasta:' + fechaFinal + '</center>');
+                                            gridViewDataMantenimiento.setTitle('<center>Lista de Mantenimientos por Vehiculo <br>Empresa: ' + empresa + ' Desde: ' + fechaInicio + ' Hasta:' + fechaFinal + '</center>');
                                             storeViewMantenimiento.load({
                                                 params: {
                                                     idVehiculo: id_vehiculo

@@ -113,8 +113,14 @@ Ext.onReady(function() {
             }
             return true;
         },
-        num1Text: 'Solo carateres \n\
-       numéricos',
+        digitosnombresApeText: 'Solo carateres numéricos',
+        nombresApe: function(val, field) {
+            if (!/^[.A-Z.a-z.áéíóúñ()\s*]{1,45}$/.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        nombresApeText: 'No se permite caracteres númericos.',
         password: function(val, field) {
             if (field.initialPassField) {
                 var pwd = field.up('form').down('#' + field.initialPassField);

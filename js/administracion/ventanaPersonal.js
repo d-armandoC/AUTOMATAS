@@ -80,10 +80,11 @@ Ext.onReady(function() {
         },
         store: gridStorePerson,
         columns: [
+            Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
             {header: "Cedula", width: 100, sortable: true, dataIndex: 'cedula', filter: {type: 'string'}, align: 'center'},
             {header: "Apellidos", width: 100, sortable: true, dataIndex: 'apellidos', filter: {type: 'string'}},
             {header: "Nombres", width: 100, sortable: true, dataIndex: 'nombres', filter: {type: 'string'}},
-            {header: "Ingresado por", width: 110, sortable: true, dataIndex: 'empresa', tooltip: 'Responsable quién Ingreso\n\ a esta persona ', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}}
+            {header: "Ingresado por", width: 110, sortable: true, dataIndex: 'empresa', tooltip: 'Responsable quién Ingreso\n\ a esta persona ', renderer: formatCompany,  filter: {type: 'string'}}
         ],
         enableDragDrop: true,
         stripeRows: true,
@@ -195,7 +196,7 @@ Ext.onReady(function() {
     formPersona = Ext.create('Ext.form.Panel', {
         id: 'panel-datos',
         region: 'center',
-        title: '<b>Ingresar Datos de la Persona</b>',
+        title: '<b>Ingresar datos de la persona</b>',
         activeRecord: null,
         bodyStyle: 'padding: 10px; background-color: #DFE8F6',
         labelWidth: 120,
@@ -230,7 +231,7 @@ Ext.onReady(function() {
                         afterLabelTextTpl: required,
                         blankText: 'Este campo es obligatorio',
                         name: 'nombres',
-                        vtype: 'campos',
+                        vtype: 'nombresApe',
                         allowBlank: false,
                         emptyText: 'Ingresar Nombres...',
                     }, {
@@ -238,7 +239,7 @@ Ext.onReady(function() {
                         afterLabelTextTpl: required,
                         blankText: 'Este campo es obligatorio',
                         name: 'apellidos',
-                        vtype: 'campos',
+                        vtype: 'nombresApe',
                         allowBlank: false,
                         emptyText: 'Ingresar Apellidos...',
                     }
@@ -247,11 +248,12 @@ Ext.onReady(function() {
                         afterLabelTextTpl: required,
                         blankText: 'Este campo es obligatorio',
                         editable: false,
+                                                value: edadDate,
+
                         maxValue: edadDate,
-                        value: edadDate,
                         name: 'fechaNacimiento',
                         xtype: 'datefield',
-                        format: 'Y-m-d',
+                        format: 'y-m-d',
                         emptyText: 'Ingresar Fecha...',
                         minValue: '1950-01-01',
 //                        maxValue : new Date()
