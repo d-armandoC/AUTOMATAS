@@ -1,7 +1,8 @@
 <?php
+
 include('../../login/isLogin.php');
 include ('../../../dll/config.php');
- extract($_POST);
+extract($_POST);
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
@@ -25,16 +26,17 @@ if (!$mysqli = getConectionDb()) {
 //obser: ""
 //vehiculo: "asdasd"
 //year: 0
-    
-    
-        $insertSql ="INSERT INTO vehiculos (id_equipo, id_empresa, marca, modelo, id_persona, vehiculo,
+    $existeSql = "SELECT id_vehiculo from karviewdb.vehiculos where placa='" . $json["placa"] . "'";
+    $result = $mysqli->query($existeSql);
+    if ($result->num_rows > 0) {
+        echo "{success:true, message:'Ya existe un vehículo con esa PLACA.',state: true}";
+    } else {
+
+        $insertSql = "INSERT INTO vehiculos (id_equipo, id_empresa, marca, modelo, id_persona, vehiculo,
             placa,year, num_motor, num_chasis,observacion,id_clase_vehiculo)
         VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         if ($stmt = $mysqli->prepare($insertSql)) {
-            $stmt->bind_param("iissississsi",               
-                $json["idEquipo"], $json["idEmpresa"], utf8_decode($json["marca"]), utf8_decode($json["modelo"]), $json["cbxPropietario"],
-               $json["vehiculo"], $json["placa"], $json["year"], utf8_decode($json["numMotor"]), 
-                utf8_decode($json["numChasis"]),utf8_decode(preg_replace("[\n|\r|\n\r]", "", $json["obser"])),$json["cbxClaseVehiculo"]);
+            $stmt->bind_param("iissississsi", $json["idEquipo"], $json["idEmpresa"], utf8_decode($json["marca"]), utf8_decode($json["modelo"]), $json["cbxPropietario"], $json["vehiculo"], $json["placa"], $json["year"], utf8_decode($json["numMotor"]), utf8_decode($json["numChasis"]), utf8_decode(preg_replace("[\n|\r|\n\r]", "", $json["obser"])), $json["cbxClaseVehiculo"]);
             $stmt->execute();
             if ($stmt->affected_rows > 0) {
                 echo "{success:true, message:'Datos Insertados Correctamente.'}";
@@ -45,6 +47,6 @@ if (!$mysqli = getConectionDb()) {
         } else {
             echo "{success:false, message: 'Problemas en la Construcción de la Consulta.'}";
         }
-    
+    }
     $mysqli->close();
 }
