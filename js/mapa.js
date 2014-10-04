@@ -9,7 +9,8 @@ var lienzoEstaciones;
 var lienzoVehicle;
 //para controlar la busqueda de los vehiculos en lugares
 var vehiLugares = false;
-
+///para ver las cordenada
+var coordenadasGeos;
 
 var markerInicioFin;
 var dragFeature;
@@ -357,15 +358,15 @@ function loadMap() {
 
             graficarCoop();
         });
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
+
+
     } else {
         Ext.getCmp('panel-map').add({
             region: 'center',
@@ -880,6 +881,11 @@ function lienzoPoints(idPointMap) {
 /* 
  * Dibuja el trazado de una ruta manual en el mapa
  */
+
+
+
+
+
 function drawLineRoute(json, idRuta) {
 
     markerStartFinish(json);
@@ -959,6 +965,8 @@ function drawRutaMapa(json) {
         });
     }
 }
+
+
 
 
 function drawLineTravel(json, isSkp) {
@@ -1043,6 +1051,27 @@ function drawLineRouteManual(json) {
     }
 }
 
+function drawPoligonoGeocerca(dataRoute) {
+    var puntosRuta = new Array();
+    var json = dataRoute.split(";");
+    for (var i = 0; i < json.length - 1; i++) {
+        var dataRuta = json[i].split(",");
+        console.log(dataRuta[0]);
+        console.log(dataRuta[1]);
+        var pt = new OpenLayers.Geometry.Point(dataRuta[0], dataRuta[1]);
+        pt.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+        puntosRuta.push(pt);
+    }
+    var ruta = new OpenLayers.Geometry.LineString(puntosRuta);
+    var style = {
+        strokeColor: "#FF8900",
+        strokeOpacity: 5,
+        strokeWidth: 5
+    };
+    var lineFeature = new OpenLayers.Feature.Vector(ruta, null, style);
+    lines.addFeatures([lineFeature]);
+}
+
 function drawPointsRoute(coordPuntos, idRuta) {
 
     var features = new Array();
@@ -1072,11 +1101,6 @@ function drawPointsRoute(coordPuntos, idRuta) {
     }
 
     lienzoPointRoute.addFeatures(features);
-//    for (var i = 0; i < showRouteMap.length; i++) {
-//        if (showRouteMap[i][0] === idRuta) {
-//            showRouteMap[i][2] = features;
-//        }
-//    }
 }
 
 function iconosInicioFin(json) {
@@ -1495,9 +1519,8 @@ function getDateGeo(fig) {
 var vertPolygon;
 
 function getDataRoute(fig) {
-    var geom = fig.geometry; //figura
     if (vehiLugares) {
-        var vert = geom.getVertices();
+        var vert = fig.geometry.getVertices();
         var coordP = '';
         for (var i = 0; i < vert.length; i++) {
             vert[i] = vert[i].transform(new OpenLayers.Projection('EPSG:900913'),
@@ -1533,31 +1556,31 @@ function getDataRoute(fig) {
         winVehiculosLugares.show();
         vehiLugares = false;
         clearLienzoTravel();
-         clearLienzoPointTravel();
+        clearLienzoPointTravel();
     } else {
-        
+
         var vert = fig.geometry.getVertices();
-        var coor = '';
+        var areaGeocerca = fig.geometry.getArea() / 1000;
+
+        coordenadasGeos = '';
         for (var i = 0; i < vert.length; i++) {
             vert[i] = vert[i].transform(new OpenLayers.Projection('EPSG:900913'),
                     new OpenLayers.Projection('EPSG:4326'));
-            coor+= vert[i].x + ',' + vert[i].y;
+            coordenadasGeos += vert[i].x + ',' + vert[i].y;
             if (i != vert.length - 1) {
-                coor += ';';
+                coordenadasGeos += ';';
             }
         }
-        console.log("cordenadas"+coor);
+        console.log(coordenadasGeos);
         ///////////////////////////////////////77
-        var area = geom.getArea() / 1000     //area km
-        area = Math.round(area * 100) / 100;
-        Ext.getCmp('numberfield-point-route').setValue(area + ' km2');
-        console.log("area"+area);
-        //console.log(area + ' km2');
+        areaGeocerca = Math.round(areaGeocerca * 100) / 100;
+        Ext.getCmp('numberfield-point-route').setValue(areaGeocerca + ' km2');
         drawRoute = false;
         Ext.getCmp('btn-draw-edit-route').setIconCls("icon-update");
         Ext.getCmp('btn-delete-route').enable();
         drawLine.deactivate();
         winAddGeocerca.show();
+        console.log("Area" + areaGeocerca);
     }
 
 }

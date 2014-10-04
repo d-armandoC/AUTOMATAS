@@ -1,7 +1,8 @@
 var contenedorgeocerca;
 var wingeocerca;
 var storeVehiculosGeos1;
-
+var idVehiculos;
+var idempresaGeocerca;
 Ext.onReady(function() {
 
     storeVehiculosGeos1 = Ext.create('Ext.data.JsonStore', {
@@ -100,6 +101,7 @@ Ext.onReady(function() {
                 handler: function() {
                     if (contenedorgeocerca.getForm().isValid()) {
                         loadGridEvents();
+                         wingeocerca.hide();
                     } else {
                         Ext.MessageBox.show({
                             title: 'Atencion',
@@ -145,11 +147,14 @@ function ventanaGeocercaVehiculos() {
 
 function loadGridEvents() {
      Ext.getCmp('multiselectvehiculos1').getStore().removeAll();
-    var listVeh = contenedorgeocerca.down('[name=listVehEvent]').getValue();
-     var empresa = contenedorgeocerca.down('[name=cbxEmpresasV]').getValue();
-     console.log(listVeh);
-     console.log(empresa);
-
+    var listVehiculosSeleccionadosGeos = contenedorgeocerca.down('[name=listVehEvent]').getValue();
+     idVehiculos="";
+     for (var i = 0; i < listVehiculosSeleccionadosGeos.length; i++) {
+         idVehiculos=idVehiculos+listVehiculosSeleccionadosGeos[i]+",";
+     }
+     idempresaGeocerca = contenedorgeocerca.down('[name=cbxEmpresasV]').getValue();
+//     console.log(listVeh);
+//     console.log(empresa);
 }
 
 function obtenerVehiculo(val) {

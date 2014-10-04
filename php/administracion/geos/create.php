@@ -7,6 +7,8 @@ if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
    $requestBody = file_get_contents('php://input');
+   
+   
    $json = json_decode($requestBody, true);
    
    $existe = substr_count($listVeh, ',');

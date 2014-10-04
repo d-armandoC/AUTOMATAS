@@ -19,6 +19,8 @@ function getConectionDb() {
     }
 }
 
+
+
 function allRows($result) {
     $vector = null;
     $pos = 0;

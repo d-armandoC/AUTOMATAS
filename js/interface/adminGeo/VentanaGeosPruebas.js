@@ -124,6 +124,8 @@ Ext.onReady(function() {
                 var record = selected[0];
                 Ext.getCmp('multiselectvehiculos1').reset();
                 formRecordsGeo.getForm().loadRecord(record);
+                lines.destroyFeatures();
+                 drawPoligonoGeocerca(record.data.geocercaPuntos);
                 idGeo = record.data.id;
                 storeVehGeocerca.load({
                     params: {
@@ -134,9 +136,9 @@ Ext.onReady(function() {
             }
         }
     });
-    
-    
-        var storeVeh = Ext.create('Ext.data.JsonStore', {
+
+
+    var storeVeh = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
         proxy: {
             type: 'ajax',
@@ -236,27 +238,6 @@ Ext.onReady(function() {
                                                     if (drawRoute === true) {
                                                         drawLine.activate();
                                                     }
-//                                                    else {
-//                                                        modifyLine.activate();
-//                                                        modifyLine.activate();
-//                                                        Ext.create('Ext.menu.Menu', {
-//                                                            width: 100,
-//                                                            floating: true, // usually you want this set to True (default)
-//                                                            renderTo: 'map', // usually rendered by it's containing componen
-//                                                            items: [{
-//                                                                    iconCls: 'icon-valid',
-//                                                                    text: 'Terminar',
-//                                                                    handler: function() {
-//                                                                        geometria = lines.features[0].geometry; //figura
-//                                                                        var area = geometria.getArea() / 1000;
-//                                                                        area = Math.round(area * 100) / 100;
-//                                                                        Ext.getCmp('numberfield-point-route').setValue(area + ' km2');
-//                                                                        modifyLine.deactivate();
-//                                                                        winAddGeocerca.show();
-//                                                                    }
-//                                                                }]
-//                                                        }).show();
-//                                                    }
                                                     winAddGeocerca.hide();
                                                 }
                                             }, {
@@ -273,16 +254,16 @@ Ext.onReady(function() {
                                                 }
                                             }]
                                     },
-                                            {
-                                                xtype: 'button',
-                                                fieldLabel: '<b>Agregar</b>',
-                                                iconCls: 'icon-add',
-                                                tooltip: 'Asignar Vehiculos a la Geocerca',
-                                                text: 'Asignar Vehiculos',
-                                                handler: function() {
-                                                    ventanaGeocercaVehiculos();
-                                                }
-                                            }
+                                    {
+                                        xtype: 'button',
+                                        fieldLabel: '<b>Agregar</b>',
+                                        iconCls: 'icon-add',
+                                        tooltip: 'Asignar Vehiculos a la Geocerca',
+                                        text: 'Asignar Vehiculos',
+                                        handler: function() {
+                                            ventanaGeocercaVehiculos();
+                                        }
+                                    }
 // 
                                 ]}]},
                     {
@@ -321,9 +302,6 @@ Ext.onReady(function() {
             create: function(form, data) {
                 gridStoreGeocercas.insert(0, data);
                 gridStoreGeocercas.reload();
-//                storeMails.reload();
-//                storeMailsGeo.reload();
-//                storePersonas.reload();
             }
         },
         dockedItems: [{
@@ -332,7 +310,7 @@ Ext.onReady(function() {
                 ui: 'footer',
                 items: ['->',
                     {iconCls: 'icon-update', itemId: 'updateGeo', text: 'Actualizar', scope: this, tooltip: 'Actualizar Datos', handler: onUpdatePerson},
-                    {iconCls: 'icon-user-add', itemId: 'createGeo', text: 'Crear', scope: this, tooltip: 'Crear Persona', handler: onCreatePerson},
+                    {iconCls: 'icon-user-add', itemId: 'createGeo', text: 'Crear', scope: this, tooltip: 'Crear Persona', handler: onCreateGeocerca},
                     {iconCls: 'icon-delete', itemId: 'deleteGeo', text: 'Eliminar', scope: this, tooltip: 'Eliminar Persona', handler: onDeleteClick},
                     {iconCls: 'icon-limpiar', text: 'Limpiar', tooltip: 'Limpiar Campos', scope: this, handler: onResetPerson},
                     {iconCls: 'icon-cancelar', text: 'Cancelar', tooltip: 'Cancelar', scope: this, handler: clearWinPerson}
@@ -415,15 +393,50 @@ function onUpdatePerson() {
     }
 }
 
-function onCreatePerson() {
-    var idGeocerca = vistaVehiculosGeocercas.down('[name=cbxEmpresasgeos]').getValue();
-    //Ext.getCmp('myFieldId').setValue(idGeocerca);
+function onCreateGeocerca() {
+    console.log(idVehiculos);
     var form = formGeocercas.getForm();
     if (form.isValid()) {
-        formGeocercas.fireEvent('create', formGeocercas, form.getValues());
-        formGeocercas.down('#updateGeo').disable();
-        form.reset();
+        if (coordenadasGeos != "") {
+            form.submit({
+                url: "php/interface/adminGeo/geoNew.php",
+                waitMsg: "Guardando...",
+                params: {
+                    coord: coordenadasGeos,
+                    area: formGeocercas.down('[name=countPointsRoute]').getValue(),
+                    vehiculolist:idVehiculos,
+                    idempresa:idempresaGeocerca
+                },
+                failure: function(form, action) {
+                    Ext.MessageBox.show({
+                        title: "Problemas",
+                        msg: "No se puede guardar la Geocerca",
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    })
+                },
+                success: function(form, action) {
+                    Ext.MessageBox.show({
+                        title: "Correcto",
+                        msg: "GeoCerca guardada",
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.INFO,
+                    });
+                    formGeocercas.getForm().reset();
+                    gridStoreGeocercas.reload();
+                }
+            });
+        } else {
+            Ext.MessageBox.show({
+                title: "Sin Geocerca",
+                msg: "Aún no traza la GeoCerca",
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            })
+        }
     }
+
+
 }
 
 function onResetPerson() {

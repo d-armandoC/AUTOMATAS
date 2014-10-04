@@ -13,17 +13,38 @@ if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
 
+    function coneccion() {if (!$mysqli = getConectionDb()) {} else {return $mysqli;}}
+
+    function obtenerPuntosGepocerca($idGeo) {
+        $consultaSql2 = "SELECT latitud, longitud FROM karviewdb.geocerca_puntos where id_geocerca='$idGeo' ORDER BY orden;";
+        $result2 = coneccion()->query($consultaSql2);
+       $haveData = false;
+    if ($result2->num_rows > 0) {
+        $haveData = true;
+        $objJson = "";
+        while ($myrow = $result2->fetch_assoc()) {
+            $objJson .= ""
+                    . $myrow["longitud"]. ","
+                    .$myrow["latitud"]. ";";
+        }
+          $objJson .= "";
+    }
+    if ($haveData) {
+        return $objJson;
+    } 
+       coneccion()->close();
+    }
+
     if ($id_rol == 1 || $id_rol == 2) {
         $consultaSql = "SELECT g.id_geocerca, g.geocerca, g.descripcion, e.empresa, e.id_empresa, g.area
         FROM karviewdb.geocercas g,  karviewdb.empresas e  
         WHERE g.id_empresa=e.id_empresa";
-    }  else {
+    } else {
         $consultaSql = "SELECT g.id_geocerca, g.geocerca, g.descripcion, e.empresa, e.id_empresa, g.area
         FROM karviewdb.geocercas g,  karviewdb.empresas e  
         WHERE g.id_empresa=e.id_empresa and e.id_empresa='$id_empresa'"
         ;
     }
-
     $result = $mysqli->query($consultaSql);
     $mysqli->close();
 
@@ -37,6 +58,7 @@ if (!$mysqli = getConectionDb()) {
             desc_geo:'" . utf8_encode($myrow["descripcion"]) . "',
             empresa:'" . utf8_encode($myrow["empresa"]) . "',
             areaGeocerca:'" . utf8_encode($myrow["area"]) . "',                
+            geocercaPuntos:'".obtenerPuntosGepocerca($myrow["id_geocerca"])."',                
 
             },";
         }

@@ -115,8 +115,7 @@ Ext.onReady(function() {
             msgTarget: 'side',
             labelWidth: 75
         },
-        
-        items: [//////
+        items: [
             {
             layout : 'column',
             baseCls: 'x-plain',

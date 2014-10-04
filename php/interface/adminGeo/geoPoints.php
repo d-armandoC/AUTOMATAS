@@ -1,33 +1,31 @@
 <?php
-
-require_once('../../../dll/conect.php');
-
-
+include('../../login/isLogin.php');
+require_once('../../../dll/config.php');
 extract($_POST);
-
-$consultaSql = 
-	"SELECT LAT_GEOC_POINT, LONG_GEOC_POINT 
-	FROM GEOCERCA_POINTS
-	WHERE ID_GEOCERCA = $idGeo
-	ORDER BY ORDEN";
-
-consulta($consultaSql);
-$resulset = variasFilas();
-
-$salida = "{'geo_points': [";
-
-for ($i = 0; $i < count($resulset); $i++) {
-    $fila = $resulset[$i];
-    $salida .= "{
-            'longitud':" . $fila["LONG_GEOC_POINT"] . ",
-            'latitud':" . $fila["LAT_GEOC_POINT"] . "            
-        }";
-    if ($i != count($resulset) - 1) {
-        $salida .= ",";
+if (!$mysqli = getConectionDb()) {
+    echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.',state: false}";
+} else {
+    $consultaSql = "SELECT latitud, longitud FROM karviewdb.geocerca_puntos where id_geocerca='$idGeo' ORDER BY orden;";
+    $result = $mysqli->query($consultaSql);
+    $haveData = false;
+    if ($result->num_rows > 0) {
+        $haveData = true;
+        $objJson = "geo_points : [";
+        while ($myrow = $result->fetch_assoc()) {
+            $objJson .= "{"
+                    . "longitud:'" . $myrow["longitud"] . "',"
+                    . "latitud:'" . $myrow["latitud"] . "',"
+                    . "},";
+        }
+        $objJson .="]";
     }
+    if ($haveData) {
+        echo "{success: true,$objJson}";
+    } else {
+        echo "{failure: true, msg: 'Problemas al Obtener los  Datos'}";
+    }
+
+    $mysqli->close();
+    
 }
 
-$salida .="]}";
-
-echo $salida;
-?>
