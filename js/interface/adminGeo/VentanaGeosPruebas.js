@@ -34,34 +34,40 @@ storeVehGeocerca = Ext.create('Ext.data.JsonStore', {
     },
     fields: ['id', 'nombre']
 });
+//diego
 //para nuevo store que me sirve para llenar los nuevos datos
 Ext.define('Employee', {
-        extend: 'Ext.data.Model',
-        fields: [
-            {name: 'id', type: 'int'},
-            {name: 'text', type: 'string'},
-        ]
-    });
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'int'},
+        {name: 'text', type: 'string'},
+    ]
+});
 //agrego el tipo de store
-    // create the Data Store
-    var mystore = Ext.create('Ext.data.Store', {
-        // destroy the store if the grid is destroyed
-        autoDestroy: true,
-        model: 'Employee',
-        proxy: {
-            type: 'memory'
-        },
+// create the Data Store
+var mystore = Ext.create('Ext.data.Store', {
+    // destroy the store if the grid is destroyed
+    autoDestroy: true,
+    model: 'Employee',
+    proxy: {
+        type: 'ajax',
+        url: 'php/interface/adminGeo/geoVeh.php',
+        reader: {
+            type: 'json',
+            root: 'veh_geo'
+        }
+    },
 //        data: dataPrueba(),
-        sorters: [{
-                property: 'start',
-                direction: 'ASC'
-            }]
-    });
+    sorters: [{
+            property: 'start',
+            direction: 'ASC'
+        }]
+});
 
 
 Ext.onReady(function() {
 
-    
+
     //Genera campos de array para usar en el inicio del store por defecto
     Ext.define('DataObject', {
         extend: 'Ext.data.Model',
@@ -150,12 +156,30 @@ Ext.onReady(function() {
                 Ext.getCmp('multiselectvehiculos1').reset();
                 formRecordsGeo.getForm().loadRecord(record);
                 idGeo = record.data.id;
+//diego
                 storeVehGeocerca.load({
                     params: {
                         empresa: record.data.id_empresa,
                         idGeo: record.data.id
                     }
                 });
+                if (storeVehGeocerca.data.lenght=== 0) {
+                    mystore.removeAll();
+                    
+                }else{
+                     mystore.removeAll();
+                    //creo un objeto de tipo vehiculo y agrego los nuevos valores
+                    var r = Ext.create('Employee', {
+                        id: storeVehGeocerca.getAt(0).data.id,
+                        text: storeVehGeocerca.getAt(0).data.nombre,
+                    });
+                    //inserto mi nuevos datos
+                    mystore.insert(0, r);
+                }
+
+
+
+
             }
         }
     });
@@ -419,9 +443,7 @@ function ventanaGeocerca() {
 
 function setActiveRecord(record) {
     formGeocercas.activeRecord = record;
-    
     if (record) {
-        console.log(record.data);
         formGeocercas.down('#updateGeo').enable();
         formGeocercas.getForm().loadRecord(record);
     } else {

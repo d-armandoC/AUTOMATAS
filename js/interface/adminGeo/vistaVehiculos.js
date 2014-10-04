@@ -28,12 +28,12 @@ Ext.onReady(function() {
         editable: false,
         allowBlank: false,
         listeners: {
-            select: function(combo, records, eOpts) {
+              select: function(combo, records, eOpts) {
                 var listSelected = contenedorwinEvt.down('[name=listVehEvent]');
                 listSelected.clearValue();
                 listSelected.fromField.store.removeAll();
 
-                storeVehiculosGeos1.load({
+                  storeVehiculosGeos1.load({
                     params: {
                         cbxEmpresas: records[0].data.id
                     }
@@ -142,38 +142,36 @@ function ventanaGeocercaVehiculos() {
     contenedorgeocerca.getForm().reset();
     wingeocerca.show();
 }
-
+//diego
 function loadGridEvents() {
-     Ext.getCmp('multiselectvehiculos1').getStore().removeAll();
+    Ext.getCmp('multiselectvehiculos1').getStore().removeAll();
     var listVeh = contenedorgeocerca.down('[name=listVehEvent]').getValue();
-     var empresa = contenedorgeocerca.down('[name=cbxEmpresasV]').getValue();
-     console.log(listVeh);
-     console.log(empresa);
-     //limpio mi estore para llenar
-     mystore.removeAll();
-     //rrecorro la lista de vehiculos seleccionados
-     for (var i = 0; i < listVeh.data.length; i++) {
-     for (var i = 0; i < storeVehiculosGeos1.data.length; i++) {
-        if (storeVehiculosGeos1.getAt(i).data.value === listVeh[i]) {
-            var id = storeVehiculosGeos1.getAt(i).data.id;
-            console.log(id);
-            //creo un objeto de tipo vehiculo y agrego los nuevos valores
-            var r = Ext.create('Employee', {
-                id: storeVehiculosGeos1.getAt(i).data.id,
-                text: storeVehiculosGeos1.getAt(i).data.text,
-
-            });
-            //inserto mi nuevos datos
-            mystore.insert(0, r);
+    var empresa = contenedorgeocerca.down('[name=cbxEmpresasV]').getValue();
+    console.log(listVeh);
+    console.log(empresa);
+    //limpio mi estore para llenar
+    mystore.removeAll();
+    //rrecorro la lista de vehiculos seleccionados
+    for (var i = 0; i < listVeh.length; i++) {
+        for (var i = 0; i < storeVehiculosGeos1.data.length; i++) {
+            if (storeVehiculosGeos1.getAt(i).data.value === listVeh[i]) {
+                var id = storeVehiculosGeos1.getAt(i).data.id;
+                console.log(id);
+                //creo un objeto de tipo vehiculo y agrego los nuevos valores
+                var r = Ext.create('Employee', {
+                    id: storeVehiculosGeos1.getAt(i).data.id,
+                    text: storeVehiculosGeos1.getAt(i).data.text,
+                });
+                //inserto mi nuevos datos
+                mystore.insert(0, r);
+            }
         }
     }
-      }
-   //solo para ver si se esta agrgando
-    for (var i = 0; i <  mystore.data.length; i++) {
-     console.log(mystore.getAt(i).data.text);
-       
+    //solo para ver si se esta agrgando
+    for (var i = 0; i < mystore.data.length; i++) {
+        console.log(mystore.getAt(i).data.text);
     }
-     
+
 
 }
 
