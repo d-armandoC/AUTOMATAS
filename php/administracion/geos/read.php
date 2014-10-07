@@ -24,7 +24,7 @@ if (!$mysqli = getConectionDb()) {
         $objJson = "";
         while ($myrow = $result2->fetch_assoc()) {
             $objJson .= ""
-                    . $myrow["longitud"]. ","
+                    .$myrow["longitud"]. ","
                     .$myrow["latitud"]. ";";
         }
           $objJson .= "";

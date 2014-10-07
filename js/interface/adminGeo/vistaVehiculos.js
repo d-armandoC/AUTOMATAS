@@ -7,6 +7,7 @@ Ext.onReady(function() {
 
     storeVehiculosGeos1 = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
+//        autoLoad: true,
         proxy: {
             type: 'ajax',
             url: 'php/combobox/comboVeh.php',
@@ -30,10 +31,9 @@ Ext.onReady(function() {
         allowBlank: false,
         listeners: {
             select: function(combo, records, eOpts) {
-                var listSelected = contenedorwinEvt.down('[name=listVehEvent]');
+                storeVehiculosGeos1.removeAll();
+                var listSelected = contenedorgeocerca.down('[name=listVehiGeos]');
                 listSelected.clearValue();
-                listSelected.fromField.store.removeAll();
-
                 storeVehiculosGeos1.load({
                     params: {
                         cbxEmpresas: records[0].data.id
@@ -75,7 +75,7 @@ Ext.onReady(function() {
                 baseCls: 'x-plain',
                 items: [{
                         xtype: 'itemselector',
-                        name: 'listVehEvent',
+                        name: 'listVehiGeos',
                         anchor: '97%',
                         height: 150,
                         store: storeVehiculosGeos1,
@@ -100,8 +100,8 @@ Ext.onReady(function() {
                 iconCls: 'icon-consultas',
                 handler: function() {
                     if (contenedorgeocerca.getForm().isValid()) {
-                        loadGridEvents();
-                         wingeocerca.hide();
+                        loadGridGeos();
+                        wingeocerca.hide();
                     } else {
                         Ext.MessageBox.show({
                             title: 'Atencion',
@@ -126,6 +126,14 @@ function limpiar_datosEvt() {
         wingeocerca.hide();
     }
 }
+function loadIdeVehiculos() {
+      var listVehiculosSeleccionadosGeos = contenedorgeocerca.down('[name=listVehiGeos]').getValue();
+     idVehiculos="";
+     for (var i = 0; i < listVehiculosSeleccionadosGeos.length; i++) {
+         idVehiculos=idVehiculos+listVehiculosSeleccionadosGeos[i]+",";
+     }
+     idempresaGeocerca = contenedorgeocerca.down('[name=cbxEmpresasV]').getValue();
+}
 
 function ventanaGeocercaVehiculos() {
     if (!wingeocerca) {
@@ -145,16 +153,29 @@ function ventanaGeocercaVehiculos() {
     wingeocerca.show();
 }
 
-function loadGridEvents() {
-     Ext.getCmp('multiselectvehiculos1').getStore().removeAll();
-    var listVehiculosSeleccionadosGeos = contenedorgeocerca.down('[name=listVehEvent]').getValue();
-     idVehiculos="";
-     for (var i = 0; i < listVehiculosSeleccionadosGeos.length; i++) {
-         idVehiculos=idVehiculos+listVehiculosSeleccionadosGeos[i]+",";
-     }
-     idempresaGeocerca = contenedorgeocerca.down('[name=cbxEmpresasV]').getValue();
-//     console.log(listVeh);
-//     console.log(empresa);
+function loadGridGeos() {
+    Ext.getCmp('multiselectvehiculos1').getStore().removeAll();
+    var listVeh = contenedorgeocerca.down('[name=listVehiGeos]').getValue();
+    var empresa = contenedorgeocerca.down('[name=cbxEmpresasV]').getValue();
+//limpio mi estore para llenar
+    mystore.removeAll();
+//rrecorro la lista de vehiculos seleccionados
+    for (var j = 0; j < listVeh.length; j++) {
+        for (var i = 0; i < storeVehiculosGeos1.data.length; i++) {
+            if (storeVehiculosGeos1.getAt(i).data.value === listVeh[j]) {
+                var id = storeVehiculosGeos1.getAt(i).data.id;
+                console.log(id);
+//creo un objeto de tipo vehiculo y agrego los nuevos valores
+                var r = Ext.create('Employee', {
+                    id: storeVehiculosGeos1.getAt(i).data.id,
+                    text: storeVehiculosGeos1.getAt(i).data.text,
+                });
+//inserto mi nuevos datos
+                mystore.insert(0, r);
+            }
+        }
+    }
+    loadIdeVehiculos();
 }
 
 function obtenerVehiculo(val) {

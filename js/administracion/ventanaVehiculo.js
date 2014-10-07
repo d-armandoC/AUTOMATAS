@@ -311,6 +311,7 @@ Ext.onReady(function() {
                                 afterLabelTextTpl: required,
                                 fieldStyle: 'text-transform: uppercase',
                                 blankText: 'Este campo es Obligatorio',
+                                
                                 vtype: 'placaValida',
                                 name: 'placa',
                                 id: 'placa_id',
@@ -504,9 +505,10 @@ Ext.onReady(function() {
                                 fieldLabel: '<b>Año</b>',
                                 name: 'year',
                                 emptyText: 'Año del Vehiculo...',
+                                
                                 value: 1950,
                                 minValue: 1950,
-                                editable: false,
+                                editable: true,
                                 maxValue: Ext.Date.format(new Date(), 'Y')
                             }
                         ]

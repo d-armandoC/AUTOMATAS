@@ -137,11 +137,6 @@ Ext.onReady(function() {
                     emptyText : 'Escoja la Cooperativa...',                    
                     listeners: {
                         select: function(combo, records, eOpts) {
-                            
-//                            var listSelected = this.up('form').down('[name=listVeh]');
-//                            listSelected.clearValue();
-//                            listSelected.fromField.store.removeAll();
-
                             storeVeh.load({
                                 params: {
                                     cbxEmpresas: records[0].data.id
@@ -165,13 +160,16 @@ Ext.onReady(function() {
                     items : [{
                         columnWidth: .9,
                         baseCls: 'x-plain',
-                        items : [{
+                        items : [
+                            {
                             xtype : 'textfield',
                             afterLabelTextTpl: required,
                             name : 'area',                    
                             fieldLabel : 'Area:',
                             disabled : true
-                        }]
+                        }
+                    
+                                    ]
                     },{
                         columnWidth: .1,
                         baseCls: 'x-plain',

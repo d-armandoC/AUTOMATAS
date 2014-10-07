@@ -82,7 +82,7 @@ Ext.onReady(function() {
             {header: "Usuario", width: 100, sortable: true, dataIndex: 'usuario', filter: {type: 'string'}},
             {header: "Persona", width: 200, sortable: true, dataIndex: 'person', filter: {type: 'string'}},
             {header: "Organización", width: 110, sortable: true, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}},
-            {header: "Rol", width: 100, sortable: true, dataIndex: 'rol', filter: {type: 'list', store: storeRolUserList}}
+            {header: "Rol", width: 100, sortable: true, dataIndex: 'rol', filter: {type: 'string'}}
         ],
         enableDragDrop: true,
         stripeRows: true,
@@ -443,6 +443,7 @@ function onCreateUser() {
     if (form.isValid()) {
         formularioRegistrosUsuario.fireEvent('create', formularioRegistrosUsuario, form.getValues());
         formularioRegistrosUsuario.down('#updateUser').disable();
+        form.reset();
     } else {
         Ext.example.msg("Alerta", 'Llenar los campos marcados en rojo, correctamente ');
     }

@@ -1054,19 +1054,27 @@ function drawLineRouteManual(json) {
 function drawPoligonoGeocerca(dataRoute) {
     var puntosRuta = new Array();
     var json = dataRoute.split(";");
-    for (var i = 0; i < json.length - 1; i++) {
-        var dataRuta = json[i].split(",");
-        console.log(dataRuta[0]);
-        console.log(dataRuta[1]);
-        var pt = new OpenLayers.Geometry.Point(dataRuta[0], dataRuta[1]);
-        pt.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
-        puntosRuta.push(pt);
+    var pos = json[0].split(",");
+    var i = 0;
+    for (i = 0; i <= json.length; i++) {
+        if (i <json.length - 1) {
+            var dataRuta = json[i].split(",");
+            var pt = new OpenLayers.Geometry.Point(dataRuta[0], dataRuta[1]);
+            pt.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+            puntosRuta.push(pt);
+        }
+        if (i === json.length) {
+            var pt = new OpenLayers.Geometry.Point(pos[0], pos[1]);
+            pt.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+            puntosRuta.push(pt);
+        }
+
     }
     var ruta = new OpenLayers.Geometry.LineString(puntosRuta);
     var style = {
-        strokeColor: "#FF8900",
+        strokeColor: "#DF3A01",
         strokeOpacity: 5,
-        strokeWidth: 5
+        strokeWidth: 3
     };
     var lineFeature = new OpenLayers.Feature.Vector(ruta, null, style);
     lines.addFeatures([lineFeature]);
@@ -1561,6 +1569,7 @@ function getDataRoute(fig) {
 
         var vert = fig.geometry.getVertices();
         var areaGeocerca = fig.geometry.getArea() / 1000;
+
 
         coordenadasGeos = '';
         for (var i = 0; i < vert.length; i++) {

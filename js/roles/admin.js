@@ -91,6 +91,11 @@ Ext.onReady(function() {
         placaValida: function(val, field) {
             var partes = val.split("");
             if (partes.length === 7) {
+                if (!/^[F]{1}[A]{1}[C]{1}[T]{1}[U]{1}[R]{1}[A]{1}$/.test(val.toUpperCase())) {
+                    return false;
+                } else {
+                    return true;
+                }
                 if (!/^[A-Z]{3}[0-9]{4}$/.test(val.toUpperCase())) {
                     return false;
                 } else {
