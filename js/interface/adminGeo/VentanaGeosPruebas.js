@@ -14,6 +14,7 @@ var storeVehGeocerca;
 var storeVeh = Ext.create('Ext.data.JsonStore', {
     autoLoad: true,
     autoDestroy: true,
+    
     proxy: {
         type: 'ajax',
         url: 'php/combobox/comboVeh.php',
