@@ -182,9 +182,9 @@ Ext.onReady(function() {
         title: '<b>Servicio Mantenimiento</b>',
         activeRecord: null,
         bodyStyle: 'padding: 10px; background-color: #DFE8F6',
-        labelWidth: 30,
+        labelWidth: 40,
         hight: 150,
-        margins: '0 0 0 0',
+        margins: '5 0 0 5',
         items: [
             {
                 xtype: 'fieldset',
@@ -196,7 +196,7 @@ Ext.onReady(function() {
 //                    padding: '0 0 15 30',
                     baseCls: 'x-plain',
                     defaults: {
-                        labelWidth: 70
+                        labelWidth: 90
                     }
                 }
                 ,
@@ -204,7 +204,7 @@ Ext.onReady(function() {
                     {
                         xtype: 'fieldset',
                         layout: 'hbox',
-                        padding: '0 0 0 0',
+                        padding: '0 0 0 5',
                         defaults: {
                             padding: '0 0 15 20',
                             baseCls: 'x-plain',
@@ -215,7 +215,7 @@ Ext.onReady(function() {
                         items: [
                             {
                                 defaults: {
-                                    padding: '10 0 5 0',
+                                    padding: '10 0 5 5',
                                     baseCls: 'x-plain',
                                     layout: 'vbox',
                                     defaults: {
@@ -227,7 +227,7 @@ Ext.onReady(function() {
                                         items: [
                                             {
                                                 xtype: 'combobox',
-                                                fieldLabel: '<b>Organización</b>',
+                                                fieldLabel: '<b>Org </b>',
                                                 name: 'idempresa',
                                                 afterLabelTextTpl: required,
                                                 id: 'idempresa',
@@ -916,7 +916,7 @@ Ext.onReady(function() {
                     {iconCls: 'icon-update', itemId: 'updateVeh', text: '<b>Actualizar</b>', scope: this, tooltip: 'Actualizar Servicio...', handler: onUpdateVehiculos},
                     {iconCls: 'icon-car', itemId: 'createVeh', text: '<b>Crear</b>', scope: this, tooltip: 'Crear Servicio...', handler: onCreateVehiculos},
                     {iconCls: 'icon-delete', text: '<b>Eliminar</b>', itemId: 'deleteVeh', scope: this, tooltip: 'Eliminar Servicio....', handler: onDeleteClickVehiculos},
-                    {iconCls: 'icon-limpiar-form', text: '<b>Limpiar</b>', scope: this, tooltip: 'Limpiar Campos', handler: onResetVehiculos},
+                    {iconCls: 'icon-cleans', text: '<b>Limpiar</b>', scope: this, tooltip: 'Limpiar Campos', handler: onResetVehiculos},
                     {iconCls: 'icon-cancelar', text: '<b>Cancelar</b>', tooltip: 'Cancelar', scope: this, handler: clearWinVehiculos}
                 ]
             }]
@@ -965,19 +965,6 @@ function ventAddMantenimientos() {
             // Añadir un poco de brillo al momento de entrar al contenedor
             formRecordsVehiculos.body.stopAnimation();
             formRecordsVehiculos.body.highlight();
-        },
-        notifyDrop: function(ddSource, e, data) {
-            // Referencia el record (seleccion simple) para facilitar lectura
-            var selectedRecord = ddSource.dragData.records[0];
-            setActiveRecordVehiculos(selectedRecord || null);
-            // Carga los registro en el form            
-            formRecordsVehiculos.getForm().loadRecord(selectedRecord);
-            labelTecnicosMantenimineto.setText(selectedRecord.data.cbxTecnico);
-            labelRegistrosMantenimiento.setText(selectedRecord.data.dateTimeRegistro);
-            formRecordsVehiculos.down('#updateVeh').enable();
-            formRecordsVehiculos.down('#createVeh').disable();
-            formRecordsVehiculos.down('#deleteVeh').enable();
-            return true;
         }
     });
 }

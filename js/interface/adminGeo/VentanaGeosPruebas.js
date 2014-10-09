@@ -183,14 +183,14 @@ Ext.onReady(function() {
         }
     });
 
-    function recargar(idEmpresa, idGeo){
-          storeVehGeocerca.load({
-                    params: {
-                        empresa: idEmpresa,
-                        idGeo: idGeo
-                    }
-                });
-        
+    function recargar(idEmpresa, idGeo) {
+        storeVehGeocerca.load({
+            params: {
+                empresa: idEmpresa,
+                idGeo: idGeo
+            }
+        });
+
     }
 
 
@@ -208,7 +208,7 @@ Ext.onReady(function() {
     });
 
     formGeocercas = Ext.create('Ext.form.Panel', {
-        id: 'panel-datos',
+        id: 'panel',
         region: 'center',
 //        autoScroll: true,
         title: '<b>Información de Geocerca</b>',
@@ -292,6 +292,8 @@ Ext.onReady(function() {
                                                 xtype: 'button',
                                                 value: 0,
                                                 handler: function() {
+                                                    geosArea = true;
+                                                    geosVertice=true;
                                                     if (drawRoute === true) {
                                                         drawLine.activate();
                                                     } else {
@@ -305,19 +307,25 @@ Ext.onReady(function() {
                                                                     iconCls: 'icon-valid',
                                                                     text: 'Terminar',
                                                                     handler: function() {
-                                                                        var areaGeos = fig.geometry.getArea() / 1000;
-                                                                        var area = Math.round(areaGeos * 100) / 100;
-                                                                        Ext.getCmp('numberfield-point-route').setValue(area + ' km2');
-                                                                        drawRoute = false;
-//                                                                        geometria = lines.features[0].geometry; //figura
-//                                                                        var area = geometria.getArea() / 1000;
-//                                                                        area = Math.round(area * 100) / 100;
-//                                                                        Ext.getCmp('numberfield-point-route').setValue(area + ' km2');
+                                                                        console.log('terminar');
+                                                                          var areaGeoce = lines.features[0].geometry.getArea();
+                                                                        console.log(areaGeoce);
+                                                                        Ext.getCmp('numberfield-point-route').setValue(lines.features[0].geometry.components.length);
                                                                         modifyLine.deactivate();
                                                                         winAddGeocerca.show();
+//                                                                        geometria = lines.features[0].geometry; //figura
+//                                                                        console.log(geometria);
+//                                                                        var area = geometria.getArea() / 1000;
+//                                                                        area = Math.round(area * 100) / 100;
+//                                                                        
+//                                                                        Ext.getCmp('numberfield-point-route').setValue(area + ' km2');
+//                                                                        modifyLine.deactivate();
+//                                                                        winAddGeocerca.show();
+//                                                                         drawRoute = true;
                                                                     }
                                                                 }]
                                                         }).show();
+                                                        geosVertice = true;
                                                     }
                                                     winAddGeocerca.hide();
                                                 }
@@ -392,11 +400,11 @@ Ext.onReady(function() {
                 dock: 'bottom',
                 ui: 'footer',
                 items: ['->',
-                    {iconCls: 'icon-update', itemId: 'updateGeo', text: 'Actualizar', scope: this, tooltip: 'Actualizar Datos', handler: onUpdatePerson},
+                    {iconCls: 'icon-update', itemId: 'updateGeo', text: 'Actualizar', scope: this, tooltip: 'Actualizar Datos', handler: onUpdateGeocerca},
                     {iconCls: 'icon-user-add', itemId: 'createGeo', text: 'Crear', scope: this, tooltip: 'Crear Persona', handler: onCreateGeocerca},
                     {iconCls: 'icon-delete', itemId: 'deleteGeo', text: 'Eliminar', scope: this, tooltip: 'Eliminar Persona', handler: onDeleteClick},
-                    {iconCls: 'icon-limpiar', text: 'Limpiar', tooltip: 'Limpiar Campos', scope: this, handler: onResetPerson},
-                    {iconCls: 'icon-cancelar', text: 'Cancelar', tooltip: 'Cancelar', scope: this, handler: clearWinPerson}
+                    {iconCls: 'icon-limpiar', itemId: 'limpiarGeocerca',text: 'Limpiar', tooltip: 'Limpiar Campos', scope: this, handler: onResetGeocerca},
+                    {iconCls: 'icon-cancelar', text: 'Cancelar', tooltip: 'Cancelar', scope: this, handler: clearWinGeocerca}
                 ]
             }]
     });
@@ -421,7 +429,7 @@ function ventanaGeocerca() {
                     ]}]
         });
     }
-    onResetPerson();
+    onResetGeocerca();
     winAddGeocerca.show();
     formGeocercas.down('#updateGeo').disable();
     formGeocercas.down('#createGeo').enable();
@@ -466,7 +474,7 @@ function setActiveRecord(record) {
     }
 }
 
-function onUpdatePerson() {
+function onUpdateGeocerca() {
     var active = formGeocercas.activeRecord,
             form = formGeocercas.getForm();
     if (!active) {
@@ -474,7 +482,7 @@ function onUpdatePerson() {
     }
     if (form.isValid()) {
         form.updateRecord(active);
-        onResetPerson();
+        onResetGeocerca();
     }
 }
 
@@ -519,11 +527,10 @@ function onCreateGeocerca() {
             });
         }
     }
-
-
 }
 
-function onResetPerson() {
+
+function onResetGeocerca() {
     Ext.getCmp('multiselectvehiculos1').getStore().removeAll();
     setActiveRecord(null);
     formGeocercas.down('#deleteGeo').disable();
@@ -537,7 +544,7 @@ function onResetPerson() {
     //id: 'btn-draw-edit-route',
 }
 
-function clearWinPerson() {
+function clearWinGeocerca() {
     formGeocercas.down('#deleteGeo').disable();
     formGeocercas.down('#createGeo').enable();
     winAddGeocerca.hide();

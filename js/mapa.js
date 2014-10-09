@@ -11,6 +11,7 @@ var lienzoVehicle;
 var vehiLugares = false;
 ///para ver las cordenada
 var coordenadasGeos;
+var generacioAreaGeocerca;
 
 var markerInicioFin;
 var dragFeature;
@@ -333,10 +334,8 @@ function loadMap() {
             lienzoLineTravel = new OpenLayers.Layer.Vector("Linea de Recorrido");
             lienzoLineRouteManual = new OpenLayers.Layer.Vector("Linea de Ruta Manual");
             markerInicioFin = new OpenLayers.Layer.Markers("Inicio-Fin");
-//            polygonControl = new OpenLayers.Control.DrawFeature(lienzoGeoCercas,OpenLayers.Handler.RegularPolygon,{handlerOptions: polyOptions,featureAdded: getDateGeo}
-//            );
             drawLine = new OpenLayers.Control.DrawFeature(lines, OpenLayers.Handler.Polygon, {featureAdded: getDataRoute});
-            modifyLine = new OpenLayers.Control.ModifyFeature(lines);
+            modifyLine = new OpenLayers.Control.ModifyFeature(lines, OpenLayers.Handler.Polygon, {featureAdded: drawPoligonoGeocerca});
 
 
             map.addLayers([
@@ -358,15 +357,6 @@ function loadMap() {
 
             graficarCoop();
         });
-
-
-
-
-
-
-
-
-
     } else {
         Ext.getCmp('panel-map').add({
             region: 'center',
@@ -1052,12 +1042,17 @@ function drawLineRouteManual(json) {
 }
 
 function drawPoligonoGeocerca(dataRoute) {
+//    geosArea = true;
+    geosVertice = true;
+    modifyLine.activate();
+    modifyLine.activate();
+    Ext.getCmp('btn-draw-edit-route').setIconCls("icon-update");
     var puntosRuta = new Array();
     var json = dataRoute.split(";");
     var pos = json[0].split(",");
     var i = 0;
     for (i = 0; i <= json.length; i++) {
-        if (i <json.length - 1) {
+        if (i < json.length - 1) {
             var dataRuta = json[i].split(",");
             var pt = new OpenLayers.Geometry.Point(dataRuta[0], dataRuta[1]);
             pt.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
@@ -1065,6 +1060,7 @@ function drawPoligonoGeocerca(dataRoute) {
         }
         if (i === json.length) {
             var pt = new OpenLayers.Geometry.Point(pos[0], pos[1]);
+            
             pt.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
             puntosRuta.push(pt);
         }
@@ -1078,6 +1074,9 @@ function drawPoligonoGeocerca(dataRoute) {
     };
     var lineFeature = new OpenLayers.Feature.Vector(ruta, null, style);
     lines.addFeatures([lineFeature]);
+    console.log(lines.features[0].geometry);
+//    geometria =  //figura
+    drawRoute = false;
 }
 
 function drawPointsRoute(coordPuntos, idRuta) {
@@ -1463,71 +1462,39 @@ function estadoControlD(flag) {
         }
     }
 }
+var geosArea= false;
+var geosVertice=false;
 
-
-function getDateGeo(fig) {
-
-    trazando = 0;
-
-    estadoControlD('polygon');
-
-    var geom = fig.geometry; //figura
-    var area = geom.getArea() / 1000     //area km
-    var vert = geom.getVertices();  //vertices
-
-    area = Math.round(area * 100) / 100;
-
-    contenedorWinAddGeo.down('[name=area]').setValue(area + ' km2');
-    console.log(area + ' km2');
-    var coordP = '';
-
-    for (var i = 0; i < vert.length; i++) {
-        vert[i] = vert[i].transform(new OpenLayers.Projection('EPSG:900913'),
-                new OpenLayers.Projection('EPSG:4326'));
-        coordP += vert[i].x + ',' + vert[i].y;
-
-        if (i != vert.length - 1) {
-            coordP += ';';
+function getDataRoute(fig) {
+    console.log('estoy en el getdataroute');
+    var vert = fig.geometry.getVertices();
+    var areaGeocerca = fig.geometry.getArea() / 1000;
+    if (geosArea) {
+        console.log(geosArea);
+        areaGeocerca = Math.round(areaGeocerca * 100) / 100;
+        Ext.getCmp('numberfield-point-route').setValue(areaGeocerca + ' km2');
+        drawRoute = false;
+        Ext.getCmp('btn-draw-edit-route').setIconCls("icon-update");
+        Ext.getCmp('btn-delete-route').enable();
+        drawLine.deactivate();
+        winAddGeocerca.show();
+        geosArea = false;
+    }
+    if (geosVertice) {
+        coordenadasGeos = '';
+        for (var i = 0; i < vert.length; i++) {
+            vert[i] = vert[i].transform(new OpenLayers.Projection('EPSG:900913'),
+                    new OpenLayers.Projection('EPSG:4326'));
+            coordenadasGeos += vert[i].x + ',' + vert[i].y;
+            if (i != vert.length - 1) {
+                coordenadasGeos += ';';
+            }
         }
 
     }
-
-    vertPolygon = coordP;
-    if (isLugar) {
-
-        winVehiculosLugares.show();
-        panelVehiculosLugares.submit({
-            url: 'php/extra/getVehiculos.php',
-            waitMsg: 'Comprobando Datos...',
-            params: {
-                coord: vertPolygon
-            },
-            failure: function(form, action) {
-                Ext.MessageBox.show({
-                    title: "Problemas",
-                    msg: "No se ha encontrado vehiculos en esas horas.",
-                    buttons: Ext.MessageBox.OK,
-                    icon: Ext.MessageBox.ERROR
-                })
-            },
-            success: function(form, action) {
-                Ext.example.msg('Mensaje', 'Vehiculos Encontrados.');
-                var resultado = action.result;
-                var puntos = Ext.JSON.decode(resultado.string).puntos;
-                gridVehiculos.getStore().loadData(puntos);
-            }
-        });
-
-        isLugar = false;
-    } else {
-        winAddGeo.show();
-    }
-}
-
-var vertPolygon;
-
-function getDataRoute(fig) {
+ 
     if (vehiLugares) {
+        figs = fig;
         var vert = fig.geometry.getVertices();
         var coordP = '';
         for (var i = 0; i < vert.length; i++) {
@@ -1565,31 +1532,5 @@ function getDataRoute(fig) {
         vehiLugares = false;
         clearLienzoTravel();
         clearLienzoPointTravel();
-    } else {
-
-        var vert = fig.geometry.getVertices();
-        var areaGeocerca = fig.geometry.getArea() / 1000;
-
-
-        coordenadasGeos = '';
-        for (var i = 0; i < vert.length; i++) {
-            vert[i] = vert[i].transform(new OpenLayers.Projection('EPSG:900913'),
-                    new OpenLayers.Projection('EPSG:4326'));
-            coordenadasGeos += vert[i].x + ',' + vert[i].y;
-            if (i != vert.length - 1) {
-                coordenadasGeos += ';';
-            }
-        }
-        console.log(coordenadasGeos);
-        ///////////////////////////////////////77
-        areaGeocerca = Math.round(areaGeocerca * 100) / 100;
-        Ext.getCmp('numberfield-point-route').setValue(areaGeocerca + ' km2');
-        drawRoute = false;
-        Ext.getCmp('btn-draw-edit-route').setIconCls("icon-update");
-        Ext.getCmp('btn-delete-route').enable();
-        drawLine.deactivate();
-        winAddGeocerca.show();
-        console.log("Area" + areaGeocerca);
     }
-
 }

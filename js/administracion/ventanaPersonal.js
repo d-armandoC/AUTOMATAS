@@ -14,7 +14,7 @@ Ext.onReady(function() {
             {name: 'apellidos'},
             {name: 'email'},
             {name: 'cbxEmpleo'},
-            {name: 'fechaNacimiento', type: 'date', dateFormat: 'c'},
+            {name: 'fechaNacimiento'},
             {name: 'direccion', type: 'string'},
             {name: 'celular', type: 'string'}
         ]
@@ -79,7 +79,7 @@ Ext.onReady(function() {
             }
         },
         store: gridStorePerson,
-        columns: [           
+        columns: [
             Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
             {header: "Cedula", width: 100, sortable: true, dataIndex: 'cedula', filter: {type: 'string'}, align: 'center'},
             {header: "Apellidos", width: 100, sortable: true, dataIndex: 'apellidos', filter: {type: 'string'}},
@@ -87,7 +87,7 @@ Ext.onReady(function() {
             {header: "email", width: 100, sortable: true, dataIndex: 'email', filter: {type: 'string'}, align: 'center'},
             {header: "Direccion", width: 100, sortable: true, dataIndex: 'direccion', filter: {type: 'string'}},
             {header: "Celular", width: 100, sortable: true, dataIndex: 'celular', filter: {type: 'string'}},
-            {header: "Ingresado por", width: 110, sortable: true, dataIndex: 'empresa', tooltip: 'Responsable quién Ingreso\n\ a esta persona ', renderer: formatCompany,  filter: {type: 'string'}}
+            {header: "Ingresado por", width: 110, sortable: true, dataIndex: 'empresa', tooltip: 'Responsable quién Ingreso\n\ a esta persona ', renderer: formatCompany, filter: {type: 'string'}}
         ],
         enableDragDrop: true,
         stripeRows: true,
@@ -140,8 +140,7 @@ Ext.onReady(function() {
                                     "</Row>";
                             for (var i = 0; i < numFil; i++) {
                                 table_div += "<Row ss:AutoFitHeight='0'>" +
-                          
-                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStorePerson.data.items[i].data.cedula+ " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStorePerson.data.items[i].data.cedula + " </Data></Cell > " +
                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStorePerson.data.items[i].data.nombres + " </Data></Cell > " +
                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStorePerson.data.items[i].data.apellidos + " </Data></Cell > " +
                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + Ext.Date.format(gridStorePerson.data.items[i].data.fechaNacimiento, 'm/d/Y') + " </Data></Cell > " +
@@ -247,19 +246,18 @@ Ext.onReady(function() {
                         emptyText: 'Ingresar Apellidos...',
                     }
                     , {
+                        xtype: 'datefield',
                         fieldLabel: '<b>Fecha de Nacimiento</b>',
                         afterLabelTextTpl: required,
                         blankText: 'Este campo es obligatorio',
                         editable: false,
-                                                value: edadDate,
-
+                        value: edadDate,
                         maxValue: edadDate,
                         name: 'fechaNacimiento',
-                        xtype: 'datefield',
                         format: 'y-m-d',
                         emptyText: 'Ingresar Fecha...',
                         minValue: '1950-01-01',
-//                        maxValue : new Date()
+                        maxValue : new Date()
                     }]
             }, {
                 xtype: 'fieldset',
