@@ -936,7 +936,7 @@ function ventAddMantenimientos() {
             iconCls: 'icon-mantenimiento',
             resizable: false,
             width: 1200,
-            height: 560,
+            height: 690,
             closeAction: 'hide',
             plain: false,
             items: [{
