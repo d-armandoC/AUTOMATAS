@@ -4,6 +4,8 @@ var bandera = 0;
 var storeViewPanico;
 var dateStart;
 var dateFinish;
+var timeStart;
+var timeFinish;
 var persona;
 var idEquipoPanico;
 var gridViewDataPanico;
@@ -13,7 +15,6 @@ var storeViewPanicoTotal;
 var storeDataPanicoD;
 var empresa = 1;
 var empresaNom = 'KRADAC';
-
 var cbxEmpresasBDPanico;
 Ext.onReady(function() {
     storeViewPanico = Ext.create('Ext.data.JsonStore', {
@@ -29,7 +30,6 @@ Ext.onReady(function() {
         },
         fields: ['fecha', 'hora', 'evento', 'latitud', 'longitud', 'velocidad']
     });
-
     cbxEmpresasBDPanico = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Organización',
         name: 'idCompanyPanico',
@@ -70,6 +70,28 @@ Ext.onReady(function() {
         startDateField: 'fechaIniPanico',
         emptyText: 'Fecha Final...'
     });
+    var timeInipanico = Ext.create('Ext.form.field.Time', {
+        fieldLabel: 'Desde las',
+        name: 'horaIniPanico',
+        value: '00:01',
+        format: 'H:i',
+        allowBlank: false,
+        emptyText: 'Hora Inicial...',
+        listConfig: {
+            minWidth: 300
+        }
+    });
+    var timeFinpanico = Ext.create('Ext.form.field.Time', {
+        fieldLabel: 'Hasta las',
+        name: 'horaFinPanico',
+        value: '23:59',
+        format: 'H:i',
+        allowBlank: false,
+        emptyText: 'Hora final...',
+        listConfig: {
+            minWidth: 450
+        }
+    });
     var btnToday = Ext.create('Ext.button.Button', {
         text: 'Hoy',
         iconCls: 'icon-today',
@@ -77,6 +99,8 @@ Ext.onReady(function() {
             var nowDate = new Date();
             dateIni.setValue(nowDate);
             dateFin.setValue(nowDate);
+            timeInipanico.setValue('00:01');
+            timeFinpanico.setValue('23:59');
         }
     });
     var btnYesterday = Ext.create('Ext.button.Button', {
@@ -86,6 +110,8 @@ Ext.onReady(function() {
             var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
             dateIni.setValue(yestDate);
             dateFin.setValue(yestDate);
+            timeInipanico.setValue('00:01');
+            timeFinpanico.setValue('23:59');
         }
     });
     var panelButtons = Ext.create('Ext.panel.Panel', {
@@ -137,6 +163,8 @@ Ext.onReady(function() {
                 items: [
                     dateIni,
                     dateFin,
+                    timeInipanico,
+                    timeFinpanico,
                     panelButtons,
                 ]
             }],
@@ -147,7 +175,6 @@ Ext.onReady(function() {
                     dateStart = dateIni.getRawValue();
                     dateFinish = dateFin.getRawValue();
                     var formulario = formPanico.getForm();
-
                     formulario.submit({
                         url: 'php/interface/report/panicos/getPanicos.php',
                         waitTitle: 'Procesando...',
@@ -170,7 +197,7 @@ Ext.onReady(function() {
                                 region: 'west',
                                 frame: true,
                                 width: '40%',
-                                title: '<center>Panicos Totales: ' + '<br>Desde: ' + dateStart + ' | Hasta: ' + dateFinish + '</center>',
+                                title: '<center>Panicos Totales ' + '<br>Desde: ' + dateStart + ' | Hasta: ' + dateFinish + '</center>',
                                 store: storeDataExcesos,
                                 features: [filters],
                                 multiSelect: true,
@@ -204,21 +231,21 @@ Ext.onReady(function() {
                                                             "<Style ss:ID='datos'><NumberFormat ss:Format='@'/></Style> " +
                                                             "</Styles>";
                                                     //Definir el numero de columnas y cantidad de filas de la hoja de calculo (numFil + 2))
-                                                    table_div += "<Worksheet ss:Name='Datos'>";//Nombre de la hoja
+                                                    table_div += "<Worksheet ss:Name='Datos'>"; //Nombre de la hoja
                                                     table_div += "<Table ss:ExpandedColumnCount='" + numCol + "' ss:ExpandedRowCount='" + (numFil + 2) + "' x:FullColumns='1' x:FullRows='1' ss:DefaultColumnWidth='60' ss:DefaultRowHeight='15'>";
                                                     table_div += "<Column ss:AutoFitWidth='0' ss:Width='121.5'/>";
                                                     table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
                                                     table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
                                                     table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
                                                     table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Empresa</Data></Cell>" +
+                                                            "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Empresa</Data></Cell>" +
                                                             "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Placa</Data></Cell>" +
                                                             "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Cantidad de Panicos</Data></Cell>" +
                                                             "</Row>";
                                                     for (var i = 0; i < numFil; i++) {
                                                         table_div += "<Row ss:AutoFitHeight='0'>" +
                                                                 "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataExcesos.data.items[i].data.empresaPanicos + " </Data></Cell > " +
-                                                                "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataExcesos.data.items[i].data.placaPanicos+ " </Data></Cell > " +
+                                                                "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataExcesos.data.items[i].data.placaPanicos + " </Data></Cell > " +
                                                                 "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataExcesos.data.items[i].data.cantidadPanicos + " </Data></Cell > " +
                                                                 "</Row>";
                                                     }
@@ -245,18 +272,21 @@ Ext.onReady(function() {
                                             }
                                         }
                                     }],
-                                 listeners: {
+                                listeners: {
                                     itemclick: function(thisObj, record, item, index, e, eOpts) {
                                         idEquipoPanico = record.get('idEquipoPanicos');
                                         console.log(idEquipoPanico);
                                         persona = record.get('personaPanicos');
                                         bandera = 1;
                                         gridViewDataPanico.setTitle('<center>Vista de Panicos: ' + persona + ' <br> Equipo: ' + idEquipoPanico + ' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
-                                        storeViewPanico.load({
+                                        storeViewPanico.load({                    
                                             params: {
                                                 idEquipo: idEquipoPanico,
                                                 fechaIni: dateIni.getRawValue(),
-                                                fechaFin: dateFin.getRawValue()
+                                                fechaFin: dateFin.getRawValue(),
+                                                horaIniP:timeInipanico.getRawValue(),
+                                                horaFinP:timeFinpanico.getRawValue(),
+                                                
                                             }
                                         });
                                     }
@@ -303,7 +333,7 @@ Ext.onReady(function() {
                                                             "<Style ss:ID='datos'><NumberFormat ss:Format='@'/></Style> " +
                                                             "</Styles>";
                                                     //Definir el numero de columnas y cantidad de filas de la hoja de calculo (numFil + 2))
-                                                    table_div += "<Worksheet ss:Name='Datos'>";//Nombre de la hoja
+                                                    table_div += "<Worksheet ss:Name='Datos'>"; //Nombre de la hoja
                                                     table_div += "<Table ss:ExpandedColumnCount='" + numCol + "' ss:ExpandedRowCount='" + (numFil + 2) + "' x:FullColumns='1' x:FullRows='1' ss:DefaultColumnWidth='60' ss:DefaultRowHeight='15'>";
                                                     table_div += "<Column ss:AutoFitWidth='0' ss:Width='121.5'/>";
                                                     table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
@@ -311,7 +341,6 @@ Ext.onReady(function() {
                                                     table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
                                                     table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
                                                     table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-
                                                     table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
                                                     table_div += "<Row ss:AutoFitHeight='0'>" +
                                                             "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Velocidad</Data></Cell>" +
@@ -379,7 +408,6 @@ Ext.onReady(function() {
                             });
                         }
                     });
-
                 }
             }
             , {
@@ -399,7 +427,7 @@ function showWinPanicosDaily() {
             iconCls: 'icon-reset',
             resizable: false,
             width: 350,
-            height: 300,
+            height: 350,
             closeAction: 'hide',
             plain: false,
             items: formPanico

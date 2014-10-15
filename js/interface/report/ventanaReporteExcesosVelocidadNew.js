@@ -103,7 +103,7 @@ Ext.onReady(function() {
     timeFinExcesos = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Hasta las',
         name: 'horaFinExcesos',
-        value: '00:01',
+        value: '23:59',
         format: 'H:i',
         allowBlank: false,
         emptyText: 'Hora final...',
@@ -261,10 +261,11 @@ function cargardatosalGrid(datos) {
     });
 
     var columnExcesosVelocidad = [
-        {text: 'Empresa', flex: 80, dataIndex: 'empresa', filter: {type: 'string'}},
+           Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
+        {text: 'Organización', flex: 80, dataIndex: 'empresa', filter: {type: 'string'}},
         {text: 'Placa', flex: 80, dataIndex: 'placa', filter: {type: 'string'}},
         {text: 'Velocidad', flex: 80, dataIndex: 'velocidad', filter: {type: 'string'}},
-        {text: 'Fecha', flex: 80, dataIndex: 'fecha', filter: {type: 'string'}},
+        {text: 'Registrado', flex: 80, dataIndex: 'fecha', filter: {type: 'string'}},
         {text: 'Evento', flex: 80, dataIndex: 'acronimo', filter: {type: 'string'}},
     ];
 
@@ -376,10 +377,10 @@ function generarExcelRecorrido(store) {
             table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
             table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
             table_div += "<Row ss:AutoFitHeight='0'>" +
-                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Empresa</Data></Cell>" +
+                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Organización</Data></Cell>" +
                     "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Placa</Data></Cell>" +
                     "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Velocidad</Data></Cell>" +
-                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Fecha</Data></Cell>" +
+                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Registrado</Data></Cell>" +
                     "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Evento</Data></Cell>" +
                     "</Row>";
             for (var i = 0; i < numFil; i++) {
