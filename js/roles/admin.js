@@ -716,8 +716,7 @@ Ext.onReady(function() {
                 listeners: {
                     itemclick: function(thisObject, record, item, index, e, eOpts) {
                         if (connectionMap()) {
-                            var id = record.internalId;
-//                            if (id.indexOf('_') !== -1) {
+                            console.log(record);
                             var aux = record.id.split('_');
                             var idEmpresa = parseInt(aux[0]);
                             var idVehicle = 'last' + aux[1];

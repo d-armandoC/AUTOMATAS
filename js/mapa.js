@@ -622,6 +622,7 @@ function buscarEnMapa(idCompany, idVehicle) {
     } else {
         if (lienzoP.getVisibility()) {
             var objeto = lienzoP.getFeatureById(idVehicle);
+            
             if (objeto === null) {
                 var cmp = menuCoop.down("[itemId=" + idCompany + "]");
                 if (cmp === undefined) {
@@ -1075,12 +1076,10 @@ function drawPoligonoGeocerca(dataRoute) {
     var lineFeature = new OpenLayers.Feature.Vector(ruta, null, style);
     lines.addFeatures([lineFeature]);
     console.log(lines.features[0].geometry);
-//    geometria =  //figura
     drawRoute = false;
 }
 
 function drawPointsRoute(coordPuntos, idRuta) {
-
     var features = new Array();
     var cont = 0;
     for (var i = 0; i < coordPuntos.length; i++) {

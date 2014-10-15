@@ -5,7 +5,6 @@ if (!isset($_SESSION)) {
 } else {
 	//$rutaPrincipal = "";
 	$rutaPrincipal = "index.php";
-
 	//Comprobar si esta logeado
 	if (!isset($_SESSION["IDCOMPANYKARVIEW"]) || 
 		!isset($_SESSION["USERKARVIEW"]) || 
