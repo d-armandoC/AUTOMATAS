@@ -271,7 +271,7 @@ Ext.onReady(function() {
                                                     select: {
                                                         fn: function(combo, records, index) {
                                                             obj_vehiculos = combo.getValue();
-                                                        }   
+                                                        }
                                                     }
                                                 }
                                             },
@@ -397,6 +397,7 @@ Ext.onReady(function() {
                                                 id: 'fechaSoatReg',
                                                 xtype: 'datefield',
                                                 format: 'Y-m-d',
+                                                maxValue: new Date(),
                                                 emptyText: 'Seleccionar Fecha...',
                                                 listeners: {
                                                     select: function() {
@@ -413,6 +414,7 @@ Ext.onReady(function() {
                                                 id: 'fechaSoatVenc',
                                                 xtype: 'datefield',
                                                 format: 'Y-m-d',
+                                                minValue: 'fechaSoatReg',
                                                 emptyText: 'Seleccionar Fecha...'
                                             }
 
@@ -458,6 +460,7 @@ Ext.onReady(function() {
                                                 id: 'fechaMatriculaReg',
                                                 xtype: 'datefield',
                                                 format: 'Y-m-d',
+                                                maxValue: new Date(),
                                                 emptyText: 'Seleccionar Fecha...',
                                                 listeners: {
                                                     select: function() {
@@ -472,6 +475,7 @@ Ext.onReady(function() {
                                                 padding: '0 0 5 0',
                                                 name: 'fechaMatriculaVenc',
                                                 id: 'fechaMatriculaVenc',
+                                                minValue: 'fechaMatriculaReg',
                                                 xtype: 'datefield',
                                                 format: 'Y-m-d',
                                                 emptyText: 'Seleccionar Fecha...'
@@ -505,6 +509,7 @@ Ext.onReady(function() {
                                                 id: 'fechaSeguroReg',
                                                 xtype: 'datefield',
                                                 format: 'Y-m-d',
+                                                maxValue: new Date(),
                                                 emptyText: 'Seleccionar Fecha...',
                                                 listeners: {
                                                     select: function() {
@@ -520,6 +525,7 @@ Ext.onReady(function() {
                                                 name: 'fechaSeguroVenc',
                                                 id: 'fechaSeguroVenc',
                                                 xtype: 'datefield',
+                                                minValue: 'fechaSeguroReg',
                                                 format: 'Y-m-d',
                                                 emptyText: 'Seleccionar Fecha...'
                                             }
