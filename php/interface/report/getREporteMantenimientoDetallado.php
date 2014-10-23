@@ -7,7 +7,7 @@ include ('../../../dll/config.php');
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.'}";
 } else {
-    $consultaSql = "SELECT vh.vehiculo, m.id_vehiculo, vh.placa, vh.marca, sv.estandar_vehiculo, m.valorTipoServicio, m.responsable, p.nombres "
+    $consultaSql = "SELECT vh.vehiculo, m.id_vehiculo, vh.placa, vh.marca, sv.estandar_vehiculo, m.valorTipoServicio,m.fecha, m.responsable, p.nombres "
             . "FROM karviewdb.personas p, karviewdb.mantenimiento m, karviewdb.vehiculos vh, karviewdb.empresas emp, karviewdb.estandar_vehiculos sv, karviewdb.usuarios us "
             . "where vh.id_empresa= emp.id_empresa and m.id_vehiculo=vh.id_vehiculo  and m.id_estandar_vehiculo=sv.id_estandar_vehiculo and m.responsable=us.id_persona and us.id_persona=p.id_persona and m.id_vehiculo='$idVehiculo';";
     $result = $mysqli->query($consultaSql);

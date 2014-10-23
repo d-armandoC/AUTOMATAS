@@ -185,7 +185,7 @@ Ext.onReady(function() {
                                     },
                                     columns: [
                                         Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                        {text: 'Empresa', width: 150, dataIndex: 'empresa', align: 'center'},
+                                        {text: 'Organización', width: 150, dataIndex: 'empresa', align: 'center'},
                                         {text: 'Vehiculo', width: 130, dataIndex: 'vehiculo', align: 'center'},
                                         {text: 'Total Mantenimientos', width: 165, dataIndex: 'total', align: 'center'},
                                         {text: 'SOAT ', width: 150, dataIndex: 'fechaSoatVenc', align: 'center', renderer: formatTipoSeguro},
@@ -223,7 +223,7 @@ Ext.onReady(function() {
                                                         table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
                                                         table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
                                                         table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Empresa</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Organización</Data></Cell>" +
                                                                 "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Vehiculo</Data></Cell>" +
                                                                 "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Total Matenimientos</Data></Cell>" +
                                                                 "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>SOAT</Data></Cell>" +
@@ -290,7 +290,7 @@ Ext.onReady(function() {
                                             vehiculo = record.get('vehiculo');
                                             banderaMantenimiento = 1;
 
-                                            gridViewDataMantenimiento.setTitle('<center>Lista de Mantenimientos por Vehiculo <br>Empresa: ' + empresa + ' Desde: ' + fechaInicio + ' Hasta:' + fechaFinal + '</center>');
+                                            gridViewDataMantenimiento.setTitle('<center>Lista de Mantenimientos por Vehiculo <br>Organización: ' + empresa + ' Desde: ' + fechaInicio + ' Hasta:' + fechaFinal + '</center>');
                                             storeViewMantenimiento.load({
                                                 params: {
                                                     idVehiculo: id_vehiculo
