@@ -202,11 +202,12 @@ Ext.onReady(function() {
             {
                 fieldLabel: 'Celular',
                 name: 'telefono',
+                allowBlank: false,
                 vtype: 'numeroTelefono',
                 afterLabelTextTpl: required,
                 //anchor: '75%',
                 labelWidth: 95,
-                emptyText: '0991540427'
+                emptyText: '0991540427 / 072660359 '
             }, {
                 fieldLabel: 'Email',
                 name: 'correo',
