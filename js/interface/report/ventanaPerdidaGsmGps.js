@@ -95,6 +95,7 @@ Ext.onReady(function() {
         name: 'horaIni',
         format: 'H:i',
         allowBlank: false,
+        value: '00:00',
         emptyText: 'Hora Inicial...',
         listConfig: {
             minWidth: 300
@@ -105,6 +106,7 @@ Ext.onReady(function() {
         name: 'horaFin',
         format: 'H:i',
         allowBlank: false,
+        value: '23:59',
         emptyText: 'Hora final...',
         listConfig: {
             minWidth: 450
@@ -261,9 +263,9 @@ function cargardatosalGridGpsGsm(datos) {
         {text: 'Equipo', flex: 80, dataIndex: 'equipo', filter: {type: 'string'}},
         {text: 'Placa', flex: 80, dataIndex: 'placa', filter: {type: 'string'}},
         {text: 'Señal', flex: 80, dataIndex: 'tipo_respuesta', filter: {type: 'string'}, renderer: sinGSM},
-        {text: 'Latitud', flex: 80, dataIndex: 'latitud', filter: {type: 'string'}},
-        {text: 'Longitu', flex: 80, dataIndex: 'longitud', filter: {type: 'string'}},
-        {text: 'Fecha', flex: 80, dataIndex: 'fecha', filter: {type: 'string'}},
+        {text: 'Latitud', flex: 80, dataIndex: 'latitud'},
+        {text: 'Longitud', flex: 80, dataIndex: 'longitud',},
+        {text: 'Registro', flex: 80, dataIndex: 'fecha', filter: {type: 'string'}},
         {text: 'Velocidad', flex: 80, dataIndex: 'velocidad', filter: {type: 'string'}}
     ];
     var dateStart = fechaInigsm.getRawValue();
