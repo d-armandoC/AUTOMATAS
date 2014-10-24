@@ -115,6 +115,7 @@ Ext.onReady(function() {
             }
             return true;
         },
+        
         passwordText: 'Las Contraseñas no coinciden',
         cedulaValida: function(val, field) {
             if (val.length !== 10) {

@@ -45,16 +45,12 @@ Ext.define('Employee', {
         {name: 'text', type: 'string'},
     ]
 });
-//agrego el tipo de store
-// create the Data Store
 var mystore = Ext.create('Ext.data.Store', {
-    // destroy the store if the grid is destroyed
     autoDestroy: true,
     model: 'Employee',
     proxy: {
         type: 'memory'
     },
-//        data: dataPrueba(),
     sorters: [{
             property: 'start',
             direction: 'ASC'
@@ -118,10 +114,8 @@ Ext.onReady(function() {
             write: function(store, operation, eOpts) {
                 if (operation.success) {
                     Ext.example.msg("Mensaje", operation._resultSet.message);
-                    //gridGeocerca.reload();
                     if (operation.state) {
                         formGeocercas.getForm().reset();
-                        // storePersonas.reload();
                         formPersonal.getForm().reset();
                     }
                 }
@@ -135,8 +129,7 @@ Ext.onReady(function() {
             {header: "Geocerca", width: 160, sortable: true, dataIndex: 'geocerca'},
             {header: "Empresa", width: 110, sortable: true, dataIndex: 'empresa', renderer: formatCompany},
             {header: "Descripcion", width: 210, sortable: true, dataIndex: 'desc_geo', filter: {type: 'string'}},
-            {header: "Area", width: 90, sortable: true, dataIndex: 'areaGeocerca', filter: {type: 'string'}},
-//            {header: "Ingresado Por", width: 100, sortable: true, dataIndex: 'empresa', renderer : formatCompany, filter: {type: 'list', store: storeEmpresasList}}
+            {header: "Area", width: 90, sortable: true, dataIndex: 'areaGeocerca', filter: {type: 'string'}}
         ],
         stripeRows: true,
         width: '30%',
@@ -164,13 +157,10 @@ Ext.onReady(function() {
                     var listSelect = formGeocercas.down('[name=vehiculos]');
                     listSelect.clearValue();
                     for (var i = 0; i < storeVehGeocerca.data.length; i++) {
-//                        console.log(storeVehGeocerca.getAt(i).data.id);
-//creo un objeto de tipo vehiculo y agrego los nuevos valores
                         var r = Ext.create('Employee', {
                             id: storeVehGeocerca.getAt(i).data.id,
                             text: storeVehGeocerca.getAt(i).data.nombre
                         });
-//inserto mi nuevos datos
                         mystore.insert(0, r);
                     }
                 } else {
@@ -210,17 +200,14 @@ Ext.onReady(function() {
     formGeocercas = Ext.create('Ext.form.Panel', {
         id: 'panel',
         region: 'center',
-//        autoScroll: true,
         title: '<b>Información de Geocerca</b>',
         activeRecord: null,
         bodyStyle: 'padding: 10px; background-color: #DFE8F6',
-        // labelWidth: 120,
         margins: '0 0 0 3',
         items: [
             {
                 xtype: 'fieldset',
                 title: '<b>Geocerca</b>',
-                //collapsible: true,
                 layout: 'hbox',
                 padding: '5 5 10 10',
                 defaults: {
@@ -309,8 +296,10 @@ Ext.onReady(function() {
                                                                     iconCls: 'icon-valid',
                                                                     text: 'Terminar',
                                                                     handler: function() {
+                                                                        var area=modifyLine.features[0].geometry.getArea() / 1000;
+                                                                        console.log(area);
 //                                                                        console.log('terminar');
-//                                                                          var areaGeoce = lines.features[0].geometry.getArea();
+//                                                                        var areaGeoce = lines.features[0].geometry.getArea();
 //                                                                        console.log(areaGeoce);
 //                                                                        Ext.getCmp('numberfield-point-route').setValue(lines.features[0].geometry.components.length);
 //                                                                        modifyLine.deactivate();
@@ -319,7 +308,7 @@ Ext.onReady(function() {
                                                                         console.log(geometria+'geometria');
                                                                         var area = geometria.getArea() / 1000;
                                                                         area = Math.round(area * 100) / 100;
-
+                                                                        console.log(area);
                                                                         Ext.getCmp('numberfield-point-route').setValue(area + ' km2');
                                                                         modifyLine.deactivate();
                                                                         winAddGeocerca.show();
@@ -439,7 +428,6 @@ function ventanaGeocerca() {
     if (gridGeocercas.getStore().getCount() === 0) {
         gridGeocercas.getStore().load();
     }
-    //Esto se asegurará de que sólo caera al contenedor
     var formPanelDropTargetEl = document.getElementById('panel-datos');
     var formPanelDropTarget = Ext.create('Ext.dd.DropTarget', formPanelDropTargetEl, {
         ddGroup: 'GridExample',
@@ -449,10 +437,8 @@ function ventanaGeocerca() {
             formGeocercas.body.highlight();
         },
         notifyDrop: function(ddSource, e, data) {
-            // Referencia el record (seleccion simple) para facilitar lectura
             var selectedRecord = ddSource.dragData.records[0];
             setActiveRecord(selectedRecord || null);
-            // Carga los registro en el form            
             formGeocercas.getForm().loadRecord(selectedRecord);
             formGeocercas.down('#updateGeo').enable();
             formGeocercas.down('#createGeo').disable();
@@ -465,9 +451,7 @@ function ventanaGeocerca() {
 
 function setActiveRecord(record) {
     formGeocercas.activeRecord = record;
-
     if (record) {
-//        console.log(record.data);
         formGeocercas.down('#updateGeo').enable();
         formGeocercas.getForm().loadRecord(record);
     } else {
@@ -531,19 +515,17 @@ function onCreateGeocerca() {
     }
 }
 
-
 function onResetGeocerca() {
     Ext.getCmp('multiselectvehiculos1').getStore().removeAll();
     setActiveRecord(null);
     formGeocercas.down('#deleteGeo').disable();
     formGeocercas.down('#createGeo').enable();
     formGeocercas.getForm().reset();
-//    lines.destroyFeatures();
     Ext.getCmp('numberfield-point-route').reset();
     Ext.getCmp('btn-delete-route').disable();
     Ext.getCmp('btn-draw-edit-route').setIconCls("icon-add");
     drawRoute = true;
-    //id: 'btn-draw-edit-route',
+    lines.destroyFeatures();
 }
 
 function clearWinGeocerca() {

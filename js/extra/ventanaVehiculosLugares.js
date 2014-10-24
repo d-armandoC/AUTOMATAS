@@ -96,10 +96,6 @@ Ext.onReady(function() {
                         iconCls: 'icon-trazar',
                         handler: function() {
                             if (this.up('form').getForm().isValid()) {
-//                        trazando = 1;
-//                        isLugar = true;
-//                        estadoControlD("polygon");
-//                        winVehiculosLugares.hide();
                                 drawRoute = true;
                                 vehiLugares = true;
                                 drawLine.activate();

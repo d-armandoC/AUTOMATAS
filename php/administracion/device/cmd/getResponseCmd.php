@@ -8,7 +8,7 @@ extract($_POST);
 if (!$mysqli = getConectionDb()) {
     echo "{failure: true, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-    $idUser = $_SESSION["USERKARVIEW"];
+    $idUser = $_SESSION["IDUSERKARVIEW"];
     $consultaSql = "select id_tipo_estado_cmd, respuesta from karviewhistoricodb.comandos 
             where fecha_hora_registro =  
             (select max(fecha_hora_registro) 
@@ -36,7 +36,6 @@ if (!$mysqli = getConectionDb()) {
             if ($myrow["id_tipo_estado_cmd"] == 3) {
                 $response = utf8_encode($myrow["respuesta"]);
             }
-
             echo "{success: true, message: '$response'}";
         } else {
             echo "{failure: true, message:'Esperando Respuesta...'}";

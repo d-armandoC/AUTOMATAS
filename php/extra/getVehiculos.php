@@ -17,8 +17,8 @@ if (!$mysqli = getConectionDb()) {
     }
 
     $consultaSql = "SELECT dskp.ID_EQUIPO, dskp.FECHA, dskp.HORA, dskp.VELOCIDAD, dskp.LATITUD, dskp.LONGITUD, dskp.bateria, dskp.IGN, dskp.GSM, dskp.GPS, dskp.G2
-	FROM karviewhistoricodb.dato_spks dskp WHERE FECHA = '2014-09-08'
-	AND HORA BETWEEN '00:00' AND '11:15'";
+	FROM karviewhistoricodb.dato_spks dskp WHERE FECHA = '$fecha'
+	AND HORA BETWEEN '$horaIni' AND '$horaFin'";
     $result = $mysqli->query($consultaSql);
     $mysqli->close();
     $haveData = false;

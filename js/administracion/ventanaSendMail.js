@@ -113,8 +113,8 @@ Ext.onReady(function() {
                                             idPersona: recordPerson.data.id
                                         },
                                         success: function(form, action) {
+                                            console.log(action.success);
                                             storeEvents.commitChanges();
-
                                             Ext.MessageBox.show({
                                                 title: 'Exito...',
                                                 msg: action.result.message,
@@ -123,7 +123,6 @@ Ext.onReady(function() {
                                             });
                                         },
                                         failure: function(form, action) {
-                                            console.log(action);
                                             Ext.MessageBox.show({
                                                 title: 'Error...',
                                                 msg: action.result.message,

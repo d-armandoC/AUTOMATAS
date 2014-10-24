@@ -1528,6 +1528,7 @@ function getDataRoute(fig) {
         });
         drawLine.deactivate();
         winVehiculosLugares.show();
+         lines.destroyFeatures();
         vehiLugares = false;
         clearLienzoTravel();
         clearLienzoPointTravel();

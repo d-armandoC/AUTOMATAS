@@ -23,6 +23,7 @@ Ext.onReady(function() {
         name: 'idDevice',
         store: storeDevice,
         valueField: 'id',
+        forceSelection: true,
         displayField: 'text',
         queryMode: 'local',
         emptyText: 'Seleccionar Equipo...',
@@ -62,6 +63,7 @@ Ext.onReady(function() {
         store: storeCmdPred,
         valueField: 'id',
         displayField: 'nombre',
+        forceSelection: true,
         queryMode: 'local',
         emptyText: 'Seleccionar Comando...',
 //        editable: false,
@@ -103,7 +105,7 @@ Ext.onReady(function() {
                 if (formWinCmd.getForm().isValid()) {
                     response.setText('Respuesta:');
                     formWinCmd.submit({                            
-                        url: 'php/interface/report/cmd/setCmd.php',                            
+                        url: 'php/administracion/device/cmd/setCmd.php',                            
                         waitMsg: 'Comprobando Datos...',
                         failure: function(form, action) {                                
                             Ext.MessageBox.show({

@@ -124,7 +124,6 @@ Ext.onReady(function() {
                     if (operation.state) {
                         formRecordsVehiculos.down('#updateVeh').disable();
                         formRecordsVehiculos.getForm().reset();
-//                        storeTreeVehTaxis.reload();
                         gridWinStoreVehiculos.reload();
                     }
                 }
@@ -132,12 +131,12 @@ Ext.onReady(function() {
         }
     });
     var columnsRecords = [
-        {header: "<b>Organización</b>", width: 110, sortable: true, dataIndex: 'empresa'},
-        {header: "<b>Propietario</b>", width: 160, sortable: true, dataIndex: 'propietario'},
-        {header: "<b>Vehiculo</b>", width: 150, sortable: true, dataIndex: 'vehiculo'},
-        {header: "<b>Servicio</b>", width: 250, sortable: true, dataIndex: 'servicio'},
-        {header: "<b>Dias</b>", width: 60, sortable: true, dataIndex: 'mdias'},
-        {header: "<b>Kilometros</b>", width: 100, sortable: true, dataIndex: 'mkilometraje'}
+        {header: "<b>Organización</b>", width: 110, sortable: true, dataIndex: 'empresa',filter: {type: 'string'}},
+        {header: "<b>Propietario</b>", width: 160, sortable: true, dataIndex: 'propietario',filter: {type: 'string'}},
+        {header: "<b>Vehiculo</b>", width: 150, sortable: true, dataIndex: 'vehiculo',filter: {type: 'string'}},
+        {header: "<b>Servicio</b>", width: 250, sortable: true, dataIndex: 'servicio',filter: {type: 'string'}},
+        {header: "<b>Dias</b>", width: 60, sortable: true, dataIndex: 'mdias',filter: {type: 'string'}},
+        {header: "<b>Kilometros</b>", width: 100, sortable: true, dataIndex: 'mkilometraje',filter: {type: 'string'}}
     ];
     // declare the source Grid
     gridRecordsVehiculos = Ext.create('Ext.grid.Panel', {
@@ -152,7 +151,7 @@ Ext.onReady(function() {
         columns: columnsRecords,
         enableDragDrop: true,
         stripeRows: true,
-        height: 450,
+        height: 410,
         selModel: Ext.create('Ext.selection.RowModel', {singleSelect: true}),
         features: [filters],
         //Para cuando de click a una de las filas se pasen los datos
@@ -164,11 +163,12 @@ Ext.onReady(function() {
                 Ext.getCmp('mk').disable();
                 Ext.getCmp('mtyk').disable();
                 Ext.getCmp('mtok').disable();
+                 Ext.getCmp('idReparacion').toggle();
             }
         }
     });
     formPanelGrid_Vehiculos = Ext.create('Ext.form.Panel', {
-        width: '30%',
+        width: '25%',
         margins: '0 2 0 0',
         region: 'west',
         autoScroll: true,
@@ -189,6 +189,7 @@ Ext.onReady(function() {
             {
                 xtype: 'fieldset',
                 title: '<b>Registro de Mantenimiento</b>',
+                id: 'idReparacion',
                 collapsible: true,
                 layout: 'vbox',
 //                padding: '0 0 0 10',
@@ -551,6 +552,7 @@ Ext.onReady(function() {
                     'beforeexpand': function() {
                         Ext.getCmp('fsreparacion').collapse();
                         Ext.getCmp('fsrepuesto').collapse();
+                        Ext.getCmp('idReparacion').collapse();
                         Ext.getCmp('s1').setValue(true);
                         Ext.getCmp('repaFecha').reset();
                         Ext.getCmp('repaDescripcion').reset();
@@ -698,7 +700,7 @@ Ext.onReady(function() {
             ,
             {
                 xtype: 'fieldset',
-                title: '<b>Reparacion</b>',
+                title: '<b>Reparación</b>',
                 id: 'fsreparacion',
                 autoHeight: true,
                 checkboxToggle: true,
@@ -710,6 +712,7 @@ Ext.onReady(function() {
                     'beforeexpand': function() {
                         Ext.getCmp('fsmantenimiento').collapse();
                         Ext.getCmp('fsrepuesto').collapse();
+                        Ext.getCmp('idReparacion').collapse();
                         Ext.getCmp('s2').setValue(true);
                         Ext.getCmp('mt').reset();
                         Ext.getCmp('mk').reset();
@@ -803,6 +806,7 @@ Ext.onReady(function() {
                     'beforeexpand': function() {
                         Ext.getCmp('fsmantenimiento').collapse();
                         Ext.getCmp('fsreparacion').collapse();
+                        Ext.getCmp('idReparacion').collapse();
                         Ext.getCmp('s3').setValue(true);
                         Ext.getCmp('mt').reset();
                         Ext.getCmp('mk').reset();
@@ -941,8 +945,8 @@ function ventAddMantenimientos() {
             title: 'Servicio  de Mantenimiento',
             iconCls: 'icon-mantenimiento',
             resizable: false,
-            width: 1200,
-            height: 690,
+            width: 1175,
+            height: 500,
             closeAction: 'hide',
             plain: false,
             items: [{
