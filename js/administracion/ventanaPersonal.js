@@ -254,9 +254,8 @@ Ext.onReady(function() {
                         value: edadDate,
                         maxValue: edadDate,
                         name: 'fechaNacimiento',
-                        format: 'y-m-d',
+                        format: 'Y-m-d',
                         emptyText: 'Ingresar Fecha...',
-                        minValue: '1950-01-01',
                         maxValue : new Date()
                     }]
             }, {
