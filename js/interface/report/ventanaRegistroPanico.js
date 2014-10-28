@@ -54,7 +54,9 @@ Ext.onReady(function() {
         name: 'fechaIni',
         value: new Date(),
         maxValue: new Date(),
+        maxText: 'La fecha debe ser igual o anterior a <br> {0}',
         allowBlank: false,
+        invalidText : '{0} No es una fecha validad- Debe estar en formato {1}"',
         endDateField: 'fechaFinPanico',
         emptyText: 'Fecha Inicial...'
     });
@@ -63,9 +65,10 @@ Ext.onReady(function() {
         format: 'Y-m-d',
         id: 'fechaFinPanico',
         name: 'fechaFin',
-        vtype: 'daterange',
+       // vtype: 'daterange',
         value: new Date(),
         maxValue: new Date(),
+        invalidText : '{0} No es una fecha validad- Debe estar en formato {1}"',
         allowBlank: false,
         startDateField: 'fechaIniPanico',
         emptyText: 'Fecha Final...'

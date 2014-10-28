@@ -32,7 +32,7 @@ if (!$mysqli = getConectionDb()) {
                 $json .="]";
                 echo "{success: true, $json}";
             } else {
-                echo "{failure: true, message:'No hay datos entre estas Fechas y Horas.....................'}";
+                echo "{failure: true, message:'No hay datos entre estas Fechas y Horas.'}";
             }
         } else {
             echo "{failure: true, message: 'Problemas en la Construcción de la Consulta.'}";

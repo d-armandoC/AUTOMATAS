@@ -87,7 +87,7 @@ Ext.onReady(function() {
             }
             return true;
         },
-        daterangeText: 'Start date must be less than end date',
+        daterangeText: 'Fecha de inicio debe ser menor que la fecha de finalización',
         placaValida: function(val, field) {
             var partes = val.split("");
             if (partes.length === 7) {
