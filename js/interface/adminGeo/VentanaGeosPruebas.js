@@ -296,8 +296,7 @@ Ext.onReady(function() {
                                                                     iconCls: 'icon-valid',
                                                                     text: 'Terminar',
                                                                     handler: function() {
-                                                                        var area=modifyLine.features[0].geometry.getArea() / 1000;
-                                                                        console.log(area);
+                                                            
 //                                                                        console.log('terminar');
 //                                                                        var areaGeoce = lines.features[0].geometry.getArea();
 //                                                                        console.log(areaGeoce);
