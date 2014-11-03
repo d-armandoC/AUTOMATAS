@@ -77,10 +77,10 @@ Ext.onReady(function () {
             {name: 'fechaSoatVenc', type: 'date', dateFormat: 'c'},
             {name: 'descripMatricula', type: 'string'},
             {name: 'fechaMatriculaReg', type: 'date', dateFormat: 'c'},
-            {name: 'repaFecha', type: 'date', dateFormat: 'c'},
+            {name: 'fechaMatriculaVenc', type: 'date', dateFormat: 'c'},
             {name: 'descripSeguro', type: 'string'},
-            {name: 'repaFecha', type: 'date', dateFormat: 'c'},
-            {name: 'repaFecha', type: 'date', dateFormat: 'c'}
+            {name: 'fechaSeguroReg', type: 'date', dateFormat: 'c'},
+            {name: 'fechaSeguroVenc', type: 'date', dateFormat: 'c'}
         ]
     });
     // crea los datos del store
@@ -121,11 +121,10 @@ Ext.onReady(function () {
             write: function (store, operation, eOpts) {
                 if (operation.success) {
                     Ext.example.msg("Mensaje", operation._resultSet.message);
-                    if (operation.state) {
-                        formRecordsVehiculos.down('#updateVeh').disable();
-                        onResetVehiculos();
-                        gridWinStoreVehiculos.reload();
-                    }
+                    gridWinStoreVehiculos.reload();
+                    formRecordsVehiculos.getForm().reset();
+                    formRecordsVehiculos.down('#updateVeh').disable();
+
                 }
             }
         }

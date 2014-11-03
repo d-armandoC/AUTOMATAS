@@ -10,7 +10,7 @@ if (!$mysqli = getConectionDb()) {
     $json = json_decode($requestBody, true);
     $bandera = false;
     $idvehiculo = $idestandar = $valorTipoServicio = $valorTipoMantenimiento = $mkilometraje = $mdias = $mfecha = $mobservacion = $repaFecha = $repaDescripcion = $repaObservacion = $repuMarca = $repuModelo = $repuCodigo = $repuSerie = $repuEstado = "";
-
+    $descripSoat = $fechaSoatReg = $fechaSoatVenc = $descripMatricula = $fechaMatriculaReg = $fechaMatriculaVenc = $descripSeguro = $fechaSeguroReg = $fechaSeguroVenc = "";
     if (isset($json["idvehiculo"]))
         $idvehiculo = "id_vehiculo=" . $json["idvehiculo"] . ",";
     if (isset($json["idestandar"]))
@@ -43,6 +43,35 @@ if (!$mysqli = getConectionDb()) {
         $repuSerie = "repuSerie='" . $json["repuSerie"] . "',";
     if (isset($json["repuEstado"]))
         $repuEstado = "repuEstado=" . $json["repuEstado"] . ",";
+    ///Pra registros
+    //SOAT
+    if (isset($json["descripSoat"]))
+        $descripSoat = "descripSoat='" . $json["descripSoat"] . "',";
+
+    if (isset($json["fechaSoatReg"]))
+        $fechaSoatReg = "fechaSoatReg='" . $json["fechaSoatReg"] . "',";
+
+    if (isset($json["fechaSoatVenc"]))
+        $fechaSoatVenc = "fechaSoatVenc='" . $json["fechaSoatVenc"] . "',";
+//MATRICULA
+    if (isset($json["descripMatricula"]))
+        $descripMatricula = "descripMatricula='" . $json["descripMatricula"] . "',";
+
+    if (isset($json["fechaMatriculaReg"]))
+        $fechaMatriculaReg = "fechaMatriculaReg='" . $json["fechaMatriculaReg"] . "',";
+
+    if (isset($json["fechaMatriculaVenc"]))
+        $fechaMatriculaVenc = "fechaMatriculaVenc='" . $json["fechaMatriculaVenc"] . "',";
+//SEGURO
+    if (isset($json["descripSeguro"]))
+        $descripSeguro = "descripSeguro ='" . $json["descripSeguro"] . "',";
+
+    if (isset($json["fechaSeguroReg"]))
+        $fechaSeguroReg = "fechaSeguroReg='" . $json["fechaSeguroReg"] . "',";
+
+    if (isset($json["fechaSeguroVenc"]))
+        $fechaSeguroVenc = "fechaSeguroVenc='" . $json["fechaSeguroVenc"] . "',";
+
     $id = explode("_", $json["id"]);
     $setId = "id_vehiculo= " . $id[0];
 
@@ -69,9 +98,59 @@ if (!$mysqli = getConectionDb()) {
     if ($existe) {
         echo "{success:true, message:'Ya existe este Servicio',state: false}";
     } else {
+
+        ///controlar el registro
+        ///controlar el registro
+        if (isset($json["descripSoat"])) {
+
+//MATRICULA
+            if (isset($json["descripMatricula"]))
+                $descripMatricula = "descripMatricula='" . "" . "',";
+
+            $fechaMatriculaReg = "fechaMatriculaReg='" . "" . "',";
+
+            $fechaMatriculaVenc = "fechaMatriculaVenc='" . "" . "',";
+//SEGURO
+            $descripSeguro = "descripSeguro ='" . "" . "',";
+
+            $fechaSeguroReg = "fechaSeguroReg='" . "" . "',";
+
+            $fechaSeguroVenc = "fechaSeguroVenc='" . "" . "',";
+        }
+        if (isset($json["descripMatricula"])) {
+            //SOAT
+            $descripSoat = "descripSoat='" . "" . "',";
+
+            $fechaSoatReg = "fechaSoatReg='" . "" . "',";
+
+            $fechaSoatVenc = "fechaSoatVenc='" . "" . "',";
+
+//SEGURO
+            $descripSeguro = "descripSeguro ='" . "" . "',";
+
+            $fechaSeguroReg = "fechaSeguroReg='" . "" . "',";
+
+            $fechaSeguroVenc = "fechaSeguroVenc='" . "" . "',";
+        }
+        if (isset($json["descripSeguro"])) {
+            //SOAT
+            $descripSoat = "descripSoat='" . "" . "',";
+
+            $fechaSoatReg = "fechaSoatReg='" . "" . "',";
+
+            $fechaSoatVenc = "fechaSoatVenc='" . "" . "',";
+//MATRICULA
+            $descripMatricula = "descripMatricula='" . "" . "',";
+
+            $fechaMatriculaReg = "fechaMatriculaReg='" . "" . "',";
+
+            $fechaMatriculaVenc = "fechaMatriculaVenc='" . "" . "',";
+        }
+
+
         if (isset($json["valorTipoServicio"])) {
             $updateSql = "UPDATE mantenimiento 
-                    SET $valorTipoServicio$idestandar$valorTipoMantenimiento$mkilometraje$mdias$mfecha$mobservacion$repaFecha$repaDescripcion$repaObservacion$repuMarca$repuModelo$repuCodigo$repuSerie$repuEstado$setId
+                    SET $valorTipoServicio$idestandar$valorTipoMantenimiento$mkilometraje$mdias$mfecha$mobservacion$repaFecha$repaDescripcion$repaObservacion$repuMarca$repuModelo$repuCodigo$repuSerie$repuEstado$descripSoat$fechaSoatReg$fechaSoatVenc$descripMatricula$fechaMatriculaReg$fechaMatriculaVenc$descripSeguro$fechaSeguroReg$fechaSeguroVenc$setId
                     WHERE  id_vehiculo=? and id_estandar_vehiculo=? and valorTipoServicio=? ";
             if ($stmt = $mysqli->prepare($updateSql)) {
                 $stmt->bind_param("iii", $id[0], $id[1], $id[2]);
@@ -90,7 +169,7 @@ if (!$mysqli = getConectionDb()) {
             switch ($id[2]) {
                 case 1:
                     $updateSql = "UPDATE mantenimiento 
-                    SET $idestandar$valorTipoMantenimiento$mkilometraje$mdias$mfecha$mobservacion$setId
+                    SET $idestandar$valorTipoMantenimiento$mkilometraje$mdias$mfecha$mobservacion$descripSoat$fechaSoatReg$fechaSoatVenc$descripMatricula$fechaMatriculaReg$fechaMatriculaVenc$descripSeguro$fechaSeguroReg$fechaSeguroVenc$setId
                     WHERE  id_vehiculo=? and id_estandar_vehiculo=? and valorTipoServicio=? ";
                     if ($stmt = $mysqli->prepare($updateSql)) {
                         $stmt->bind_param("iii", $id[0], $id[1], $id[2]);
@@ -107,7 +186,7 @@ if (!$mysqli = getConectionDb()) {
                     break;
                 case 2:
                     $updateSql = "UPDATE mantenimiento 
-                    SET $idestandar$repaFecha$repaDescripcion$repaObservacion$setId
+                    SET $idestandar$repaFecha$repaDescripcion$repaObservacion$descripSoat$fechaSoatReg$fechaSoatVenc$descripMatricula$fechaMatriculaReg$fechaMatriculaVenc$descripSeguro$fechaSeguroReg$fechaSeguroVenc$setId
                     WHERE  id_vehiculo=? and id_estandar_vehiculo=? and valorTipoServicio=? ";
                     if ($stmt = $mysqli->prepare($updateSql)) {
                         $stmt->bind_param("iii", $id[0], $id[1], $id[2]);
@@ -124,7 +203,7 @@ if (!$mysqli = getConectionDb()) {
                     break;
                 case 3:
                     $updateSql = "UPDATE mantenimiento 
-                    SET $idestandar$repuMarca$repuModelo$repuCodigo$repuSerie$repuEstado$setId
+                    SET $idestandar$repuMarca$repuModelo$repuCodigo$repuSerie$repuEstado$descripSoat$fechaSoatReg$fechaSoatVenc$descripMatricula$fechaMatriculaReg$fechaMatriculaVenc$descripSeguro$fechaSeguroReg$fechaSeguroVenc$setId
                     WHERE  id_vehiculo=? and id_estandar_vehiculo=? and valorTipoServicio=? ";
                     if ($stmt = $mysqli->prepare($updateSql)) {
                         $stmt->bind_param("iii", $id[0], $id[1], $id[2]);
@@ -142,27 +221,12 @@ if (!$mysqli = getConectionDb()) {
             }
         }
 
-//        $updateSql = "UPDATE mantenimiento 
-//        SET $idvehiculo$idestandar$valorTipoServicio$valorTipoMantenimiento$mkilometraje$mdias$mfecha$mobservacion$repaFecha$repaDescripcion$repaObservacion$repuMarca$repuModelo$repuCodigo$repuSerie$repuEstado
-//        WHERE  id_vehiculo=? and id_estandar_vehiculo=?";
-//        if ($stmt = $mysqli->prepare($updateSql)) {
-//            $stmt->bind_param("ii", $id[0], $id[1]);
-//            $stmt->execute();
-//            if ($stmt->affected_rows > 0) {
-//                echo "{success:true, message:'Datos actualizados correctamente.',state: true}";
-//            } else {
-//                echo "{success:false, message: 'Error'}";
-//            }
-//            $stmt->close();
-//        } else {
-//            echo "{success:false, message: 'Error'}";
-//        }
         $mysqli->close();
 
         if ($bandera) {
             echo "{success:true, message:'Datos actualizados correctamente.',state: true}";
         } else {
-            echo "{success:false, message: 'Error'}";
+            echo "{success:false, message: 'No se pudo actualizar mantenimiento'}";
         }
     }
 }
