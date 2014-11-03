@@ -40,7 +40,7 @@ if (!$mysqli = getConectionDb()) {
         $objJson = "{veh: [";
         while ($myrow = $result->fetch_assoc()) {
             $objJson .= "{
-                idmantenimiento:'" . $myrow["id_vehiculo"] . "_" . $myrow["id_estandar_vehiculo"] . "',
+                idmantenimiento:'" . $myrow["id_vehiculo"] . "_" . $myrow["id_estandar_vehiculo"] . "_" . $myrow["valorTipoServicio"] . "',
                 idempresa:" . $myrow["id_empresa"] . ",
                 idestandar:" . $myrow["id_estandar_vehiculo"] . ",
                 valorTipoServicio:" . $myrow["valorTipoServicio"] . ",

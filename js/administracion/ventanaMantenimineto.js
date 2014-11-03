@@ -36,7 +36,7 @@ var storecombo = new Ext.data.ArrayStore({
     ],
     data: [['1', 'Nuevo'], ['2', 'Usado']]
 });
-Ext.onReady(function() {
+Ext.onReady(function () {
 
 
     //Genera campos de array para usar en el inicio del store por defecto
@@ -107,7 +107,7 @@ Ext.onReady(function() {
                 writeAllFields: false
             },
             listeners: {
-                exception: function(proxy, response, operation) {
+                exception: function (proxy, response, operation) {
                     Ext.MessageBox.show({
                         title: 'ERROR',
                         msg: operation.getError(),
@@ -118,12 +118,12 @@ Ext.onReady(function() {
             }
         },
         listeners: {
-            write: function(store, operation, eOpts) {
+            write: function (store, operation, eOpts) {
                 if (operation.success) {
                     Ext.example.msg("Mensaje", operation._resultSet.message);
                     if (operation.state) {
                         formRecordsVehiculos.down('#updateVeh').disable();
-                        formRecordsVehiculos.getForm().reset();
+                        onResetVehiculos();
                         gridWinStoreVehiculos.reload();
                     }
                 }
@@ -131,12 +131,12 @@ Ext.onReady(function() {
         }
     });
     var columnsRecords = [
-        {header: "<b>Organización</b>", width: 110, sortable: true, dataIndex: 'empresa',filter: {type: 'string'}},
-        {header: "<b>Propietario</b>", width: 160, sortable: true, dataIndex: 'propietario',filter: {type: 'string'}},
-        {header: "<b>Vehiculo</b>", width: 150, sortable: true, dataIndex: 'vehiculo',filter: {type: 'string'}},
-        {header: "<b>Servicio</b>", width: 250, sortable: true, dataIndex: 'servicio',filter: {type: 'string'}},
-        {header: "<b>Dias</b>", width: 60, sortable: true, dataIndex: 'mdias',filter: {type: 'string'}},
-        {header: "<b>Kilometros</b>", width: 100, sortable: true, dataIndex: 'mkilometraje',filter: {type: 'string'}}
+        {header: "<b>Organización</b>", width: 110, sortable: true, dataIndex: 'empresa', filter: {type: 'string'}},
+        {header: "<b>Propietario</b>", width: 160, sortable: true, dataIndex: 'propietario', filter: {type: 'string'}},
+        {header: "<b>Vehiculo</b>", width: 150, sortable: true, dataIndex: 'vehiculo', filter: {type: 'string'}},
+        {header: "<b>Servicio</b>", width: 250, sortable: true, dataIndex: 'servicio', filter: {type: 'string'}},
+        {header: "<b>Dias</b>", width: 60, sortable: true, dataIndex: 'mdias', filter: {type: 'string'}},
+        {header: "<b>Kilometros</b>", width: 100, sortable: true, dataIndex: 'mkilometraje', filter: {type: 'string'}}
     ];
     // declare the source Grid
     gridRecordsVehiculos = Ext.create('Ext.grid.Panel', {
@@ -156,14 +156,14 @@ Ext.onReady(function() {
         features: [filters],
         //Para cuando de click a una de las filas se pasen los datos
         listeners: {
-            selectionchange: function(thisObject, selected, eOpts) {
+            selectionchange: function (thisObject, selected, eOpts) {
                 setActiveRecordVehiculos(selected[0] || null);
                 servicioSeleccionado = false;
                 Ext.getCmp('mt').disable();
                 Ext.getCmp('mk').disable();
                 Ext.getCmp('mtyk').disable();
                 Ext.getCmp('mtok').disable();
-                 Ext.getCmp('idReparacion').toggle();
+                Ext.getCmp('idReparacion').toggle();
             }
         }
     });
@@ -240,7 +240,7 @@ Ext.onReady(function() {
                                                 allowBlank: false,
                                                 width: 250,
                                                 listeners: {
-                                                    select: function(combo, records, eOpts) {
+                                                    select: function (combo, records, eOpts) {
                                                         var listSelected = formRecordsVehiculos.down('[name=idvehiculo]');
                                                         listSelected.clearValue();
                                                         listSelected.store.removeAll();
@@ -270,7 +270,7 @@ Ext.onReady(function() {
                                                     minWidth: 350
                                                 }, listeners: {
                                                     select: {
-                                                        fn: function(combo, records, index) {
+                                                        fn: function (combo, records, index) {
                                                             obj_vehiculos = combo.getValue();
                                                         }
                                                     }
@@ -294,7 +294,7 @@ Ext.onReady(function() {
                                                 }
                                                 , listeners: {
                                                     select: {
-                                                        fn: function(combo, record, index) {
+                                                        fn: function (combo, record, index) {
                                                             if (record.length > 0 && record.length !== null) {
                                                                 servicioSeleccionado = true;
                                                                 Ext.getCmp('mk').enable();
@@ -331,7 +331,7 @@ Ext.onReady(function() {
                                                 name: 'valorTipoServicio',
                                                 inputValue: '1',
                                                 listeners: {
-                                                    change: function(field, newValue, oldValue) {
+                                                    change: function (field, newValue, oldValue) {
                                                         var r1 = Ext.getCmp('s1').value;
                                                         if (r1 === true) {
                                                             Ext.getCmp('fsmantenimiento').toggle();
@@ -346,7 +346,7 @@ Ext.onReady(function() {
                                                 name: 'valorTipoServicio',
                                                 inputValue: '2',
                                                 listeners: {
-                                                    change: function(field, newValue, oldValue) {
+                                                    change: function (field, newValue, oldValue) {
                                                         var r1 = Ext.getCmp('s2').value;
                                                         if (r1 === true) {
                                                             Ext.getCmp('fsmantenimiento').collapse();
@@ -361,7 +361,7 @@ Ext.onReady(function() {
                                                 name: 'valorTipoServicio',
                                                 inputValue: '3',
                                                 listeners: {
-                                                    change: function(field, newValue, oldValue) {
+                                                    change: function (field, newValue, oldValue) {
                                                         var r1 = Ext.getCmp('s3').value;
                                                         if (r1 === true) {
                                                             Ext.getCmp('fsmantenimiento').collapse();
@@ -401,7 +401,7 @@ Ext.onReady(function() {
                                                 maxValue: new Date(),
                                                 emptyText: 'Seleccionar Fecha...',
                                                 listeners: {
-                                                    select: function() {
+                                                    select: function () {
                                                         edadDate = Ext.Date.add(Ext.getCmp('fechaSoatReg').value, Ext.Date.YEAR, 1);
                                                         Ext.getCmp('fechaSoatVenc').reset();
                                                         Ext.getCmp('fechaSoatVenc').setValue(edadDate);
@@ -464,7 +464,7 @@ Ext.onReady(function() {
                                                 maxValue: new Date(),
                                                 emptyText: 'Seleccionar Fecha...',
                                                 listeners: {
-                                                    select: function() {
+                                                    select: function () {
                                                         edadDate = Ext.Date.add(Ext.getCmp('fechaMatriculaReg').value, Ext.Date.YEAR, 1);
                                                         Ext.getCmp('fechaMatriculaVenc').reset();
                                                         Ext.getCmp('fechaMatriculaVenc').setValue(edadDate);
@@ -513,7 +513,7 @@ Ext.onReady(function() {
                                                 maxValue: new Date(),
                                                 emptyText: 'Seleccionar Fecha...',
                                                 listeners: {
-                                                    select: function() {
+                                                    select: function () {
                                                         edadDate = Ext.Date.add(Ext.getCmp('fechaSeguroReg').value, Ext.Date.YEAR, 1);
                                                         Ext.getCmp('fechaSeguroVenc').reset();
                                                         Ext.getCmp('fechaSeguroVenc').setValue(edadDate);
@@ -549,7 +549,7 @@ Ext.onReady(function() {
                 layout: 'vbox',
                 padding: '2 2 2 2',
                 listeners: {
-                    'beforeexpand': function() {
+                    'beforeexpand': function () {
                         Ext.getCmp('fsreparacion').collapse();
                         Ext.getCmp('fsrepuesto').collapse();
                         Ext.getCmp('idReparacion').collapse();
@@ -587,7 +587,7 @@ Ext.onReady(function() {
                                         fieldLabel: '<b>Tiempo</b>',
                                         inputValue: '1',
                                         listeners: {
-                                            change: function(field, newValue, oldValue) {
+                                            change: function (field, newValue, oldValue) {
                                                 var r = Ext.getCmp('mt').value;
                                                 if (r === true && servicioSeleccionado === true) {
                                                     Ext.getCmp('mdias').setValue(arregloEstandars[0][0]);
@@ -604,7 +604,7 @@ Ext.onReady(function() {
                                         tooltip: 'Escoger Kilometros',
                                         inputValue: '2',
                                         listeners: {
-                                            change: function(field, newValue, oldValue) {
+                                            change: function (field, newValue, oldValue) {
                                                 var r1 = Ext.getCmp('mk').value;
                                                 if (r1 === true && servicioSeleccionado === true) {
                                                     Ext.getCmp('mkilometraje').setValue(arregloEstandars[0][1]);
@@ -631,7 +631,7 @@ Ext.onReady(function() {
                                         fieldLabel: '<b>Tiempo y Kilometro</b>',
                                         inputValue: '3',
                                         listeners: {
-                                            change: function(field, newValue, oldValue) {
+                                            change: function (field, newValue, oldValue) {
                                                 var r1 = Ext.getCmp('mtyk').value;
                                                 if (r1 === true && servicioSeleccionado === true) {
                                                     Ext.getCmp('mdias').setValue(arregloEstandars[0][0]);
@@ -648,7 +648,7 @@ Ext.onReady(function() {
                                         fieldLabel: '<b>Tiempo o Kilometro</b>',
                                         inputValue: '4',
                                         listeners: {
-                                            change: function(field, newValue, oldValue) {
+                                            change: function (field, newValue, oldValue) {
                                                 var r1 = Ext.getCmp('mtok').value;
                                                 if (r1 === true && servicioSeleccionado === true) {
                                                     Ext.getCmp('mdias').setValue(arregloEstandars[0][0]);
@@ -709,7 +709,7 @@ Ext.onReady(function() {
                 layout: 'hbox',
                 padding: '5 5 5 5',
                 listeners: {
-                    'beforeexpand': function() {
+                    'beforeexpand': function () {
                         Ext.getCmp('fsmantenimiento').collapse();
                         Ext.getCmp('fsrepuesto').collapse();
                         Ext.getCmp('idReparacion').collapse();
@@ -803,7 +803,7 @@ Ext.onReady(function() {
                 layout: 'hbox',
                 padding: '5 5 5 5',
                 listeners: {
-                    'beforeexpand': function() {
+                    'beforeexpand': function () {
                         Ext.getCmp('fsmantenimiento').collapse();
                         Ext.getCmp('fsreparacion').collapse();
                         Ext.getCmp('idReparacion').collapse();
@@ -911,7 +911,7 @@ Ext.onReady(function() {
                                         }}]}]}]}
         ],
         listeners: {
-            create: function(form, data) {
+            create: function (form, data) {
                 gridWinStoreVehiculos.insert(0, data);
                 gridWinStoreVehiculos.reload();
             }
@@ -971,7 +971,7 @@ function ventAddMantenimientos() {
     var formPanelDropTargetElVehiculos = document.getElementById('panel-datos-vehiculos');
     var formPanelDropTargetVehiculos = Ext.create('Ext.dd.DropTarget', formPanelDropTargetElVehiculos, {
         ddGroup: 'GridExample',
-        notifyEnter: function(ddSource, e, data) {
+        notifyEnter: function (ddSource, e, data) {
             // Añadir un poco de brillo al momento de entrar al contenedor
             formRecordsVehiculos.body.stopAnimation();
             formRecordsVehiculos.body.highlight();
@@ -1005,7 +1005,7 @@ function onUpdateVehiculos() {
     }
     if (form.isValid()) {
         form.updateRecord(active);
-        onResetVehiculos();
+
     } else {
     }
 }
@@ -1043,7 +1043,7 @@ function clearWinVehiculos() {
 }
 
 function onDeleteClickVehiculos() {
-    Ext.MessageBox.confirm('Confirmar ', 'Realmente desea Eliminar el Servicio... ?', function(choice) {
+    Ext.MessageBox.confirm('Confirmar ', 'Realmente desea Eliminar el Servicio... ?', function (choice) {
         if (choice === 'yes') {
             var selection = gridRecordsVehiculos.getView().getSelectionModel().getSelection()[0];
             if (selection) {
