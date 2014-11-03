@@ -408,7 +408,7 @@ Ext.onReady(function() {
             }],
         columns: [
             Ext.create('Ext.grid.RowNumberer', {text: '<b>Nº</b>', width: 35, align: 'center'}),
-//            {text: '<b>Empresa</b>', width: 100, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}, align: 'center'},
+//            {text: '<b>Empresa</b>', width: 100, dataIndex: 'empresa', filter: {type: 'list', store: storeEmpresasList}, align: 'center'},
             {text: '<b>Equipo</b>', width: 65, dataIndex: 'equipo', filter: {type: 'string'}, align: 'center'},
             {text: '<b>Vehículo</b>', width: 95, dataIndex: 'vehiculo', align: 'center'},
             {text: '<b>Fecha Conexión</b>', width: 140, dataIndex: 'fhCon', align: 'center'},
@@ -568,7 +568,7 @@ Ext.onReady(function() {
                 panelOeste.show();
             },
             itemdblclick: function(thisObj, record, item, index, e, eOpts) {
-//                gridStateEqpSKP.tooltip.body.update("Click tDerecho para ver información");
+                gridStateEqpSKP.tooltip.body.update("Click Derecho para ver información");
                 winReporte.hide();
             },
             itemclick: function(thisObj, record, item, index, e, eOpts) {
@@ -688,8 +688,8 @@ Ext.onReady(function() {
                     emptyText: '<center>No hay datos que Mostrar</center>',
                     loadMask: false
                 }
-            },
-            {
+            }
+            ,{
                 xtype: 'grid',
                 height: '30%',
                 iconCls: 'icon-user',
@@ -882,6 +882,9 @@ Ext.onReady(function() {
                                                     width: 700,
                                                     layout: 'form',
                                                     items: [{
+                                                            
+                                                            
+                                                            
                                                             xtype: 'grid',
                                                             height: 250,
                                                             border: false,
