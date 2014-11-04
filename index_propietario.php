@@ -29,24 +29,20 @@
        <script type="text/javascript" src="extjs-docs-5.0.0/extjs-build/build/examples/shared/include-ext.js"></script>
        <script type="text/javascript" src="extjs-docs-5.0.0/extjs-build/build/examples/shared/options-toolbar.js"></script>
        <script type="text/javascript" src="extjs-docs-5.0.0/extjs-build/build/examples/shared/examples.js"></script>
-       
        <script type="text/javascript" src="extjs-docs-5.0.0/extjs-build/build/packages/ext-charts/build/ext-charts.js"></script>
-
-        <script type="text/javascript">
+         <script type="text/javascript">
             <?php            
             echo "               
                 var idCompanyKarview = '".$_SESSION["IDCOMPANYKARVIEW"]."';
                 var userKarview = '".$_SESSION["USERKARVIEW"]."';
                 var idRolKarview = ".$_SESSION["IDROLKARVIEW"].";
                 var personKarview = '".$_SESSION["PERSONKARVIEW"]."';
+                var correo = '".$_SESSION["EMAIL"]."';
                 ";
             ?>
         </script>
-        <script type="text/javascript" src="js/requerid/stores.js"></script>
         <script type="text/javascript" src="js/requerid/functions.js"></script>
         <script type="text/javascript" src="js/roles/empresas.js"></script>
-<!--        <script type="text/javascript" src="js/mapa.js"></script>-->
-
         <script type="text/javascript" src="js/complements/loadLayer.js"></script>        
         <script type="text/javascript" src="js/complements/drawLine.js"></script>
         <script type="text/javascript" src="js/complements/clearLayer.js"></script>                
@@ -65,14 +61,14 @@
         <script type="text/javascript" src="js/interface/report/ventanaAsignacion.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaBanderas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaEstadoVeh.js"></script>
-        <script type="text/javascript" src="js/interface/report/ventanaExcesosVelocidad.js"></script>
+        <!--<script type="text/javascript" src="js/interface/report/ventanaExcesosVelocidad.js"></script>-->
         <script type="text/javascript" src="js/interface/report/ventanaFranjasHorarias.js"></script>        
         <script type="text/javascript" src="js/interface/report/ventanaNoAtendidas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaRutas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaServicios.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaSoftware.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaTaximetro.js"></script>
-        <script type="text/javascript" src="js/interface/report/ventanaTrabajoFlota.js"></script>
+        <!--<script type="text/javascript" src="js/interface/report/ventanaTrabajoFlota.js"></script>-->
         <script type="text/javascript" src="js/interface/report/ventanaEventos.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaGeocercas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaSimbologia.js"></script>
@@ -81,7 +77,7 @@
         <script type="text/javascript" src="js/interface/report/ventanaReporteMantenimientoDetallado.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaCmdHist.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaReporteParadas.js"></script>
-        <script type="text/javascript" src="js/interface/report/ventanaReporteConsumoCombustible.js"></script>
+        <!--<script type="text/javascript" src="js/interface/report/ventanaReporteConsumoCombustible.js"></script>-->
         <script type="text/javascript" src="js/interface/adminGeo/ventanaSendMailGeoPrueba.js"></script>
 
         <script type="text/javascript" src="js/interface/adminGeo/ventanaVerGeo.js"></script>
@@ -100,7 +96,7 @@
        <script type="text/javascript" src="js/cuenta_Usuario/actualizarEmail.js"></script>
         
         
-        
+        <script type="text/javascript" src="js/requerid/stores.js"></script>
         <!--Mapa-->
         <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
         <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>

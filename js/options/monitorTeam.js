@@ -882,9 +882,6 @@ Ext.onReady(function() {
                                                     width: 700,
                                                     layout: 'form',
                                                     items: [{
-                                                            
-                                                            
-                                                            
                                                             xtype: 'grid',
                                                             height: 250,
                                                             border: false,

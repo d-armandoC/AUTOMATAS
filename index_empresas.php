@@ -44,11 +44,8 @@
                 ";
             ?>
         </script>
-
         <script type="text/javascript" src="js/requerid/functions.js"></script>
         <script type="text/javascript" src="js/roles/empresas.js"></script>
-<!--        <script type="text/javascript" src="js/mapa.js"></script>-->
-
         <script type="text/javascript" src="js/complements/loadLayer.js"></script>        
         <script type="text/javascript" src="js/complements/drawLine.js"></script>
         <script type="text/javascript" src="js/complements/clearLayer.js"></script>                
