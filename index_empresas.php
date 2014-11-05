@@ -44,34 +44,29 @@
                 ";
             ?>
         </script>
+           
         <script type="text/javascript" src="js/requerid/functions.js"></script>
-        <script type="text/javascript" src="js/roles/empresas.js"></script>
-        <script type="text/javascript" src="js/complements/loadLayer.js"></script>        
-        <script type="text/javascript" src="js/complements/drawLine.js"></script>
-        <script type="text/javascript" src="js/complements/clearLayer.js"></script>                
-        <script type="text/javascript" src="js/complements/showDataLayer.js"></script>
-        <script type="text/javascript" src="js/complements/getPositon.js"></script>
+        <script type="text/javascript" src="js/roles/admin.js"></script>
 
         <script type="text/javascript" src="js/administracion/ventanaPersonal.js"></script>
-        <script type="text/javascript" src="js/administracion/ventanaVehiculo.js"></script>
         <script type="text/javascript" src="js/administracion/ventanaMantenimineto.js"></script>
+        <script type="text/javascript" src="js/administracion/ventanaEmpresa.js"></script>
+        <script type="text/javascript" src="js/administracion/ventanaVehiculo.js"></script>
         <script type="text/javascript" src="js/administracion/ventanaUsuario.js"></script>
         <script type="text/javascript" src="js/administracion/cmd/ventanaCmd.js"></script>
-        <!--<script type="text/javascript" src="js/administracion/cmd/ventanaCmdHist.js"></script>-->
         <script type="text/javascript" src="js/administracion/ventanaSendMail.js"></script>
+        <script type="text/javascript" src="js/administracion/ventanaEquipos.js"></script>
         
 
         <script type="text/javascript" src="js/interface/report/ventanaAsignacion.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaBanderas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaEstadoVeh.js"></script>
-        <!--<script type="text/javascript" src="js/interface/report/ventanaExcesosVelocidad.js"></script>-->
         <script type="text/javascript" src="js/interface/report/ventanaFranjasHorarias.js"></script>        
         <script type="text/javascript" src="js/interface/report/ventanaNoAtendidas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaRutas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaServicios.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaSoftware.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaTaximetro.js"></script>
-        <!--<script type="text/javascript" src="js/interface/report/ventanaTrabajoFlota.js"></script>-->
         <script type="text/javascript" src="js/interface/report/ventanaEventos.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaGeocercas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaSimbologia.js"></script>
@@ -80,36 +75,48 @@
         <script type="text/javascript" src="js/interface/report/ventanaReporteMantenimientoDetallado.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaCmdHist.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaReporteParadas.js"></script>
-        <!--<script type="text/javascript" src="js/interface/report/ventanaReporteConsumoCombustible.js"></script>-->
-        <script type="text/javascript" src="js/interface/adminGeo/ventanaSendMailGeoPrueba.js"></script>
-
+        <script type="text/javascript" src="js/interface/report/ventanaEncendido.js"></script>
+        <script type="text/javascript" src="js/interface/report/ventanaEnegizacionDes.js"></script>
+        <script type="text/javascript" src="js/interface/report/ventanaPerdidaGsmGps.js"></script>
+        <script type="text/javascript" src="js/interface/report/pruebasEncendidoApagado.js"></script>
+        <script type="text/javascript" src="js/interface/report/pruebasEnergizacionesDeserginizaciones.js"></script>
+        <script type="text/javascript" src="js/interface/report/ventanaReporteExcesosVelocidadNew.js"></script>
+        
         <script type="text/javascript" src="js/interface/adminGeo/ventanaVerGeo.js"></script>
         <script type="text/javascript" src="js/interface/adminGeo/ventanaAgregarGeo.js"></script>
         <script type="text/javascript" src="js/interface/adminGeo/ventanaSendMailGeo.js"></script>
-
+        <script type="text/javascript" src="js/interface/adminGeo/VentanaGeosPruebas.js"></script>
+        <script type="text/javascript" src="js/interface/adminGeo/ventanaSendMailGeoPrueba.js"></script>
+        <script type="text/javascript" src="js/interface/adminGeo/vistaVehiculos.js"></script>
         <script type="text/javascript" src="js/interface/edit/ventanaEditEmp.js"></script>
+        
         
         <script type="text/javascript" src="js/extra/Video.js"></script>
         <script type="text/javascript" src="js/extra/ventanaDireccion.js"></script>
         <script type="text/javascript" src="js/extra/ventanaVehiculosLugares.js"></script>
         <script type="text/javascript" src="js/extra/ventanaCreditos.js"></script>
         <script type="text/javascript" src="js/extra/ventanaVideos.js"></script>
-          <script type="text/javascript" src="js/cuenta_Usuario/ventana_cambiar.js"></script>
+        
+        <script type="text/javascript" src="js/cuenta_Usuario/ventana_cambiar.js"></script>
        <script type="text/javascript" src="js/cuenta_Usuario/modificarUsuario.js"></script>
        <script type="text/javascript" src="js/cuenta_Usuario/actualizarEmail.js"></script>
-        
+       
+           <!--Dependencias-->
         
         <script type="text/javascript" src="js/requerid/stores.js"></script>
+        <!--Fin Dependencias-->
+        
+    
+     <!--Ayuda-->
+        <!--<script type="text/javascript" src="js/gui/menu/windowAbout.js"></script>-->
+        <!--Fin de Ayuda-->
+
         <!--Mapa-->
         <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
         <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
         <script type="text/javascript" src="js/mapa.js"></script>
         <!--Fin Mapa-->
-        
-        
-        
-        
-        
+   
     </head>
     <body oncontextmenu = "return false">        
         <header></header>

@@ -360,16 +360,12 @@ Ext.onReady(function () {
                 }}
         ]
     });
-
-
-
 //    var monitoreo = Ext.create('Ext.button.Button', {
 //        text: 'Monitoreo', iconCls: 'icon-monitoreo', handler: function () {
 //            window.open('monitorTeam.php');
 //        }
 //
 //    });
-
     var salir = Ext.create('Ext.button.Button', {
         id: 'custom',
         text: 'Salir',
@@ -399,8 +395,9 @@ Ext.onReady(function () {
                                     showWinPanicosDaily();
                                 }},
                             {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function () {
-//                                    ventanaExcesoVelocidad();
-                                    showWinExcesosDaily();
+                                    ventanaexcesosvelociadadWin();   
+           //   ventanaExcesoVelocidad();
+//                                    showWinExcesosDaily();
                                 }}
                             , {text: 'Mantenimiento General', iconCls: 'icon-config', handler: function () {
                                     ventanaMantenimiento();
