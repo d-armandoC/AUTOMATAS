@@ -62,12 +62,12 @@ var spot = Ext.create('Ext.ux.Spotlight', {
     duration: 500
 });
 
-Ext.onReady(function() {
+Ext.onReady(function () {
     var idEqpMen, nameVeh;
     //Ext.getCmp('tiempo').setValue((diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear()));
 
     Ext.apply(Ext.form.field.VTypes, {
-        daterange: function(val, field) {
+        daterange: function (val, field) {
             var date = field.parseDate(val);
 
             if (!date) {
@@ -88,7 +88,7 @@ Ext.onReady(function() {
             return true;
         },
         daterangeText: 'Fecha de inicio debe ser menor que la fecha de finalización',
-        placaValida: function(val, field) {
+        placaValida: function (val, field) {
             var partes = val.split("");
             if (partes.length === 7) {
                 if (!/^[F]{1}[A]{1}[C]{1}[T]{1}[U]{1}[R]{1}[A]{1}$/.test(val.toUpperCase())) {
@@ -112,21 +112,21 @@ Ext.onReady(function() {
         },
         placaValidaText: 'Ingrese un numero de placa valido <br>\n\
                            Ej:(LAB3532) 3 letras 4 numeros',
-        digitos: function(val, field) {
+        digitos: function (val, field) {
             if (!/^[0-9]{1,45}$/.test(val)) {
                 return false;
             }
             return true;
         },
         digitosnombresApeText: 'Solo carateres numéricos',
-        nombresApe: function(val, field) {
+        nombresApe: function (val, field) {
             if (!/^[.A-Z.a-z.áéíóúñ()\s*]{1,45}$/.test(val)) {
                 return false;
             }
             return true;
         },
         nombresApeText: 'No se permite caracteres númericos.',
-        password: function(val, field) {
+        password: function (val, field) {
             if (field.initialPassField) {
                 var pwd = field.up('form').down('#' + field.initialPassField);
                 return (val === pwd.getValue());
@@ -134,7 +134,7 @@ Ext.onReady(function() {
             return true;
         },
         passwordText: 'Las Contraseñas no coinciden',
-        cedulaValida: function(val, field) {
+        cedulaValida: function (val, field) {
             if (val.length !== 10) {
                 return false;
             }
@@ -148,7 +148,7 @@ Ext.onReady(function() {
             return true;
         },
         cedulaValidaText: 'Numero de Cedula Invalida',
-        numeroTelefono: function(val, field) {
+        numeroTelefono: function (val, field) {
             var partes = val.split("");
             if (partes.length === 10) {
                 if (!/^[0]{1}[9]{1}[0-9]{8}$/.test(val)) {
@@ -165,14 +165,14 @@ Ext.onReady(function() {
             }
         },
         numeroTelefonoText: 'Ingresar solo caracteres numéricos válidos <br>que empiezen con [09] movil tamaño de (10)dígitos<br> 0 [07] convencional tamaño de (9)dígitos ',
-        emailNuevo: function(val, field) {
+        emailNuevo: function (val, field) {
             if (!/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/.test(val)) {
                 return false;
             }
             return true;
         },
         emailNuevoText: 'Debe ingresar segun el formato kradac@kradac.com <br>sin caracteres especiales',
-        campos: function(val, field) {
+        campos: function (val, field) {
             if (!/^[-0-9.A-Z.a-z./áéíóúñÑ\s*]{2,45}$/.test(val)) {
                 return false;
 
@@ -182,7 +182,7 @@ Ext.onReady(function() {
             Ext.Msg.alert('Error', 'Solo carateres alfa numéricos');
         },
         camposText: 'Solo carateres alfa numéricos<br> Tamaño min de 2 y un máx de 45 carateres',
-        usuario: function(val, field) {
+        usuario: function (val, field) {
             if (!/^[0-9.A-Z.a-z.áéíóúñÑ\s]{2,45}$/.test(val)) {
                 return false;
 
@@ -192,7 +192,7 @@ Ext.onReady(function() {
             Ext.Msg.alert('Error', 'Solo carateres alfa numéricos');
         },
         usuarioText: 'Solo carateres alfa numéricos<br> Tamaño min de 2 y un máx de 45 carateres',
-        numeroChip: function(val, field) {
+        numeroChip: function (val, field) {
             if (!/^[-.0-9]{4,45}$/.test(val)) {
                 return false;
 
@@ -202,7 +202,7 @@ Ext.onReady(function() {
         },
         numeroChipText: 'Solo carateres numéricos<br> Tamaño min de 4 y un máx de 40 carateres',
 //para direccion
-        direccion: function(val, field) {
+        direccion: function (val, field) {
             if (!/^[-0-9.A-Z.a-z.áéíóúñ()\s*]{2,150}$/.test(val)) {
                 return false;
             }
@@ -211,7 +211,7 @@ Ext.onReady(function() {
         direccionText: 'Solo carateres alfa numéricos<br> Tamaño min de 2 y un máx de 150 carateres',
 //Metodo utilizado para controlar caracteres alfanuericos y el tamano del campo "Reg. Municipal"
 //del archivo administracion de buses (vehicle.js)
-        camposVehicleMax10: function(val, field) {
+        camposVehicleMax10: function (val, field) {
             if (!/^[-0-9.A-Z.a-z.áéíóúñ\s*]{5,10}$/.test(val)) {
                 return false;
             }
@@ -220,35 +220,35 @@ Ext.onReady(function() {
         camposVehicleMax10Text: 'Solo carateres alfa numéricos<br> Tamaño min de 5 y un máx de 10 carateres',
 //Metodo utilizado para controlar caracteres alfanuericos y el tamano de los campos
 //del archivo administracion de buses (vehicle.js) que requieren un tamano de entre 2 y 45 caracteres
-        camposVehicleMax45: function(val, field) {
+        camposVehicleMax45: function (val, field) {
             if (!/^[-0-9.A-Z.a-z.áéíóúñ\s*]{5,45}$/.test(val)) {
                 return false;
             }
             return true;
         },
         camposVehicleMax45Text: 'Solo carateres alfa numéricos<br> Tamaño min de 5 y un máx de 45 carateres',
-        camposAcronimo: function(val, field) {
+        camposAcronimo: function (val, field) {
             if (!/^[A-Z.a-z]{1}[-0-9.A-Z.a-z.áéíóúñ\s*]{3}$/.test(val)) {
                 return false;
             }
             return true;
         },
         camposAcronimoText: 'El primer caracter deberá ser una LETRA <br> Solo caracteres alfanumericas <br>  el tamaño deberá ser de 4 caracteres',
-        camposEmpresa: function(val, field) {
+        camposEmpresa: function (val, field) {
             if (!/^[A-Z.a-z]{1}[-0-9.A-Z.a-z.áéíóúñ\s*]{3,30}$/.test(val)) {
                 return false;
             }
             return true;
         },
         camposEmpresaText: 'El primer caracter deberá ser una LETRA <br> Solo caracteres alfanumericas <br> tamaño minimo de 4 caracteres ',
-        campos1: function(val, field) {
+        campos1: function (val, field) {
             if (!/^[-0-9.A-Z.a-z.áéíóúñ\s*]{2,80}$/.test(val)) {
                 return false;
             }
             return true;
         },
         campos1Text: 'Solo carateres alfa numéricos<br> Tamaño min de 1 y un máx de 80 carateres',
-        camposMin: function(val, field) {
+        camposMin: function (val, field) {
             if (!/^[0-9A-Za-zñ\s*]{2,10}$/.test(val)) {
                 return false;
             }
@@ -256,7 +256,7 @@ Ext.onReady(function() {
         },
         camposMinText: 'Solo carateres alfa numéricos<br> Tamaño min de 2 y un máx de 10 carateres',
 //solo mayus
-        mayus: function(val, field) {
+        mayus: function (val, field) {
             if (!/^[0-9A-Z]{1,5}$/.test(val)) {
                 return false;
             }
@@ -264,14 +264,14 @@ Ext.onReady(function() {
         },
         mayusText: 'Solo carateres Mayusculas',
 //Para datos combos vehiculos y personas
-        alphanum0: function(val, field) {
+        alphanum0: function (val, field) {
             if (!/^[0-9A-Za-záéíóúñ\s*]{3,80}$/.test(val)) {
                 return false;
             }
             return true;
         },
         alphanum0Text: 'Solo carateres alfa numéricos',
-        alphanum1: function(val, field) {
+        alphanum1: function (val, field) {
             if (!/^[0-9.A-Z.a-záéíóúñ\s*]{3,30}$/.test(val)) {
                 return false;
             }
@@ -279,7 +279,7 @@ Ext.onReady(function() {
         },
         alphanum1Text: 'Solo carateres alfa numéricos',
 //para puntos
-        puntos: function(val, field) {
+        puntos: function (val, field) {
             if (!/^[0-9.A-Z.a-záéíóúñ/\s*]{2,45}$/.test(val)) {
                 return false;
             }
@@ -287,7 +287,7 @@ Ext.onReady(function() {
         },
         puntosText: 'Solo datos numéricos,mínimo 2 y máximo de 4 numeros',
 ///para rutas
-        alphanum2: function(val, field) {
+        alphanum2: function (val, field) {
             if (!/^[0-9\s.A-Z.\sa-záéíóúñ.()-:\s*]{3,100}$/.test(val)) {
                 return false;
             }
@@ -295,14 +295,14 @@ Ext.onReady(function() {
         },
         alphanum2Text: 'Solo carateres alfa numéricos',
 //para geocercas
-        geo: function(val, field) {
+        geo: function (val, field) {
             if (!/^[0-9]{2,4}$/.test(val)) {
                 return false;
             }
             return true;
         },
         geoText: 'Solo carateres numéricos mínimo 2 y máximo 4 numeros',
-        num1: function(val, field) {
+        num1: function (val, field) {
             if (!/^[0-9]{3,4}$/.test(val)) {
                 return false;
             }
@@ -310,14 +310,14 @@ Ext.onReady(function() {
         },
         num1Texto: 'Solo carateres numéricos',
 //para numeros 3-45
-        num2: function(val, field) {
+        num2: function (val, field) {
             if (!/^[0-9]{3,45}$/.test(val)) {
                 return false;
             }
             return true;
         },
         num2Text: 'Solo carateres numéricos mínimo 3 y un máximo de 45',
-        camposRegMun: function(val, field) {
+        camposRegMun: function (val, field) {
             if (!/^[-0-9A-Za-z]{3,10}$/.test(val)) {
                 return false;
             }
@@ -332,7 +332,7 @@ Ext.onReady(function() {
     menuCoop = Ext.create('Ext.menu.Menu', {
         items: [],
         listeners: {
-            click: function(menu, item, e, eOpts) {
+            click: function (menu, item, e, eOpts) {
                 for (var i = 0; i < showCoopMap.length; i++) {
                     if (showCoopMap[i][0] === item.getItemId()) {
                         showCoopMap[i][2] = item.checked;
@@ -344,10 +344,10 @@ Ext.onReady(function() {
                                 params: {
                                     listCoop: showCoopMap[i][0]
                                 },
-                                failure: function(form, action) {
+                                failure: function (form, action) {
                                     Ext.example.msg('Mensaje', action.result.message);
                                 },
-                                success: function(form, action) {
+                                success: function (form, action) {
                                     if (connectionMap()) {
                                         clearVehicles(action.result.dataGps);
                                     }
@@ -367,43 +367,43 @@ Ext.onReady(function() {
         tooltip: 'Administración de Usuarios, Equipos y Vehiculos',
         scope: this,
         menu: [
-            {text: 'Organización', iconCls: 'icon-central', handler: function() {
+            {text: 'Organización', iconCls: 'icon-central', handler: function () {
                     showWinAdminOrganizacion();
 
                 }},
             {text: 'Equipos',
                 iconCls: 'icon-servicios',
                 menu: [
-                    {text: 'Adm. Equipos', iconCls: 'icon-credits', handler: function() {
+                    {text: 'Adm. Equipos', iconCls: 'icon-credits', handler: function () {
                             showWinAdminDevice();
                         }},
-                    {text: 'Enviar CMD', iconCls: 'icon-cmd', handler: function() {
+                    {text: 'Enviar CMD', iconCls: 'icon-cmd', handler: function () {
                             ventComands();
                         }},
                     '-',
-                    {text: 'Envio Correo', iconCls: 'icon-email', handler: function() {
+                    {text: 'Envio Correo', iconCls: 'icon-email', handler: function () {
                             ventanaEnvioMail();
                         }}
                 ]
             },
-            {text: 'Personal', iconCls: 'icon-personal', handler: function() {
+            {text: 'Personal', iconCls: 'icon-personal', handler: function () {
                     ventAddPersonal();
 
                 }},
-            {text: 'Usuarios', iconCls: 'icon-user', handler: function() {
+            {text: 'Usuarios', iconCls: 'icon-user', handler: function () {
                     ventAddUser();
                 }},
-            {text: 'Vehiculos', iconCls: 'icon-car', handler: function() {
+            {text: 'Vehiculos', iconCls: 'icon-car', handler: function () {
                     ventanaAddVehiculos();
                 }},
             {
                 text: 'Geocercas',
                 iconCls: 'icon-geocerca',
                 menu: [
-                    {text: 'Administracion', iconCls: 'icon-find-geo', handler: function() {
-                             ventanaGeocerca();
+                    {text: 'Administracion', iconCls: 'icon-find-geo', handler: function () {
+                            ventanaGeocerca();
                         }},
-                    {text: 'Envio Correos', iconCls: 'icon-email', handler: function() {
+                    {text: 'Envio Correos', iconCls: 'icon-email', handler: function () {
                             visualizarEnviosGeoCercas();
                         }}
                 ]
@@ -419,19 +419,19 @@ Ext.onReady(function() {
         tooltip: 'Herramintas de Acceso Rapido',
         iconCls: 'icon-config',
         menu: [
-            {text: 'Modificar usuarios', iconCls: 'icon-personal', handler: function() {
+            {text: 'Modificar usuarios', iconCls: 'icon-personal', handler: function () {
                     ventanaModificarUsuario();
                 }},
-            {text: 'Cambiar contraseña', iconCls: 'icon-key', handler: function() {
+            {text: 'Cambiar contraseña', iconCls: 'icon-key', handler: function () {
                     ventanaCambiarContrasenia();
                 }},
-            {text: 'Mantenimientos', iconCls: 'icon-mantenimiento', handler: function() {
+            {text: 'Mantenimientos', iconCls: 'icon-mantenimiento', handler: function () {
                     ventAddMantenimientos();
                 }},
-            {text: 'Vehiculos en Lugares', iconCls: 'icon-vehiculos_lugar', handler: function() {
+            {text: 'Vehiculos en Lugares', iconCls: 'icon-vehiculos_lugar', handler: function () {
                     ventanaVehLugares();
                 }},
-            {text: 'Actualizar email', iconCls: 'icon-email', handler: function() {
+            {text: 'Actualizar email', iconCls: 'icon-email', handler: function () {
                     ventanaActualizarEmail();
                 }},
             '-',
@@ -439,7 +439,7 @@ Ext.onReady(function() {
                 iconCls: 'icon-video',
                 handler: showVideo
             },
-            {text: 'Creditos', iconCls: 'icon-credits', handler: function() {
+            {text: 'Creditos', iconCls: 'icon-credits', handler: function () {
                     credits();
                     spot.show('panel-credit');
                 }}
@@ -449,7 +449,7 @@ Ext.onReady(function() {
     var editPosEmp = Ext.create('Ext.button.Button', {
         iconCls: '.icon-act-mapa',
         scope: this,
-        handler: function() {
+        handler: function () {
             // ventanaEditarPuntos();
         }
     });
@@ -457,7 +457,7 @@ Ext.onReady(function() {
     var monitoreo = Ext.create('Ext.button.Button', {
         text: 'Monitoreo',
         tooltip: 'Estado Actual de los Vehiculos y Equipos',
-        iconCls: 'icon-monitoreo', handler: function() {
+        iconCls: 'icon-monitoreo', handler: function () {
             window.open('monitorTeam.php');
         }
 
@@ -469,8 +469,8 @@ Ext.onReady(function() {
         scope: this,
         tooltip: 'Salir del Sistema',
         icon: 'img/salir.png',
-        handler: function() {
-            Ext.MessageBox.confirm('SALIR', 'Desea Salir del Sistema ?', function(choice) {
+        handler: function () {
+            Ext.MessageBox.confirm('SALIR', 'Desea Salir del Sistema ?', function (choice) {
                 if (choice === 'yes') {
                     window.location = 'php/login/logout.php';
                 }
@@ -490,37 +490,37 @@ Ext.onReady(function() {
                         text: 'Reportes',
                         iconCls: 'icon-general',
                         menu: [
-                            {text: 'Registros de Panico', iconCls: 'icon-reset', handler: function() {
+                            {text: 'Registros de Panico', iconCls: 'icon-reset', handler: function () {
                                     showWinPanicosDaily();
                                 }},
-                            {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function() {
+                            {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function () {
                                     ventanaexcesosvelociadadWin();
                                 }},
-                            {text: 'Mantenimiento Detallado', iconCls: 'icon-servicios', handler: function() {
+                            {text: 'Mantenimiento Detallado', iconCls: 'icon-servicios', handler: function () {
                                     showWinMantenimientoGeneral();
                                 }},
-                            {text: 'Recorridos General', iconCls: 'icon-all-flags', handler: function() {
+                            {text: 'Recorridos General', iconCls: 'icon-all-flags', handler: function () {
                                     ventanaBanderas();
                                 }},
-                            {text: 'Perdida de GPS y GSM', iconCls: 'icon-flota', handler: function() {
+                            {text: 'Perdida de GPS y GSM', iconCls: 'icon-flota', handler: function () {
                                     reporteWinperdidaGSM();
                                 }},
-                            {text: 'Reporte de Paradas', iconCls: 'icon-unlock', handler: function() {
+                            {text: 'Reporte de Paradas', iconCls: 'icon-unlock', handler: function () {
                                     showWinPradas();
                                 }},
-                            {text: 'Reporte de Geocercas', iconCls: 'icon-report-geo', handler: function() {
+                            {text: 'Reporte de Geocercas', iconCls: 'icon-report-geo', handler: function () {
                                     ventanaReporteGeocerca();
                                 }},
-                            {text: 'CMD Enviados', iconCls: 'icon-cmd-hist', handler: function() {
+                            {text: 'CMD Enviados', iconCls: 'icon-cmd-hist', handler: function () {
                                     ventanaCmdHistorial();
                                 }},
-                            {text: 'Reporte de Encendido y Apagado', iconCls: 'icon-encendido', handler: function() {
+                            {text: 'Reporte de Encendido y Apagado', iconCls: 'icon-encendido', handler: function () {
                                     showWinencendidoapagado();
                                 }},
-                            {text: 'Conexion y desconexion enegia de Equipo', iconCls: 'icon-conexcion', handler: function() {
+                            {text: 'Conexion y desconexion enegia de Equipo', iconCls: 'icon-conexcion', handler: function () {
                                     showWinEnergizar();
                                 }},
-                            {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
+                            {text: 'Eventos', iconCls: 'icon-eventos', handler: function () {
                                     ventanaEventos();
                                 }}
                         ]
@@ -536,7 +536,7 @@ Ext.onReady(function() {
                 xtype: 'button',
                 iconCls: 'icon-act-mapa',
                 tooltip: 'Limpiar Mapa',
-                handler: function() {
+                handler: function () {
                     clearLienzoPointTravel();
                     var lonlatCenter = new OpenLayers.LonLat(0, 100000000);
                     map.setCenter(lonlatCenter, 7);
@@ -615,7 +615,7 @@ Ext.onReady(function() {
                             minWidth: 160
                         },
                         listeners: {
-                            select: function(combo, records, eOpts) {
+                            select: function (combo, records, eOpts) {
                                 this.up('form').down('[name=cbxVeh]').enable();
                                 this.up('form').down('[name=cbxVeh]').clearValue();
 
@@ -645,7 +645,7 @@ Ext.onReady(function() {
                 buttons: [{
                         text: 'Buscar',
                         iconCls: 'icon-search-veh',
-                        handler: function() {
+                        handler: function () {
                             if (this.up('form').getForm().isValid()) {
                                 var capa = this.up('form').down('[name=cbxEmpresas]').getValue();
                                 var idEqpCoop = this.up('form').down('[name=cbxVeh]').getValue();
@@ -686,14 +686,14 @@ Ext.onReady(function() {
                 ],
                 tools: [{
                         type: 'help',
-                        handler: function() {
+                        handler: function () {
                             // show help here
                         }
                     }, {
                         type: 'refresh',
                         itemId: 'refresh_taxis',
                         tooltip: 'Recargar Datos',
-                        handler: function() {
+                        handler: function () {
                             var tree = Ext.getCmp('veh-taxis-tree');
                             tree.body.mask('Loading', 'x-mask-loading');
                             reloadTree(tree, 'Vehiculos', storeTreeVehTaxis);
@@ -703,7 +703,7 @@ Ext.onReady(function() {
                     }, {
                         type: 'search',
                         tooltip: 'Buscar Vehiculo',
-                        handler: function(event, target, owner, tool) {
+                        handler: function (event, target, owner, tool) {
                             // do search                    
                             owner.child('#refresh_taxis').show();
                             winSearchVeh.showAt(event.getXY());
@@ -714,7 +714,7 @@ Ext.onReady(function() {
                     expanded: true
                 },
                 listeners: {
-                    itemclick: function(thisObject, record, item, index, e, eOpts) {
+                    itemclick: function (thisObject, record, item, index, e, eOpts) {
                         if (connectionMap()) {
                             console.log(record);
                             var aux = record.id.split('_');
@@ -737,7 +737,7 @@ Ext.onReady(function() {
             {id: 'optTaxi4', text: 'Recorrido', iconCls: 'icon-all-flags'}
         ],
         listeners: {
-            click: function(menu, item, e, eOpts) {
+            click: function (menu, item, e, eOpts) {
                 var coopEqp = idEqpMen.split('_');
                 var coop = coopEqp[0];
                 var eqp = coopEqp[1];
@@ -778,7 +778,7 @@ Ext.onReady(function() {
                             horaIni: hi,
                             horaFin: hf
                         },
-                        failure: function(form, action) {
+                        failure: function (form, action) {
                             Ext.MessageBox.show({
                                 title: 'Error...',
                                 msg: action.result.message,
@@ -786,7 +786,7 @@ Ext.onReady(function() {
                                 icon: Ext.MessageBox.ERROR
                             });
                         },
-                        success: function(form, action) {
+                        success: function (form, action) {
                             var resultado = action.result;
 
                             limpiarCapasHistorico();
@@ -836,7 +836,7 @@ Ext.onReady(function() {
                         xtype: 'button',
                         iconCls: 'icon-geoloc',
                         tooltip: 'Ubicar mi Posición',
-                        handler: function() {
+                        handler: function () {
                             clearLienzoPointTravel();
                             getLocation();
                             panelTabMapaAdmin.setActiveTab(0);
@@ -847,7 +847,7 @@ Ext.onReady(function() {
                 iconCls: 'icon-central',
                 tooltip: 'Organizaciones Asociadas',
                 menu: menuCoop,
-                handler: function() {
+                handler: function () {
                     this.showMenu();
                 }
             }]
@@ -867,21 +867,9 @@ Ext.onReady(function() {
             }
         ]
     });
-//
-//    storeEventos = Ext.create('Ext.data.JsonStore', {
-//        proxy: {
-//            type: 'ajax',
-//            url: '',
-//            reader: {
-//                type: 'json',
-//                root: 'eventos'
-//            }
-//        },
-//        fields: ['fecha_hora', 'vehiculo', 'evento', {name: 'velocidad', type: 'float'}, 'direccion', 'coordenadas']
-//    });
 
     var gridEventos = Ext.create('Ext.grid.GridPanel', {
-        region: 'north',
+        region: 'south',
         title: "Ultimos Reportes de Vehiculos",
         collapsible: true,
         collapsed: true,
@@ -889,21 +877,20 @@ Ext.onReady(function() {
         height: 200,
         autoScroll: true,
         frame: true,
-        store: storeEventos,
+        store: storeEventos1,
         features: [filters],
         columns: [
-            {header: "Fecha-Hora", flex: 60, sortable: true, dataIndex: "fecha_hora"},
+            {header: "Usuario Vehiculo", flex: 75, sortable: true, dataIndex: "usuarioV", filter: {type: 'string'}},
+            {header: "Usuario Equipo", flex: 75, sortable: true, dataIndex: "usuarioE", filter: {type: 'string'}},
             {header: "Vehiculo", flex: 75, sortable: true, dataIndex: "vehiculo", filter: {type: 'string'}},
-            {header: "Evento", flex: 125, sortable: true, dataIndex: "evento"},
-            {header: "Vel (Km/h)", flex: 25, sortable: true, dataIndex: "velocidad", filter: {type: 'numeric'}},
-            {header: "Direccion", flex: 175, sortable: true, dataIndex: "direccion", filter: {type: 'string'}},
-            {header: "Coordenadas", flex: 20, sortable: true, dataIndex: "coordenadas"}
+            {header: "Equipo", flex: 75, sortable: true, dataIndex: "equipo", filter: {type: 'string'}},
+            {header: "Evento", flex: 150, sortable: true, dataIndex: "sky_evento"},
+            {header: "Vel (Km/h)", flex: 75, sortable: true, dataIndex: "vel", filter: {type: 'numeric'}}
         ],
         listeners: {
-            itemclick: function(thisObject, record, item, index, e, eOpts) {
-                var g = record.data.coordenadas.split(",");
+            itemclick: function (thisObject, record, item, index, e, eOpts) {
                 panelTabMapaAdmin.setActiveTab(0);
-                localizarDireccion(g[0], g[1], 15);
+                localizarDireccion(record.data.longitud, record.data.latitud, 15);
             }
         }
     });
@@ -913,8 +900,8 @@ Ext.onReady(function() {
         layout: 'border',
         items: [
             toolBarOnMap,
-            panelTabMapaAdmin
-                    //gridEventos
+            panelTabMapaAdmin,
+            gridEventos
         ]
     });
 
@@ -923,7 +910,6 @@ Ext.onReady(function() {
         items: [panelMenu, panelEste, panelCentral]
     });
     storeEmpresas.load();
-
     if (connectionMap()) {
         loadMap();
     }

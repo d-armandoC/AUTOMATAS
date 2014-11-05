@@ -20,35 +20,6 @@ Ext.define('vehModel', {
     }
 });
 
-//Ext.define('eventos', {
-//    extend: 'Ext.data.Model',
-//    fields: [
-//        {name: 'usuarioE'},
-//        {name: 'usuarioV'},
-//        {name: 'vehiculo'},
-//        {name: 'equipo'},
-//        {name: 'fhCon'},
-//        {name: 'fhDes'},
-//        {name: 'tmpcon'},
-//        {name: 'tmpdes'},
-//        {name: 'sky_evento'},
-//        {name: 'bateria'},
-//        {name: 'gsm'},
-//        {name: 'gps2'},
-//        {name: 'bateria'},
-//        {name: 'vel'},
-//        {name: 'latitud'},
-//        {name: 'longitud'}
-//    ],
-//    proxy: {
-//        type: 'ajax',
-//        url: 'php/interface/UltimosReporVehiculos/UltimosReportesVehicculos.php',
-//        reader: {
-//            type: 'json',
-//            root: 'eventos'
-//        }
-//    }
-//});
 
 Ext.define("direcciones", {
     extend: 'Ext.data.Model',

@@ -782,18 +782,16 @@ Ext.onReady(function () {
         features: [filters],
         columns: [
             {header: "Usuario Vehiculo", flex: 75, sortable: true, dataIndex: "usuarioV", filter: {type: 'string'}},
-            {header: "Usuario Equipo", flex: 60, sortable: true, dataIndex: "usuarioE", filter: {type: 'string'}},
+            {header: "Usuario Equipo", flex: 75, sortable: true, dataIndex: "usuarioE", filter: {type: 'string'}},
             {header: "Vehiculo", flex: 75, sortable: true, dataIndex: "vehiculo", filter: {type: 'string'}},
             {header: "Equipo", flex: 75, sortable: true, dataIndex: "equipo", filter: {type: 'string'}},
-            {header: "Evento", flex: 125, sortable: true, dataIndex: "sky_evento"},
-            {header: "Vel (Km/h)", flex: 25, sortable: true, dataIndex: "vel", filter: {type: 'numeric'}},
+            {header: "Evento", flex: 150, sortable: true, dataIndex: "sky_evento"},
+            {header: "Vel (Km/h)", flex: 75, sortable: true, dataIndex: "vel", filter: {type: 'numeric'}}
         ],
         listeners: {
             itemclick: function (thisObject, record, item, index, e, eOpts) {
-//                var g = record.data.coordenadas.split(",");
-//                panelTabMapaAdmin.setActiveTab(0);
-//                localizarDireccion(g[0], g[1], 15);
-                console.log('datos pruebas');
+                panelTabMapaAdmin.setActiveTab(0);
+                localizarDireccion(record.data.longitud, record.data.latitud, 15);
             }
         }
     });
