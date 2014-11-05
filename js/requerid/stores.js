@@ -3,6 +3,7 @@
 var showCoopMap = new Array();
 var menuCoop;
 
+
 Ext.define('vehModel', {
     extend: 'Ext.data.Model',
     fields: [
@@ -19,17 +20,35 @@ Ext.define('vehModel', {
     }
 });
 
-Ext.define('eventos', {
-    extend: 'Ext.data.Model',
-    fields: [
-        {name: 'fecha_hora'},
-        {name: 'vehiculo'},
-        {name: 'evento'},
-        {name: 'velocidad'},
-        {name: 'direccion'},
-        {name: 'coordenadas'}
-    ]
-});
+//Ext.define('eventos', {
+//    extend: 'Ext.data.Model',
+//    fields: [
+//        {name: 'usuarioE'},
+//        {name: 'usuarioV'},
+//        {name: 'vehiculo'},
+//        {name: 'equipo'},
+//        {name: 'fhCon'},
+//        {name: 'fhDes'},
+//        {name: 'tmpcon'},
+//        {name: 'tmpdes'},
+//        {name: 'sky_evento'},
+//        {name: 'bateria'},
+//        {name: 'gsm'},
+//        {name: 'gps2'},
+//        {name: 'bateria'},
+//        {name: 'vel'},
+//        {name: 'latitud'},
+//        {name: 'longitud'}
+//    ],
+//    proxy: {
+//        type: 'ajax',
+//        url: 'php/interface/UltimosReporVehiculos/UltimosReportesVehicculos.php',
+//        reader: {
+//            type: 'json',
+//            root: 'eventos'
+//        }
+//    }
+//});
 
 Ext.define("direcciones", {
     extend: 'Ext.data.Model',
@@ -70,7 +89,19 @@ var storeTreeVehTaxis = Ext.create('Ext.data.TreeStore', {
 });
 
 //Store para combobox
-
+var storeEventos1 = Ext.create('Ext.data.JsonStore', {
+    autoDestroy: true,
+    autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        url: 'php/interface/UltimosReporVehiculos/UltimosReportesVehicculos.php',
+        reader: {
+            type: 'json',
+            root: 'eventos'
+        }
+    },
+    fields: ['usuarioE', 'usuarioV', 'vehiculo', 'equipo', 'fhCon', 'fhDes', 'tmpcon', 'tmpdes', 'sky_evento', {name: 'vel', type: 'float'}]
+});
 
 var storeVehiculosservicios = Ext.create('Ext.data.JsonStore', {
     autoDestroy: true,
@@ -118,48 +149,16 @@ var storeEmpresas = Ext.create('Ext.data.Store', {
     },
     fields: ['id', 'idTipoEmpresa', 'text', 'latitud', 'longitud', 'direccion', 'telefono', 'email'],
     listeners: {
-        load: function(thisObject, records, successful, eOpts) {
+        load: function (thisObject, records, successful, eOpts) {
             for (var i = 0; i < records.length; i++) {
                 var dataCoop = records[i].data;
                 showCoopMap[i] = [dataCoop.id, dataCoop.text, false];
             }
             for (var i = 0; i < showCoopMap.length; i++) {
-                if (typeof menuCoop!== 'undefined') {
-                      menuCoop.add({itemId: showCoopMap[i][0], text: showCoopMap[i][1], checked: showCoopMap[i][2]});  
+                if (typeof menuCoop !== 'undefined') {
+                    menuCoop.add({itemId: showCoopMap[i][0], text: showCoopMap[i][1], checked: showCoopMap[i][2]});
                 }
             }
-
-//            getCoopMenu();
-
-            // var dataCoop = records[0].data;
-
-//            if (successful) {
-//                lienzoCentral.destroyFeatures();
-//                addCompanyToCanvas(records);
-//            } else {
-//                Ext.example.msg('Error', 'No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.')
-//            }
-
-//   if (successful && typeof idRolKBus !== 'undefined') {
-//                for (var i = 0; i < records.length; i++) {
-//                    var dataCoop = records[i].data;
-//                    if (idRolKBus === 2 || idRolKBus === 4) {
-//                        showCoopMap[i] = [dataCoop.id, dataCoop.text, true];
-//                        // Centrar el Mapa
-//                        /*var lonLat = new OpenLayers.LonLat(dataCoop.longitud, dataCoop.latitud).transform(new OpenLayers.Projection("EPSG:4326"),
-//                         map.getProjectionObject());
-//                         map.setCenter(lonLat, 13);*/
-//                    } else {
-//                        showCoopMap[i] = [dataCoop.id, dataCoop.text, false];
-//                    }
-//                }
-//                storeVehicle.load({
-//                    params: {
-//                        idCompany: 1
-//                    }
-//                });
-//                getCoopMenu();
-//            }
         }
     }
 });
@@ -313,7 +312,6 @@ var storePersonas = Ext.create('Ext.data.Store', {
 
 var storeMails = Ext.create('Ext.data.Store', {
     autoDestroy: true,
-    
     fields: ['id_persona', 'persona', 'email', 'evt1', 'evt2', 'evt3', 'evt4', 'evt5', 'evt6',
         'evt7', 'evt8', 'evt9', 'evt10', 'evt11', 'evt12', 'evt13', 'evt14', 'evt15', 'evt16', 'evt17', 'evt18'],
     proxy: {
@@ -357,7 +355,7 @@ var storePosEmpresas = Ext.create('Ext.data.JsonStore', {
         {name: 'longitud', type: 'float'}
     ],
     timeout: 1000,
-    failure: function(form, action) {
+    failure: function (form, action) {
         Ext.MessageBox.show({
             title: 'Error...',
             msg: 'Precione F5 para actualizar la página...',

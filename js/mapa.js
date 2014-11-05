@@ -358,12 +358,16 @@ function loadMap() {
             graficarCoop();
         });
     } else {
-        Ext.getCmp('panel-map').add({
-            region: 'center',
-            xtype: 'image',
-            src: 'img/no_network.png'
-
-        });
+        
+        
+//        Ext.getCmp('panel-map').add({
+//            region: 'center',
+//            xtype: 'image',
+//            src: 'img/no_network.png'
+//
+//        });
+        
+        
     }
 }
 
