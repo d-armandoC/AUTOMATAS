@@ -349,6 +349,7 @@ Ext.onReady(function () {
                     ventanaActualizarEmail();
                 }},
             '-',
+            
 //            {text: 'Videos',
 //                iconCls: 'icon-video',
 //                handler: showVideo
@@ -360,21 +361,14 @@ Ext.onReady(function () {
         ]
     });
 
-    var editPosEmp = Ext.create('Ext.button.Button', {
-        text: 'Editar Empresas',
-        iconCls: 'icon-edit',
-        scope: this,
-        handler: function () {
-            // ventanaEditarPuntos();
-        }
-    });
 
-    var monitoreo = Ext.create('Ext.button.Button', {
-        text: 'Monitoreo', iconCls: 'icon-monitoreo', handler: function () {
-            window.open('monitorTeam.php');
-        }
 
-    });
+//    var monitoreo = Ext.create('Ext.button.Button', {
+//        text: 'Monitoreo', iconCls: 'icon-monitoreo', handler: function () {
+//            window.open('monitorTeam.php');
+//        }
+//
+//    });
 
     var salir = Ext.create('Ext.button.Button', {
         id: 'custom',
