@@ -349,10 +349,10 @@ Ext.onReady(function () {
                     ventanaActualizarEmail();
                 }},
             '-',
-            {text: 'Videos',
-                iconCls: 'icon-video',
-                handler: showVideo
-            },
+//            {text: 'Videos',
+//                iconCls: 'icon-video',
+//                handler: showVideo
+//            },
             {text: 'Creditos', iconCls: 'icon-credits', handler: function () {
                     credits();
                     spot.show('panel-credit');
