@@ -319,7 +319,6 @@ Ext.onReady(function () {
         menu: [
             {text: 'Personal', iconCls: 'icon-personal', handler: function () {
                     ventAddPersonal();
-
                 }},
             {text: 'Envio Correo Eventos', iconCls: 'icon-email', handler: function () {
                     ventanaEnvioMail();
@@ -825,7 +824,7 @@ Ext.onReady(function () {
         region: 'center',
         layout: 'border',
         items: [
-            toolBarOnMap,
+          //  toolBarOnMap,
             panelTabMapaAdmin,
             gridEventos
         ]

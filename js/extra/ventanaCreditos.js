@@ -15,7 +15,7 @@ function credits(){
                 '<img src="img/logo.png" width="200px" height="50px"> <br>'+
                 'bruno.valarezo@kradac.com <br>'+
                 'hugo.ramirez@kradac.com <br>'+
-                'dalton.agila@kradac.com <br>'+
+                'diego.cale92@gmail.com <br>'+
                 '</center><br><br><p align=right>Karview</p>'+
                 '</div>'
             }],
