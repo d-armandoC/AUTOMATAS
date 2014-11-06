@@ -792,6 +792,7 @@ Ext.onReady(function () {
             itemclick: function (thisObject, record, item, index, e, eOpts) {
                 panelTabMapaAdmin.setActiveTab(0);
                 localizarDireccion(record.data.longitud, record.data.latitud, 15);
+                console.log('');
             }
         }
     });
