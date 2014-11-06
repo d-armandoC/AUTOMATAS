@@ -446,13 +446,7 @@ Ext.onReady(function () {
         ]
     });
 
-    var editPosEmp = Ext.create('Ext.button.Button', {
-        iconCls: '.icon-act-mapa',
-        scope: this,
-        handler: function () {
-            // ventanaEditarPuntos();
-        }
-    });
+
 
     var monitoreo = Ext.create('Ext.button.Button', {
         text: 'Monitoreo',

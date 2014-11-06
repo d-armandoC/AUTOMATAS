@@ -604,33 +604,13 @@ Ext.onReady(function () {
                     itemclick: function (thisObject, record, item, index, e, eOpts) {
                         if (connectionMap()) {
                             var id = record.internalId;
-//                            if (id.indexOf('_') !== -1) {
                             var aux = record.id.split('_');
                             var idEmpresa = parseInt(aux[0]);
                             var idVehicle = 'last' + aux[1];
                             buscarEnMapa(idEmpresa, idVehicle);
                             panelTabMapaAdmin.setActiveTab(0);
-//                            };
                         }
                     }
-//                    itemclick: function(thisObject, record, item, index, e, eOpts) {
-//                        var aux = record.internalId;
-//
-//                        var capa = aux.split('_')[0];
-//                        var idEqpCoop = aux.split('_')[1];
-//
-//                        buscarEnMapa(capa, idEqpCoop);
-//                    },
-//                    itemcontextmenu: function(thisObject, record, item, index, e, eOpts) {
-//                        idEqpMen = record.internalId;
-//                        nameVeh = record.data.text;
-//                        if (idEqpMen.indexOf('ext-record') === -1) {
-//                            menuContext.showAt(e.getXY());
-//                        } else {
-//                            idEqpMen = '';
-//                            nameVeh = '';
-//                        }
-//                    }
                 }
             }]
     });
