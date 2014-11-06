@@ -285,7 +285,7 @@ Ext.onReady(function () {
                 for (var i = 0; i < showCoopMap.length; i++) {
                     if (showCoopMap[i][0] === item.getItemId()) {
                         showCoopMap[i][2] = item.checked;
-
+                        
                         if (!item.checked) {
                             var form = Ext.create('Ext.form.Panel');
                             form.getForm().submit({
@@ -299,7 +299,6 @@ Ext.onReady(function () {
                                 },
                                 success: function (form, action) {
                                     if (connectionMap()) {
-                                        console.log('succes');
                                         clearVehicles(action.result.dataGps);
                                     }
                                 }
@@ -427,10 +426,11 @@ Ext.onReady(function () {
                 iconCls: 'icon-act-mapa',
                 tooltip: 'Limpiar Mapa',
                 handler: function () {
+                     clearVehiclesMapa(storeTreeVehTaxis.data.items);
                     clearLienzoPointTravel();
                     var lonlatCenter = new OpenLayers.LonLat(0, 100000000);
                     map.setCenter(lonlatCenter, 7);
-
+                   
                 }},
             salir,
             {
@@ -603,34 +603,15 @@ Ext.onReady(function () {
                 listeners: {
                     itemclick: function (thisObject, record, item, index, e, eOpts) {
                         if (connectionMap()) {
+//                            console.log(storeTreeVehTaxis.data.items);
                             var id = record.internalId;
-//                            if (id.indexOf('_') !== -1) {
                             var aux = record.id.split('_');
                             var idEmpresa = parseInt(aux[0]);
                             var idVehicle = 'last' + aux[1];
                             buscarEnMapa(idEmpresa, idVehicle);
                             panelTabMapaAdmin.setActiveTab(0);
-//                            };
                         }
                     }
-//                    itemclick: function(thisObject, record, item, index, e, eOpts) {
-//                        var aux = record.internalId;
-//
-//                        var capa = aux.split('_')[0];
-//                        var idEqpCoop = aux.split('_')[1];
-//
-//                        buscarEnMapa(capa, idEqpCoop);
-//                    },
-//                    itemcontextmenu: function(thisObject, record, item, index, e, eOpts) {
-//                        idEqpMen = record.internalId;
-//                        nameVeh = record.data.text;
-//                        if (idEqpMen.indexOf('ext-record') === -1) {
-//                            menuContext.showAt(e.getXY());
-//                        } else {
-//                            idEqpMen = '';
-//                            nameVeh = '';
-//                        }
-//                    }
                 }
             }]
     });
@@ -784,19 +765,17 @@ Ext.onReady(function () {
         store: storeEventos1,
         features: [filters],
         columns: [
-            {header: "Usuario Vehiculo", flex: 75, sortable: true, dataIndex: "usuarioV", filter: {type: 'string'}},
+            {header: "Empresa", flex: 75, sortable: true, dataIndex: "empresa", filter: {type: 'string'}},
             {header: "Usuario Equipo", flex: 60, sortable: true, dataIndex: "usuarioE", filter: {type: 'string'}},
             {header: "Vehiculo", flex: 75, sortable: true, dataIndex: "vehiculo", filter: {type: 'string'}},
             {header: "Equipo", flex: 75, sortable: true, dataIndex: "equipo", filter: {type: 'string'}},
             {header: "Evento", flex: 125, sortable: true, dataIndex: "sky_evento"},
-            {header: "Vel (Km/h)", flex: 25, sortable: true, dataIndex: "vel", filter: {type: 'numeric'}},
+            {header: "Vel (Km/h)", flex: 50, sortable: true, dataIndex: "vel", filter: {type: 'numeric'}}
         ],
         listeners: {
             itemclick: function (thisObject, record, item, index, e, eOpts) {
-//                var g = record.data.coordenadas.split(",");
-//                panelTabMapaAdmin.setActiveTab(0);
-//                localizarDireccion(g[0], g[1], 15);
-                console.log('datos pruebas');
+             panelTabMapaAdmin.setActiveTab(0);
+                localizarDireccion(record.data.longitud,record.data.latitud, 15);
             }
         }
     });
