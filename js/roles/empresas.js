@@ -25,6 +25,7 @@ var required = '<span style="color:red;font-weight:bold" data-qtip="Requerido">*
 var meses = new Array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
 var diasSemana = new Array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
 var f = new Date();
+//document.write(diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear());
 var label = Ext.create('Ext.form.Label', {
     text: 'hola',
     id: 'tiempo',
@@ -56,6 +57,8 @@ var spot = Ext.create('Ext.ux.Spotlight', {
 
 Ext.onReady(function () {
     var idEqpMen, nameVeh;
+    //Ext.getCmp('tiempo').setValue((diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear()));
+
     Ext.apply(Ext.form.field.VTypes, {
         daterange: function (val, field) {
             var date = field.parseDate(val);
@@ -274,6 +277,7 @@ Ext.onReady(function () {
     });
 ////////////
     Ext.tip.QuickTipManager.init();
+
     menuCoop = Ext.create('Ext.menu.Menu', {
         items: [],
         listeners: {
@@ -281,6 +285,7 @@ Ext.onReady(function () {
                 for (var i = 0; i < showCoopMap.length; i++) {
                     if (showCoopMap[i][0] === item.getItemId()) {
                         showCoopMap[i][2] = item.checked;
+
                         if (!item.checked) {
                             var form = Ext.create('Ext.form.Panel');
                             form.getForm().submit({
@@ -323,6 +328,8 @@ Ext.onReady(function () {
                 }}
         ]
     });
+
+
 
     var herraminetas = Ext.create('Ext.button.Button', {
         text: 'Herramintas',
@@ -369,6 +376,8 @@ Ext.onReady(function () {
                     window.location = 'php/login/logout.php';
                 }
             });
+
+
         }
     });
 
@@ -496,6 +505,7 @@ Ext.onReady(function () {
                             select: function (combo, records, eOpts) {
                                 this.up('form').down('[name=cbxVeh]').enable();
                                 this.up('form').down('[name=cbxVeh]').clearValue();
+
                                 storeVeh.load({
                                     params: {
                                         cbxEmpresas: records[0].data.id
@@ -594,13 +604,33 @@ Ext.onReady(function () {
                     itemclick: function (thisObject, record, item, index, e, eOpts) {
                         if (connectionMap()) {
                             var id = record.internalId;
+//                            if (id.indexOf('_') !== -1) {
                             var aux = record.id.split('_');
                             var idEmpresa = parseInt(aux[0]);
                             var idVehicle = 'last' + aux[1];
                             buscarEnMapa(idEmpresa, idVehicle);
                             panelTabMapaAdmin.setActiveTab(0);
+//                            };
                         }
                     }
+//                    itemclick: function(thisObject, record, item, index, e, eOpts) {
+//                        var aux = record.internalId;
+//
+//                        var capa = aux.split('_')[0];
+//                        var idEqpCoop = aux.split('_')[1];
+//
+//                        buscarEnMapa(capa, idEqpCoop);
+//                    },
+//                    itemcontextmenu: function(thisObject, record, item, index, e, eOpts) {
+//                        idEqpMen = record.internalId;
+//                        nameVeh = record.data.text;
+//                        if (idEqpMen.indexOf('ext-record') === -1) {
+//                            menuContext.showAt(e.getXY());
+//                        } else {
+//                            idEqpMen = '';
+//                            nameVeh = '';
+//                        }
+//                    }
                 }
             }]
     });
@@ -707,7 +737,7 @@ Ext.onReady(function () {
 ////                },
 //                pageSize: 10
 //            }
-            '->'
+        '->'
             , {
                 xtype: 'button',
                 iconCls: 'icon-geoloc',
@@ -718,9 +748,8 @@ Ext.onReady(function () {
                 }
             }, {
                 xtype: 'splitbutton',
-                text: 'Organización',
+                text: 'Cooperativas',
                 iconCls: 'icon-central',
-                tooltip: 'Organizaciones Asociadas',
                 menu: menuCoop,
                 handler: function () {
                     this.showMenu();
@@ -756,17 +785,18 @@ Ext.onReady(function () {
         features: [filters],
         columns: [
             {header: "Usuario Vehiculo", flex: 75, sortable: true, dataIndex: "usuarioV", filter: {type: 'string'}},
-            {header: "Usuario Equipo", flex: 75, sortable: true, dataIndex: "usuarioE", filter: {type: 'string'}},
+            {header: "Usuario Equipo", flex: 60, sortable: true, dataIndex: "usuarioE", filter: {type: 'string'}},
             {header: "Vehiculo", flex: 75, sortable: true, dataIndex: "vehiculo", filter: {type: 'string'}},
             {header: "Equipo", flex: 75, sortable: true, dataIndex: "equipo", filter: {type: 'string'}},
-            {header: "Evento", flex: 150, sortable: true, dataIndex: "sky_evento"},
-            {header: "Vel (Km/h)", flex: 75, sortable: true, dataIndex: "vel", filter: {type: 'numeric'}}
+            {header: "Evento", flex: 125, sortable: true, dataIndex: "sky_evento"},
+            {header: "Vel (Km/h)", flex: 25, sortable: true, dataIndex: "vel", filter: {type: 'numeric'}},
         ],
         listeners: {
             itemclick: function (thisObject, record, item, index, e, eOpts) {
-                panelTabMapaAdmin.setActiveTab(0);
-                localizarDireccion(record.data.longitud, record.data.latitud, 15);
-                console.log('');
+//                var g = record.data.coordenadas.split(",");
+//                panelTabMapaAdmin.setActiveTab(0);
+//                localizarDireccion(g[0], g[1], 15);
+                console.log('datos pruebas');
             }
         }
     });
@@ -775,7 +805,7 @@ Ext.onReady(function () {
         region: 'center',
         layout: 'border',
         items: [
-            toolBarOnMap,
+              toolBarOnMap,
             panelTabMapaAdmin,
             gridEventos
         ]
