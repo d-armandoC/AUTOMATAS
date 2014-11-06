@@ -179,7 +179,7 @@ Ext.onReady(function() {
                                     columns: [
                                         Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
                                         {text: 'Organización', width: 150, dataIndex: 'empresa', align: 'center'},
-                                        {text: 'Vehiculo', width: 100, dataIndex: 'vehiculo', align: 'center'},
+                                        {text: 'Vehículo', width: 100, dataIndex: 'vehiculo', align: 'center'},
                                         {text: 'Equipo', width: 100, dataIndex: 'equipo', align: 'center'},
                                         {text: 'Placa', width: 100, dataIndex: 'placa', align: 'center'},
                                         {text: 'Cantidad Eventos', width: 150, dataIndex: 'totalEventos', align: 'center'}
