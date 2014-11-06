@@ -867,18 +867,18 @@ Ext.onReady(function() {
             }
         ]
     });
-
-    storeEventos = Ext.create('Ext.data.JsonStore', {
-        proxy: {
-            type: 'ajax',
-            url: '',
-            reader: {
-                type: 'json',
-                root: 'eventos'
-            }
-        },
-        fields: ['fecha_hora', 'vehiculo', 'evento', {name: 'velocidad', type: 'float'}, 'direccion', 'coordenadas']
-    });
+//
+//    storeEventos = Ext.create('Ext.data.JsonStore', {
+//        proxy: {
+//            type: 'ajax',
+//            url: '',
+//            reader: {
+//                type: 'json',
+//                root: 'eventos'
+//            }
+//        },
+//        fields: ['fecha_hora', 'vehiculo', 'evento', {name: 'velocidad', type: 'float'}, 'direccion', 'coordenadas']
+//    });
 
     var gridEventos = Ext.create('Ext.grid.GridPanel', {
         region: 'north',

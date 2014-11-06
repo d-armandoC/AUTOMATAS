@@ -49,7 +49,7 @@ var filters = {
 };
 
 var idEqpMen;
-
+var gridEventos;
 var spot = Ext.create('Ext.ux.Spotlight', {
     easing: 'easeOut',
     duration: 500
@@ -349,7 +349,6 @@ Ext.onReady(function () {
                     ventanaActualizarEmail();
                 }},
             '-',
-            
 //            {text: 'Videos',
 //                iconCls: 'icon-video',
 //                handler: showVideo
@@ -395,8 +394,8 @@ Ext.onReady(function () {
                                     showWinPanicosDaily();
                                 }},
                             {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function () {
-                                    ventanaexcesosvelociadadWin();   
-           //   ventanaExcesoVelocidad();
+                                    ventanaexcesosvelociadadWin();
+                                    //   ventanaExcesoVelocidad();
 //                                    showWinExcesosDaily();
                                 }}
                             , {text: 'Mantenimiento General', iconCls: 'icon-config', handler: function () {
@@ -770,19 +769,7 @@ Ext.onReady(function () {
         ]
     });
 
-    storeEventos = Ext.create('Ext.data.JsonStore', {
-        proxy: {
-            type: 'ajax',
-            url: '',
-            reader: {
-                type: 'json',
-                root: 'eventos'
-            }
-        },
-        fields: ['fecha_hora', 'vehiculo', 'evento', {name: 'velocidad', type: 'float'}, 'direccion', 'coordenadas']
-    });
-
-    var gridEventos = Ext.create('Ext.grid.GridPanel', {
+    gridEventos = Ext.create('Ext.grid.GridPanel', {
         region: 'south',
         title: "Ultimos Reportes de Vehiculos",
         collapsible: true,
@@ -791,15 +778,15 @@ Ext.onReady(function () {
         height: 200,
         autoScroll: true,
         frame: true,
-        store: storeEventos,
+        store: storeEventos1,
         features: [filters],
         columns: [
-            {header: "Fecha-Hora", flex: 60, sortable: true, dataIndex: "fecha_hora"},
+            {header: "Usuario Vehiculo", flex: 75, sortable: true, dataIndex: "usuarioV", filter: {type: 'string'}},
+            {header: "Usuario Equipo", flex: 60, sortable: true, dataIndex: "usuarioE", filter: {type: 'string'}},
             {header: "Vehiculo", flex: 75, sortable: true, dataIndex: "vehiculo", filter: {type: 'string'}},
-            {header: "Evento", flex: 125, sortable: true, dataIndex: "evento"},
-            {header: "Vel (Km/h)", flex: 25, sortable: true, dataIndex: "velocidad", filter: {type: 'numeric'}},
-            {header: "Direccion", flex: 175, sortable: true, dataIndex: "direccion", filter: {type: 'string'}},
-            {header: "Coordenadas", flex: 20, sortable: true, dataIndex: "coordenadas"}
+            {header: "Equipo", flex: 75, sortable: true, dataIndex: "equipo", filter: {type: 'string'}},
+            {header: "Evento", flex: 125, sortable: true, dataIndex: "sky_evento"},
+            {header: "Vel (Km/h)", flex: 25, sortable: true, dataIndex: "vel", filter: {type: 'numeric'}},
         ],
         listeners: {
             itemclick: function (thisObject, record, item, index, e, eOpts) {
@@ -815,7 +802,7 @@ Ext.onReady(function () {
         region: 'center',
         layout: 'border',
         items: [
-          //  toolBarOnMap,
+            //  toolBarOnMap,
             panelTabMapaAdmin,
             gridEventos
         ]
