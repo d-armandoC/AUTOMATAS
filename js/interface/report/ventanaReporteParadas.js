@@ -24,7 +24,7 @@ Ext.onReady(function() {
                 root: 'data'
             }
         },
-        fields: ['Organización', 'vehiculo', 'placa', 'latitud', 'longitud', 'fecha', 'hora', 'velocidad', 'bateria', 'gsm', 'gps', 'ign', 'sky_evento']
+        fields: ['empresa', 'vehiculo', 'placa', 'latitud', 'longitud', 'fecha', 'hora', 'velocidad', 'bateria', 'gsm', 'gps', 'ign', 'sky_evento']
     });
 
     cbxEmpresasParada = Ext.create('Ext.form.ComboBox', {
@@ -163,7 +163,7 @@ Ext.onReady(function() {
                                         type: 'ajax',
                                         reader: 'array'
                                     },
-                                    fields: ['id_empresa', 'id_vehiculo', 'Organización', 'vehiculo', 'equipo', 'placa', 'totalEventos']
+                                    fields: ['id_empresa', 'id_vehiculo', 'empresa', 'vehiculo', 'equipo', 'placa', 'totalEventos']
                                 });
                                 var gridDataMantenimientoparadas = Ext.create('Ext.grid.Panel', {
                                     region: 'west',
@@ -178,8 +178,8 @@ Ext.onReady(function() {
                                     },
                                     columns: [
                                         Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                        {text: 'Empresa', width: 150, dataIndex: 'empresa', align: 'center'},
-                                        {text: 'Vehiculo', width: 100, dataIndex: 'vehiculo', align: 'center'},
+                                        {text: 'Organización', width: 150, dataIndex: 'empresa', align: 'center'},
+                                        {text: 'Vehículo', width: 100, dataIndex: 'vehiculo', align: 'center'},
                                         {text: 'Equipo', width: 100, dataIndex: 'equipo', align: 'center'},
                                         {text: 'Placa', width: 100, dataIndex: 'placa', align: 'center'},
                                         {text: 'Cantidad Eventos', width: 150, dataIndex: 'totalEventos', align: 'center'}
@@ -282,7 +282,7 @@ Ext.onReady(function() {
                                     columns: [
                                         //fields: ['empresa', 'vehiculo', 'placa', 'latitud','longitud','fecha','hora','velocidad','bateria','gsm','gps','ign','sky_evento']
                                         Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                        {text: 'Empresa', width: 130, dataIndex: 'empresa', align: 'center'},
+                                        {text: 'Organización', width: 130, dataIndex: 'empresa', align: 'center'},
                                         {text: 'Vehiculo', width: 200, dataIndex: 'vehiculo', align: 'center'},
                                         {text: 'Placa', width: 200, dataIndex: 'placa', align: 'center'},
                                         {text: 'Latitud', width: 200, dataIndex: 'latitud', align: 'center'},
