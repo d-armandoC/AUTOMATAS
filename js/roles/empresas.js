@@ -25,7 +25,6 @@ var required = '<span style="color:red;font-weight:bold" data-qtip="Requerido">*
 var meses = new Array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
 var diasSemana = new Array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
 var f = new Date();
-//document.write(diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear());
 var label = Ext.create('Ext.form.Label', {
     text: 'hola',
     id: 'tiempo',
@@ -57,8 +56,6 @@ var spot = Ext.create('Ext.ux.Spotlight', {
 
 Ext.onReady(function () {
     var idEqpMen, nameVeh;
-    //Ext.getCmp('tiempo').setValue((diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear()));
-
     Ext.apply(Ext.form.field.VTypes, {
         daterange: function (val, field) {
             var date = field.parseDate(val);
@@ -277,7 +274,6 @@ Ext.onReady(function () {
     });
 ////////////
     Ext.tip.QuickTipManager.init();
-
     menuCoop = Ext.create('Ext.menu.Menu', {
         items: [],
         listeners: {
@@ -285,7 +281,6 @@ Ext.onReady(function () {
                 for (var i = 0; i < showCoopMap.length; i++) {
                     if (showCoopMap[i][0] === item.getItemId()) {
                         showCoopMap[i][2] = item.checked;
-
                         if (!item.checked) {
                             var form = Ext.create('Ext.form.Panel');
                             form.getForm().submit({
@@ -328,8 +323,6 @@ Ext.onReady(function () {
                 }}
         ]
     });
-
-
 
     var herraminetas = Ext.create('Ext.button.Button', {
         text: 'Herramintas',
@@ -376,8 +369,6 @@ Ext.onReady(function () {
                     window.location = 'php/login/logout.php';
                 }
             });
-
-
         }
     });
 
@@ -505,7 +496,6 @@ Ext.onReady(function () {
                             select: function (combo, records, eOpts) {
                                 this.up('form').down('[name=cbxVeh]').enable();
                                 this.up('form').down('[name=cbxVeh]').clearValue();
-
                                 storeVeh.load({
                                     params: {
                                         cbxEmpresas: records[0].data.id
@@ -688,34 +678,37 @@ Ext.onReady(function () {
     var toolBarOnMap = Ext.create('Ext.toolbar.Toolbar', {
         region: 'north',
         border: true,
-        items: [{
-                xtype: 'combo',
-                width: '86%',
-                padding: '0 0 0 5',
-                store: storeDirecciones,
-                fieldLabel: '<b>Dirección</b>',
-                displayField: 'todo',
-                typeAhead: false,
-                hideTrigger: true,
-                emptyText: 'Ciudad,Barrio,Avenida Principal,Avenida Secundaria',
-                listConfig: {
-                    loadingText: 'Buscando...',
-                    emptyText: 'No ha encontrado resultados parecidos.',
-                    // Custom rendering template for each item
-                    getInnerTpl: function () {
-                        return '<b>{pais} , {ciudad}:</b><br>{barrio} , {avenidaP} , {avenidaS}';
-                    }
-                },
-//                listeners: {
-//                    select: function(thisObject, record, eOpts) {
-//                        var longitud = record[0].data.longitud;
-//                        var latitud = record[0].data.latitud;
-//                        var zoom = 18;
-//                        localizarDireccion(longitud, latitud, zoom);
+        items: [
+//            {
+//                xtype: 'combo',
+//                width: '86%',
+//                padding: '0 0 0 5',
+//                store: storeDirecciones,
+//                fieldLabel: '<b>Dirección</b>',
+//                displayField: 'todo',
+//                typeAhead: false,
+//                hideTrigger: true,
+//                emptyText: 'Ciudad,Barrio,Avenida Principal,Avenida Secundaria',
+//                listConfig: {
+//                    loadingText: 'Buscando...',
+//                    emptyText: 'No ha encontrado resultados parecidos.',
+//                    // Custom rendering template for each item
+//                    getInnerTpl: function () {
+//                        return '<b>{pais} , {ciudad}:</b><br>{barrio} , {avenidaP} , {avenidaS}';
 //                    }
 //                },
-                pageSize: 10
-            }, {
+////                listeners: {
+////                    select: function(thisObject, record, eOpts) {
+////                        var longitud = record[0].data.longitud;
+////                        var latitud = record[0].data.latitud;
+////                        var zoom = 18;
+////                        localizarDireccion(longitud, latitud, zoom);
+////                    }
+////                },
+//                pageSize: 10
+//            }
+            '->'
+            , {
                 xtype: 'button',
                 iconCls: 'icon-geoloc',
                 tooltip: 'Ubicar mi Posición',
@@ -725,8 +718,9 @@ Ext.onReady(function () {
                 }
             }, {
                 xtype: 'splitbutton',
-                text: 'Cooperativas',
+                text: 'Organización',
                 iconCls: 'icon-central',
+                tooltip: 'Organizaciones Asociadas',
                 menu: menuCoop,
                 handler: function () {
                     this.showMenu();
@@ -781,7 +775,7 @@ Ext.onReady(function () {
         region: 'center',
         layout: 'border',
         items: [
-            //  toolBarOnMap,
+            toolBarOnMap,
             panelTabMapaAdmin,
             gridEventos
         ]

@@ -407,7 +407,7 @@ Ext.onReady(function () {
                             visualizarEnviosGeoCercas();
                         }}
                 ]
-            },
+            }
         ]
     });
 
@@ -469,8 +469,6 @@ Ext.onReady(function () {
                     window.location = 'php/login/logout.php';
                 }
             });
-
-
         }
     });
 
@@ -550,9 +548,6 @@ Ext.onReady(function () {
                 height: 16,
                 margin: '0 5 0 0'
             }
-
-
-
         ]
     });
 
@@ -716,7 +711,6 @@ Ext.onReady(function () {
                             var idVehicle = 'last' + aux[1];
                             buscarEnMapa(idEmpresa, idVehicle);
                             panelTabMapaAdmin.setActiveTab(0);
-//                            };
                         }
                     }
                 }

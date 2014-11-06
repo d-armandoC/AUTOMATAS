@@ -1010,14 +1010,12 @@ function drawLineTravel(json, isSkp) {
 
 function drawLineRouteManual(json) {
     var puntosRecRuta = new Array();
-
     for (var i = 0; i < json.length - 3; i++) {
         var dataRecRuta = json[i];
         var pt = new OpenLayers.Geometry.Point(dataRecRuta.longitud, dataRecRuta.latitud);
         pt.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
         puntosRecRuta.push(pt);
     }
-
     if (puntosRecRuta.length > 0) {
         var ruta = new OpenLayers.Geometry.LineString(puntosRecRuta);
         //Estilo de Linea de Recorrido
@@ -1069,7 +1067,6 @@ function drawPoligonoGeocerca(dataRoute) {
             pt.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
             puntosRuta.push(pt);
         }
-
     }
     var ruta = new OpenLayers.Geometry.LineString(puntosRuta);
     var style = {
@@ -1109,7 +1106,6 @@ function drawPointsRoute(coordPuntos, idRuta) {
 
         features.push(puntoMap);
     }
-
     lienzoPointRoute.addFeatures(features);
 }
 
@@ -1149,7 +1145,6 @@ function iconosInicioFin(json) {
 
 
 function drawPointsTravel(coordPuntos, isSkp) {
-
     var features = new Array();
     for (var i = 0; i < coordPuntos.length; i++) {
         var dataRec = coordPuntos[i];
