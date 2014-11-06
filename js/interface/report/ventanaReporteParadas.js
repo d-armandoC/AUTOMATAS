@@ -24,7 +24,7 @@ Ext.onReady(function() {
                 root: 'data'
             }
         },
-        fields: ['empresa', 'vehiculo', 'placa', 'latitud', 'longitud', 'fecha', 'hora', 'velocidad', 'bateria', 'gsm', 'gps', 'ign', 'sky_evento']
+        fields: ['Organización', 'vehiculo', 'placa', 'latitud', 'longitud', 'fecha', 'hora', 'velocidad', 'bateria', 'gsm', 'gps', 'ign', 'sky_evento']
     });
 
     cbxEmpresasParada = Ext.create('Ext.form.ComboBox', {
@@ -163,7 +163,7 @@ Ext.onReady(function() {
                                         type: 'ajax',
                                         reader: 'array'
                                     },
-                                    fields: ['id_empresa', 'id_vehiculo', 'empresa', 'vehiculo', 'equipo', 'placa', 'totalEventos']
+                                    fields: ['id_empresa', 'id_vehiculo', 'Organización', 'vehiculo', 'equipo', 'placa', 'totalEventos']
                                 });
                                 var gridDataMantenimientoparadas = Ext.create('Ext.grid.Panel', {
                                     region: 'west',
@@ -500,7 +500,7 @@ Ext.onReady(function() {
                             failure: function(form, action) {
                                 Ext.MessageBox.show({
                                     title: 'Información',
-                                    msg: action.result.msg,
+                                    msg: 'No se encuentran datos!!!',
                                     buttons: Ext.MessageBox.OK,
                                     icon: Ext.MessageBox.INFO
                                 });

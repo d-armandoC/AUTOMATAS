@@ -9,13 +9,13 @@ if (!$mysqli = getConectionDb()) {
         $consultaSql = "SELECT eq.equipo, emp.empresa, vh.placa, skp.velocidad,concat(skp.fecha,'  ',skp.hora) as fecha, skev.acronimo  "
                 . "FROM karviewhistoricodb.dato_spks skp, karviewdb.equipos eq, karviewdb.empresas emp, karviewdb.vehiculos vh, karviewdb.sky_eventos skev   "
                 . "where skp.id_equipo=eq.id_equipo and eq.id_equipo=vh.id_equipo and vh.id_empresa=emp.id_empresa and skp.id_sky_evento= skev.id_sky_evento and "
-                . "skp.fecha between '$fechaIniEx' and '$fechaFinEx' and skp.hora between '$horaIniExcesos' and '$horaFinExcesos'  and( skp.id_sky_evento=12 || skp.id_sky_evento=21);";
+                . "skp.fecha between '$fechaIniEx' and '$fechaFinEx' and skp.hora between '$horaIniExcesos' and '$horaFinExcesos'  and( skp.id_sky_evento=11 || skp.id_sky_evento=20);";
     } else {
         
         $consultaSql = "SELECT eq.equipo, emp.empresa, vh.placa, skp.velocidad,concat(skp.fecha,'  ',skp.hora) as fecha, skev.acronimo  "
                 . "FROM karviewhistoricodb.dato_spks skp, karviewdb.equipos eq, karviewdb.empresas emp, karviewdb.vehiculos vh, karviewdb.sky_eventos skev   "
                 . "where skp.id_equipo=eq.id_equipo and eq.id_equipo=vh.id_equipo and vh.id_empresa=emp.id_empresa and skp.id_sky_evento= skev.id_sky_evento and "
-                . "vh.id_empresa='$cbxEmpresasExcesos' and skp.fecha between '$fechaIniEx' and '$fechaFinEx' and skp.hora between '$horaIniExcesos' and '$horaFinExcesos' and( skp.id_sky_evento=12 || skp.id_sky_evento=21);";
+                . "vh.id_empresa='$cbxEmpresasExcesos' and skp.fecha between '$fechaIniEx' and '$fechaFinEx' and skp.hora between '$horaIniExcesos' and '$horaFinExcesos' and( skp.id_sky_evento=11 || skp.id_sky_evento=20);";
     }
     $result = $mysqli->query($consultaSql);
     $haveData = false;

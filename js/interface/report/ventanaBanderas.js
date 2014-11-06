@@ -147,13 +147,14 @@ Ext.onReady(function() {
         fieldDefaults: {
             labelAlign: 'left',
             labelWidth: 70,
-            width: 260
+            width: 240
         },
         items: [{
                 layout: 'column',
                 baseCls: 'x-plain',
                 items: [{
-                        columnWidth: .5,
+//                        columnWidth: .5,
+                        
                         baseCls: 'x-plain',
                         items: [
                             cbxEmpresasBD,
@@ -161,7 +162,8 @@ Ext.onReady(function() {
                             timeIni
                         ]
                     }, {
-                        columnWidth: .5,
+//                        columnWidth: .5,
+//                        margin: '10 0 0 20',
                         baseCls: 'x-plain',
                         items: [
                             cbxVehBD,
@@ -175,9 +177,9 @@ Ext.onReady(function() {
                 title: 'Opciones de Reporte',
                 collapsible: true,
                 layout: 'anchor',
-                margin: '10 0 0 0',
+                margin: '10 20 0 0',
                 defaults: {
-                    anchor: '100%'
+                    anchor: '90%'
                 },
                 items: [{
                         xtype: 'checkboxgroup',
@@ -388,10 +390,10 @@ Ext.onReady(function() {
                             });
                         } else {
                             Ext.MessageBox.show({
-                                title: 'Error...',
+                                title: 'Atención',
                                 msg: 'Escoga una de las Opciones de Reporte...',
                                 buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.ERROR
+                                icon: Ext.MessageBox.infor
                             });
                         }
                     }
@@ -413,8 +415,8 @@ function ventanaBanderas() {
             title: 'Todas las Banderas',
             iconCls: 'icon-all-flags',
             resizable: false,
-            width: 560,
-            height: 300,
+            width: 510,
+            height:300,
             closeAction: 'hide',
             plain: false,
             items: [contenedorWinBan]
