@@ -881,7 +881,7 @@ Ext.onReady(function() {
 //    });
 
     var gridEventos = Ext.create('Ext.grid.GridPanel', {
-        region: 'north',
+        region: 'south',
         title: "Ultimos Reportes de Vehiculos",
         collapsible: true,
         collapsed: true,
@@ -892,12 +892,12 @@ Ext.onReady(function() {
         store: storeEventos1,
         features: [filters],
         columns: [
-            {header: "Fecha-Hora", flex: 60, sortable: true, dataIndex: "fecha_hora"},
+           {header: "Empresa", flex: 75, sortable: true, dataIndex: "empresa", filter: {type: 'string'}},
+            {header: "Usuario Equipo", flex: 60, sortable: true, dataIndex: "usuarioE", filter: {type: 'string'}},
             {header: "Vehiculo", flex: 75, sortable: true, dataIndex: "vehiculo", filter: {type: 'string'}},
-            {header: "Evento", flex: 125, sortable: true, dataIndex: "evento"},
-            {header: "Vel (Km/h)", flex: 25, sortable: true, dataIndex: "velocidad", filter: {type: 'numeric'}},
-            {header: "Direccion", flex: 175, sortable: true, dataIndex: "direccion", filter: {type: 'string'}},
-            {header: "Coordenadas", flex: 20, sortable: true, dataIndex: "coordenadas"}
+            {header: "Equipo", flex: 75, sortable: true, dataIndex: "equipo", filter: {type: 'string'}},
+            {header: "Evento", flex: 125, sortable: true, dataIndex: "sky_evento"},
+            {header: "Vel (Km/h)", flex: 50, sortable: true, dataIndex: "vel", filter: {type: 'numeric'}}
         ],
         listeners: {
             itemclick: function(thisObject, record, item, index, e, eOpts) {
@@ -913,8 +913,8 @@ Ext.onReady(function() {
         layout: 'border',
         items: [
             toolBarOnMap,
-            panelTabMapaAdmin
-                    //gridEventos
+            panelTabMapaAdmin,
+                   gridEventos
         ]
     });
 

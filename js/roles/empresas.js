@@ -421,16 +421,15 @@ Ext.onReady(function () {
             herraminetas,
             administracion,
             salir, '->',
-            {
+             {
                 xtype: 'button',
                 iconCls: 'icon-act-mapa',
                 tooltip: 'Limpiar Mapa',
-                handler: function () {
-                     clearVehiclesMapa(storeTreeVehTaxis.data.items);
+                handler: function() {
                     clearLienzoPointTravel();
                     var lonlatCenter = new OpenLayers.LonLat(0, 100000000);
                     map.setCenter(lonlatCenter, 7);
-                   
+
                 }},
             salir,
             {
