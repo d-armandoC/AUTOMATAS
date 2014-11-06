@@ -889,7 +889,7 @@ Ext.onReady(function() {
         height: 200,
         autoScroll: true,
         frame: true,
-        store: storeEventos,
+        store: storeEventos1,
         features: [filters],
         columns: [
             {header: "Fecha-Hora", flex: 60, sortable: true, dataIndex: "fecha_hora"},
