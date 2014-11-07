@@ -98,6 +98,7 @@ Ext.onReady(function() {
     var timeInicio = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
         name: 'horaIni',
+        value: '00:01',
         format: 'H:i',
         allowBlank: false,
         emptyText: 'Hora Inicial...'
@@ -107,6 +108,7 @@ Ext.onReady(function() {
         fieldLabel: 'Hasta las',
         name: 'horaFin',
         format: 'H:i',
+        value: '23:59',
         allowBlank: false,
         emptyText: 'Hora Final...'
     });
