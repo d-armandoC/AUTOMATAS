@@ -101,6 +101,7 @@ Ext.onReady(function() {
         fieldLabel: 'Desde las',
         name: 'horaIniEvent',
         format: 'H:i',
+        value: '00:01',
         allowBlank: false,
         emptyText: 'Hora Inicial...'
     });
@@ -109,6 +110,7 @@ Ext.onReady(function() {
         fieldLabel: 'Hasta las',
         name: 'horaFinEvent',
         format: 'H:i',
+        value: '23:59',
         allowBlank: false,
         emptyText: 'Hora Final...'
     });
@@ -304,7 +306,7 @@ function loadGridEvents() {
 
     var empresa = contenedorwinEvt.down('[name=cbxEmpresasEvent]').getValue();
     var listVeh = contenedorwinEvt.down('[name=listVehEvent]').getValue();
-   console.log(listVeh);
+    console.log(listVeh);
     var listEvt = contenedorwinEvt.down('[name=listEvt]').getValue();
     var fi = formatoFecha(contenedorwinEvt.down('[name=fechaIniEvent]').getValue());
     var ff = formatoFecha(contenedorwinEvt.down('[name=fechaFinEvent]').getValue());
@@ -437,7 +439,7 @@ function loadGridEvents() {
                                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store.data.items[i].data.vehiculor + " </Data></Cell > " +
                                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store.data.items[i].data.fecha_horar + " </Data></Cell > " +
                                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store.data.items[i].data.velocidadr + " </Data></Cell > " +
-                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " +formato( store.data.items[i].data.bateriar) + " </Data></Cell > " +
+                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + formato(store.data.items[i].data.bateriar) + " </Data></Cell > " +
                                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + formato(store.data.items[i].data.gsmr) + " </Data></Cell > " +
                                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + formato(store.data.items[i].data.gps2r) + " </Data></Cell > " +
                                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + formato(store.data.items[i].data.ignr) + " </Data></Cell > " +

@@ -517,7 +517,7 @@ Ext.onReady(function() {
                             {text: 'Reporte de Encendido y Apagado', iconCls: 'icon-encendido', handler: function() {
                                     showWinencendidoapagado();
                                 }},
-                            {text: 'Conexion y desconexion enegia de Equipo', iconCls: 'icon-conexcion', handler: function() {
+                            {text: 'Conexión y desconexión energía de Equipo', iconCls: 'icon-conexcion', handler: function() {
                                     showWinEnergizar();
                                 }},
                             {text: 'Eventos', iconCls: 'icon-eventos', handler: function() {
