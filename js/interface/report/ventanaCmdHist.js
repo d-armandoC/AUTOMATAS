@@ -74,6 +74,7 @@ Ext.onReady(function() {
     var timeIni = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
         name: 'horaIni',
+            value: '00:00',
         format: 'H:i',
         allowBlank: false,
         emptyText: 'Hora Inicial...'
@@ -82,6 +83,7 @@ Ext.onReady(function() {
     var timeFin = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Hasta las',
         name: 'horaFin',
+            value: '23:59',
         format: 'H:i',
         allowBlank: false,
         emptyText: 'Hora Final...'
