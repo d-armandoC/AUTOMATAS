@@ -221,7 +221,7 @@ Ext.onReady(function () {
                         waitTitle: 'Procesando...',
                         waitMsg: 'Obteniendo Información',
                         params: {
-                            idCompany: empresa,
+                            idCompany: empresa
                         },
                         success: function (form, action) {
                             persona;
