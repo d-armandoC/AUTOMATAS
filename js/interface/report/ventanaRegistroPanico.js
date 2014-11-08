@@ -320,7 +320,9 @@ Ext.onReady(function () {
                                         persona = record.get('personaPanicos');
                                         bandera = 1;
                                         gridViewDataPanico.setTitle('<center>Vista de Panicos: ' + persona + ' <br> Equipo: ' + idEquipoPanico + ' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
-                                        storeViewPanico.load({
+                                        console.log('datos de Prueba');
+                                        storeViewPanico.load(
+                                                {
                                             params: {
                                                 idEquipo: idEquipoPanico,
                                                 fechaIni: dateIni.getRawValue(),
