@@ -76,7 +76,7 @@ Ext.onReady(function() {
         },
         store: gridStoreUsuario,
         columns: [
-                       Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
+            Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
             {header: "Id", flex: 10, sortable: true, dataIndex: 'id', filterable: true},
             {header: "Cedula", width: 100, sortable: true, dataIndex: 'cedula', filter: {type: 'string'}},
             {header: "Usuario", width: 100, sortable: true, dataIndex: 'usuario', filter: {type: 'string'}},
@@ -128,10 +128,10 @@ Ext.onReady(function() {
                             for (var i = 0; i < numFil; i++) {
                                 console.log(gridStoreUsuario.data.items[i].data);
                                 table_div += "<Row ss:AutoFitHeight='0'>" +
-                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreUsuario.data.items[i].data.cedula+ " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreUsuario.data.items[i].data.cedula + " </Data></Cell > " +
                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreUsuario.data.items[i].data.person + " </Data></Cell > " +
                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreUsuario.data.items[i].data.usuario + " </Data></Cell > " +
-                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreUsuario.data.items[i].data.rol+ " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreUsuario.data.items[i].data.rol + " </Data></Cell > " +
                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreUsuario.data.items[i].data.empresa + " </Data></Cell > " +
                                         "</Row>";
                             }
@@ -463,14 +463,21 @@ function clearWinUser() {
 }
 
 function onDeleteClickUser() {
-    Ext.MessageBox.confirm('Atención!', 'Desea Eliminar el usuario', function(choice) {
-        if (choice === 'yes') {
-            var selection = grillaUsarios.getView().getSelectionModel().getSelection()[0];
-            if (selection) {
-                grillaUsarios.store.remove(selection);
-                formularioRegistrosUsuario.down('#deleteUser').disable();
-                formularioRegistrosUsuario.down('#createUser').enable();
+
+    if (userKarview == formularioRegistrosUsuario.down('[name=usuario]').getValue()) {
+        Ext.example.msg("Alerta", 'No se puede eliminar el usuario, por que se encuentra logeado');
+    } else {
+        Ext.MessageBox.confirm('Atención!', 'Desea Eliminar el usuario', function(choice) {
+            if (choice === 'yes') {
+                var selection = grillaUsarios.getView().getSelectionModel().getSelection()[0];
+                if (selection) {
+                    grillaUsarios.store.remove(selection);
+                    formularioRegistrosUsuario.down('#deleteUser').disable();
+                    formularioRegistrosUsuario.down('#createUser').enable();
+                }
             }
-        }
-    });
+        });
+
+    }
+
 }

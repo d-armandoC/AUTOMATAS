@@ -27,7 +27,7 @@ if (!$mysqli = getConectionDb()) {
         if ($stmt->affected_rows > 0) {
             echo "{success:true, message:'Datos Insertados Correctamente.'}";
         } else {
-            echo "{success:false, message: 'Problemas al Insertar en la Tabla.'}";
+            echo "{success:false, message: 'Problemas al Insertar en la Tabla,<br> No puede existir usuarios repetidos'}";
         }
         $stmt->close();
     } else {
