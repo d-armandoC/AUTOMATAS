@@ -136,6 +136,14 @@ Ext.onReady(function() {
             return true;
         },
         passwordText: 'Las Contraseñas no coinciden',
+        usuarios: function(val, field) {
+            if (field.initialPassField) {
+                var pwd = field.up('form').down('#' + field.initialPassField);
+                return (val === pwd.getValue());
+            }
+            return true;
+        },
+        usuariosText: 'los usuarios no coinciden',
         cedulaValida: function(val, field) {
             if (val.length !== 10) {
                 return false;

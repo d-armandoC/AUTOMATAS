@@ -49,7 +49,7 @@ Ext.onReady(function() {
                         blankText: 'Este campo es obligatorio',
                         itemId: 'conf_usuario',
                         id: 'id_usuarioNuevo',
-                        vtype: 'password',
+                        vtype: 'usuarios',
                         emptyText: 'Confirme usuario...',
                         initialPassField: 'n_usuario',
                         anchor: '100%'
