@@ -45,7 +45,6 @@ if (!$mysqli = getConectionDb()) {
     if ($stmt = $mysqli->prepare($updateSql)) {
         $stmt->bind_param("i", $json["id"]);
         $stmt->execute();
-
         if ($stmt->affected_rows > 0) {
             echo "{success:true, message:'Datos Actualizados Correctamente.'}";
         } else {

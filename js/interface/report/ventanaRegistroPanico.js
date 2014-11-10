@@ -19,9 +19,6 @@ var cbxEmpresasBDPanico;
 var cbxVehBDPanico;
 var porEquipo = false;
 Ext.onReady(function () {
-
-
-
     storeViewPanico = Ext.create('Ext.data.JsonStore', {
         autoLoad: true,
         autoDestroy: true,
@@ -174,6 +171,7 @@ Ext.onReady(function () {
                         items: [
                             {boxLabel: 'Organización', name: 'rb', inputValue: '1', checked: true},
                             {boxLabel: 'Por Equipo', name: 'rb', inputValue: '2'}
+
                         ],
                         listeners: {
                             change: function (field, newValue, oldValue) {
@@ -189,6 +187,14 @@ Ext.onReady(function () {
                                         porEquipo = true;
                                         empresa = cbxEmpresasBDPanico.getValue();
                                         empresaNom = cbxEmpresasBDPanico.getRawValue();
+                                        if (porEquipo) {
+                                            cbxVehBDPanico.enable();
+                                            storeVeh.load({
+                                                params: {
+                                                    cbxEmpresas: formPanico.down('[name=idCompanyPanico]').getValue()
+                                                }
+                                            });
+                                        }
                                         break;
                                 }
                             }
@@ -323,14 +329,14 @@ Ext.onReady(function () {
                                         console.log('datos de Prueba');
                                         storeViewPanico.load(
                                                 {
-                                            params: {
-                                                idEquipo: idEquipoPanico,
-                                                fechaIni: dateIni.getRawValue(),
-                                                fechaFin: dateFin.getRawValue(),
-                                                horaIniP: timeInipanico.getRawValue(),
-                                                horaFinP: timeFinpanico.getRawValue(),
-                                            }
-                                        });
+                                                    params: {
+                                                        idEquipo: idEquipoPanico,
+                                                        fechaIni: dateIni.getRawValue(),
+                                                        fechaFin: dateFin.getRawValue(),
+                                                        horaIniP: timeInipanico.getRawValue(),
+                                                        horaFinP: timeFinpanico.getRawValue(),
+                                                    }
+                                                });
                                     }
                                 }
                             });
