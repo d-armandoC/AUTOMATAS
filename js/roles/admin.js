@@ -89,26 +89,28 @@ Ext.onReady(function() {
         },
         daterangeText: 'Fecha de inicio debe ser menor que la fecha de finalización',
         placaValida: function(val, field) {
+
             var partes = val.split("");
             if (partes.length === 7) {
                 if (!/^[F]{1}[A]{1}[C]{1}[T]{1}[U]{1}[R]{1}[A]{1}$/.test(val.toUpperCase())) {
-                    return false;
+                    if (!/^[A-Z]{3}[0-9]{4}$/.test(val.toUpperCase())) {
+                        bandera = false;
+                    } else {
+                        bandera = true;
+                    }
                 } else {
-                    return true;
+                    bandera = true;
                 }
-                if (!/^[A-Z]{3}[0-9]{4}$/.test(val.toUpperCase())) {
-                    return false;
-                } else {
-                    return true;
-                }
+
             } else {
                 if (!/^[A-Z]{3}[0-9]{3}$/.test(val.toUpperCase())) {
-                    return false;
+                    bandera = false;
                 } else {
-                    return true;
+                    bandera = true;
                 }
 
             }
+            return bandera;
         },
         placaValidaText: 'Ingrese un numero de placa valido <br>\n\
                            Ej:(LAB3532) 3 letras 4 numeros',
@@ -401,7 +403,7 @@ Ext.onReady(function() {
                 iconCls: 'icon-geocerca',
                 menu: [
                     {text: 'Administracion', iconCls: 'icon-find-geo', handler: function() {
-                             ventanaGeocerca();
+                            ventanaGeocerca();
                         }},
                     {text: 'Envio Correos', iconCls: 'icon-email', handler: function() {
                             visualizarEnviosGeoCercas();
@@ -892,7 +894,7 @@ Ext.onReady(function() {
         store: storeEventos1,
         features: [filters],
         columns: [
-           {header: "Empresa", flex: 75, sortable: true, dataIndex: "empresa", filter: {type: 'string'}},
+            {header: "Empresa", flex: 75, sortable: true, dataIndex: "empresa", filter: {type: 'string'}},
 //            {header: "Usuario Equipo", flex: 60, sortable: true, dataIndex: "usuarioE", filter: {type: 'string'}},
             {header: "Vehiculo", flex: 75, sortable: true, dataIndex: "vehiculo", filter: {type: 'string'}},
             {header: "Equipo", flex: 75, sortable: true, dataIndex: "equipo", filter: {type: 'string'}},
@@ -914,7 +916,7 @@ Ext.onReady(function() {
         items: [
             toolBarOnMap,
             panelTabMapaAdmin,
-                   gridEventos
+            gridEventos
         ]
     });
 

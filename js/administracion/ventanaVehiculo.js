@@ -398,6 +398,8 @@ Ext.onReady(function() {
                                 fieldLabel: '<b>Equipo</b>',
                                 name: 'equipo',
                                 afterLabelTextTpl: required,
+                                                                allowBlank: false,
+
                                 blankText: 'Este campo es Obligatorio',
                                 id: 'eq1',
                                 vtype: 'campos',
