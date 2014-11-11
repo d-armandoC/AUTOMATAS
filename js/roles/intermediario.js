@@ -19,6 +19,7 @@ Ext.require([
 ]);
 var idEstacion;
 var panelTabMapaAdmin;
+/////////////////////////////////
 
 var drawControls;
 var required = '<span style="color:red;font-weight:bold" data-qtip="Requerido">*</span>';

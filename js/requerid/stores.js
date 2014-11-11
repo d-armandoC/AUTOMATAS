@@ -107,8 +107,6 @@ var storeDevice = Ext.create('Ext.data.Store', {
 
 
     var storeViewPanico = Ext.create('Ext.data.JsonStore', {
-//        
-//        
         autoLoad: true,
         autoDestroy: true,
         proxy: {
