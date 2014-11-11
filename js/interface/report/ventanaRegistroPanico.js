@@ -234,7 +234,7 @@ Ext.onReady(function () {
                                 },
                                 fields: ['empresaPanicos', 'personaPanicos', 'idEquipoPanicos', 'placaPanicos', 'cantidadPanicos']
                             });
-                            console.log(storeDataExcesos);
+                            console.log(storeDataExcesos.data.items[0].data.empresaPanicos);
                             gridDataExcesos = Ext.create('Ext.grid.Panel', {
                                 region: 'west',
                                 frame: true,
