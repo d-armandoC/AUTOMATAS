@@ -333,7 +333,7 @@ Ext.onReady(function () {
                                     }
                                 }
                             });
-                            if(hayDatos){
+//                            if(hayDatos){
                            var gridViewDataPanico = Ext.create('Ext.grid.Panel', {
                                 region: 'center',
                                 frame: true,
@@ -426,8 +426,8 @@ Ext.onReady(function () {
 //                                        }
 //                                    }]
                             });
-                            hayDatos=false;
-                            }
+//                            hayDatos=false;
+//                            }
                             
                       
                             tabExcesos = Ext.create('Ext.container.Container', {
