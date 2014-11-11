@@ -352,21 +352,21 @@ Ext.onReady(function () {
                                 frame: true,
                                 width: '60%',
                                 title: '<center>Detalle: ',
-//                                store: storeViewPanico,
+                                store: storeViewPanico,
 //                                features: [filters],
 //                                multiSelect: true,
                                 viewConfig: {
                                     emptyText: 'No hay datos que Mostrar'
                                 },
-                                columns: [
-                                    Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                    {text: 'Velocidad', width: 130, dataIndex: 'velocidad', align: 'center', xtype: 'numbercolumn', format: '0.00'},
-                                    {text: 'Fecha', width: 200, dataIndex: 'fecha', align: 'center'},
-                                    {text: 'Hora', width: 200, dataIndex: 'hora', align: 'center'},
-                                    {text: 'Evento', width: 250, dataIndex: 'evento', align: 'center'},
-                                    {text: 'Latitud', width: 250, dataIndex: 'latitud', align: 'center'},
-                                    {text: 'Longitud', width: 250, dataIndex: 'longitud', align: 'center'}
-                                ],
+//                                columns: [
+//                                    Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
+//                                    {text: 'Velocidad', width: 130, dataIndex: 'velocidad', align: 'center', xtype: 'numbercolumn', format: '0.00'},
+//                                    {text: 'Fecha', width: 200, dataIndex: 'fecha', align: 'center'},
+//                                    {text: 'Hora', width: 200, dataIndex: 'hora', align: 'center'},
+//                                    {text: 'Evento', width: 250, dataIndex: 'evento', align: 'center'},
+//                                    {text: 'Latitud', width: 250, dataIndex: 'latitud', align: 'center'},
+//                                    {text: 'Longitud', width: 250, dataIndex: 'longitud', align: 'center'}
+//                                ],
 //                                tbar: [{
 //                                        xtype: 'button',
 //                                        iconCls: 'icon-excel',
