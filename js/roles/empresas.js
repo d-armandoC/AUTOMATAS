@@ -18,7 +18,7 @@ Ext.require([
     'Ext.ux.Spotlight'
 ]);
 var idEstacion;
-var panelTabMapaEmpresa;
+var panelTabMapaAdmin;
 var drawControls;
 var required = '<span style="color:red;font-weight:bold" data-qtip="Requerido">*</span>';
 
@@ -608,7 +608,7 @@ Ext.onReady(function () {
                             var idEmpresa = parseInt(aux[0]);
                             var idVehicle = 'last' + aux[1];
                             buscarEnMapa(idEmpresa, idVehicle);
-                            panelTabMapaEmpresa.setActiveTab(0);
+                            panelTabMapaAdmin.setActiveTab(0);
                         }
                     }
                 }
@@ -724,7 +724,7 @@ Ext.onReady(function () {
                 tooltip: 'Ubicar mi Posición',
                 handler: function () {
                     getLocation();
-                    panelTabMapaEmpresa.setActiveTab(0);
+                    panelTabMapaAdmin.setActiveTab(0);
                 }
             }, {
                 xtype: 'splitbutton',
@@ -737,7 +737,7 @@ Ext.onReady(function () {
             }]
     });
 
-    panelTabMapaEmpresa = Ext.create('Ext.tab.Panel', {
+    panelTabMapaAdmin = Ext.create('Ext.tab.Panel', {
         region: 'center',
         frame: true,
         deferreRender: false,
@@ -773,7 +773,7 @@ Ext.onReady(function () {
         ],
         listeners: {
             itemclick: function (thisObject, record, item, index, e, eOpts) {
-             panelTabMapaEmpresa.setActiveTab(0);
+             panelTabMapaAdmin.setActiveTab(0);
                 localizarDireccion(record.data.longitud,record.data.latitud, 15);
             }
         }
@@ -784,7 +784,7 @@ Ext.onReady(function () {
         layout: 'border',
         items: [
               toolBarOnMap,
-            panelTabMapaEmpresa,
+            panelTabMapaAdmin,
             gridEventos
         ]
     });
