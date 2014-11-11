@@ -1,11 +1,7 @@
 <?php
 
 include ('../../../../dll/config.php');
-
-
 extract($_GET);
-
-
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.'}";
 } else {
@@ -32,7 +28,6 @@ if (!$mysqli = getConectionDb()) {
 
 
         $json .="]";
-
         echo "{success: true, $json}";
     } else {
         echo "{failure: true, message:'No hay datos entre estas Fechas y Horas.'}";

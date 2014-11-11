@@ -1,16 +1,4 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of UltimosReportesVehicculos
- *
- * @author Diego C
- */
 include('../../login/isLogin.php');
 require_once('../../../dll/config.php');
 if (!$mysqli = getConectionDb()) {

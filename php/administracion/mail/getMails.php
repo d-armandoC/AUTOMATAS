@@ -12,10 +12,6 @@ if (!$mysqli = getConectionDb()) {
 $queryMail = "select id_persona, id_sky_evento, id_empresa "
             . "from envio_correos where id_persona = $idPerson "
             . "and id_empresa = $cbxEmpresas";
-//    $queryMail = "select id_persona, id_sky_evento, id_empresa
-//            from envio_correos where id_persona = 6
-//            and id_empresa = 2";
-
     $resultEvents = $mysqli->query($queryEvents);
     $resultMail = $mysqli->query($queryMail);
 

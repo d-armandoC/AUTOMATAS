@@ -379,7 +379,6 @@ Ext.onReady(function() {
         menu: [
             {text: 'Organización', iconCls: 'icon-central', handler: function() {
                     showWinAdminOrganizacion();
-
                 }},
             {text: 'Equipos',
                 iconCls: 'icon-servicios',
@@ -456,13 +455,6 @@ Ext.onReady(function() {
         ]
     });
 
-    var editPosEmp = Ext.create('Ext.button.Button', {
-        iconCls: '.icon-act-mapa',
-        scope: this,
-        handler: function() {
-            // ventanaEditarPuntos();
-        }
-    });
 
     var monitoreo = Ext.create('Ext.button.Button', {
         text: 'Monitoreo',

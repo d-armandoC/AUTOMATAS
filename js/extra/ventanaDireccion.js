@@ -12,6 +12,8 @@ var obtenerCoordenadas;
 var guardarDireccion;
 
 Ext.onReady(function(){
+    
+    
     var storePais = Ext.create('Ext.data.JsonStore', {
         autoDestroy : true,
         autoLoad : true,

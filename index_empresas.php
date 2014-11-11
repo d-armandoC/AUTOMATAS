@@ -1,4 +1,4 @@
-<?php
+<?php //
     include("dll/config.php");
     include("php/login/isLogin.php");
     if (!isset($_SESSION["IDROLKARVIEW"])) {

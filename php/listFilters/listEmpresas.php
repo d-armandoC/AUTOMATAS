@@ -1,29 +1,29 @@
 <?php
-require_once('../../dll/conect.php');
 
+require_once('../../dll/config.php');
 extract($_GET);
 
-$consultaSql = "SELECT ID_EMPRESA, EMPRESA
-    FROM EMPRESAS ORDER BY EMPRESA
-";
+if (!$mysqli = getConectionDb()) {
+    echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.',state: false}";
+} else {
+    $consultaSql = "select empresa from empresas";
+    $result = $mysqli->query($consultaSql);
+    $mysqli->close();
 
-consulta($consultaSql);
-$resulset = variasFilas();
+    if ($result->num_rows > 0) {
+        $objJson = "[";
+        while ($myrow = $result->fetch_assoc()) {
+            $objJson .= "["
+                    . "'" . utf8_encode($myrow["empresa"]) . "',"
+                    . "'" . utf8_encode($myrow["empresa"]) . "'],";
+        }
 
-$salida = "[";
-
-for ($i = 0; $i < count($resulset); $i++) {
-    $fila = $resulset[$i];
-    $salida .= "[
-            '" . utf8_encode($fila["EMPRESA"]) . "',
-            '" . utf8_encode($fila["EMPRESA"]) . "'
-        ]";
-
-    if ($i != count($resulset) - 1) {
-        $salida .= ",";
+        $objJson .="]";
+        echo $objJson;
+    } else {
+        echo "{success:false, msg: 'No hay datos que obtener'}";
     }
 }
 
-$salida .="]";
 
-echo $salida;
+

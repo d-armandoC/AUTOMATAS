@@ -13,7 +13,6 @@ Ext.onReady(function() {
             {name: 'nombres'},
             {name: 'apellidos'},
             {name: 'email'},
-            {name: 'cbxEmpleo'},
             {name: 'fechaNacimiento'},
             {name: 'direccion', type: 'string'},
             {name: 'celular', type: 'string'}
@@ -181,19 +180,6 @@ Ext.onReady(function() {
         }
     });
 
-    var storeEmpleos = Ext.create('Ext.data.JsonStore', {
-        autoDestroy: true,
-        autoLoad: true,
-        proxy: {
-            type: 'ajax',
-            url: 'php/combobox/comboEmpleos.php',
-            reader: {
-                type: 'json',
-                root: 'empleos'
-            }
-        },
-        fields: ['id', 'nombre']
-    });
 
     formPersona = Ext.create('Ext.form.Panel', {
         id: 'panel-datos',
@@ -256,7 +242,6 @@ Ext.onReady(function() {
                         name: 'fechaNacimiento',
                         format: 'Y-m-d',
                         emptyText: 'Ingresar Fecha...',
-                        maxValue : new Date()
                     }]
             }, {
                 xtype: 'fieldset',

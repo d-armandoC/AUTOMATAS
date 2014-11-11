@@ -65,7 +65,6 @@
         <script type="text/javascript" src="js/interface/report/ventanaRutas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaServicios.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaSoftware.js"></script>
-        <script type="text/javascript" src="js/interface/report/ventanaTaximetro.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaEventos.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaGeocercas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaSimbologia.js"></script>
@@ -81,25 +80,20 @@
         <script type="text/javascript" src="js/interface/report/pruebasEnergizacionesDeserginizaciones.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaReporteExcesosVelocidadNew.js"></script>
         
-        <script type="text/javascript" src="js/interface/adminGeo/ventanaVerGeo.js"></script>
         <script type="text/javascript" src="js/interface/adminGeo/ventanaAgregarGeo.js"></script>
-        <script type="text/javascript" src="js/interface/adminGeo/ventanaSendMailGeo.js"></script>
         <script type="text/javascript" src="js/interface/adminGeo/VentanaGeosPruebas.js"></script>
         <script type="text/javascript" src="js/interface/adminGeo/ventanaSendMailGeoPrueba.js"></script>
         <script type="text/javascript" src="js/interface/adminGeo/vistaVehiculos.js"></script>
-        <script type="text/javascript" src="js/interface/edit/ventanaEditEmp.js"></script>
         
         
         <script type="text/javascript" src="js/extra/Video.js"></script>
-        <script type="text/javascript" src="js/extra/ventanaDireccion.js"></script>
         <script type="text/javascript" src="js/extra/ventanaVehiculosLugares.js"></script>
         <script type="text/javascript" src="js/extra/ventanaCreditos.js"></script>
-        <script type="text/javascript" src="js/extra/ventanaVideos.js"></script>
         
         <script type="text/javascript" src="js/cuenta_Usuario/ventana_cambiar.js"></script>
        <script type="text/javascript" src="js/cuenta_Usuario/modificarUsuario.js"></script>
        <script type="text/javascript" src="js/cuenta_Usuario/actualizarEmail.js"></script>
-       
+       <script type="text/javascript" src="js/extra/ventanaVideos.js"></script>
            <!--Dependencias-->
         
         <script type="text/javascript" src="js/requerid/stores.js"></script>

@@ -1,31 +1,25 @@
 <?php
-require_once('../../dll/conect.php');
-
+require_once('../../dll/config.php');
 extract($_GET);
+if (!$mysqli = getConectionDb()) {
+    echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.',state: false}";
+} else {
+    $consultaSql = "SELECT marca
+    FROM vehiculos";
+    $result = $mysqli->query($consultaSql);
+    $mysqli->close();
 
-$salida = "{failure:true}";
+    if ($result->num_rows > 0) {
+        $objJson = "[";
+        while ($myrow = $result->fetch_assoc()) {
+            $objJson .= "["
+                    . "'" . utf8_encode($myrow["marca"]) . "',"
+                    . "'" . utf8_encode($myrow["marca"]) . "'],";
+        }
 
-$consultaSql = "SELECT ID_MARCA_VEHICULO, MARCA
-    FROM MARCA_VEHICULO"
-;
-
-consulta($consultaSql);
-$resulset = variasFilas();
-
-$salida = "[";
-
-for ($i = 0; $i < count($resulset); $i++) {
-    $fila = $resulset[$i];
-    $salida .= "[
-            '" . utf8_encode($fila["MARCA"]) . "',
-            '" . utf8_encode($fila["MARCA"]) . "'
-        ]";
-    if ($i != count($resulset) - 1) {
-        $salida .= ",";
+        $objJson .="]";
+        echo $objJson;
+    } else {
+        echo "{success:false, msg: 'No hay datos que obtener'}";
     }
 }
-
-$salida .="]";
-
-echo $salida;
-?>

@@ -20,63 +20,33 @@ Ext.define('vehModel', {
     }
 });
 
-//Ext.define('eventos', {
+//Ext.define("direcciones", {
 //    extend: 'Ext.data.Model',
-//    fields: [
-//        {name: 'usuarioE'},
-//        {name: 'usuarioV'},
-//        {name: 'vehiculo'},
-//        {name: 'equipo'},
-//        {name: 'fhCon'},
-//        {name: 'fhDes'},
-//        {name: 'tmpcon'},
-//        {name: 'tmpdes'},
-//        {name: 'sky_evento'},
-//        {name: 'bateria'},
-//        {name: 'gsm'},
-//        {name: 'gps2'},
-//        {name: 'bateria'},
-//        {name: 'vel'},
-//        {name: 'latitud'},
-//        {name: 'longitud'}
-//    ],
 //    proxy: {
 //        type: 'ajax',
-//        url: 'php/interface/UltimosReporVehiculos/UltimosReportesVehicculos.php',
+//        url: 'php/extra/getDirecciones.php',
 //        reader: {
 //            type: 'json',
-//            root: 'eventos'
+//            root: 'direccion'
 //        }
-//    }
+//    },
+//    fields: [
+//        {name: 'todo'},
+//        {name: 'pais'},
+//        {name: 'ciudad'},
+//        {name: 'barrio'},
+//        {name: 'avenidaP'},
+//        {name: 'avenidaS'},
+//        {name: 'latitud'},
+//        {name: 'longitud'}
+//    ]
 //});
 
-Ext.define("direcciones", {
-    extend: 'Ext.data.Model',
-    proxy: {
-        type: 'ajax',
-        url: 'php/extra/getDirecciones.php',
-        reader: {
-            type: 'json',
-            root: 'direccion'
-        }
-    },
-    fields: [
-        {name: 'todo'},
-        {name: 'pais'},
-        {name: 'ciudad'},
-        {name: 'barrio'},
-        {name: 'avenidaP'},
-        {name: 'avenidaS'},
-        {name: 'latitud'},
-        {name: 'longitud'}
-    ]
-});
-
-//Store Direcciones
-var storeDirecciones = Ext.create('Ext.data.Store', {
-    pageSize: 10,
-    model: 'direcciones'
-});
+////Store Direcciones
+//var storeDirecciones = Ext.create('Ext.data.Store', {
+//    pageSize: 10,
+//    model: 'direcciones'
+//});
 
 var storeTreeVehTaxis = Ext.create('Ext.data.TreeStore', {
     model: 'vehModel'
@@ -135,6 +105,34 @@ var storeDevice = Ext.create('Ext.data.Store', {
     ]
 });
 
+
+    var storeViewPanico = Ext.create('Ext.data.JsonStore', {
+        autoLoad: true,
+        autoDestroy: true,
+        proxy: {
+            type: 'ajax',
+            url: 'php/interface/report/panicos/getViewPanicos.php',
+            reader: {
+                type: 'json',
+                root: 'data'
+            }
+        },
+        fields: ['fecha', 'hora', 'evento', 'latitud', 'longitud', 'velocidad']
+    });
+    
+ var storeEmpresaPanicos = Ext.create('Ext.data.Store', {
+    autoLoad: true,
+    autoDestroy: true,
+    proxy: {
+        type: 'ajax',
+        url: 'php/combobox/comboEmpresas.php',
+        reader: {
+            type: 'json',
+            root: 'empresas'
+        }
+    },
+    fields: ['id', 'text']
+});
 
 var storeEmpresas = Ext.create('Ext.data.Store', {
     autoLoad: true,
@@ -206,21 +204,21 @@ var storeTypeDevice = Ext.create('Ext.data.Store', {
     },
     fields: ['id', 'text']
 });
-
-var storetipo_operadora_vehiculo = Ext.create('Ext.data.Store', {
-    autoDestroy: true,
-    autoLoad: true,
-    proxy: {
-        type: 'ajax',
-        url: 'php/combobox/comboTipoOperadoraVehiculo.php',
-        reader: {
-            type: 'json',
-            root: 'operadora_veh'
-        }
-    },
-    fields: ['id', 'text']
-
-});
+//
+//var storetipo_operadora_vehiculo = Ext.create('Ext.data.Store', {
+//    autoDestroy: true,
+//    autoLoad: true,
+//    proxy: {
+//        type: 'ajax',
+//        url: 'php/combobox/comboTipoOperadoraVehiculo.php',
+//        reader: {
+//            type: 'json',
+//            root: 'operadora_veh'
+//        }
+//    },
+//    fields: ['id', 'text']
+//
+//});
 
 
 var storeclasseVehiculo = Ext.create('Ext.data.Store', {
@@ -238,19 +236,19 @@ var storeclasseVehiculo = Ext.create('Ext.data.Store', {
 });
 
 
-var storeTipoEstado = Ext.create('Ext.data.Store', {
-    autoDestroy: true,
-    autoLoad: true,
-    proxy: {
-        type: 'ajax',
-        url: 'php/combobox/comboTipoEstadoVehiculo.php',
-        reader: {
-            type: 'json',
-            root: 'estado_veh'
-        }
-    },
-    fields: ['id', 'text']
-});
+//var storeTipoEstado = Ext.create('Ext.data.Store', {
+//    autoDestroy: true,
+//    autoLoad: true,
+//    proxy: {
+//        type: 'ajax',
+//        url: 'php/combobox/comboTipoEstadoVehiculo.php',
+//        reader: {
+//            type: 'json',
+//            root: 'estado_veh'
+//        }
+//    },
+//    fields: ['id', 'text']
+//});
 
 
 
@@ -310,60 +308,60 @@ var storePersonas = Ext.create('Ext.data.Store', {
     fields: ['id', 'text', 'empresa', 'mail']
 });
 
-var storeMails = Ext.create('Ext.data.Store', {
-    autoDestroy: true,
-    fields: ['id_persona', 'persona', 'email', 'evt1', 'evt2', 'evt3', 'evt4', 'evt5', 'evt6',
-        'evt7', 'evt8', 'evt9', 'evt10', 'evt11', 'evt12', 'evt13', 'evt14', 'evt15', 'evt16', 'evt17', 'evt18'],
-    proxy: {
-        type: 'ajax',
-        url: 'php/administracion/email/getMails.php',
-        reader: {
-            type: 'json',
-            root: 'envio_mails'
-        }
-    }
-});
+//var storeMails = Ext.create('Ext.data.Store', {
+//    autoDestroy: true,
+//    fields: ['id_persona', 'persona', 'email', 'evt1', 'evt2', 'evt3', 'evt4', 'evt5', 'evt6',
+//        'evt7', 'evt8', 'evt9', 'evt10', 'evt11', 'evt12', 'evt13', 'evt14', 'evt15', 'evt16', 'evt17', 'evt18'],
+//    proxy: {
+//        type: 'ajax',
+//        url: 'php/administracion/email/getMails.php',
+//        reader: {
+//            type: 'json',
+//            root: 'envio_mails'
+//        }
+//    }
+//});
 
-var storeMailsGeo = Ext.create('Ext.data.Store', {
-    autoDestroy: true,
-    fields: ['id_persona', 'id_geocerca', 'persona', 'email', 'in_geo', 'out_geo'],
-    proxy: {
-        type: 'ajax',
-        url: 'php/interface/adminGeo/email/getMails.php',
-        reader: {
-            type: 'json',
-            root: 'envio_mails_geo'
-        }
-    }
-});
+//var storeMailsGeo = Ext.create('Ext.data.Store', {
+//    autoDestroy: true,
+//    fields: ['id_persona', 'id_geocerca', 'persona', 'email', 'in_geo', 'out_geo'],
+//    proxy: {
+//        type: 'ajax',
+//        url: 'php/interface/adminGeo/email/getMails.php',
+//        reader: {
+//            type: 'json',
+//            root: 'envio_mails_geo'
+//        }
+//    }
+//});
 
-var storePosEmpresas = Ext.create('Ext.data.JsonStore', {
-    autoDestroy: true,
-    autoLoad: true,
-    proxy: {
-        type: 'ajax',
-        url: "php/interface/monitoring/getLatLonEmp.php",
-        reader: {
-            type: 'json',
-            root: 'pos_emp'
-        }
-    },
-    fields: [
-        {name: 'id_empresa'},
-        {name: 'empresa'},
-        {name: 'latitud', type: 'float'},
-        {name: 'longitud', type: 'float'}
-    ],
-    timeout: 1000,
-    failure: function (form, action) {
-        Ext.MessageBox.show({
-            title: 'Error...',
-            msg: 'Precione F5 para actualizar la página...',
-            buttons: Ext.MessageBox.OK,
-            icon: Ext.MessageBox.ERROR
-        });
-    }
-});
+//var storePosEmpresas = Ext.create('Ext.data.JsonStore', {
+//    autoDestroy: true,
+//    autoLoad: true,
+//    proxy: {
+//        type: 'ajax',
+//        url: "php/interface/monitoring/getLatLonEmp.php",
+//        reader: {
+//            type: 'json',
+//            root: 'pos_emp'
+//        }
+//    },
+//    fields: [
+//        {name: 'id_empresa'},
+//        {name: 'empresa'},
+//        {name: 'latitud', type: 'float'},
+//        {name: 'longitud', type: 'float'}
+//    ],
+//    timeout: 1000,
+//    failure: function (form, action) {
+//        Ext.MessageBox.show({
+//            title: 'Error...',
+//            msg: 'Precione F5 para actualizar la página...',
+//            buttons: Ext.MessageBox.OK,
+//            icon: Ext.MessageBox.ERROR
+//        });
+//    }
+//});
 
 //Stores para filtros de Tablas
 
@@ -393,43 +391,43 @@ var storeMarVehList = Ext.create('Ext.data.Store', {
     fields: ['id', 'text']
 });
 
-var storeTipoVehList = Ext.create('Ext.data.Store', {
-    autoDestroy: true,
-    autoLoad: true,
-    proxy: {
-        type: 'ajax',
-        url: 'php/listFilters/listTipoVeh.php',
-        reader: {
-            type: 'array'
-        }
-    },
-    fields: ['id', 'text']
-});
+//var storeTipoVehList = Ext.create('Ext.data.Store', {
+//    autoDestroy: true,
+//    autoLoad: true,
+//    proxy: {
+//        type: 'ajax',
+//        url: 'php/listFilters/listTipoVeh.php',
+//        reader: {
+//            type: 'array'
+//        }
+//    },
+//    fields: ['id', 'text']
+//});
 
-var storeRolUserList = Ext.create('Ext.data.Store', {
-    autoDestroy: true,
-    autoLoad: true,
-    proxy: {
-        type: 'ajax',
-        url: 'php/listFilters/listRolUser.php',
-        reader: {
-            type: 'array'
-        }
-    },
-    fields: ['id', 'text']
-});
+//var storeRolUserList = Ext.create('Ext.data.Store', {
+//    autoDestroy: true,
+//    autoLoad: true,
+//    proxy: {
+//        type: 'ajax',
+//        url: 'php/listFilters/listRolUser.php',
+//        reader: {
+//            type: 'array'
+//        }
+//    },
+//    fields: ['id', 'text']
+//});
 
-var storeGeocercas = Ext.create('Ext.data.JsonStore', {
-    autoDestroy: true,
-    autoLoad: true,
-    proxy: {
-        type: 'ajax',
-        url: 'php/interface/adminGeo/geoLoad.php',
-        reader: {
-            type: 'json',
-            root: 'adminGeo'
-        }
-    },
-    fields: ['id_geocerca', 'geocerca', 'desc_geo', 'empresa', 'id_empresa']
-});
+//var storeGeocercas = Ext.create('Ext.data.JsonStore', {
+//    autoDestroy: true,
+//    autoLoad: true,
+//    proxy: {
+//        type: 'ajax',
+//        url: 'php/interface/adminGeo/geoLoad.php',
+//        reader: {
+//            type: 'json',
+//            root: 'adminGeo'
+//        }
+//    },
+//    fields: ['id_geocerca', 'geocerca', 'desc_geo', 'empresa', 'id_empresa']
+//});
 

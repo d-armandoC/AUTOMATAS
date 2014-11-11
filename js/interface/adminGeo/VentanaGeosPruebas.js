@@ -59,8 +59,6 @@ var mystore = Ext.create('Ext.data.Store', {
 
 
 Ext.onReady(function() {
-
-
     //Genera campos de array para usar en el inicio del store por defecto
     Ext.define('DataObject', {
         extend: 'Ext.data.Model',
@@ -84,9 +82,9 @@ Ext.onReady(function() {
         proxy: {
             type: 'ajax',
             api: {
-                read: 'php/administracion/geos/read.php',
-                create: 'php/administracion/geos/create.php',
-                update: 'php/administracion/geos/update.php'
+                read: 'php/administracion/geos/read.php'
+//                create: 'php/administracion/geos/create.php',
+//                update: 'php/administracion/geos/update.php'
 //                destroy: 'php/administracion/personal/destroy.php'
             },
             reader: {
@@ -434,16 +432,16 @@ function ventanaGeocerca() {
             // Añadir un poco de brillo al momento de entrar al contenedor
             formGeocercas.body.stopAnimation();
             formGeocercas.body.highlight();
-        },
-        notifyDrop: function(ddSource, e, data) {
-            var selectedRecord = ddSource.dragData.records[0];
-            setActiveRecord(selectedRecord || null);
-            formGeocercas.getForm().loadRecord(selectedRecord);
-            formGeocercas.down('#updateGeo').enable();
-            formGeocercas.down('#createGeo').disable();
-            formGeocercas.down('#deleteGeo').enable();
-            return true;
         }
+//        notifyDrop: function(ddSource, e, data) {
+//            var selectedRecord = ddSource.dragData.records[0];
+//            setActiveRecord(selectedRecord || null);
+//            formGeocercas.getForm().loadRecord(selectedRecord);
+//            formGeocercas.down('#updateGeo').enable();
+//            formGeocercas.down('#createGeo').disable();
+//            formGeocercas.down('#deleteGeo').enable();
+//            return true;
+//        }
     });
 }
 

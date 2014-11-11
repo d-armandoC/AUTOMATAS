@@ -2,7 +2,6 @@
 
 include('../login/isLogin.php');
 include ('../../dll/config.php');
-
 extract($_GET);
 
 if (!$mysqli = getConectionDb()) {

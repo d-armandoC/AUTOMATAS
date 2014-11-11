@@ -11,43 +11,37 @@ var idEquipoPanico;
 var gridViewDataPanico;
 var gridViewDataPanicoTotal;
 var gridViewDataPanicoGeneral;
-var storeViewPanicoTotal;
+  var gridDataExcesos;
+//var storeViewPanicoTotal;
 var storeDataPanicoD;
 var empresa = 1;
 var empresaNom = 'KRADAC';
 var cbxEmpresasBDPanico;
 var cbxVehBDPanico;
 var porEquipo = false;
-Ext.onReady(function () {
-    storeViewPanico = Ext.create('Ext.data.JsonStore', {
-        autoLoad: true,
-        autoDestroy: true,
-        proxy: {
-            type: 'ajax',
-            url: 'php/interface/report/panicos/getViewPanicos.php',
-            reader: {
-                type: 'json',
-                root: 'data'
-            }
-        },
-        fields: ['fecha', 'hora', 'evento', 'latitud', 'longitud', 'velocidad']
-    });
+var tabExcesos;
+//var storeEmpresaPanicos;
 
+  
+
+
+Ext.onReady(function () {
+    
     cbxEmpresasBDPanico = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Organización',
         name: 'idCompanyPanico',
-        store: storeEmpresas,
+        store: storeEmpresaPanicos,
         valueField: 'id',
         displayField: 'text',
         queryMode: 'local',
         emptyText: 'Seleccionar Organización...',
         editable: false,
         allowBlank: false,
-        value: 1,
+        value:1,
         listeners: {
             select: function (combo, records, eOpts) {
-                cbxVehBDPanico.clearValue();
                 if (porEquipo) {
+                    cbxVehBDPanico.clearValue();
                     cbxVehBDPanico.enable();
                     storeVeh.load({
                         params: {
@@ -154,6 +148,7 @@ Ext.onReady(function () {
         },
         items: [btnToday, btnYesterday]
     });
+    var hayDatos=false;
     formPanico = Ext.create('Ext.form.Panel', {
         bodyPadding: '10 10 0 10',
         fieldDefaults: {
@@ -212,7 +207,7 @@ Ext.onReady(function () {
                     dateFin,
                     timeInipanico,
                     timeFinpanico,
-                    panelButtons,
+                    panelButtons
                 ]
             }],
         buttons: [{
@@ -229,9 +224,9 @@ Ext.onReady(function () {
                         params: {
                             idCompany: empresa
                         },
+                        ///////////////////
                         success: function (form, action) {
-                            persona;
-                            gridViewDataPanico;
+                            
                             var storeDataExcesos = Ext.create('Ext.data.JsonStore', {
                                 data: action.result.data,
                                 proxy: {
@@ -240,7 +235,8 @@ Ext.onReady(function () {
                                 },
                                 fields: ['empresaPanicos', 'personaPanicos', 'idEquipoPanicos', 'placaPanicos', 'cantidadPanicos']
                             });
-                            var gridDataExcesos = Ext.create('Ext.grid.Panel', {
+                            
+                            gridDataExcesos = Ext.create('Ext.grid.Panel', {
                                 region: 'west',
                                 frame: true,
                                 width: '40%',
@@ -322,12 +318,12 @@ Ext.onReady(function () {
                                 listeners: {
                                     itemclick: function (thisObj, record, item, index, e, eOpts) {
                                         idEquipoPanico = record.get('idEquipoPanicos');
-                                        console.log(idEquipoPanico);
                                         persona = record.get('personaPanicos');
                                         bandera = 1;
                                         gridViewDataPanico.setTitle('<center>Vista de Panicos: ' + persona + ' <br> Equipo: ' + idEquipoPanico + ' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
-                                        console.log('datos de Prueba');
+                                        hayDatos=true;
                                         storeViewPanico.load(
+                                                
                                                 {
                                                     params: {
                                                         idEquipo: idEquipoPanico,
@@ -340,11 +336,12 @@ Ext.onReady(function () {
                                     }
                                 }
                             });
-                            gridViewDataPanico = Ext.create('Ext.grid.Panel', {
+                            if(hayDatos){
+                             gridViewDataPanico = Ext.create('Ext.grid.Panel', {
                                 region: 'center',
                                 frame: true,
                                 width: '60%',
-                                title: '<center>Panicos Totales: ',
+                                title: '<center>Detalle: ',
                                 store: storeViewPanico,
 //                                features: [filters],
 //                                multiSelect: true,
@@ -432,7 +429,11 @@ Ext.onReady(function () {
                                         }
                                     }]
                             });
-                            var tabExcesos = Ext.create('Ext.container.Container', {
+                            hayDatos=false;
+                            }
+                            
+                      
+                            tabExcesos = Ext.create('Ext.container.Container', {
                                 title: 'Panicos Detallados',
                                 closable: true,
                                 iconCls: 'icon-reset',
@@ -443,6 +444,7 @@ Ext.onReady(function () {
                                 region: 'center',
                                 items: [gridDataExcesos, gridViewDataPanico]
                             });
+                            
                             panelTabMapaAdmin.add(tabExcesos);
                             panelTabMapaAdmin.setActiveTab(tabExcesos);
                             winPanico.hide();

@@ -9,6 +9,7 @@ if (!$mysqli = getConectionDb()) {
     echo "{success:false, msg: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
     $idRol = $_SESSION["IDROLKARVIEW"];
+    
     if ($idRol == 1 ) {
         $consultaSql = "select id_empresa, empresa,
                 direccion, telefono, correo from empresas 
