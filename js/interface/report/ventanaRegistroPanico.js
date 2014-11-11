@@ -314,6 +314,8 @@ Ext.onReady(function () {
                                             }
                                         }
                                     }],
+                                
+                                
                                 listeners: {
                                     itemclick: function (thisObj, record, item, index, e, eOpts) {
                                         idEquipoPanico = record.get('idEquipoPanicos');
