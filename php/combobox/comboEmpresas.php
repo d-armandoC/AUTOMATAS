@@ -39,26 +39,4 @@ if (!$mysqli = getConectionDb()) {
     } else {
         echo "{success:false, msg: 'No hay datos que obtener'}";
     }
-    
-
-//    $result = $mysqli->query($consultaSql);
-//    $mysqli->close();
-//
-//    if ($result->num_rows > 0) {
-//        $objJson = "{empresas: [";
-//        while ($myrow = $result->fetch_assoc()) {
-//            $objJson .= "{"
-//                    . "id:" . $myrow["id_empresa"] . ","
-//                    . "text:'" . utf8_encode($myrow["empresa"]) . "',"
-//                    . "direccion: '" . utf8_encode($myrow["direccion"]) . "',"
-//                    . "telefono: '" . $myrow["telefono"] . "',"
-//                    . "email: '" . $myrow["correo"] . "',"
-//                    . "},";
-//        }
-//
-//        $objJson .="]}";
-//        echo $objJson;
-//    } else {
-//        echo "{success:false, msg: 'No hay datos que obtener'}";
-//    }
 }

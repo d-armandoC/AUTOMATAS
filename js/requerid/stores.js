@@ -120,6 +120,9 @@ var storeDevice = Ext.create('Ext.data.Store', {
         fields: ['fecha', 'hora', 'evento', 'latitud', 'longitud', 'velocidad']
     });
     
+    
+    
+    
  var storeEmpresaPanicos = Ext.create('Ext.data.Store', {
     autoLoad: true,
     autoDestroy: true,
@@ -204,21 +207,7 @@ var storeTypeDevice = Ext.create('Ext.data.Store', {
     },
     fields: ['id', 'text']
 });
-//
-//var storetipo_operadora_vehiculo = Ext.create('Ext.data.Store', {
-//    autoDestroy: true,
-//    autoLoad: true,
-//    proxy: {
-//        type: 'ajax',
-//        url: 'php/combobox/comboTipoOperadoraVehiculo.php',
-//        reader: {
-//            type: 'json',
-//            root: 'operadora_veh'
-//        }
-//    },
-//    fields: ['id', 'text']
-//
-//});
+
 
 
 var storeclasseVehiculo = Ext.create('Ext.data.Store', {
@@ -236,19 +225,6 @@ var storeclasseVehiculo = Ext.create('Ext.data.Store', {
 });
 
 
-//var storeTipoEstado = Ext.create('Ext.data.Store', {
-//    autoDestroy: true,
-//    autoLoad: true,
-//    proxy: {
-//        type: 'ajax',
-//        url: 'php/combobox/comboTipoEstadoVehiculo.php',
-//        reader: {
-//            type: 'json',
-//            root: 'estado_veh'
-//        }
-//    },
-//    fields: ['id', 'text']
-//});
 
 
 

@@ -485,4 +485,6 @@ function showWinPanicosDaily() {
     }
     winPanico.show();
     formPanico.getForm().reset();
+    
+    ////////////////////////
 }
