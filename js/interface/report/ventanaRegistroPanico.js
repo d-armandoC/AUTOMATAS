@@ -19,6 +19,7 @@ var cbxEmpresasBDPanico;
 var cbxVehBDPanico;
 var porEquipo = false;
 var tabExcesos;
+ var hayDatos=false;
 //var storeEmpresaPanicos;
 
   
@@ -147,7 +148,7 @@ Ext.onReady(function () {
         },
         items: [btnToday, btnYesterday]
     });
-    var hayDatos=false;
+   
     formPanico = Ext.create('Ext.form.Panel', {
         bodyPadding: '10 10 0 10',
         fieldDefaults: {
