@@ -1,7 +1,7 @@
 var formPanico;
 var winPanico;
 var bandera = 0;
-var storeViewPanico;
+//var storeViewPanico;
 var dateStart;
 var dateFinish;
 var timeStart;
