@@ -234,7 +234,7 @@ Ext.onReady(function () {
                                 },
                                 fields: ['empresaPanicos', 'personaPanicos', 'idEquipoPanicos', 'placaPanicos', 'cantidadPanicos']
                             });
-                            
+                            console.log(storeDataExcesos);
                             gridDataExcesos = Ext.create('Ext.grid.Panel', {
                                 region: 'west',
                                 frame: true,
@@ -442,7 +442,8 @@ Ext.onReady(function () {
                                 height: 485,
                                 width: 2000,
                                 region: 'center',
-                                items: [gridDataExcesos, gridViewDataPanico]
+//                                items: [gridDataExcesos, gridViewDataPanico]
+                                items: [gridDataExcesos]
                             });
                             
                             panelTabMapaAdmin.add(tabExcesos);
