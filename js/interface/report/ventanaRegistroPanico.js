@@ -234,7 +234,20 @@ Ext.onReady(function () {
                                 },
                                 fields: ['empresaPanicos', 'personaPanicos', 'idEquipoPanicos', 'placaPanicos', 'cantidadPanicos']
                             });
-                            console.log(storeDataExcesos.data.items[0].data.empresaPanicos);
+//                            console.log(storeDataExcesos.data.items[0].data.empresaPanicos);
+                            console.log(storeDataExcesos);
+                            
+//                                storeViewPanico.load(
+//                                                {
+//                                                    params: {
+//                                                        idEquipo: idEquipoPanico,
+//                                                        fechaIni: dateIni.getRawValue(),
+//                                                        fechaFin: dateFin.getRawValue(),
+//                                                        horaIniP: timeInipanico.getRawValue(),
+//                                                        horaFinP: timeFinpanico.getRawValue(),
+//                                                    }
+//                                                });
+                            
                             gridDataExcesos = Ext.create('Ext.grid.Panel', {
                                 region: 'west',
                                 frame: true,
