@@ -18,9 +18,10 @@ var empresaNom = 'KRADAC';
 var cbxEmpresasBDPanico;
 var cbxVehBDPanico;
 var porEquipo = false;
-var tabExcesos;
+//var tabExcesos;
 var hayDatos = false;
 //var storeEmpresaPanicos;
+var gridViewDataPanico;
 
 
 
@@ -247,7 +248,7 @@ Ext.onReady(function () {
                                         }
                                     });
 //                            gridViewDataPanico.setTitle('<center>Vista de Panicos: ' + storeDataExcesos.data.items[0].data.personaPanicos +' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
-                            gridDataExcesos = Ext.create('Ext.grid.Panel', {
+                        var    gridDataExcesos = Ext.create('Ext.grid.Panel', {
                                 region: 'west',
                                 frame: true,
                                 width: '40%',
@@ -346,8 +347,7 @@ Ext.onReady(function () {
                                     }
                                 }
                             });
-//                            if(hayDatos){
-                            var gridViewDataPanico = Ext.create('Ext.grid.Panel', {
+                            gridViewDataPanico = Ext.create('Ext.grid.Panel', {
                                 region: 'center',
                                 frame: true,
                                 width: '60%',
@@ -439,7 +439,7 @@ Ext.onReady(function () {
                                         }
                                     }]
                             });
-                            tabExcesos = Ext.create('Ext.container.Container', {
+                          var  tabExcesos = Ext.create('Ext.container.Container', {
                                 title: 'Panicos Detallados',
                                 closable: true,
                                 iconCls: 'icon-reset',
@@ -449,7 +449,6 @@ Ext.onReady(function () {
                                 width: 2000,
                                 region: 'center',
                                 items: [gridDataExcesos, gridViewDataPanico]
-//                                items: [gridDataExcesos]
                             });
 
                             panelTabMapaAdmin.add(tabExcesos);

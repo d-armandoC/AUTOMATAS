@@ -709,6 +709,10 @@ Ext.onReady(function() {
                                         region: 'center',
                                         items: [gridDataMantenimiento, gridViewDataEA]
                                     });
+                                    
+                                    
+                                    
+                                    /////////////////////////////////////////
                                     panelTabMapaAdmin.add(tabExces);
                                     panelTabMapaAdmin.setActiveTab(tabExces);
                                     VentanaEA.hide();
