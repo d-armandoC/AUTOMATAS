@@ -18,7 +18,7 @@ var empresaNom = 'KRADAC';
 var cbxEmpresasBDPanico;
 var cbxVehBDPanico;
 var porEquipo = false;
-var tabExcesos;
+//var tabExcesos;
 var hayDatos = false;
 //var storeEmpresaPanicos;
 
@@ -439,7 +439,7 @@ Ext.onReady(function () {
                             });
 //                           
 
-                            tabExcesos = Ext.create('Ext.container.Container', {
+                           var tabExcesos = Ext.create('Ext.container.Container', {
                                 title: 'Panicos Detallados',
                                 closable: true,
                                 iconCls: 'icon-reset',
