@@ -109,8 +109,8 @@ var storeDevice = Ext.create('Ext.data.Store', {
     var storeViewPanico = Ext.create('Ext.data.JsonStore', {
 //        
 //        
-//        autoLoad: true,
-//        autoDestroy: true,
+        autoLoad: true,
+        autoDestroy: true,
         proxy: {
             type: 'ajax',
             url: 'php/interface/report/panicos/getViewPanicos.php',
