@@ -105,20 +105,38 @@ var storeDevice = Ext.create('Ext.data.Store', {
     ]
 });
 
+var storeViewPanico = Ext.create('Ext.data.Store', {
+    autoDestroy: true,
+    autoLoad: true,
+    storeId: 'MyStore',
+    proxy: {
+        type: 'ajax',
+        url: 'php/interface/report/panicos/getViewPanicos.php',
+        reader: {
+            type: 'json',
+            root: 'data'
+        }
+    },
+   fields: ['fecha', 'hora', 'evento', 'latitud', 'longitud', 'velocidad']
+});
 
-    var storeViewPanico = Ext.create('Ext.data.JsonStore', {
-        autoLoad: true,
-        autoDestroy: true,
-        proxy: {
-            type: 'ajax',
-            url: 'php/interface/report/panicos/getViewPanicos.php',
-            reader: {
-                type: 'json',
-                root: 'data'
-            }
-        },
-        fields: ['fecha', 'hora', 'evento', 'latitud', 'longitud', 'velocidad']
-    });
+
+
+//    storeViewPanico = Ext.create('Ext.data.JsonStore', {
+//        autoLoad: true,
+//        autoDestroy: true,
+//        proxy: {
+//            type: 'ajax',
+//            url: 'php/interface/report/panicos/getViewPanicos.php',
+//            reader: {
+//                type: 'json',
+//                root: 'data'
+//            }
+//        },
+//        fields: ['fecha', 'hora', 'evento', 'latitud', 'longitud', 'velocidad']
+//        
+//        
+//    });
     
     
     
