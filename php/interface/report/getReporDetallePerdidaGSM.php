@@ -4,20 +4,20 @@ include ('../../../dll/config.php');
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-    if ($rb1 == 1) {
+    if ($rb4 == 1) {
         $consultaSql = "SELECT emp.empresa, eq.equipo, vh.placa, skp.velocidad, concat(skp.fecha,' ',skp.hora) as fecha , skp.gsm, skp.gps ,skp.latitud, skp.longitud "
                 . "FROM karviewhistoricodb.dato_spks skp, karviewdb.equipos eq, karviewdb.empresas emp, karviewdb.vehiculos vh   "
-                . "where skp.id_equipo=eq.id_equipo and eq.id_equipo=vh.id_equipo and vh.id_empresa=emp.id_empresa and skp.fecha between '$fechaIni' and '$fechaFin'and skp.hora between '$horaIni' and '$horaFin' and( skp.gsm=0 );";
+                . "where skp.id_equipo=eq.id_equipo and eq.id_equipo=vh.id_equipo and vh.id_empresa=emp.id_empresa and vh.id_empresa='$idempresagsm' and skp.fecha between '$fechaIni' and '$fechaFin'and skp.hora between '$horaIni' and '$horaFin' and( skp.gsm=0 );";
         $consultaSqlRec = "SELECT emp.empresa, eq.equipo, vh.placa, skp.velocidad, concat(skp.fecha,' ',skp.hora) as fecha , skp.gsm ,skp.gps, skp.latitud, skp.longitud "
                 . "FROM karviewhistoricodb.dato_spks skp, karviewdb.equipos eq, karviewdb.empresas emp, karviewdb.vehiculos vh   "
-                . "where skp.id_equipo=eq.id_equipo and eq.id_equipo=vh.id_equipo and vh.id_empresa=emp.id_empresa and skp.fecha between '$fechaIni' and '$fechaFin'and skp.hora between '$horaIni' and '$horaFin' and( skp.gps=0 );";
-    }else{
+                . "where skp.id_equipo=eq.id_equipo and eq.id_equipo=vh.id_equipo and vh.id_empresa=emp.id_empresa and vh.id_empresa='$idempresagsm' and skp.fecha between '$fechaIni' and '$fechaFin'and skp.hora between '$horaIni' and '$horaFin' and( skp.gps=0 );";
+    }else if ($rb4 == 2) {
          $consultaSql = "SELECT emp.empresa, eq.equipo, vh.placa, skp.velocidad, concat(skp.fecha,' ',skp.hora) as fecha , skp.gsm, skp.gps ,skp.latitud, skp.longitud "
                 . "FROM karviewhistoricodb.dato_spks skp, karviewdb.equipos eq, karviewdb.empresas emp, karviewdb.vehiculos vh   "
-                . "where skp.id_equipo=eq.id_equipo and eq.id_equipo=vh.id_equipo and vh.id_empresa=emp.id_empresa and vh.id_empresa='$idempresagsm' and skp.fecha between '$fechaIni' and '$fechaFin' and skp.hora between '$horaIni' and '$horaFin' and( skp.gsm=0 );";
+                . "where skp.id_equipo=eq.id_equipo and eq.id_equipo=vh.id_equipo and vh.id_empresa=emp.id_empresa and vh.id_Vehiculo='$cbxVeh' and skp.fecha between '$fechaIni' and '$fechaFin' and skp.hora between '$horaIni' and '$horaFin' and( skp.gsm=0 );";
         $consultaSqlRec = "SELECT emp.empresa, eq.equipo, vh.placa, skp.velocidad, concat(skp.fecha,' ',skp.hora) as fecha , skp.gsm ,skp.gps, skp.latitud, skp.longitud "
                 . "FROM karviewhistoricodb.dato_spks skp, karviewdb.equipos eq, karviewdb.empresas emp, karviewdb.vehiculos vh   "
-                . "where skp.id_equipo=eq.id_equipo and eq.id_equipo=vh.id_equipo and vh.id_empresa=emp.id_empresa and vh.id_empresa='$idempresagsm' and skp.fecha between '$fechaIni' and '$fechaFin' and skp.hora between '$horaIni' and '$horaFin' and( skp.gps=0 );";
+                . "where skp.id_equipo=eq.id_equipo and eq.id_equipo=vh.id_equipo and vh.id_empresa=emp.id_empresa and vh.id_Vehiculo='$cbxVeh' and skp.fecha between '$fechaIni' and '$fechaFin' and skp.hora between '$horaIni' and '$horaFin' and( skp.gps=0 );";
         
     }
         $result = $mysqli->query($consultaSql);

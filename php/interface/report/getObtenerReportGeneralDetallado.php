@@ -4,14 +4,15 @@ include ('../../../dll/config.php');
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-    if($rb==1){
+    
+    if($rb3==1){
     $consultaSql ="SELECT m.id_vehiculo, vh.placa, vh.marca, emp.empresa, count(*) as totalMantenimiento, 
             m.fechaSoatReg, m.fechaSoatVenc,m.descripSoat,m.fechaMatriculaReg ,m.fechaMatriculaVenc, m.descripMatricula, 
-            m.fechaSeguroReg, m.fechaSeguroVenc , m.descripSeguro   FROM karviewdb.mantenimiento m, karviewdb.vehiculos vh, karviewdb.empresas emp where m.id_vehiculo=vh.id_vehiculo and vh.id_empresa= emp.id_empresa and (m.fecha between concat('$fechaInimanten',' ','00:00:00') and concat('$fechaFinManten',' ','23:59:00'))  group by id_vehiculo";
-    }else{
+            m.fechaSeguroReg, m.fechaSeguroVenc , m.descripSeguro   FROM karviewdb.mantenimiento m, karviewdb.vehiculos vh, karviewdb.empresas emp where m.id_vehiculo=vh.id_vehiculo and vh.id_empresa= emp.id_empresa and vh.id_empresa='$idCompanyMantenimiento' and (m.fecha between concat('$fechaInimanten',' ','$horaInManten') and concat('$fechaFinManten',' ','$horaFinManten'))  group by id_vehiculo";
+    }else if($rb3==2){
     $consultaSql ="SELECT m.id_vehiculo, vh.placa, vh.marca, emp.empresa, count(*) as totalMantenimiento, 
             m.fechaSoatReg, m.fechaSoatVenc,m.descripSoat,m.fechaMatriculaReg ,m.fechaMatriculaVenc, m.descripMatricula, 
-            m.fechaSeguroReg, m.fechaSeguroVenc , m.descripSeguro   FROM karviewdb.mantenimiento m, karviewdb.vehiculos vh, karviewdb.empresas emp where m.id_vehiculo=vh.id_vehiculo and vh.id_empresa= emp.id_empresa and vh.id_empresa='$idCompanyExcesos' and (m.fecha between concat('$fechaInimanten',' ','00:00:00') and concat('$fechaFinManten',' ','23:59:00'))  group by id_vehiculo";
+            m.fechaSeguroReg, m.fechaSeguroVenc , m.descripSeguro   FROM karviewdb.mantenimiento m, karviewdb.vehiculos vh, karviewdb.empresas emp where m.id_vehiculo=vh.id_vehiculo and vh.id_empresa= emp.id_empresa and vh.id_Vehiculo='$cbxVeh' and (m.fecha between concat('$fechaInimanten',' ','$horaInManten') and concat('$fechaFinManten',' ','$horaFinManten'))  group by id_vehiculo";
     }
     $result = $mysqli->query($consultaSql);
     $haveData = false;

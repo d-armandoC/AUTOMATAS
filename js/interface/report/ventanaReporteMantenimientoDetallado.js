@@ -15,8 +15,13 @@ var vistaVistaRegistrosMantenimiento;
 var empresa;
 var id_vehiculo;
 var vehiculo;
+var porEquipoManten;
+var cbxVehBDManten;
+var timeIniMantenimiento;
+var timeFinMantenimiento;
 
-Ext.onReady(function() {
+Ext.onReady(function () {
+
     storeViewMantenimiento = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
         proxy: {
@@ -35,7 +40,7 @@ Ext.onReady(function() {
 
     cbxEmpresasMantenimiento = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Organización',
-        name: 'idCompanyExcesos',
+        name: 'idCompanyMantenimiento',
         store: storeEmpresas,
         valueField: 'id',
         displayField: 'text',
@@ -45,12 +50,35 @@ Ext.onReady(function() {
         allowBlank: false,
         value: 1,
         listeners: {
-            select: function(combo, records, eOpts) {
-                console.log(records[0].data.id);
-                empresaMantenimiento = records[0].data.id;
+            select: function (combo, records, eOpts) {
+                if (porEquipoManten) {
+                    cbxVehBDManten.clearValue();
+                    cbxVehBDManten.enable();
+                    storeVeh.load({
+                        params: {
+                            cbxEmpresas: records[0].data.id
+                        }
+                    });
+                }
             }
         }
     });
+    cbxVehBDManten = Ext.create('Ext.form.ComboBox', {
+        fieldLabel: 'Vehículos',
+        name: 'cbxVeh',
+        store: storeVeh,
+        valueField: 'id',
+        displayField: 'text',
+        queryMode: 'local',
+        emptyText: 'Seleccionar Vehículo...',
+        disabled: true,
+        editable: false,
+        allowBlank: false,
+        listConfig: {
+            minWidth: 450
+        }
+    });
+
 
     var fechaIniMantenimiento = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
@@ -76,10 +104,34 @@ Ext.onReady(function() {
         startDateField: 'fechaInimanten',
         emptyText: 'Fecha Final...'
     });
+
+    timeIniMantenimiento = Ext.create('Ext.form.field.Time', {
+        fieldLabel: 'Desde las',
+        name: 'horaInManten',
+        value: '00:01',
+        format: 'H:i',
+        allowBlank: false,
+        emptyText: 'Hora Inicial...',
+        listConfig: {
+            minWidth: 300
+        }
+    });
+    timeFinMantenimiento = Ext.create('Ext.form.field.Time', {
+        fieldLabel: 'Hasta las',
+        name: 'horaFinManten',
+        value: '23:59',
+        format: 'H:i',
+        allowBlank: false,
+        emptyText: 'Hora final...',
+        listConfig: {
+            minWidth: 450
+        }
+    });
+
     var btn_HoyMnatenimiento = Ext.create('Ext.button.Button', {
         text: 'Hoy',
         iconCls: 'icon-today',
-        handler: function() {
+        handler: function () {
             var nowDate = new Date();
             fechaIniMantenimiento.setValue(nowDate);
             fechaFinMantenimiento.setValue(nowDate);
@@ -88,7 +140,7 @@ Ext.onReady(function() {
     var bt_HayerMantenimiento = Ext.create('Ext.button.Button', {
         text: 'Ayer',
         iconCls: 'icon-yesterday',
-        handler: function() {
+        handler: function () {
             var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
             fechaIniMantenimiento.setValue(yestDate);
             fechaFinMantenimiento.setValue(yestDate);
@@ -116,39 +168,56 @@ Ext.onReady(function() {
                         columns: 2,
                         vertical: true,
                         items: [
-                            {boxLabel: 'General ', name: 'rb', inputValue: '1', checked: true},
-                            {boxLabel: 'Por Organización', name: 'rb', inputValue: '2'},
+                            {boxLabel: 'Por Organización', name: 'rb3', inputValue: '1', checked: true},
+                            {boxLabel: 'Por Vehiculo', name: 'rb3', inputValue: '2'}
                         ],
                         listeners: {
-                            change: function(field, newValue, oldValue) {
-                                switch (parseInt(newValue['rb'])) {
+                            change: function (field, newValue, oldValue) {
+                                switch (parseInt(newValue['rb3'])) {
                                     case 1:
                                         empresaMantenimiento = 1;
-                                        cbxEmpresasMantenimiento.disable();
+                                        cbxEmpresasMantenimiento.enable();
+                                        cbxVehBDManten.clearValue();
+                                        cbxVehBDManten.disable();
+                                        porEquipoManten = false;
                                         break;
                                     case 2:
-                                        cbxEmpresasMantenimiento.enable();
+                                        porEquipoManten = true;
                                         empresaMantenimiento = cbxEmpresasMantenimiento.getValue();
+                                        if (porEquipoManten) {
+                                            cbxVehBDManten.enable();
+                                            storeVeh.load({
+                                                params: {
+                                                    cbxEmpresas: formularioMantenimientoDetallado.down('[name=idCompanyMantenimiento]').getValue()
+                                                }
+                                            });
+                                        }
                                         break;
                                 }
                             }
                         }
                     },
-                    cbxEmpresasMantenimiento
+                    cbxEmpresasMantenimiento,
+                    cbxVehBDManten
                 ]
-            }, {
+            },
+            {
                 xtype: 'fieldset',
                 title: '<b>Fechas</b>',
                 items: [
                     fechaIniMantenimiento,
                     fechaFinMantenimiento,
+                    timeIniMantenimiento,
+                    timeFinMantenimiento,
                     panel_BotonesMantenimiento
                 ]
-            }],
+            }
+
+        ],
         buttons: [{
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
-                handler: function() {
+                handler: function () {
                     fechaInicio = fechaIniMantenimiento.getRawValue();
                     fechaFinal = fechaFinMantenimiento.getRawValue();
                     var form = formularioMantenimientoDetallado.getForm();
@@ -160,7 +229,7 @@ Ext.onReady(function() {
 //                                params: {
 //                                    idCompanyExcesos: empresaMantenimiento,
 //                                },
-                            success: function(form, action) {
+                            success: function (form, action) {
                                 personaMantenimiento;
                                 gridViewDataMantenimiento;
                                 fechaIn = fechaInigsm.getRawValue();
@@ -196,7 +265,7 @@ Ext.onReady(function() {
                                             xtype: 'button',
                                             iconCls: 'icon-excel',
                                             text: 'Exportar a Excel',
-                                            handler: function() {
+                                            handler: function () {
                                                 if (storeDataReporteDetallado.getCount() > 0) {
                                                     if (getNavigator() === 'img/chrome.png') {
                                                         var a = document.createElement('a');
@@ -264,7 +333,7 @@ Ext.onReady(function() {
                                             }
                                         }],
                                     listeners: {
-                                        itemcontextmenu: function(thisObj, record, item, index, e, eOpts) {
+                                        itemcontextmenu: function (thisObj, record, item, index, e, eOpts) {
                                             e.stopEvent();
                                             Ext.create('Ext.menu.Menu', {
                                                 items: [
@@ -272,7 +341,7 @@ Ext.onReady(function() {
                                                         iconCls: 'icon-vehiculos_lugar', // Use a URL in the icon config
                                                         text: 'Ver Detalles',
                                                         disabled: false,
-                                                        handler: function(widget, event) {
+                                                        handler: function (widget, event) {
                                                             if (vistaVistaRegistrosMantenimiento) {
                                                                 vistaVistaRegistrosMantenimiento.hide();
                                                             }
@@ -284,12 +353,11 @@ Ext.onReady(function() {
                                             }).showAt(e.getXY());
                                             return false;
                                         },
-                                        itemclick: function(thisObj, record, item, index, e, eOpts) {
+                                        itemclick: function (thisObj, record, item, index, e, eOpts) {
                                             empresa = record.get('empresa');
                                             id_vehiculo = record.get('id_vehiculo');
                                             vehiculo = record.get('vehiculo');
                                             banderaMantenimiento = 1;
-
                                             gridViewDataMantenimiento.setTitle('<center>Lista de Mantenimientos por Vehiculo <br>Organización: ' + empresa + ' Desde: ' + fechaInicio + ' Hasta:' + fechaFinal + '</center>');
                                             storeViewMantenimiento.load({
                                                 params: {
@@ -322,7 +390,7 @@ Ext.onReady(function() {
                                             xtype: 'button',
                                             iconCls: 'icon-excel',
                                             text: 'Exportar a Excel',
-                                            handler: function() {
+                                            handler: function () {
                                                 if (storeViewMantenimiento.getCount() > 0) {
                                                     if (getNavigator() === 'img/chrome.png') {
                                                         var a = document.createElement('a');
@@ -391,7 +459,7 @@ Ext.onReady(function() {
                                     iconCls: 'icon-servicios',
                                     layout: 'border',
                                     fullscreen: true,
-                                    height: 485,
+                                    height: 490,
                                     width: 2000,
                                     region: 'center',
                                     items: [gridDataMantenimiento, gridViewDataMantenimiento]
@@ -400,7 +468,7 @@ Ext.onReady(function() {
                                 panelTabMapaAdmin.setActiveTab(tabExces);
                                 VentanaMantenimiento.hide();
                             },
-                            failure: function(form, action) {
+                            failure: function (form, action) {
                                 Ext.MessageBox.show({
                                     title: 'Información',
                                     msg: action.result.msg,
@@ -415,7 +483,7 @@ Ext.onReady(function() {
             , {
                 text: 'Cancelar',
                 iconCls: 'icon-cancelar',
-                handler: function() {
+                handler: function () {
                     VentanaMantenimiento.hide();
                 }
             }]
@@ -495,12 +563,9 @@ function metodoRegistros(empresa, vehiculo, total, fechaSoatReg, fechaSoatVenc, 
                         handler: limpiarPanelG
                     }
                 ]}
-
         ]
     });
 }
-
-
 
 function showWinMantenimientoGeneral() {
     if (!VentanaMantenimiento) {
@@ -509,14 +574,13 @@ function showWinMantenimientoGeneral() {
             title: 'Mantenimiento Detallado',
             iconCls: 'icon-servicios',
             resizable: false,
-            width: 350,
-            height: 300,
+            width: 360,
+            height: 370,
             closeAction: 'hide',
             plain: false,
             items: formularioMantenimientoDetallado
         });
     }
     formularioMantenimientoDetallado.getForm().reset();
-    cbxEmpresasMantenimiento.disable();
     VentanaMantenimiento.show();
 }

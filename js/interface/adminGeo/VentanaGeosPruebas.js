@@ -11,19 +11,7 @@ var id_empresageos = 0;
 var vistaVehiculosGeocercas;
 var storeVehGeocerca;
 
-var storeVeh = Ext.create('Ext.data.JsonStore', {
-    autoLoad: true,
-    autoDestroy: true,
-    proxy: {
-        type: 'ajax',
-        url: 'php/combobox/comboVeh.php',
-        reader: {
-            type: 'json',
-            root: 'veh'
-        }
-    },
-    fields: [{name: 'value', mapping: 'id'}, {name: 'text', mapping: 'nombre'}]
-});
+
 storeVehGeocerca = Ext.create('Ext.data.JsonStore', {
     autoDestroy: true,
     autoLoad: true,

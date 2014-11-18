@@ -5,16 +5,16 @@ if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
     
-    if($rb1==1){
+    if($rb5==1){
     $consultaSql="SELECT emp.id_empresa,v.id_vehiculo,emp.empresa ,eq.equipo, V.placa, V.vehiculo, skp.IGN,SE.sky_evento, count(*) totalEventos
     FROM karviewhistoricodb.dato_spks skp, karviewdb.sky_eventos SE, karviewdb.vehiculos v, karviewdb.equipos eq, karviewdb.empresas emp
-    WHERE  skp.ID_EQUIPO  =V.ID_EQUIPO and eq.id_equipo=v.id_equipo and v.id_empresa=emp.id_empresa and skp.id_sky_evento=SE.id_sky_evento 
-   and (skp.fecha between '$fechaIniParadas' and '$fechaFinParadas')  and SE.id_sky_evento= 13  group by skp.id_equipo";   
-    }else{
+    WHERE  skp.ID_EQUIPO  =V.ID_EQUIPO and eq.id_equipo=v.id_equipo and v.id_empresa=emp.id_empresa and skp.id_sky_evento=SE.id_sky_evento and v.id_empresa='$idempresaparada'
+    and (skp.fecha between '$fechaIniParadas' and '$fechaFinParadas') and (skp.hora between '$horaIniParadas' and '$horaFinParadas') and SE.id_sky_evento= 13  group by skp.id_equipo";   
+    }else if($rb5==2){
     $consultaSql ="SELECT emp.id_empresa,v.id_vehiculo,emp.empresa ,eq.equipo, V.placa, V.vehiculo, skp.IGN,SE.sky_evento, count(*) totalEventos
     FROM karviewhistoricodb.dato_spks skp, karviewdb.sky_eventos SE, karviewdb.vehiculos v, karviewdb.equipos eq, karviewdb.empresas emp
-    WHERE  skp.ID_EQUIPO  =V.ID_EQUIPO and eq.id_equipo=v.id_equipo and v.id_empresa=emp.id_empresa and skp.id_sky_evento=SE.id_sky_evento 
-   and (skp.fecha between '$fechaIniParadas' and '$fechaFinParadas') and v.id_empresa='$idempresaparada'  and SE.id_sky_evento= 13  group by skp.id_equipo";
+    WHERE  skp.ID_EQUIPO  =V.ID_EQUIPO and eq.id_equipo=v.id_equipo and v.id_empresa=emp.id_empresa and skp.id_sky_evento=SE.id_sky_evento and v.id_Vehiculo='$cbxVeh'
+   and (skp.fecha between '$fechaIniParadas' and '$fechaFinParadas') and (skp.hora between '$horaIniParadas' and '$horaFinParadas') and SE.id_sky_evento= 13  group by skp.id_equipo";
     }
     
     $result = $mysqli->query($consultaSql);

@@ -1,7 +1,6 @@
 var formPanico;
 var winPanico;
 var bandera = 0;
-//var storeViewPanico;
 var dateStart;
 var dateFinish;
 var timeStart;
@@ -11,16 +10,13 @@ var idEquipoPanico;
 var gridViewDataPanicoTotal;
 var gridViewDataPanicoGeneral;
 var gridDataExcesos;
-//var storeViewPanicoTotal;
 var storeDataPanicoD;
 var empresa = 1;
 var empresaNom = 'KRADAC';
 var cbxEmpresasBDPanico;
 var cbxVehBDPanico;
 var porEquipo = false;
-//var tabExcesos;
 var hayDatos = false;
-//var storeEmpresaPanicos;
 var gridViewDataPanico;
 
 
@@ -53,6 +49,8 @@ Ext.onReady(function () {
             }
         }
     });
+    
+    
 
     cbxVehBDPanico = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Vehículos',
@@ -69,8 +67,8 @@ Ext.onReady(function () {
             minWidth: 450
         }
     });
-
-
+    
+    
     var dateIni = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
@@ -97,6 +95,7 @@ Ext.onReady(function () {
         startDateField: 'fechaIniPanico',
         emptyText: 'Fecha Final...'
     });
+    
     var timeInipanico = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
         name: 'horaIniPanico',
@@ -165,9 +164,8 @@ Ext.onReady(function () {
                         columns: 2,
                         vertical: true,
                         items: [
-                            {boxLabel: 'Organización', name: 'rb', inputValue: '1', checked: true},
-                            {boxLabel: 'Por Equipo', name: 'rb', inputValue: '2'}
-
+                            {boxLabel: 'Por Organización', name: 'rb', inputValue: '1', checked: true},
+                            {boxLabel: 'Por Vehiculo', name: 'rb', inputValue: '2'}
                         ],
                         listeners: {
                             change: function (field, newValue, oldValue) {
@@ -198,7 +196,6 @@ Ext.onReady(function () {
                     },
                     cbxEmpresasBDPanico,
                     cbxVehBDPanico
-
                 ]
             }, {
                 xtype: 'fieldset',
@@ -226,7 +223,6 @@ Ext.onReady(function () {
                         params: {
                             idCompany: empresa
                         },
-                        ///////////////////
                         success: function (form, action) {
                             var storeDataExcesos = Ext.create('Ext.data.JsonStore', {
                                 data: action.result.data,
@@ -236,18 +232,6 @@ Ext.onReady(function () {
                                 },
                                 fields: ['empresaPanicos', 'personaPanicos', 'idEquipoPanicos', 'placaPanicos', 'cantidadPanicos']
                             });
-//                                console.log(storeViewPanico);
-//                                storeViewPanico.load(
-//                                        {
-//                                            params: {
-//                                                idEquipo: storeDataExcesos.data.items[0].data.idEquipoPanicos,
-//                                                fechaIni: dateIni.getRawValue(),
-//                                                fechaFin: dateFin.getRawValue(),
-//                                                horaIniP: timeInipanico.getRawValue(),
-//                                                horaFinP: timeFinpanico.getRawValue(),
-//                                            }
-//                                        });
-//                                        
                                 var gridViewDataPanico = Ext.create('Ext.grid.Panel', {
                                     region: 'center',
                                     frame: true,
@@ -485,7 +469,7 @@ function showWinPanicosDaily() {
             iconCls: 'icon-reset',
             resizable: false,
             width: 350,
-            height: 370,
+            height: 375,
             closeAction: 'hide',
             plain: false,
             items: formPanico

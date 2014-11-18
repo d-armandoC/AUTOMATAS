@@ -19,7 +19,10 @@ var btn_HoyExcesos;
 var bt_HayerExcesos;
 var fechaInExcesos;
 var fechaFnExcesos;
-Ext.onReady(function() {
+var porEquipoEx = false;
+var cbxVehExceso;
+var empresaNom = 'KRADAC';
+Ext.onReady(function () {
 
     cbxEmpresasExcesos = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Organización',
@@ -33,12 +36,36 @@ Ext.onReady(function() {
         allowBlank: false,
         value: 1,
         listeners: {
-            select: function(combo, records, eOpts) {
-                id_empresaExcesos = records[0].data.id;
+            select: function (combo, records, eOpts) {
+                if (porEquipoEx) {
+                    cbxVehExceso.clearValue();
+                    cbxVehExceso.enable();
+                    storeVeh.load({
+                        params: {
+                            cbxEmpresas: records[0].data.id
+                        }
+                    });
+                    id_empresaExcesos = records[0].data.id;
+                }
             }
         }
     });
 
+    cbxVehExceso = Ext.create('Ext.form.ComboBox', {
+        fieldLabel: 'Vehículos',
+        name: 'cbxVeh',
+        store: storeVeh,
+        valueField: 'id',
+        displayField: 'text',
+        queryMode: 'local',
+        emptyText: 'Seleccionar Vehículo...',
+        disabled: true,
+        editable: false,
+        allowBlank: false,
+        listConfig: {
+            minWidth: 450
+        }
+    });
     fechaIniExcesos = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
@@ -68,7 +95,7 @@ Ext.onReady(function() {
     btn_HoyExcesos = Ext.create('Ext.button.Button', {
         text: 'Hoy',
         iconCls: 'icon-today',
-        handler: function() {
+        handler: function () {
             var nowDate = new Date();
             fechaIniExcesos.setValue(nowDate);
             fechaFinExcesos.setValue(nowDate);
@@ -80,7 +107,7 @@ Ext.onReady(function() {
     bt_HayerExcesos = Ext.create('Ext.button.Button', {
         text: 'Ayer',
         iconCls: 'icon-yesterday',
-        handler: function() {
+        handler: function () {
             var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
             fechaIniExcesos.setValue(yestDate);
             fechaFinExcesos.setValue(yestDate);
@@ -133,6 +160,7 @@ Ext.onReady(function() {
 
         ]
     });
+
     formularioExcesos = Ext.create('Ext.form.Panel', {
         bodyPadding: '10 10 0 10',
         id: 'for_excesos',
@@ -148,25 +176,38 @@ Ext.onReady(function() {
                         columns: 2,
                         vertical: true,
                         items: [
-                            {boxLabel: 'General ', name: 'rb1', inputValue: '1', checked: true},
-                            {boxLabel: 'Por Organización', name: 'rb1', inputValue: '2'},
+                            {boxLabel: 'Por Organización', name: 'rb1', inputValue: '1', checked: true},
+                            {boxLabel: 'Por Vehiculo', name: 'rb1', inputValue: '2'}
                         ],
                         listeners: {
-                            change: function(field, newValue, oldValue) {
+                            change: function (field, newValue, oldValue) {
                                 switch (parseInt(newValue['rb1'])) {
                                     case 1:
                                         empresaExcesos = 1;
-                                        cbxEmpresasExcesos.disable();
+                                        cbxEmpresasExcesos.enable();
+                                        cbxVehExceso.clearValue();
+                                        cbxVehExceso.disable();
+                                        porEquipoEx = false;
                                         break;
                                     case 2:
-                                        cbxEmpresasExcesos.enable();
+                                         porEquipoEx = true;
                                         empresaExcesos = cbxEmpresasExcesos.getValue();
+                                        empresaNom = cbxEmpresasExcesos.getRawValue();
+                                        if (porEquipoEx) {
+                                            cbxVehExceso.enable();
+                                            storeVeh.load({
+                                                params: {
+                                                    cbxEmpresas: formularioExcesos.down('[name=idempresasExcesos]').getValue()
+                                                }
+                                            });
+                                        }
                                         break;
                                 }
                             }
                         }
                     },
                     cbxEmpresasExcesos,
+                    cbxVehExceso
                 ]
             }, {
                 xtype: 'fieldset',
@@ -183,7 +224,7 @@ Ext.onReady(function() {
             {
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
-                handler: function() {
+                handler: function () {
 
                     fechaInExcesos = fechaIniExcesos.getRawValue();
                     fechaFnExcesos = fechaFinExcesos.getRawValue();
@@ -198,7 +239,7 @@ Ext.onReady(function() {
                             params: {
                                 cbxEmpresasExcesos: id_empresaExcesos,
                             },
-                            failure: function(form, action) {
+                            failure: function (form, action) {
                                 Ext.MessageBox.hide();
                                 Ext.MessageBox.show({
                                     title: 'Info',
@@ -207,7 +248,7 @@ Ext.onReady(function() {
                                     icon: Ext.MessageBox.ERROR
                                 });
                             },
-                            success: function(form, action) {
+                            success: function (form, action) {
                                 if (winExcesos) {
                                     winExcesos.hide();
                                 }
@@ -226,7 +267,7 @@ Ext.onReady(function() {
             , {
                 text: 'Cancelar',
                 iconCls: 'icon-cancelar',
-                handler: function() {
+                handler: function () {
                     winExcesos.hide();
                 }
             }]
@@ -238,7 +279,7 @@ function cargardatosalGrid(datos) {
 
     Ext.define('Registros', {
         extend: 'Ext.data.Model',
-        fields: ['acronimo', 'equipo', 'empresa', 'placa', 'velocidad', 'fecha']
+        fields: ['acronimo', 'equipo', 'empresa', 'placa', 'velocidad', 'fecha', 'evento']
     });
 
     console.log("Data para cargar en el panel" + datos);
@@ -246,13 +287,13 @@ function cargardatosalGrid(datos) {
         data: datos,
         storeId: 'recaudoId',
         model: 'Registros',
-        sorters: ['acronimo', 'equipo', 'empresa', 'placa'],
+        sorters: ['acronimo', 'equipo', 'empresa', 'placa','evento'],
         groupField: 'acronimo',
         proxy: {
             type: 'ajax',
             reader: 'array'
         },
-        fields: ['acronimo', 'equipo', 'empresa']
+        fields: ['acronimo', 'equipo', 'empresa','evento']
     });
 
     var groupingFeature = Ext.create('Ext.grid.feature.Grouping', {
@@ -261,20 +302,17 @@ function cargardatosalGrid(datos) {
     });
 
     var columnExcesosVelocidad = [
-           Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
+        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
         {text: 'Organización', flex: 80, dataIndex: 'empresa', filter: {type: 'string'}},
         {text: 'Placa', flex: 80, dataIndex: 'placa', filter: {type: 'string'}},
         {text: 'Velocidad', flex: 80, dataIndex: 'velocidad', filter: {type: 'string'}},
         {text: 'Registrado', flex: 80, dataIndex: 'fecha', filter: {type: 'string'}},
-        {text: 'Evento', flex: 80, dataIndex: 'acronimo', filter: {type: 'string'}},
+        {text: 'Evento', flex: 80, dataIndex: 'evento', filter: {type: 'string'}}
     ];
-
-
     var dateStart = fechaIniExcesos.getRawValue();
     var dateFinish = fechaFinExcesos.getRawValue();
     var timeStart = timeIniExcesos.getRawValue();
     var timeFinish = timeFinExcesos.getRawValue();
-
     var gridExcesosVelocidad = Ext.create('Ext.grid.Panel', {
         layout: 'fit',
         region: 'center',
@@ -290,10 +328,10 @@ function cargardatosalGrid(datos) {
         dockedItems: [{
                 dock: 'top',
                 xtype: 'toolbar',
-                items: [{xtype: 'button', text: 'Imprimir', icon: 'img/excel.png', handler: function() {
+                items: [{xtype: 'button', text: 'Imprimir', icon: 'img/excel.png', handler: function () {
                             generarExcelRecorrido(datos);
                         }},
-                    {xtype: 'button', id: 'btng', text: 'Lista', iconCls: 'icon-servicios', handler: function() {
+                    {xtype: 'button', id: 'btng', text: 'Lista', iconCls: 'icon-servicios', handler: function () {
                             if (bandera) {
                                 groupingFeature.disable();
                                 Ext.getCmp('btng').setIconCls("icon-cancelar");
@@ -337,7 +375,7 @@ function ventanaexcesosvelociadadWin() {
             iconCls: 'icon-exceso-vel',
             resizable: false,
             width: 350,
-            height: 360,
+            height: 375,
             autoHeight: true,
             closeAction: 'hide',
             plain: false,
@@ -345,7 +383,6 @@ function ventanaexcesosvelociadadWin() {
         });
     }
     formularioExcesos.getForm().reset();
-    cbxEmpresasExcesos.disable();
     winExcesos.show();
 }
 

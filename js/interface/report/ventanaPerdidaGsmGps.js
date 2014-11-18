@@ -20,8 +20,14 @@ var btn_Hoygsm;
 var bt_Hayergsm;
 var fechaInperdgsm;
 var fechaFngsm;
-Ext.onReady(function() {
+var cbxVehBDManten;
+var porEquipoPerdidaGpsGsm;
+var cbxVehPedidaGpsGsm;
 
+
+Ext.onReady(function () {
+    
+    
     cbxEmpresasGSM = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Organización',
         name: 'idempresagsm',
@@ -34,9 +40,35 @@ Ext.onReady(function() {
         allowBlank: false,
         value: 1,
         listeners: {
-            select: function(combo, records, eOpts) {
-                id_empresagsms = records[0].data.id;
+            select: function (combo, records, eOpts) {
+//                id_empresagsms = records[0].data.id;
+                     if (porEquipoPerdidaGpsGsm) {
+                    cbxVehPedidaGpsGsm.clearValue();
+                    cbxVehPedidaGpsGsm.enable();
+                    storeVeh.load({
+                        params: {
+                            cbxEmpresas: records[0].data.id
+                        }
+                    });
+                }
             }
+        }
+    });
+    
+    
+    cbxVehPedidaGpsGsm = Ext.create('Ext.form.ComboBox', {
+        fieldLabel: 'Vehículos',
+        name: 'cbxVeh',
+        store: storeVeh,
+        valueField: 'id',
+        displayField: 'text',
+        queryMode: 'local',
+        emptyText: 'Seleccionar Vehículo...',
+        disabled: true,
+        editable: false,
+        allowBlank: false,
+        listConfig: {
+            minWidth: 450
         }
     });
 
@@ -69,7 +101,7 @@ Ext.onReady(function() {
     btn_Hoygsm = Ext.create('Ext.button.Button', {
         text: 'Hoy',
         iconCls: 'icon-today',
-        handler: function() {
+        handler: function () {
             var nowDate = new Date();
             fechaInigsm.setValue(nowDate);
             fechaFingsm.setValue(nowDate);
@@ -81,7 +113,7 @@ Ext.onReady(function() {
     bt_Hayergsm = Ext.create('Ext.button.Button', {
         text: 'Ayer',
         iconCls: 'icon-yesterday',
-        handler: function() {
+        handler: function () {
             var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
             fechaInigsm.setValue(yestDate);
             fechaFingsm.setValue(yestDate);
@@ -149,25 +181,37 @@ Ext.onReady(function() {
                         columns: 2,
                         vertical: true,
                         items: [
-                            {boxLabel: 'General ', name: 'rb1', inputValue: '1', checked: true},
-                            {boxLabel: 'Por Organización', name: 'rb1', inputValue: '2'},
+                            {boxLabel: 'Por Organización', name: 'rb4', inputValue: '1', checked: true},
+                            {boxLabel: 'Por Vehiculo', name: 'rb4', inputValue: '2'}
                         ],
                         listeners: {
-                            change: function(field, newValue, oldValue) {
-                                switch (parseInt(newValue['rb1'])) {
+                            change: function (field, newValue, oldValue) {
+                                switch (parseInt(newValue['rb4'])) {
                                     case 1:
-                                        empresaGSM = 1;
-                                        cbxEmpresasGSM.disable();
+                                          empresaGSM = 1;
+                                        cbxEmpresasGSM.enable();
+                                        cbxVehPedidaGpsGsm.clearValue();
+                                        cbxVehPedidaGpsGsm.disable();
+                                        porEquipoPerdidaGpsGsm = false;
                                         break;
                                     case 2:
-                                        cbxEmpresasGSM.enable();
+                                           porEquipoPerdidaGpsGsm = true;
                                         empresaGSM = cbxEmpresasGSM.getValue();
+                                        if (porEquipoPerdidaGpsGsm) {
+                                            cbxVehPedidaGpsGsm.enable();
+                                            storeVeh.load({
+                                                params: {
+                                                    cbxEmpresas: formularioGSM.down('[name=idempresagsm]').getValue()
+                                                }
+                                            });
+                                        }
                                         break;
                                 }
                             }
                         }
                     },
                     cbxEmpresasGSM,
+                    cbxVehPedidaGpsGsm
                 ]
             }, {
                 xtype: 'fieldset',
@@ -184,7 +228,7 @@ Ext.onReady(function() {
             {
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
-                handler: function() {
+                handler: function () {
 
                     fechaInperdgsm = fechaInigsm.getRawValue();
                     fechaFngsm = fechaFingsm.getRawValue();
@@ -199,7 +243,7 @@ Ext.onReady(function() {
                             params: {
                                 cbxEmpresasPan: id_empresagsms,
                             },
-                            failure: function(form, action) {
+                            failure: function (form, action) {
                                 Ext.MessageBox.hide();
                                 Ext.MessageBox.show({
                                     title: 'Info',
@@ -208,7 +252,7 @@ Ext.onReady(function() {
                                     icon: Ext.MessageBox.ERROR
                                 });
                             },
-                            success: function(form, action) {
+                            success: function (form, action) {
                                 if (VentanaGSM) {
                                     VentanaGSM.hide();
                                 }
@@ -227,7 +271,7 @@ Ext.onReady(function() {
             , {
                 text: 'Cancelar',
                 iconCls: 'icon-cancelar',
-                handler: function() {
+                handler: function () {
                     VentanaGSM.hide();
                 }
             }]
@@ -240,7 +284,7 @@ function cargardatosalGridGpsGsm(datos) {
         extend: 'Ext.data.Model',
         fields: ['empresa', 'equipo', 'placa', 'latitud', 'longitud', 'fecha', 'velocidad', 'gsm', 'tipo_respuesta']
     });
-    var storeRecaudo = Ext.create('Ext.data.JsonStore', {
+    var storePerdidaGpsGsm = Ext.create('Ext.data.JsonStore', {
         data: datos,
         storeId: 'recaudoId',
         model: 'Registros',
@@ -264,7 +308,7 @@ function cargardatosalGridGpsGsm(datos) {
         {text: 'Placa', flex: 80, dataIndex: 'placa', filter: {type: 'string'}},
         {text: 'Señal', flex: 80, dataIndex: 'tipo_respuesta', filter: {type: 'string'}, renderer: sinGSM},
         {text: 'Latitud', flex: 80, dataIndex: 'latitud'},
-        {text: 'Longitud', flex: 80, dataIndex: 'longitud',},
+        {text: 'Longitud', flex: 80, dataIndex: 'longitud', },
         {text: 'Registro', flex: 80, dataIndex: 'fecha', filter: {type: 'string'}},
         {text: 'Velocidad', flex: 80, dataIndex: 'velocidad', filter: {type: 'string'}}
     ];
@@ -277,7 +321,7 @@ function cargardatosalGridGpsGsm(datos) {
         layout: 'fit',
         region: 'center',
         title: '<center> Registros <br>Desde: ' + dateStart + ' | Hasta: ' + dateFinish + ' Desde las: ' + timeStart + ' | Hasta las: ' + timeFinish + '</center>',
-        store: storeRecaudo,
+        store: storePerdidaGpsGsm,
         multiSelect: true,
         width: '100%',
         features: [groupingFeature, filters],
@@ -288,10 +332,10 @@ function cargardatosalGridGpsGsm(datos) {
         dockedItems: [{
                 dock: 'top',
                 xtype: 'toolbar',
-                items: [{xtype: 'button', text: 'Imprimir', icon: 'img/excel.png', handler: function() {
+                items: [{xtype: 'button', text: 'Imprimir', icon: 'img/excel.png', handler: function () {
                             generarExcelGSM(datos);
                         }},
-                    {xtype: 'button', id: 'btn', text: 'Lista', iconCls: 'icon-servicios', handler: function() {
+                    {xtype: 'button', id: 'btn', text: 'Lista', iconCls: 'icon-servicios', handler: function () {
                             if (bandera) {
                                 groupingFeature.disable();
                                 Ext.getCmp('btn').setIconCls("icon-cancelar");
@@ -334,14 +378,14 @@ function reporteWinperdidaGSM() {
             iconCls: 'icon-flota',
             resizable: false,
             width: 350,
-            height: 350,
+            height: 365,
             closeAction: 'hide',
             plain: false,
             items: formularioGSM
         });
     }
     formularioGSM.getForm().reset();
-    cbxEmpresasGSM.disable();
+//    cbxEmpresasGSM.disable();
     VentanaGSM.show();
 }
 

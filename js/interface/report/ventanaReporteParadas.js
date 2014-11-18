@@ -13,7 +13,10 @@ var cbxEmpresasParada;
 var modal;
 var reg_empresa;
 var id_vehiculo_paradas;
-Ext.onReady(function() {
+var empresaNom = 'KRADAC';
+var porEquipoParadas;
+var cbxVehBDParadas;
+Ext.onReady(function () {
     storeViewParadas = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
         proxy: {
@@ -39,11 +42,38 @@ Ext.onReady(function() {
         allowBlank: false,
         value: 1,
         listeners: {
-            select: function(combo, records, eOpts) {
-                idEmpresa = records[0].data.id;
+            select: function (combo, records, eOpts) {
+                if (porEquipoParadas) {
+                    cbxVehBDParadas.clearValue();
+                    cbxVehBDParadas.enable();
+                    storeVeh.load({
+                        params: {
+                            cbxEmpresas: records[0].data.id
+                        }
+                    });
+                }
             }
         }
     });
+
+
+    cbxVehBDParadas = Ext.create('Ext.form.ComboBox', {
+        fieldLabel: 'Vehículos',
+        name: 'cbxVeh',
+        store: storeVeh,
+        valueField: 'id',
+        displayField: 'text',
+        queryMode: 'local',
+        emptyText: 'Seleccionar Vehículo...',
+        disabled: true,
+        editable: false,
+        allowBlank: false,
+        listConfig: {
+            minWidth: 450
+        }
+    });
+
+
     var dateIniparadas = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
@@ -61,26 +91,50 @@ Ext.onReady(function() {
         format: 'Y-m-d',
         id: 'fechaFinParadas',
         name: 'fechaFinParadas',
-//        vtype: 'daterange',
         value: new Date(),
         maxValue: new Date(),
         allowBlank: false,
         startDateField: 'fechaIniParadas',
         emptyText: 'Fecha Final...'
     });
+    
     var btnTodayparadas = Ext.create('Ext.button.Button', {
         text: 'Hoy',
         iconCls: 'icon-today',
-        handler: function() {
+        handler: function () {
             var nowDate = new Date();
             dateIniparadas.setValue(nowDate);
             dateFinParadas.setValue(nowDate);
         }
     });
+    
+     var timeInipanico = Ext.create('Ext.form.field.Time', {
+        fieldLabel: 'Desde las',
+        name: 'horaIniParadas',
+        value: '00:01',
+        format: 'H:i',
+        allowBlank: false,
+        emptyText: 'Hora Inicial...',
+        listConfig: {
+            minWidth: 300
+        }
+    });
+    var timeFinpanico = Ext.create('Ext.form.field.Time', {
+        fieldLabel: 'Hasta las',
+        name: 'horaFinParadas',
+        value: '23:59',
+        format: 'H:i',
+        allowBlank: false,
+        emptyText: 'Hora final...',
+        listConfig: {
+            minWidth: 450
+        }
+    });
+    
     var btnYesterdayparadas = Ext.create('Ext.button.Button', {
         text: 'Ayer',
         iconCls: 'icon-yesterday',
-        handler: function() {
+        handler: function () {
             var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
             dateIniparadas.setValue(yestDate);
             dateFinParadas.setValue(yestDate);
@@ -108,25 +162,37 @@ Ext.onReady(function() {
                         columns: 2,
                         vertical: true,
                         items: [
-                            {boxLabel: 'General ', name: 'rb1', inputValue: '1', checked: true},
-                            {boxLabel: 'Por Organización', name: 'rb1', inputValue: '2'}
+                            {boxLabel: 'Por Organización', name: 'rb5', inputValue: '1', checked: true},
+                            {boxLabel: 'Por Vehiculo', name: 'rb5', inputValue: '2'}
                         ],
                         listeners: {
-                            change: function(field, newValue, oldValue) {
-                                switch (parseInt(newValue['rb1'])) {
+                            change: function (field, newValue, oldValue) {
+                                switch (parseInt(newValue['rb5'])) {
                                     case 1:
-                                        idEmpresa = 0;
-                                        cbxEmpresasParada.disable();
+                                        idEmpresa = 1;
+                                        cbxEmpresasParada.enable();
+                                        cbxVehBDParadas.clearValue();
+                                        cbxVehBDParadas.disable();
+                                        porEquipoParadas = false;
                                         break;
                                     case 2:
-                                        cbxEmpresasParada.enable();
+                                        porEquipoParadas = true;
                                         idEmpresa = cbxEmpresasParada.getValue();
+                                        if (porEquipoParadas) {
+                                            cbxVehBDParadas.enable();
+                                            storeVeh.load({
+                                                params: {
+                                                    cbxEmpresas: formularioParadas.down('[name=idempresaparada]').getValue()
+                                                }
+                                            });
+                                        }
                                         break;
                                 }
                             }
                         }
                     },
                     cbxEmpresasParada,
+                    cbxVehBDParadas
                 ]
             }, {
                 xtype: 'fieldset',
@@ -134,14 +200,16 @@ Ext.onReady(function() {
                 items: [
                     dateIniparadas,
                     dateFinParadas,
-                    panelButtonsparadas,
+                    timeInipanico,
+                    timeFinpanico,
+                    panelButtonsparadas
                 ]
             }
         ],
         buttons: [{
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
-                handler: function() {
+                handler: function () {
                     fechaInicio = dateIniparadas.getRawValue();
                     fechaFin = dateFinParadas.getRawValue();
                     var form = formularioParadas.getForm();
@@ -153,8 +221,7 @@ Ext.onReady(function() {
                             params: {
                                 idEmpresas: idEmpresa,
                             },
-                            success: function(form, action) {
-                                console.log(action.result.countByParadas);
+                            success: function (form, action) {
                                 personaParadas;
                                 gridViewDataParadas;
                                 var storeDataReporteDetallado = Ext.create('Ext.data.JsonStore', {
@@ -188,7 +255,7 @@ Ext.onReady(function() {
                                             xtype: 'button',
                                             iconCls: 'icon-excel',
                                             text: 'Exportar a Excel',
-                                            handler: function() {
+                                            handler: function () {
                                                 if (storeDataReporteDetallado.getCount() > 0) {
                                                     if (getNavigator() === 'img/chrome.png') {
                                                         var a = document.createElement('a');
@@ -253,7 +320,7 @@ Ext.onReady(function() {
                                             }
                                         }]
                                     , listeners: {
-                                        itemclick: function(thisObj, record, item, index, e, eOpts) {
+                                        itemclick: function (thisObj, record, item, index, e, eOpts) {
                                             reg_empresa = record.get('empresa');
                                             id_vehiculo_paradas = record.get('id_vehiculo');
                                             banderaParadas = 1;
@@ -296,11 +363,11 @@ Ext.onReady(function() {
                                         {text: 'IGN', width: 200, dataIndex: 'ign', align: 'center'},
                                         {text: 'Evento', width: 200, dataIndex: 'sky_evento', align: 'center'}
                                     ],
-                                      tbar: [{
+                                    tbar: [{
                                             xtype: 'button',
                                             iconCls: 'icon-excel',
                                             text: 'Exportar a Excel',
-                                            handler: function() {
+                                            handler: function () {
                                                 if (storeViewParadas.getCount() > 0) {
                                                     if (getNavigator() === 'img/chrome.png') {
                                                         var a = document.createElement('a');
@@ -352,17 +419,17 @@ Ext.onReady(function() {
                                                             table_div += "<Row ss:AutoFitHeight='0'>" +
                                                                     "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.empresa + " </Data></Cell > " +
                                                                     "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.vehiculo + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.placa+ " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.placa + " </Data></Cell > " +
                                                                     "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.latitud + " </Data></Cell > " +
                                                                     "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.longitud + " </Data></Cell > " +
                                                                     "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.fecha + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.hora+ " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.velocidad+ " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.hora + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.velocidad + " </Data></Cell > " +
                                                                     "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.bateria + " </Data></Cell > " +
                                                                     "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.gsm + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.gps+ " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.gps + " </Data></Cell > " +
                                                                     "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.ign + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.sky_evento+ " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.sky_evento + " </Data></Cell > " +
                                                                     "</Row>";
                                                         }
                                                         table_div += "</Table> </Worksheet></Workbook>";
@@ -388,99 +455,6 @@ Ext.onReady(function() {
                                                 }
                                             }
                                         }]
-//                                    tbar: [{
-//                                            xtype: 'button',
-//                                            iconCls: 'icon-excel',
-//                                            text: 'Exportar a Excel',
-//                                            handler: function() {
-//                                                if (storeViewParadas.getCount() > 0) {
-//                                                    if (getNavigator() === 'img/chrome.png') {
-//                                                        var a = document.createElement('a');
-//                                                        var data_type = 'data:application/vnd.ms-excel';
-//                                                        var numFil = storeViewParadas.length;
-//                                                        var numCol = 13;
-//                                                        var tiLetra = 'Calibri';
-//                                                        var titulo = 'Registro de Paradas';
-//                                                        var table_div = "<?xml version='1.0'?><?mso-application progid='Excel.Sheet'?><Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'><DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'><Author>KRADAC SOLUCIONES TECNOLÃ“GICAS</Author><LastAuthor>KRADAC SOLUCIONES TECNOLÃ“GICAS</LastAuthor><Created>2014-08-20T15:33:48Z</Created><Company>KRADAC</Company><Version>15.00</Version>";
-//                                                        table_div += "</DocumentProperties> " +
-//                                                                "<Styles> " +
-//                                                                "<Style ss:ID='Default' ss:Name='Normal'>   <Alignment ss:Vertical='Bottom'/>   <Borders/>   <Font ss:FontName='" + tiLetra + "' x:Family='Swiss' ss:Size='11' ss:Color='#000000'/>   <Interior/>   <NumberFormat/>   <Protection/>  </Style>  " +
-//                                                                "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
-//                                                                "<Style ss:ID='datos'><NumberFormat ss:Format='@'/></Style> " +
-//                                                                "</Styles>";
-//                                                        //Definir el numero de columnas y cantidad de filas de la hoja de calculo (numFil + 2))
-//                                                        table_div += "<Worksheet ss:Name='Datos'>";//Nombre de la hoja
-//                                                        table_div += "<Table ss:ExpandedColumnCount='" + numCol + "' ss:ExpandedRowCount='" + (numFil + 2) + "' x:FullColumns='1' x:FullRows='1' ss:DefaultColumnWidth='60' ss:DefaultRowHeight='15'>";
-//                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='121.5'/>";
-//                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-//                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-//                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-//                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-//                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-//                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-//                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-//                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-//                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-//                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-//                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-//                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-//                                                        table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
-//                                                        table_div += "<Row ss:AutoFitHeight='0'>" +
-//                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Empresa</Data></Cell>" +
-//                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Vehiculo</Data></Cell>" +
-//                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Placa</Data></Cell>" +
-//                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Latitud</Data></Cell>" +
-//                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Longitud</Data></Cell>" +
-//                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Fecha</Data></Cell>" +
-//                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Hora</Data></Cell>" +
-//                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Velocidad</Data></Cell>" +
-//                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Bateria</Data></Cell>" +
-//                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>GSM</Data></Cell>" +
-//                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>GPS</Data></Cell>" +
-//                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>IGN</Data></Cell>" +
-//                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Evento</Data></Cell>" +
-//                                                                "</Row>";
-//                                                        for (var i = 0; i < numFil; i++) {
-//                                                            table_div += "<Row ss:AutoFitHeight='0'>" +
-//                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.empresa + " </Data></Cell > " +
-//                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.vehiculo + " </Data></Cell > " +
-//                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.placa + " </Data></Cell > " +
-//                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.latitud + " </Data></Cell > " +
-//                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.longitud + " </Data></Cell > " +
-//                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.fecha + " </Data></Cell > " +
-//                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.hora + " </Data></Cell > " +
-//                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.velocidad + " </Data></Cell > " +
-//                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.bateria + " </Data></Cell > " +
-//                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.gsm + " </Data></Cell > " +
-//                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.gps + " </Data></Cell > " +
-//                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.ign + " </Data></Cell > " +
-//                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewParadas.data.items[i].data.sky_evento + " </Data></Cell > " +
-//                                                                    "</Row>";
-//                                                        }
-//
-//                                                        table_div += "</Table> </Worksheet></Workbook>";
-//                                                        var table_xml = table_div.replace(/ /g, '%20');
-//                                                        a.href = data_type + ', ' + table_xml;
-//                                                        a.download = 'Registro de Paradas Detallado' + '.xml';
-//                                                        a.click();
-//                                                    } else {
-//                                                        Ext.MessageBox.show({
-//                                                            title: 'Error',
-//                                                            msg: '<center> El servicio para este navegador no esta disponible <br> Use un navegador como Google Chrome </center>',
-//                                                            buttons: Ext.MessageBox.OK,
-//                                                            icon: Ext.MessageBox.ERROR
-//                                                        });
-//                                                    }
-//                                                } else {
-//                                                    Ext.MessageBox.show({
-//                                                        title: 'Mensaje',
-//                                                        msg: 'No hay datos en la Lista a Exportar',
-//                                                        buttons: Ext.MessageBox.OK,
-//                                                        icon: Ext.MessageBox.ERROR
-//                                                    });
-//                                                }
-//                                            }
-//                                        }]
                                 });
                                 var tabExces = Ext.create('Ext.container.Container', {
                                     title: 'Reporte de Paradas',
@@ -497,7 +471,7 @@ Ext.onReady(function() {
                                 panelTabMapaAdmin.setActiveTab(tabExces);
                                 Ventanaparadas.hide();
                             },
-                            failure: function(form, action) {
+                            failure: function (form, action) {
                                 Ext.MessageBox.show({
                                     title: 'Información',
                                     msg: 'No se encuentran datos!!!',
@@ -512,7 +486,7 @@ Ext.onReady(function() {
             , {
                 text: 'Cancelar',
                 iconCls: 'icon-cancelar',
-                handler: function() {
+                handler: function () {
                     Ventanaparadas.hide();
                 }
             }]
@@ -526,14 +500,13 @@ function showWinPradas() {
             iconCls: 'icon-unlock',
             resizable: false,
             width: 350,
-            height: 300,
+            height: 375,
             closeAction: 'hide',
             plain: false,
             items: formularioParadas
         });
     }
     formularioParadas.getForm().reset();
-    cbxEmpresasParada.disable();
     Ventanaparadas.show();
 }
 
