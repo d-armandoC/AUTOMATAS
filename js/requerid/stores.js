@@ -129,6 +129,20 @@ var storeViewPanico = Ext.create('Ext.data.Store', {
     fields: ['id', 'text']
 });
 
+ var storeViewEncendidoApag = Ext.create('Ext.data.Store', {
+    autoLoad: true,
+    autoDestroy: true,
+    proxy: {
+        type: 'ajax',
+        url: 'php/interface/report/encendidoApagado/getReportEncApag.php',
+        reader: {
+            type: 'json',
+            root: 'data'
+        }
+    },
+    fields: ['fechaEA', 'horaEA', 'eventoEA', 'velocidadEA', 'latitudEA', 'longitudEA', 'bateriaEA', 'gsmEA', 'gpsEA', 'direccionEA']
+});
+
 var storeEmpresas = Ext.create('Ext.data.Store', {
     autoLoad: true,
     autoDestroy: true,
