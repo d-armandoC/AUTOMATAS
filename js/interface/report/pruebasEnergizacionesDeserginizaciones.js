@@ -1,25 +1,28 @@
-
 var formularioEnerg;
 var VentanaEnerg;
-var banderaEnerg = 0;
-var storeViewEnerg;
-var fechaInicioEnerg;
-var fechaFinalEnerg;
-var personaEnerg;
-var gridViewDataEnerg;
-var storeViewExcesosEnerg;
-var storeDataEnerg;
-var empresaEnerg = 1;
-var cbxEmpresasEnerg;
-var vistaVistaRegistrosEnerg;
-var modalEleccionBusqEnerg = 1;
-var id_vehiculoEnerg;
-var vehiculoEnerg;
-var id_empresaEnergiz;
+var bandera = 0;
+var dateStart;
+var dateFinish;
+var timeStart;
+var timeFinish;
+var persona;
+var idEquipoEnergD;
+//var gridViewDataPanicoTotal;
+//var gridViewDataPanicoGeneral;
+var gridDataExcesos;
+//var storeDataPanicoD;
+var empresa = 1;
+var empresaNom = 'KRADAC';
+var cbxEmpresasBDEnergD;
+var cbxVehBDEnergD;
+var porEquipo = false;
+var hayDatos = false;
+//var gridViewDataPanico;
+
+
+
 
 Ext.onReady(function() {
-
-
     storeViewEnerg = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
         proxy: {
@@ -32,11 +35,10 @@ Ext.onReady(function() {
         },
         fields: ['fechaED', 'horaED', 'eventoED', 'velocidadED', 'latitudED', 'longitudED', 'bateriaED', 'gsmED', 'gpsED', 'direccionED']
     });
-
-    cbxEmpresasEnerg = Ext.create('Ext.form.ComboBox', {
+    cbxEmpresasBDEnergD = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Organización',
-        name: 'idCompanyEnerg',
-        store: storeEmpresas,
+        name: 'idCompanyEnergD',
+        store: storeEmpresaPanicos,
         valueField: 'id',
         displayField: 'text',
         queryMode: 'local',
@@ -46,60 +48,118 @@ Ext.onReady(function() {
         value: 1,
         listeners: {
             select: function(combo, records, eOpts) {
-                id_empresaEnergiz = records[0].data.id;
+                if (porEquipo) {
+                    cbxVehBDEnergD.clearValue();
+                    cbxVehBDEnergD.enable();
+                    storeVeh.load({
+                        params: {
+                            cbxEmpresas: records[0].data.id
+                        }
+                    });
+                }
             }
         }
     });
 
-    var fechaIniEnerg = Ext.create('Ext.form.field.Date', {
+
+
+    cbxVehBDEnergD = Ext.create('Ext.form.ComboBox', {
+        fieldLabel: 'Vehículos',
+        name: 'cbxVehED',
+        store: storeVeh,
+        valueField: 'id',
+        displayField: 'text',
+        queryMode: 'local',
+        emptyText: 'Seleccionar Vehículo...',
+        disabled: true,
+        editable: false,
+        allowBlank: false,
+        listConfig: {
+            minWidth: 450
+        }
+    });
+
+
+    var dateIniEnergD = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
-        id: 'fechaIniEnerg',
-        name: 'fechaIniEnerg',
-        value: new Date(),
-        maxText: 'La fecha debe ser igual o anterior a <br> {0}',
-        allowBlank: false,
-        endDateField: 'fechaFinEnerg',
-        emptyText: 'Fecha Inicial...'
-    });
-    var fechaFinEnerg = Ext.create('Ext.form.field.Date', {
-        fieldLabel: 'Hasta el',
-        format: 'Y-m-d',
-        id: 'fechaFinEnerg',
-        name: 'fechaFinEnerg',
-        vtype: 'daterange',
+        id: 'fechaIniEnergD',
+        name: 'fechaIniED',
         value: new Date(),
         maxValue: new Date(),
+        maxText: 'La fecha debe ser igual o anterior a <br> {0}',
         allowBlank: false,
-        startDateField: 'fechaIniEnerg',
+        invalidText: '{0} No es una fecha validad- Debe estar en formato {1}"',
+        endDateField: 'fechaFinEnergD',
+        emptyText: 'Fecha Inicial...'
+    });
+
+    var dateFinEnergD = Ext.create('Ext.form.field.Date', {
+        fieldLabel: 'Hasta el',
+        format: 'Y-m-d',
+        id: 'fechaFinEnergD',
+        name: 'fechaFinED',
+        value: new Date(),
+        maxValue: new Date(),
+        invalidText: '{0} No es una fecha validad- Debe estar en formato {1}"',
+        allowBlank: false,
+        startDateField: 'fechaIniEnergD',
         emptyText: 'Fecha Final...'
     });
-    var btn_HoyEnerg = Ext.create('Ext.button.Button', {
+
+    var timeIniEnergD = Ext.create('Ext.form.field.Time', {
+        fieldLabel: 'Desde las',
+        name: 'horaIniED',
+        value: '00:01',
+        format: 'H:i',
+        allowBlank: false,
+        emptyText: 'Hora Inicial...',
+        listConfig: {
+            minWidth: 300
+        }
+    });
+    var timeFinEnergD = Ext.create('Ext.form.field.Time', {
+        fieldLabel: 'Hasta las',
+        name: 'horaFinED',
+        value: '23:59',
+        format: 'H:i',
+        allowBlank: false,
+        emptyText: 'Hora final...',
+        listConfig: {
+            minWidth: 450
+        }
+    });
+    var btnToday = Ext.create('Ext.button.Button', {
         text: 'Hoy',
         iconCls: 'icon-today',
         handler: function() {
             var nowDate = new Date();
-            fechaIniEnerg.setValue(nowDate);
-            fechaFinEnerg.setValue(nowDate);
+            dateIniEnergD.setValue(nowDate);
+            dateFinEnergD.setValue(nowDate);
+            timeIniEnergD.setValue('00:01');
+            timeFinEnergD.setValue('23:59');
         }
     });
-    var bt_HayerEnerg = Ext.create('Ext.button.Button', {
+    var btnYesterday = Ext.create('Ext.button.Button', {
         text: 'Ayer',
         iconCls: 'icon-yesterday',
         handler: function() {
             var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
-            fechaIniEnerg.setValue(yestDate);
-            fechaFinEnerg.setValue(yestDate);
+            dateIniEnergD.setValue(yestDate);
+            dateFinEnergD.setValue(yestDate);
+            timeIniEnergD.setValue('00:01');
+            timeFinEnergD.setValue('23:59');
         }
     });
-    var panel_BotonesEnerg = Ext.create('Ext.panel.Panel', {
+    var panelButtons = Ext.create('Ext.panel.Panel', {
         layout: 'hbox',
         padding: '0 0 5 0',
         defaults: {
             margin: '0 5 0 0'
         },
-        items: [btn_HoyEnerg, bt_HayerEnerg]
+        items: [btnToday, btnYesterday]
     });
+
     formularioEnerg = Ext.create('Ext.form.Panel', {
         bodyPadding: '10 10 0 10',
         fieldDefaults: {
@@ -109,203 +169,110 @@ Ext.onReady(function() {
         items: [{
                 xtype: 'fieldset',
                 title: '<b>Datos</b>',
-                items: [{
+                items: [
+                    {
                         xtype: 'radiogroup',
-// fieldLabel: ' ',
-// Arrange radio buttons into two columns, distributed vertically
                         columns: 2,
                         vertical: true,
                         items: [
-                            {boxLabel: 'General ', name: 'rb', inputValue: '1', checked: true},
-                            {boxLabel: 'Por Organización', name: 'rb', inputValue: '2'},
+                            {boxLabel: 'Por Organización', name: 'rbEnergD', inputValue: '1', checked: true},
+                            {boxLabel: 'Por Vehiculo', name: 'rbEnergD', inputValue: '2'}
                         ],
                         listeners: {
                             change: function(field, newValue, oldValue) {
-                                switch (parseInt(newValue['rb'])) {
+                                switch (parseInt(newValue['rbEnergD'])) {
                                     case 1:
-                                        modalEleccionBusqEnerg = 1;
-                                        cbxEmpresasEnerg.disable();
+                                        empresa = 1;
+                                        cbxEmpresasBDEnergD.enable();
+                                        cbxVehBDEnergD.clearValue();
+                                        cbxVehBDEnergD.disable();
+                                        porEquipo = false;
                                         break;
                                     case 2:
-                                        cbxEmpresasEnerg.enable();
-                                        modalEleccionBusqEnerg = 2;
+                                        porEquipo = true;
+                                        empresa = cbxEmpresasBDEnergD.getValue();
+                                        empresaNom = cbxEmpresasBDEnergD.getRawValue();
+                                        if (porEquipo) {
+                                            cbxVehBDEnergD.enable();
+                                            storeVeh.load({
+                                                params: {
+                                                    cbxEmpresas: formularioEnerg.down('[name=idCompanyEnergD]').getValue()
+                                                }
+                                            });
+                                        }
                                         break;
                                 }
                             }
                         }
                     },
-                    cbxEmpresasEnerg
+                    cbxEmpresasBDEnergD,
+                    cbxVehBDEnergD
                 ]
             }, {
                 xtype: 'fieldset',
                 title: '<b>Fechas</b>',
                 items: [
-                    fechaIniEnerg,
-                    fechaFinEnerg,
-                    panel_BotonesEnerg
+                    dateIniEnergD,
+                    dateFinEnergD,
+                    timeIniEnergD,
+                    timeFinEnergD,
+                    panelButtons
                 ]
             }],
         buttons: [{
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
                 handler: function() {
-                    var id_valor = this.up('form').down('[name=rb]').getValue();
-                    fechaInicioEnerg = fechaIniEnerg.getRawValue();
-                    fechaFinalEnerg = fechaFinEnerg.getRawValue();
-                    var form = formularioEnerg.getForm();
-                    if (modalEleccionBusqEnerg === 1) {
-                        if (form.isValid()) {
-                            form.submit({
-                                url: 'php/interface/report/energizaDesenegizar/getReportGeneralEnergDes.php',
-                                waitTitle: 'Procesando...',
-                                waitMsg: 'Obteniendo Información',
-                                success: function(form, action) {
-                                    personaEnerg;
-                                    gridViewDataEnerg;
-                                    fechaIn = fechaInigsm.getRawValue();
-                                    var storeDataReporteenergizacionDetallado = Ext.create('Ext.data.JsonStore', {
-                                        data: action.result.data,
-                                        proxy: {
-                                            type: 'ajax',
-                                            reader: 'array'
-                                        },
-                                        fields: ['empresaEneDes', 'personaEneDes', 'placaEneDes', 'idEquipoEneDes', 'equipoEneDes', 'totalEneDes']
-                                    });
-                                    var gridEnergizacion = Ext.create('Ext.grid.Panel', {
-                                        region: 'west',
-                                        frame: true,
-                                        width: '40%',
-                                        title: '<center>Evento de Energización ' + '<br>Desde: ' + fechaInicioEnerg + ' | Hasta: ' + fechaFinalEnerg + '</center>',
-                                        store: storeDataReporteenergizacionDetallado,
-                                        features: [filters],
-                                        multiSelect: true,
-                                        viewConfig: {
-                                            emptyText: 'No hay datos que Mostrar'
-                                        },
-                                        columns: [
-                                            Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 40, align: 'center'}),
-                                            {text: 'Organización', width: 290, dataIndex: 'empresaEneDes', align: 'center'},
-                                            {text: 'Persona', width: 290, dataIndex: 'personaEneDes', align: 'center'},
-                                            {text: 'Placa', width: 130, dataIndex: 'placaEneDes', align: 'center'},
-                                            {text: 'Equipo', width: 130, dataIndex: 'equipoEneDes', align: 'center'},
-                                            {text: 'Cantidad', width: 130, dataIndex: 'totalEneDes', align: 'center'}
-                                        ],
-                                        tbar: [{
-                                                xtype: 'button',
-                                                iconCls: 'icon-excel',
-                                                text: 'Exportar a Excel',
-                                                handler: function() {
-                                                    if (storeDataReporteenergizacionDetallado.getCount() > 0) {
-                                                        if (getNavigator() === 'img/chrome.png') {
-                                                            var a = document.createElement('a');
-                                                            var data_type = 'data:application/vnd.ms-excel';
-                                                            var numFil = storeDataReporteenergizacionDetallado.data.length;
-                                                            var numCol = 5;
-                                                            var tiLetra = 'Calibri';
-                                                            var titulo = 'Cantidad de Equipos de Registro de Conectado y Desconectado'
-                                                            var table_div = "<?xml version='1.0'?><?mso-application progid='Excel.Sheet'?><Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'><DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'><Author>KRADAC SOLUCIONES TECNOLÃ“GICAS</Author><LastAuthor>KRADAC SOLUCIONES TECNOLÃ“GICAS</LastAuthor><Created>2014-08-20T15:33:48Z</Created><Company>KRADAC</Company><Version>15.00</Version>";
-                                                            table_div += "</DocumentProperties> " +
-                                                                    "<Styles> " +
-                                                                    "<Style ss:ID='Default' ss:Name='Normal'>   <Alignment ss:Vertical='Bottom'/>   <Borders/>   <Font ss:FontName='" + tiLetra + "' x:Family='Swiss' ss:Size='11' ss:Color='#000000'/>   <Interior/>   <NumberFormat/>   <Protection/>  </Style>  " +
-                                                                    "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
-                                                                    "<Style ss:ID='datos'><NumberFormat ss:Format='@'/></Style> " +
-                                                                    "</Styles>";
-                                                            //Definir el numero de columnas y cantidad de filas de la hoja de calculo (numFil + 2))
-                                                            table_div += "<Worksheet ss:Name='Datos'>";//Nombre de la hoja
-                                                            table_div += "<Table ss:ExpandedColumnCount='" + numCol + "' ss:ExpandedRowCount='" + (numFil + 2) + "' x:FullColumns='1' x:FullRows='1' ss:DefaultColumnWidth='60' ss:DefaultRowHeight='15'>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='121.5'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
-                                                            table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Organización</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Persona</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Placa</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Equipo</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Total Evento</Data></Cell>" +
-                                                                    "</Row>";
-                                                            for (var i = 0; i < numFil; i++) {
-                                                                table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetallado.data.items[i].data.empresaEneDes + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetallado.data.items[i].data.personaEneDes + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetallado.data.items[i].data.placaEneDes + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetallado.data.items[i].data.equipoEneDes + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteenergizacionDetallado.data.items[i].data.totalEneDes + " </Data></Cell > " +
-                                                                        "</Row>";
-                                                            }
-                                                            table_div += "</Table> </Worksheet></Workbook>";
-                                                            var table_xml = table_div.replace(/ /g, '%20');
-                                                            a.href = data_type + ', ' + table_xml;
-                                                            a.download = 'Evento Conectado y Desconectado' + '.xml';
-                                                            a.click();
-                                                        } else {
-                                                            Ext.MessageBox.show({
-                                                                title: 'Error',
-                                                                msg: '<center> El servicio para este navegador no esta disponible <br> Use un navegador como Google Chrome </center>',
-                                                                buttons: Ext.MessageBox.OK,
-                                                                icon: Ext.MessageBox.ERROR
-                                                            });
-                                                        }
-                                                    } else {
-                                                        Ext.MessageBox.show({
-                                                            title: 'Mensaje',
-                                                            msg: 'No hay datos en la Lista a Exportar',
-                                                            buttons: Ext.MessageBox.OK,
-                                                            icon: Ext.MessageBox.ERROR
-                                                        });
-                                                    }
-                                                }
-                                            }],
-                                        listeners: {
-                                            itemclick: function(thisObj, record, item, index, e, eOpts) {
-                                                modalEleccionBusqEnerg = record.get('empresaEneDes');
-                                                vehiculoEnerg = record.get('vehiculo');
-                                                var equipo = record.get('idEquipoEneDes');
-                                                banderaEnerg = 1;
-
-                                                gridViewDataEnerg.setTitle('<center>Lista de Equipos <br>Empresa: ' + modalEleccionBusqEnerg + ' Desde: ' + fechaInicioEnerg + ' Hasta:' + fechaFinalEnerg + '</center>');
-                                                storeViewEnerg.load({
-                                                    params: {
-                                                        dateIniEncApag: fechaIniEnerg.getRawValue(),
-                                                        dateFinEncApag: fechaFinEnerg.getRawValue(),
-                                                        idEquipo: equipo
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    });
-                                    gridViewDataEnerg = Ext.create('Ext.grid.Panel', {
-                                        region: 'center',
-                                        frame: true,
-                                        width: '60%',
-                                        title: '<center>Evento de Energización ',
-                                        store: storeViewEnerg,
-                                        features: [filters],
-                                        multiSelect: true,
-                                        viewConfig: {
-                                            emptyText: 'No hay datos que Mostrar'
-                                        },
-                                        columns: [
-                                            Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                            {text: 'Fecha', width: 150, dataIndex: 'fechaED', align: 'center'},
-                                            {text: 'Hora', width: 150, dataIndex: 'horaED', align: 'center'},
-                                            {text: 'evento', width: 150, dataIndex: 'eventoED', align: 'center'},
-                                            {text: 'Velocidad', width: 150, dataIndex: 'velocidadED', align: 'center', xtype: 'numbercolumn', format: '0.00'},
-                                            {text: 'Latitud', width: 200, dataIndex: 'latitudED', align: 'center'},
-                                            {text: 'Longitud', width: 200, dataIndex: 'longitudED', align: 'center'},
-                                            {text: 'Bateria', width: 200, dataIndex: 'bateriaED', align: 'center'},
-                                            {text: 'GSM', width: 200, dataIndex: 'gsmED', align: 'center'},
-                                            {text: 'GPS', width: 200, dataIndex: 'gpsED', align: 'center'},
-                                            {text: 'Direccion', width: 200, dataIndex: 'direccionED', align: 'center'},
-                                        ],
-                                        tbar: [{
-                                                xtype: 'button',
-                                                iconCls: 'icon-excel',
-                                                text: 'Exportar a Excel',
-                                                handler: function() {
-                                                    if (storeViewEnerg.getCount() > 0) {
+                    dateStart = dateIniEnergD.getRawValue();
+                    dateFinish = dateFinEnergD.getRawValue();
+                    var formulario = formularioEnerg.getForm();
+                    if (formulario.isValid()) {
+                        formulario.submit({
+                            url: 'php/interface/report/energizaDesenegizar/getReportGeneralEnergDes.php',
+                            waitTitle: 'Procesando...',
+                            waitMsg: 'Obteniendo Información',
+                            params: {
+                                idCompany: empresa
+                            },
+                            success: function(form, action) {
+                                var storeDataEnergD = Ext.create('Ext.data.JsonStore', {
+                                    data: action.result.data,
+                                    proxy: {
+                                        type: 'ajax',
+                                        reader: 'array'
+                                    },
+                                    fields: ['empresaEneDes', 'personaEneDes', 'placaEneDes', 'idEquipoEneDes', 'equipoEneDes', 'totalEneDes']
+                                });
+                                var gridViewDataEnergD = Ext.create('Ext.grid.Panel', {
+                                    region: 'center',
+                                    frame: true,
+                                    width: '60%',
+                                    title: '<center>Detalle: ',
+                                    store: storeViewEnerg,
+                                    features: [filters],
+                                    multiSelect: true,
+                                    viewConfig: {
+                                        emptyText: 'No hay datos que Mostrar'
+                                    },
+                                    columns: [
+                                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
+                                        {text: 'Fecha', width: 150, dataIndex: 'fechaED', align: 'center'},
+                                        {text: 'Hora', width: 150, dataIndex: 'horaED', align: 'center'},
+                                        {text: 'evento', width: 150, dataIndex: 'eventoED', align: 'center'},
+                                        {text: 'Velocidad', width: 150, dataIndex: 'velocidadED', align: 'center', xtype: 'numbercolumn', format: '0.00'},
+                                        {text: 'Latitud', width: 200, dataIndex: 'latitudED', align: 'center'},
+                                        {text: 'Longitud', width: 200, dataIndex: 'longitudED', align: 'center'},
+                                        {text: 'Bateria', width: 200, dataIndex: 'bateriaED', align: 'center'},
+                                        {text: 'GSM', width: 200, dataIndex: 'gsmED', align: 'center'},
+                                        {text: 'GPS', width: 200, dataIndex: 'gpsED', align: 'center'},
+                                        {text: 'Direccion', width: 200, dataIndex: 'direccionED', align: 'center'},
+                                    ],
+                                    tbar: [{
+                                            xtype: 'button',
+                                            iconCls: 'icon-excel',
+                                            text: 'Exportar a Excel',
+                                            handler: function() {                                             
+                                                if (storeViewEnerg.getCount() > 0) {
                                                         if (getNavigator() === 'img/chrome.png') {
                                                             var a = document.createElement('a');
                                                             var data_type = 'data:application/vnd.ms-excel';
@@ -382,83 +349,41 @@ Ext.onReady(function() {
                                                             icon: Ext.MessageBox.ERROR
                                                         });
                                                     }
-                                                }
-                                            }]
-                                    });
-                                    var tabEnergizacion = Ext.create('Ext.container.Container', {
-                                        title: 'Reporte de Energización',
-                                        closable: true,
-                                        iconCls: 'icon-conexcion',
-                                        layout: 'border',
-                                        fullscreen: true,
-                                        height: 485,
-                                        width: 2000,
-                                        region: 'center',
-                                        items: [gridEnergizacion, gridViewDataEnerg]
-                                    });
-                                    panelTabMapaAdmin.add(tabEnergizacion);
-                                    panelTabMapaAdmin.setActiveTab(tabEnergizacion);
-                                    VentanaEnerg.hide();
-                                },
-                                failure: function(form, action) {
-                                    Ext.MessageBox.show({
-                                        title: 'Información',
-                                        msg: action.result.msg,
-                                        buttons: Ext.MessageBox.OK,
-                                        icon: Ext.MessageBox.INFO
-                                    });
-                                }
-                            });
+                                            }
+                                        }]
+                                });
+                                gridViewDataEnergD.setTitle('<center>Vista de energización y desenergización ' + ' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
+                                var gridDataEnergizacionD = Ext.create('Ext.grid.Panel', {
+                                    region: 'west',
+                                    frame: true,
+                                    width: '40%',
+                                    title: '<center>Energización y desenergizacións Totales ' + '<br>Desde: ' + dateStart + ' | Hasta: ' + dateFinish + '</center>',
+                                    store: storeDataEnergD,
+                                    features: [filters],
+                                    multiSelect: true,
+                                    viewConfig: {
+                                        emptyText: 'No hay datos que Mostrar'
+                                    },
+                                    columns: [
+                                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 40, align: 'center'}),
+                                        {text: 'Organización', width: 120, dataIndex: 'empresaEneDes', align: 'center'},
+                                        {text: 'Persona', width: 220, dataIndex: 'personaEneDes', align: 'center'},
+                                        {text: 'Placa', width: 100, dataIndex: 'placaEneDes', align: 'center'},
+                                        {text: 'Equipo', width: 100, dataIndex: 'equipoEneDes', align: 'center'},
+                                        {text: 'Cantidad', width: 100, dataIndex: 'totalEneDes', align: 'center'}
+                                    ],
+                                    tbar: [{
+                                            xtype: 'button',
+                                            iconCls: 'icon-excel',
+                                            text: 'Exportar a Excel',
+                                            handler: function() {
 
-                        }
-                    }
-                if (modalEleccionBusqEnerg === 2) {
-                        if (form.isValid()) {
-                            form.submit({
-                                url: 'php/interface/report/energizaDesenegizar/getReportCooperativaEnerDes.php',
-                                waitTitle: 'Procesando...',
-                                waitMsg: 'Obteniendo Información',
-                                success: function(form, action) {
-                                    personaEnerg;
-                                    gridViewDataEnerg;
-                                    fechaIn = fechaInigsm.getRawValue();
-                                    var storeDataReporteDetallado = Ext.create('Ext.data.JsonStore', {
-                                        data: action.result.data,
-                                        proxy: {
-                                            type: 'ajax',
-                                            reader: 'array'
-                                        },
-                                        fields: ['empresaEneDes', 'personaEneDes', 'placaEneDes', 'idEquipoEneDes', 'equipoEneDes', 'totalEneDes']
-                                    });
-                                    var gridDataMantenimiento = Ext.create('Ext.grid.Panel', {
-                                        region: 'west',
-                                        frame: true,
-                                        width: '40%',
-                                        title: '<center>Registro de Evento de Energización ' + '<br>Desde: ' + fechaInicioEnerg + ' | Hasta: ' + fechaFinalEnerg + '</center>',
-                                        store: storeDataReporteDetallado,
-                                        features: [filters],
-                                        multiSelect: true,
-                                        viewConfig: {
-                                            emptyText: 'No hay datos que Mostrar'
-                                        },
-                                        columns: [
-                                            Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 40, align: 'center'}),
-                                            {text: 'Empresa', width: 100, dataIndex: 'empresaEneDes', align: 'center'},
-                                            {text: 'Persona', width: 290, dataIndex: 'personaEneDes', align: 'center'},
-                                            {text: 'Placa', width: 130, dataIndex: 'placaEneDes', align: 'center'},
-                                            {text: 'Equipo', width: 130, dataIndex: 'equipoEneDes', align: 'center'},
-                                            {text: 'Cantidad', width: 130, dataIndex: 'totalEneDes', align: 'center'},
-                                        ],
-                                        tbar: [{
-                                                xtype: 'button',
-                                                iconCls: 'icon-excel',
-                                                text: 'Exportar a Excel',
-                                                handler: function() {
-                                                    if (storeDataReporteDetallado.getCount() > 0) {
+                                                
+                                                if (storeDataEnergD.getCount() > 0) {
                                                         if (getNavigator() === 'img/chrome.png') {
                                                             var a = document.createElement('a');
                                                             var data_type = 'data:application/vnd.ms-excel';
-                                                            var numFil = storeDataReporteDetallado.data.length;
+                                                            var numFil = storeDataEnergD.data.length;
                                                             var numCol = 5;
                                                             var tiLetra = 'Calibri';
                                                             var titulo = 'Cantidad de Equipos de Registro de Conectado y Desconectado'
@@ -487,11 +412,11 @@ Ext.onReady(function() {
                                                                     "</Row>";
                                                             for (var i = 0; i < numFil; i++) {
                                                                 table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.personaEneDes + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.empresaEneDes + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.placaEneDes + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.equipoEneDes + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataReporteDetallado.data.items[i].data.totalEneDes + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataEnergD.data.items[i].data.personaEneDes + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataEnergD.data.items[i].data.empresaEneDes + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataEnergD.data.items[i].data.placaEneDes + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataEnergD.data.items[i].data.equipoEneDes + " </Data></Cell > " +
+                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataEnergD.data.items[i].data.totalEneDes + " </Data></Cell > " +
                                                                         "</Row>";
                                                             }
                                                             table_div += "</Table> </Worksheet></Workbook>";
@@ -515,184 +440,54 @@ Ext.onReady(function() {
                                                             icon: Ext.MessageBox.ERROR
                                                         });
                                                     }
-                                                }
-                                            }],
-                                        listeners: {
-                                            itemcontextmenu: function(thisObj, record, item, index, e, eOpts) {
-                                                e.stopEvent();
-                                                Ext.create('Ext.menu.Menu', {
-                                                    items: [
-                                                        Ext.create('Ext.Action', {
-                                                            iconCls: 'icon-vehiculos_lugar', // Use a URL in the icon config
-                                                            text: 'Ver Detalles',
-                                                            disabled: false,
-                                                            handler: function(widget, event) {
-//                                                                if (vistaVistaRegistrosEnerg) {
-//                                                                    vistaVistaRegistrosEnerg.hide();
-//                                                                }
-//                                                                metodoRegistros(record.data.empresa, record.data.vehiculo, record.data.total, record.data.fechaSoatReg, record.data.fechaSoatVenc, record.data.descripSoat, record.data.fechaMatriculaReg, record.data.fechaMatriculaVenc, record.data.descripMatricula, record.data.fechaSeguroReg, record.data.fechaSeguroVenc, record.data.descripSeguro);
-//                                                                vistaVistaRegistrosEnerg.show();
-                                                            }
-                                                        })
-                                                    ]
-                                                }).showAt(e.getXY());
-                                                return false;
-                                            },
-                                            itemclick: function(thisObj, record, item, index, e, eOpts) {
-                                                modalEleccionBusqEnerg = record.get('empresaEneDes');
-                                                vehiculoEnerg = record.get('vehiculo');
-                                                var equipo = record.get('idEquipoEneDes');
-                                                banderaEnerg = 1;
-
-                                                gridViewDataEnerg.setTitle('<center>Lista de Equipos con Evento de Encendido y Apagado <br>Empresa: ' + modalEleccionBusqEnerg + ' Desde: ' + fechaInicioEnerg + ' Hasta:' + fechaFinalEnerg + '</center>');
-                                                storeViewEnerg.load({
-                                                    params: {
-                                                        dateIniEncApag: fechaIniEnerg.getRawValue(),
-                                                        dateFinEncApag: fechaFinEnerg.getRawValue(),
-                                                        idEquipo: equipo
-                                                    }
-                                                });
                                             }
-                                        }
-                                    });
-                                    gridViewDataEnerg = Ext.create('Ext.grid.Panel', {
-                                        region: 'center',
-                                        frame: true,
-                                        width: '60%',
-                                        title: '<center>Evento de Energización',
-                                        store: storeViewEnerg,
-                                        features: [filters],
-                                        multiSelect: true,
-                                        viewConfig: {
-                                            emptyText: 'No hay datos que Mostrar'
-                                        },
-                                        columns: [
-                                            Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                            {text: 'Fecha', width: 150, dataIndex: 'fechaED', align: 'center'},
-                                            {text: 'Hora', width: 150, dataIndex: 'horaED', align: 'center'},
-                                            {text: 'evento', width: 150, dataIndex: 'eventoED', align: 'center'},
-                                            {text: 'Velocidad', width: 150, dataIndex: 'velocidadED', align: 'center', xtype: 'numbercolumn', format: '0.00'},
-                                            {text: 'Latitud', width: 200, dataIndex: 'latitudED', align: 'center'},
-                                            {text: 'Longitud', width: 200, dataIndex: 'longitudED', align: 'center'},
-                                            {text: 'Bateria', width: 200, dataIndex: 'bateriaED', align: 'center'},
-                                            {text: 'GSM', width: 200, dataIndex: 'gsmED', align: 'center'},
-                                            {text: 'GPS', width: 200, dataIndex: 'gpsED', align: 'center'},
-                                            {text: 'Direccion', width: 200, dataIndex: 'direccionED', align: 'center'},
-                                        ],
-                                        tbar: [{
-                                                xtype: 'button',
-                                                iconCls: 'icon-excel',
-                                                text: 'Exportar a Excel',
-                                                handler: function() {
-                                                    if (storeViewEnerg.getCount() > 0) {
-                                                        if (getNavigator() === 'img/chrome.png') {
-                                                            var a = document.createElement('a');
-                                                            var data_type = 'data:application/vnd.ms-excel';
-                                                            var numFil = storeViewEnerg.data.length;
-                                                            var numCol = 10;
-                                                            var tiLetra = 'Calibri';
-                                                            var titulo = 'Registro de Conexión y Desconexión';
-                                                            var table_div = "<?xml version='1.0'?><?mso-application progid='Excel.Sheet'?><Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'><DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'><Author>KRADAC SOLUCIONES TECNOLÃ“GICAS</Author><LastAuthor>KRADAC SOLUCIONES TECNOLÃ“GICAS</LastAuthor><Created>2014-08-20T15:33:48Z</Created><Company>KRADAC</Company><Version>15.00</Version>";
-                                                            table_div += "</DocumentProperties> " +
-                                                                    "<Styles> " +
-                                                                    "<Style ss:ID='Default' ss:Name='Normal'>   <Alignment ss:Vertical='Bottom'/>   <Borders/>   <Font ss:FontName='" + tiLetra + "' x:Family='Swiss' ss:Size='11' ss:Color='#000000'/>   <Interior/>   <NumberFormat/>   <Protection/>  </Style>  " +
-                                                                    "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
-                                                                    "<Style ss:ID='datos'><NumberFormat ss:Format='@'/></Style> " +
-                                                                    "</Styles>";
-                                                            //Definir el numero de columnas y cantidad de filas de la hoja de calculo (numFil + 2))
-                                                            table_div += "<Worksheet ss:Name='Datos'>";//Nombre de la hoja
-                                                            table_div += "<Table ss:ExpandedColumnCount='" + numCol + "' ss:ExpandedRowCount='" + (numFil + 2) + "' x:FullColumns='1' x:FullRows='1' ss:DefaultColumnWidth='60' ss:DefaultRowHeight='15'>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='121.5'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-
-                                                            table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
-                                                            table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                            "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Fecha</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Hora</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Evento</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Velocidad</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Latitud</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Longtud</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Bateria</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>GSM</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>GPS</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Dirección</Data></Cell>" +
-                                                                    "</Row>";
-                                                            for (var i = 0; i < numFil; i++) {
-                                                                table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEnerg.data.items[i].data.fechaED + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEnerg.data.items[i].data.horaED + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEnerg.data.items[i].data.eventoED + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEnerg.data.items[i].data.velocidadED + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEnerg.data.items[i].data.latitudED + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEnerg.data.items[i].data.longitudED + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEnerg.data.items[i].data.bateriaED + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEnerg.data.items[i].data.gsmED + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEnerg.data.items[i].data.gpsED + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEnerg.data.items[i].data.direccionED + " </Data></Cell > " +
-                                                                        "</Row>";
-                                                            }
-                                                            table_div += "</Table> </Worksheet></Workbook>";
-                                                            var table_xml = table_div.replace(/ /g, '%20');
-                                                            a.href = data_type + ', ' + table_xml;
-                                                            a.download = 'Registro de Conexión y Desconexión' + '.xml';
-                                                            a.click();
-                                                        } else {
-                                                            Ext.MessageBox.show({
-                                                                title: 'Error',
-                                                                msg: '<center> El servicio para este navegador no esta disponible <br> Use un navegador como Google Chrome </center>',
-                                                                buttons: Ext.MessageBox.OK,
-                                                                icon: Ext.MessageBox.ERROR
-                                                            });
+                                        }],
+                                    listeners: {
+                                        itemclick: function(thisObj, record, item, index, e, eOpts) {
+                                            idEquipoEnergD = record.get('idEquipoEneDes');
+                                            persona = record.get('personaEneDes');
+                                            bandera = 1;
+                                            hayDatos = true;
+                                            gridViewDataEnergD.setTitle('<center>Vista de energización y desenergización: ' + persona + ' <br> Equipo: ' + idEquipoEnergD + ' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
+                                            storeViewEnerg.load(
+                                                    {
+                                                        params: {
+                                                            idEquipoED: idEquipoEnergD,
+                                                            fechaIniED: dateIniEnergD.getRawValue(),
+                                                            fechaFinED: dateFinEnergD.getRawValue(),
+                                                            horaIniED: timeIniEnergD.getRawValue(),
+                                                            horaFinED: timeFinEnergD.getRawValue(),
                                                         }
-                                                    } else {
-                                                        Ext.MessageBox.show({
-                                                            title: 'Mensaje',
-                                                            msg: 'No hay datos en la Lista a Exportar',
-                                                            buttons: Ext.MessageBox.OK,
-                                                            icon: Ext.MessageBox.ERROR
-                                                        });
-                                                    }
-                                                }
-                                            }]
-                                    });
-                                    var tabEnergiacion = Ext.create('Ext.container.Container', {
-                                        title: 'Evento de Energización',
-                                        closable: true,
-                                        iconCls: 'icon-conexcion',
-                                        layout: 'border',
-                                        fullscreen: true,
-                                        height: 485,
-                                        width: 2000,
-                                        region: 'center',
-                                        items: [gridDataMantenimiento, gridViewDataEnerg]
-                                    });
-                                    panelTabMapaAdmin.add(tabEnergiacion);
-                                    panelTabMapaAdmin.setActiveTab(tabEnergiacion);
-                                    VentanaEnerg.hide();
-                                },
-                                failure: function(form, action) {
-                                    Ext.MessageBox.show({
-                                        title: 'Información',
-                                        msg: action.result.msg,
-                                        buttons: Ext.MessageBox.OK,
-                                        icon: Ext.MessageBox.INFO
-                                    });
-                                }
-                            });
+                                                    });
 
-                        }
+                                        }
+                                    }
+                                });
+                                var tabExcesos = Ext.create('Ext.container.Container', {
+                                    title: 'Energización y Desenergización Detallados',
+                                    closable: true,
+                                    iconCls: 'icon-conexcion',
+                                    layout: 'border',
+                                    fullscreen: true,
+                                    height: 485,
+                                    width: 2000,
+                                    region: 'center',
+                                    items: [gridViewDataEnergD, gridDataEnergizacionD]
+                                });
+                                panelTabMapaAdmin.add(tabExcesos);
+                                panelTabMapaAdmin.setActiveTab(tabExcesos);
+                                VentanaEnerg.hide();
+                            },
+                            failure: function(form, action) {
+                                Ext.MessageBox.show({
+                                    title: 'Información',
+                                    msg: 'No se existen datos disponibles',
+                                    buttons: Ext.MessageBox.OK,
+                                    icon: Ext.MessageBox.INFO
+                                });
+                            }
+                        });
                     }
-
-
                 }
             }
             , {
@@ -704,8 +499,6 @@ Ext.onReady(function() {
             }]
     });
 });
-
-
 function showWinEnergizar() {
     if (!VentanaEnerg) {
         VentanaEnerg = Ext.create('Ext.window.Window', {
@@ -714,16 +507,12 @@ function showWinEnergizar() {
             iconCls: 'icon-conexcion',
             resizable: false,
             width: 350,
-            height: 300,
+            height: 375,
             closeAction: 'hide',
             plain: false,
             items: formularioEnerg
         });
     }
-    formularioEnerg.getForm().reset();
-    cbxEmpresasEnerg.disable();
     VentanaEnerg.show();
+    formularioEnerg.getForm().reset();
 }
-
-
-

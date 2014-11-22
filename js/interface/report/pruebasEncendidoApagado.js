@@ -8,11 +8,11 @@ var timeStart;
 var timeFinish;
 var persona;
 var idEquipoEA;
-var gridViewDataPanicoTotal;
-var gridViewDataPanicoGeneral;
+//var gridViewDataPanicoTotal;
+//var gridViewDataPanicoGeneral;
 var gridDataExcesos;
 //var storeViewPanicoTotal;
-var storeDataPanicoD;
+//var storeDataPanicoD;
 var empresa = 1;
 var empresaNom = 'KRADAC';
 var cbxEmpresasBDEncendidoApag;
@@ -247,7 +247,7 @@ Ext.onReady(function() {
 //                                            }
 //                                        });
 //                                        
-                                var gridViewDataPanico = Ext.create('Ext.grid.Panel', {
+                                var gridViewDataEncApag = Ext.create('Ext.grid.Panel', {
                                     region: 'center',
                                     frame: true,
                                     width: '60%',
@@ -277,93 +277,94 @@ Ext.onReady(function() {
                                             text: 'Exportar a Excel',
                                             handler: function() {
                                                 if (storeViewEncendidoApag.getCount() > 0) {
-                                                        if (getNavigator() === 'img/chrome.png') {
-                                                            var a = document.createElement('a');
-                                                            var data_type = 'data:application/vnd.ms-excel';
-                                                            var numFil = storeViewEncendidoApag.data.length;
-                                                            var numCol = 10;
-                                                            var tiLetra = 'Calibri';
-                                                            var titulo = 'Registro de Encendido y Apagado';
-                                                            var table_div = "<?xml version='1.0'?><?mso-application progid='Excel.Sheet'?><Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'><DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'><Author>KRADAC SOLUCIONES TECNOLÃ“GICAS</Author><LastAuthor>KRADAC SOLUCIONES TECNOLÃ“GICAS</LastAuthor><Created>2014-08-20T15:33:48Z</Created><Company>KRADAC</Company><Version>15.00</Version>";
-                                                            table_div += "</DocumentProperties> " +
-                                                                    "<Styles> " +
-                                                                    "<Style ss:ID='Default' ss:Name='Normal'>   <Alignment ss:Vertical='Bottom'/>   <Borders/>   <Font ss:FontName='" + tiLetra + "' x:Family='Swiss' ss:Size='11' ss:Color='#000000'/>   <Interior/>   <NumberFormat/>   <Protection/>  </Style>  " +
-                                                                    "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
-                                                                    "<Style ss:ID='datos'><NumberFormat ss:Format='@'/></Style> " +
-                                                                    "</Styles>";
-                                                            //Definir el numero de columnas y cantidad de filas de la hoja de calculo (numFil + 2))
-                                                            table_div += "<Worksheet ss:Name='Datos'>";//Nombre de la hoja
-                                                            table_div += "<Table ss:ExpandedColumnCount='" + numCol + "' ss:ExpandedRowCount='" + (numFil + 2) + "' x:FullColumns='1' x:FullRows='1' ss:DefaultColumnWidth='60' ss:DefaultRowHeight='15'>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='121.5'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                    if (getNavigator() === 'img/chrome.png') {
+                                                        var a = document.createElement('a');
+                                                        var data_type = 'data:application/vnd.ms-excel';
+                                                        var numFil = storeViewEncendidoApag.data.length;
+                                                        var numCol = 10;
+                                                        var tiLetra = 'Calibri';
+                                                        var titulo = 'Registro de Encendido y Apagado';
+                                                        var table_div = "<?xml version='1.0'?><?mso-application progid='Excel.Sheet'?><Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'><DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'><Author>KRADAC SOLUCIONES TECNOLÃ“GICAS</Author><LastAuthor>KRADAC SOLUCIONES TECNOLÃ“GICAS</LastAuthor><Created>2014-08-20T15:33:48Z</Created><Company>KRADAC</Company><Version>15.00</Version>";
+                                                        table_div += "</DocumentProperties> " +
+                                                                "<Styles> " +
+                                                                "<Style ss:ID='Default' ss:Name='Normal'>   <Alignment ss:Vertical='Bottom'/>   <Borders/>   <Font ss:FontName='" + tiLetra + "' x:Family='Swiss' ss:Size='11' ss:Color='#000000'/>   <Interior/>   <NumberFormat/>   <Protection/>  </Style>  " +
+                                                                "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
+                                                                "<Style ss:ID='datos'><NumberFormat ss:Format='@'/></Style> " +
+                                                                "</Styles>";
+                                                        //Definir el numero de columnas y cantidad de filas de la hoja de calculo (numFil + 2))
+                                                        table_div += "<Worksheet ss:Name='Datos'>";//Nombre de la hoja
+                                                        table_div += "<Table ss:ExpandedColumnCount='" + numCol + "' ss:ExpandedRowCount='" + (numFil + 2) + "' x:FullColumns='1' x:FullRows='1' ss:DefaultColumnWidth='60' ss:DefaultRowHeight='15'>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='121.5'/>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
 
-                                                            table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
+                                                        table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
+                                                        table_div += "<Row ss:AutoFitHeight='0'>" +
+                                                                //fields: ['fechaEA', 'horaEA', 'eventoEA', 'velocidadEA', 'latitudEA', 'longitudEA', 'bateriaEA', 'gsmEA', 'gpsEA', 'direccionEA']
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Fecha</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Hora</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Evento</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Velocidad</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Latitud</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Longtud</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Bateria</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>GSM</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>GPS</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Dirección</Data></Cell>" +
+                                                                "</Row>";
+                                                        for (var i = 0; i < numFil; i++) {
                                                             table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                    //fields: ['fechaEA', 'horaEA', 'eventoEA', 'velocidadEA', 'latitudEA', 'longitudEA', 'bateriaEA', 'gsmEA', 'gpsEA', 'direccionEA']
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Fecha</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Hora</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Evento</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Velocidad</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Latitud</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Longtud</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Bateria</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>GSM</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>GPS</Data></Cell>" +
-                                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Dirección</Data></Cell>" +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.fechaEA + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.horaEA + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.eventoEA + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.velocidadEA + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.latitudEA + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.longitudEA + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.bateriaEA + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.gsmEA + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.gpsEA + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.direccionEA + " </Data></Cell > " +
                                                                     "</Row>";
-                                                            for (var i = 0; i < numFil; i++) {
-                                                                table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.fechaEA + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.horaEA + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.eventoEA + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.velocidadEA + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.latitudEA + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.longitudEA + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.bateriaEA + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.gsmEA + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.gpsEA + " </Data></Cell > " +
-                                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.direccionEA + " </Data></Cell > " +
-                                                                        "</Row>";
-                                                            }
-                                                            table_div += "</Table> </Worksheet></Workbook>";
-                                                            var table_xml = table_div.replace(/ /g, '%20');
-                                                            a.href = data_type + ', ' + table_xml;
-                                                            a.download = 'Registro de Encenedido y Apagado' + '.xml';
-                                                            a.click();
-                                                        } else {
-                                                            
-                                                            Ext.MessageBox.show({
-                                                                title: 'Error',
-                                                                msg: '<center> El servicio para este navegador no esta disponible <br> Use un navegador como Google Chrome </center>',
-                                                                buttons: Ext.MessageBox.OK,
-                                                                icon: Ext.MessageBox.ERROR
-                                                            });
                                                         }
+                                                        table_div += "</Table> </Worksheet></Workbook>";
+                                                        var table_xml = table_div.replace(/ /g, '%20');
+                                                        a.href = data_type + ', ' + table_xml;
+                                                        a.download = 'Registro de Encenedido y Apagado' + '.xml';
+                                                        a.click();
                                                     } else {
+
                                                         Ext.MessageBox.show({
-                                                            title: 'Mensaje',
-                                                            msg: 'No hay datos en la Lista a Exportar',
+                                                            title: 'Error',
+                                                            msg: '<center> El servicio para este navegador no esta disponible <br> Use un navegador como Google Chrome </center>',
                                                             buttons: Ext.MessageBox.OK,
                                                             icon: Ext.MessageBox.ERROR
                                                         });
                                                     }
+                                                } else {
+                                                    Ext.MessageBox.show({
+                                                        title: 'Mensaje',
+                                                        msg: 'No hay datos en la Lista a Exportar',
+                                                        buttons: Ext.MessageBox.OK,
+                                                        icon: Ext.MessageBox.ERROR
+                                                    });
+                                                }
                                             }
                                         }]
                                 });
-                                gridViewDataPanico.setTitle('<center>Vista de Panicos: ' + storeDataEncApag.data.items[0].data.personaEncApag + ' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
+//                                gridViewDataEncApag.setTitle('<center>Vista de Encendido y apagado de vehículo: ' + storeDataEncApag.data.items[0].data.personaEncApag + '<br> Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
+                                gridViewDataEncApag.setTitle('<center>Vista de Encendido y apagado de vehículo: ' + '<br> Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
                                 var gridDataExcesos = Ext.create('Ext.grid.Panel', {
                                     region: 'west',
                                     frame: true,
                                     width: '40%',
-                                    title: '<center>Panicos Totales ' + '<br>Desde: ' + dateStart + ' | Hasta: ' + dateFinish + '</center>',
+                                    title: '<center>Encendido y apagado Totales ' + '<br>Desde: ' + dateStart + ' | Hasta: ' + dateFinish + '</center>',
                                     store: storeDataEncApag,
                                     features: [filters],
                                     multiSelect: true,
@@ -455,7 +456,7 @@ Ext.onReady(function() {
                                             persona = record.get('personaEncApag');
                                             bandera = 1;
                                             hayDatos = true;
-                                            gridViewDataPanico.setTitle('<center>Vista de Panicos: ' + persona + ' <br> Equipo: ' + idEquipoEA + ' Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
+                                            gridViewDataEncApag.setTitle('<center>Vista de Encendido y apagado de vehículo: ' + persona + ' <br> Equipo: ' + idEquipoEA + ' <br>Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
                                             storeViewEncendidoApag.load(
                                                     {
                                                         params: {
@@ -471,15 +472,15 @@ Ext.onReady(function() {
                                     }
                                 });
                                 var tabExcesos = Ext.create('Ext.container.Container', {
-                                    title: 'Panicos Detallados',
+                                    title: 'Encendido y apagado Detallados',
                                     closable: true,
-                                    iconCls: 'icon-reset',
+                                    iconCls: 'icon-encendido',
                                     layout: 'border',
                                     fullscreen: true,
                                     height: 485,
                                     width: 2000,
                                     region: 'center',
-                                    items: [gridViewDataPanico, gridDataExcesos]
+                                    items: [gridViewDataEncApag, gridDataExcesos]
                                 });
                                 panelTabMapaAdmin.add(tabExcesos);
                                 panelTabMapaAdmin.setActiveTab(tabExcesos);

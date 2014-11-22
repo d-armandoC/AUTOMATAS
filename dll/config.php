@@ -7,7 +7,7 @@ $site_icon = "img/icon_karview.png";
 function getConectionDb() {
     /* DATOS DE MI SERVIDOR */
     $db_name = "karviewdb";
-    $db_host = "172.16.17.214";
+    $db_host = "172.16.57.11";
     $db_user = "calediego";
     $db_password = "calediego";
 //    $db_user = "root";
