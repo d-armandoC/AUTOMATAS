@@ -78,6 +78,7 @@ Ext.onReady(function() {
         name: 'fechaIniEA',
         value: new Date(),
         maxValue: new Date(),
+                
         maxText: 'La fecha debe ser igual o anterior a <br> {0}',
         allowBlank: false,
         invalidText: '{0} No es una fecha validad- Debe estar en formato {1}"',
@@ -92,6 +93,7 @@ Ext.onReady(function() {
         name: 'fechaFinEA',
         value: new Date(),
         maxValue: new Date(),
+        vtype:'daterange',
         invalidText: '{0} No es una fecha validad- Debe estar en formato {1}"',
         allowBlank: false,
         startDateField: 'fechaIniEncApag',
@@ -373,7 +375,7 @@ Ext.onReady(function() {
                                     },
                                     columns: [
                                         Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                        {text: 'Empresa', width: 120, dataIndex: 'empresaEncApag', align: 'center'},
+                                        {text: 'Organización', width: 120, dataIndex: 'empresaEncApag', align: 'center'},
                                         {text: 'Persona', width: 210, dataIndex: 'personaEncApag', align: 'center'},
                                         {text: 'Placa', width: 100, dataIndex: 'placaEncApag', align: 'center'},
                                         {text: 'Equipo', width: 100, dataIndex: 'equipoEncApag', align: 'center'},
@@ -489,12 +491,14 @@ Ext.onReady(function() {
                             failure: function(form, action) {
                                 Ext.MessageBox.show({
                                     title: 'Información',
-                                    msg: action.result.message,
+                                    msg: "No se existen datos para mostrar",
                                     buttons: Ext.MessageBox.OK,
                                     icon: Ext.MessageBox.INFO
                                 });
                             }
                         });
+                    }else {
+                        Ext.example.msg("Alerta", 'Llenar los campos marcados en rojo correctamente ');
                     }
                 }
             }

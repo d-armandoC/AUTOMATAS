@@ -101,6 +101,7 @@ Ext.onReady(function() {
         name: 'fechaFinED',
         value: new Date(),
         maxValue: new Date(),
+                vtype:'daterange',
         invalidText: '{0} No es una fecha validad- Debe estar en formato {1}"',
         allowBlank: false,
         startDateField: 'fechaIniEnergD',
@@ -487,6 +488,8 @@ Ext.onReady(function() {
                                 });
                             }
                         });
+                    }else {
+                        Ext.example.msg("Alerta", 'Llenar los campos marcados en rojo correctamente ');
                     }
                 }
             }
