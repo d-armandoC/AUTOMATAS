@@ -15,6 +15,7 @@
         <link href="bootstrap/bootstrap.css" rel="stylesheet">
         <link href="bootstrap/bootstrap-responsive.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/css_index.css">
+        <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/ux/css/ItemSelector.css"> 
         <script type="text/javascript" src="js/requerid/functions.js"></script>
     </head>
     <body>
