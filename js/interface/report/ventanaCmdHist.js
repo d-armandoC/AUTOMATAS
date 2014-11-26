@@ -206,6 +206,8 @@ Ext.onReady(function () {
                 ]
             }],
         buttons: [{
+                
+                ///////////////////////////////////////////////////////7
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
                 handler: function () {
