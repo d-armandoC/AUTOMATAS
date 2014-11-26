@@ -1,11 +1,29 @@
-var contenedorwinCmdHist;
-var winCmdHist;
+var formComandos;
+var winComandos;
+var banderaComan = 0;
+var dateStartComan;
+var dateFinishComan;
+var timeStartComan;
+var timeFinishComan;
+var personaComan;
+var idEquipoComandos;
+var gridViewDataCpomandosTotal;
+var gridViewDataComandosGeneral;
+var gridDataComandos;
+var storeDataComandos;
+var empresaComanodos = 1;
+var empresaNomComandos = 'KRADAC';
+var cbxEmpresasBDComandos;
+var cbxVehBDComanodos;
+var porEquipoComan = false;
+var hayDatosComandos = false;
+var gridViewDataComandos;
 
-Ext.onReady(function() {
+Ext.onReady(function () {
 
-    var cbxEmpresasBD = Ext.create('Ext.form.ComboBox', {
+    cbxEmpresasBDComandos = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Organización',
-        name: 'cbxEmpresas',
+        name: 'idCompanyComando',
         store: storeEmpresas,
         valueField: 'id',
         displayField: 'text',
@@ -13,27 +31,29 @@ Ext.onReady(function() {
         emptyText: 'Seleccionar Organización...',
         editable: false,
         allowBlank: false,
+        value: 1,
         listeners: {
-            select: function(combo, records, eOpts) {
-                cbxVehBD.enable();
-                cbxVehBD.clearValue();
-
-                storeVeh.load({
-                    params: {
-                        cbxEmpresas: records[0].data.id
-                    }
-                });
+            select: function (combo, records, eOpts) {
+                if (porEquipoComan) {
+                    cbxVehBDComanodos.clearValue();
+                    cbxVehBDComanodos.enable();
+                    storeVeh.load({
+                        params: {
+                            cbxEmpresas: records[0].data.id
+                        }
+                    });
+                }
             }
         }
     });
+    
+    
 
-    var cbxVehBD = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Vehículo:',
+    cbxVehBDComanodos = Ext.create('Ext.form.ComboBox', {
+        fieldLabel: 'Vehículos',
         name: 'cbxVeh',
         store: storeVeh,
         valueField: 'id',
-        value: new Date(),
-        maxValue: new Date(),
         displayField: 'text',
         queryMode: 'local',
         emptyText: 'Seleccionar Vehículo...',
@@ -41,343 +61,417 @@ Ext.onReady(function() {
         editable: false,
         allowBlank: false,
         listConfig: {
-            minWidth: 300
+            minWidth: 450
         }
     });
-
+    
+    
     var dateIni = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
-        id: 'fechaIniCmdHist',
+        id: 'fechaIniComando',
         name: 'fechaIni',
         value: new Date(),
         maxValue: new Date(),
-//        vtype: 'daterange',
+        maxText: 'La fecha debe ser igual o anterior a <br> {0}',
         allowBlank: false,
-        endDateField: 'fechaFinCmdHist',
+        invalidText: '{0} No es una fecha validad- Debe estar en formato {1}"',
+        endDateField: 'fechaFinPanico',
         emptyText: 'Fecha Inicial...'
     });
 
     var dateFin = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Hasta el',
         format: 'Y-m-d',
-        id: 'fechaFinCmdHist',
+        id: 'fechaFinComando',
         name: 'fechaFin',
         value: new Date(),
         maxValue: new Date(),
-        vtype: 'daterange',
+        invalidText: '{0} No es una fecha validad- Debe estar en formato {1}"',
         allowBlank: false,
-        startDateField: 'fechaIniCmdHist',
+        startDateField: 'fechaIniPanico',
         emptyText: 'Fecha Final...'
     });
-
-    var timeIni = Ext.create('Ext.form.field.Time', {
+    
+    var timeInipanico = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
-        name: 'horaIni',
-            value: '00:00',
+        name: 'horaIniComando',
+        value: '00:01',
         format: 'H:i',
         allowBlank: false,
-        emptyText: 'Hora Inicial...'
+        emptyText: 'Hora Inicial...',
+        listConfig: {
+            minWidth: 300
+        }
     });
-
-    var timeFin = Ext.create('Ext.form.field.Time', {
+    var timeFinpanico = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Hasta las',
-        name: 'horaFin',
-            value: '23:59',
+        name: 'horaFinComando',
+        value: '23:59',
         format: 'H:i',
         allowBlank: false,
-        emptyText: 'Hora Final...'
+        emptyText: 'Hora final...',
+        listConfig: {
+            minWidth: 450
+        }
     });
-
-    var today = Ext.create('Ext.button.Button', {
+    var btnToday = Ext.create('Ext.button.Button', {
         text: 'Hoy',
         iconCls: 'icon-today',
-        handler: function() {
+        handler: function () {
             var nowDate = new Date();
-
-            dateIni.setValue(formatoFecha(nowDate));
-            dateFin.setValue(formatoFecha(nowDate));
-
-            timeIni.setValue('00:01');
-            timeFin.setValue('23:59');
+            dateIni.setValue(nowDate);
+            dateFin.setValue(nowDate);
+            timeInipanico.setValue('00:01');
+            timeFinpanico.setValue('23:59');
         }
     });
-
-    var yesterdey = Ext.create('Ext.button.Button', {
+    var btnYesterday = Ext.create('Ext.button.Button', {
         text: 'Ayer',
         iconCls: 'icon-yesterday',
-        handler: function() {
-            var nowDate = new Date();
-            var año = nowDate.getFullYear();
-            var mes = nowDate.getMonth() + 1;
-            if (mes < 10) {
-                mes = "0" + mes;
-            }
-            var dia = nowDate.getDate() - 1;
-            if (dia < 10) {
-                dia = "0" + dia;
-            }
-            nowDate.setMinutes(nowDate.getMinutes() + 10);
-
-            dateIni.setValue(año + "-" + mes + "-" + dia);
-            dateFin.setValue(año + "-" + mes + "-" + dia);
-
-            timeIni.setValue('00:01');
-            timeFin.setValue('23:59');
+        handler: function () {
+            var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
+            dateIni.setValue(yestDate);
+            dateFin.setValue(yestDate);
+            timeInipanico.setValue('00:01');
+            timeFinpanico.setValue('23:59');
         }
     });
-
-    var panelBotones = Ext.create('Ext.form.Panel', {
-        layout: 'column',
-        baseCls: 'x-plain',
-        items: [{
-                baseCls: 'x-plain',
-                bodyStyle: 'padding:0 5px 0 0',
-                items: [today]
-            }, {
-                baseCls: 'x-plain',
-                bodyStyle: 'padding:0 5px 0 0',
-                items: [yesterdey]
-            }]
+    var panelButtonsComandos = Ext.create('Ext.panel.Panel', {
+        layout: 'hbox',
+        padding: '0 0 5 0',
+        defaults: {
+            margin: '0 5 0 0'
+        },
+        items: [btnToday, btnYesterday]
     });
 
-    contenedorwinCmdHist = Ext.create('Ext.form.Panel', {
-        frame: true,
+    formComandos = Ext.create('Ext.form.Panel', {
+        bodyPadding: '10 10 0 10',
         fieldDefaults: {
             labelAlign: 'left',
-            labelWidth: 70,
-            width: 260
+            anchor: '100%'
         },
         items: [{
-                layout: 'column',
-                baseCls: 'x-plain',
-                items: [{
-                        columnWidth: .5,
-                        baseCls: 'x-plain',
+                xtype: 'fieldset',
+                title: '<b>Datos</b>',
+                items: [
+                    {
+                        xtype: 'radiogroup',
+                        columns: 2,
+                        vertical: true,
                         items: [
-                            cbxEmpresasBD,
-                            dateIni,
-                            timeIni
-                        ]
-                    }, {
-                        columnWidth: .5,
-                        baseCls: 'x-plain',
-                        items: [
-                            cbxVehBD,
-                            dateFin,
-                            timeFin
-                        ]
-                    }]
-            },
-            panelBotones],
+                            {boxLabel: 'Por Organización', name: 'rb6', inputValue: '1', checked: true},
+                            {boxLabel: 'Por Vehiculo', name: 'rb6', inputValue: '2'}
+                        ],
+                        listeners: {
+                            change: function (field, newValue, oldValue) {
+                                switch (parseInt(newValue['rb'])) {
+                                    case 1:
+                                        empresaComanodos = 1;
+                                        cbxEmpresasBDComandos.enable();
+                                        cbxVehBDComanodos.clearValue();
+                                        cbxVehBDComanodos.disable();
+                                        porEquipoComan = false;
+                                        break;
+                                    case 2:
+                                        porEquipoComan = true;
+                                        empresaComanodos = cbxEmpresasBDComandos.getValue();
+                                        empresaNomComandos = cbxEmpresasBDComandos.getRawValue();
+                                        if (porEquipoComan) {
+                                            cbxVehBDComanodos.enable();
+                                            storeVeh.load({
+                                                params: {
+                                                    cbxEmpresas: formComandos.down('[name=idCompanyComando]').getValue()
+                                                }
+                                            });
+                                        }
+                                        break;
+                                }
+                            }
+                        }
+                    },
+                    cbxEmpresasBDComandos,
+                    cbxVehBDComanodos
+                ]
+            }, {
+                xtype: 'fieldset',
+                title: '<b>Fechas</b>',
+                items: [
+                    dateIni,
+                    dateFin,
+                    timeInipanico,
+                    timeFinpanico,
+                    panelButtonsComandos
+                ]
+            }],
         buttons: [{
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
-                handler: function() {
-                    if (contenedorwinCmdHist.getForm().isValid()) {
-                        loadGridCmdHist();
-                    }
+                handler: function () {
+                    dateStartComan = dateIni.getRawValue();
+                    dateFinishComan = dateFin.getRawValue();
+                    var formulario = formComandos.getForm();
+                    if (formulario.isValid()) {
+                    formulario.submit({
+                        url: 'php/interface/report/cmd/getReportCmd.php',
+                        waitTitle: 'Procesando...',
+                        waitMsg: 'Obteniendo Información',
+                        params: {
+                            idCompany: empresaComanodos
+                        },
+                        success: function (form, action) {
+                            var storeDataExcesos = Ext.create('Ext.data.JsonStore', {
+                                data: action.result.data,
+                                proxy: {
+                                    type: 'ajax',
+                                    reader: 'array'
+                                },
+                                fields: ['empresaPanicos', 'personaPanicos', 'idEquipoPanicos', 'placaPanicos', 'cantidadPanicos']
+                            });
+                                var gridViewDataPanico = Ext.create('Ext.grid.Panel', {
+                                    region: 'center',
+                                    frame: true,
+                                    width: '60%',
+                                    title: '<center>Detalle: ',
+                                    store: storeViewPanico,
+                                    features: [filters],
+                                    multiSelect: true,
+                                    viewConfig: {
+                                        emptyText: 'No hay datos que Mostrar'
+                                    },
+                                    columns: [
+                                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
+                                        {text: 'Velocidad', width: 130, dataIndex: 'velocidad', align: 'center', xtype: 'numbercolumn', format: '0.00'},
+                                        {text: 'Fecha', width: 200, dataIndex: 'fecha', align: 'center'},
+                                        {text: 'Hora', width: 200, dataIndex: 'hora', align: 'center'},
+                                        {text: 'Evento', width: 250, dataIndex: 'evento', align: 'center'},
+                                        {text: 'Latitud', width: 250, dataIndex: 'latitud', align: 'center'},
+                                        {text: 'Longitud', width: 250, dataIndex: 'longitud', align: 'center'}
+                                    ],
+                                    tbar: [{
+                                            xtype: 'button',
+                                            iconCls: 'icon-excel',
+                                            text: 'Exportar a Excel',
+                                            handler: function () {
+                                                if (storeViewPanico.getCount() > 0) {
+                                                    if (getNavigator() === 'img/chrome.png') {
+                                                        var a = document.createElement('a');
+                                                        var data_type = 'data:application/vnd.ms-excel';
+                                                        var numFil = storeViewPanico.data.length;
+                                                        var numCol = 6;
+                                                        var tiLetra = 'Calibri';
+                                                        var titulo = 'Registro de Panico en la Fecha:' + storeViewPanico.data.items[0].data.fecha;
+                                                        var table_div = "<?xml version='1.0'?><?mso-application progid='Excel.Sheet'?><Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'><DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'><Author>KRADAC SOLUCIONES TECNOLÃ“GICAS</Author><LastAuthor>KRADAC SOLUCIONES TECNOLÃ“GICAS</LastAuthor><Created>2014-08-20T15:33:48Z</Created><Company>KRADAC</Company><Version>15.00</Version>";
+                                                        table_div += "</DocumentProperties> " +
+                                                                "<Styles> " +
+                                                                "<Style ss:ID='Default' ss:Name='Normal'>   <Alignment ss:Vertical='Bottom'/>   <Borders/>   <Font ss:FontName='" + tiLetra + "' x:Family='Swiss' ss:Size='11' ss:Color='#000000'/>   <Interior/>   <NumberFormat/>   <Protection/>  </Style>  " +
+                                                                "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
+                                                                "<Style ss:ID='datos'><NumberFormat ss:Format='@'/></Style> " +
+                                                                "</Styles>";
+                                                        //Definir el numero de columnas y cantidad de filas de la hoja de calculo (numFil + 2))
+                                                        table_div += "<Worksheet ss:Name='Datos'>"; //Nombre de la hoja
+                                                        table_div += "<Table ss:ExpandedColumnCount='" + numCol + "' ss:ExpandedRowCount='" + (numFil + 2) + "' x:FullColumns='1' x:FullRows='1' ss:DefaultColumnWidth='60' ss:DefaultRowHeight='15'>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='121.5'/>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                        table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
+                                                        table_div += "<Row ss:AutoFitHeight='0'>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Velocidad</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Fecha</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Hora</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Evento</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Latitutd</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Longitud</Data></Cell>" +
+                                                                "</Row>";
+                                                        for (var i = 0; i < numFil; i++) {
+                                                            table_div += "<Row ss:AutoFitHeight='0'>" +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewPanico.data.items[i].data.velocidad + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewPanico.data.items[i].data.fecha + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewPanico.data.items[i].data.hora + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewPanico.data.items[i].data.evento + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewPanico.data.items[i].data.latitud + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewPanico.data.items[i].data.longitud + " </Data></Cell > " +
+                                                                    "</Row>";
+                                                        }
+                                                        table_div += "</Table> </Worksheet></Workbook>";
+                                                        var table_xml = table_div.replace(/ /g, '%20');
+                                                        a.href = data_type + ', ' + table_xml;
+                                                        a.download = 'Registro Panicos' + '.xml';
+                                                        a.click();
+                                                    } else {
+                                                        Ext.MessageBox.show({
+                                                            title: 'Error',
+                                                            msg: '<center> El servicio para este navegador no esta disponible <br> Use un navegador como Google Chrome </center>',
+                                                            buttons: Ext.MessageBox.OK,
+                                                            icon: Ext.MessageBox.ERROR
+                                                        });
+                                                    }
+                                                } else {
+                                                    Ext.MessageBox.show({
+                                                        title: 'Mensaje',
+                                                        msg: 'No hay datos en la Lista a Exportar',
+                                                        buttons: Ext.MessageBox.OK,
+                                                        icon: Ext.MessageBox.ERROR
+                                                    });
+                                                }
+                                            }
+                                        }]
+                                });
+                                gridViewDataPanico.setTitle('<center>Vista de Panicos: ' + storeDataExcesos.data.items[0].data.personaPanicos + ' Desde: ' + dateStartComan + ' Hasta:' + dateFinishComan + '</center>');
+                                var gridDataExcesos = Ext.create('Ext.grid.Panel', {
+                                    region: 'west',
+                                    frame: true,
+                                    width: '40%',
+                                    title: '<center>Panicos Totales ' + '<br>Desde: ' + dateStartComan + ' | Hasta: ' + dateFinishComan + '</center>',
+                                    store: storeDataExcesos,
+                                    features: [filters],
+                                    multiSelect: true,
+                                    viewConfig: {
+                                        emptyText: 'No hay datos que Mostrar'
+                                    },
+                                    columns: [
+                                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
+                                        {text: 'Empresa', width: 150, dataIndex: 'empresaPanicos', align: 'center'},
+                                        {text: 'Placa', width: 100, dataIndex: 'placaPanicos', align: 'center'},
+                                        {text: 'Cantidad', width: 100, dataIndex: 'cantidadPanicos', align: 'center'},
+                                    ],
+                                    tbar: [{
+                                            xtype: 'button',
+                                            iconCls: 'icon-excel',
+                                            text: 'Exportar a Excel',
+                                            handler: function () {
+                                                if (storeDataExcesos.getCount() > 0) {
+                                                    if (getNavigator() === 'img/chrome.png') {
+                                                        var a = document.createElement('a');
+                                                        var data_type = 'data:application/vnd.ms-excel';
+                                                        var numFil = storeDataExcesos.data.length;
+                                                        var numCol = 3;
+                                                        var tiLetra = 'Calibri';
+                                                        var titulo = 'Registro de Panico';
+                                                        var table_div = "<?xml version='1.0'?><?mso-application progid='Excel.Sheet'?><Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'><DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'><Author>KRADAC SOLUCIONES TECNOLÃ“GICAS</Author><LastAuthor>KRADAC SOLUCIONES TECNOLÃ“GICAS</LastAuthor><Created>2014-08-20T15:33:48Z</Created><Company>KRADAC</Company><Version>15.00</Version>";
+                                                        table_div += "</DocumentProperties> " +
+                                                                "<Styles> " +
+                                                                "<Style ss:ID='Default' ss:Name='Normal'>   <Alignment ss:Vertical='Bottom'/>   <Borders/>   <Font ss:FontName='" + tiLetra + "' x:Family='Swiss' ss:Size='11' ss:Color='#000000'/>   <Interior/>   <NumberFormat/>   <Protection/>  </Style>  " +
+                                                                "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
+                                                                "<Style ss:ID='datos'><NumberFormat ss:Format='@'/></Style> " +
+                                                                "</Styles>";
+                                                        //Definir el numero de columnas y cantidad de filas de la hoja de calculo (numFil + 2))
+                                                        table_div += "<Worksheet ss:Name='Datos'>"; //Nombre de la hoja
+                                                        table_div += "<Table ss:ExpandedColumnCount='" + numCol + "' ss:ExpandedRowCount='" + (numFil + 2) + "' x:FullColumns='1' x:FullRows='1' ss:DefaultColumnWidth='60' ss:DefaultRowHeight='15'>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='121.5'/>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                        table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
+                                                        table_div += "<Row ss:AutoFitHeight='0'>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Empresa</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Placa</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Cantidad de Panicos</Data></Cell>" +
+                                                                "</Row>";
+                                                        for (var i = 0; i < numFil; i++) {
+                                                            table_div += "<Row ss:AutoFitHeight='0'>" +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataExcesos.data.items[i].data.empresaPanicos + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataExcesos.data.items[i].data.placaPanicos + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataExcesos.data.items[i].data.cantidadPanicos + " </Data></Cell > " +
+                                                                    "</Row>";
+                                                        }
+                                                        table_div += "</Table> </Worksheet></Workbook>";
+                                                        var table_xml = table_div.replace(/ /g, '%20');
+                                                        a.href = data_type + ', ' + table_xml;
+                                                        a.download = 'Registro Panicos' + '.xml';
+                                                        a.click();
+                                                    } else {
+                                                        Ext.MessageBox.show({
+                                                            title: 'Error',
+                                                            msg: '<center> El servicio para este navegador no esta disponible <br> Use un navegador como Google Chrome </center>',
+                                                            buttons: Ext.MessageBox.OK,
+                                                            icon: Ext.MessageBox.ERROR
+                                                        });
+                                                    }
+                                                } else {
+                                                    Ext.MessageBox.show({
+                                                        title: 'Mensaje',
+                                                        msg: 'No hay datos en la Lista a Exportar',
+                                                        buttons: Ext.MessageBox.OK,
+                                                        icon: Ext.MessageBox.ERROR
+                                                    });
+                                                }
+                                            }
+                                        }],
+                                    listeners: {
+                                        itemclick: function (thisObj, record, item, index, e, eOpts) {
+                                            idEquipoComandos = record.get('idEquipoPanicos');
+                                            personaComan = record.get('personaPanicos');
+                                            banderaComan = 1;
+                                            hayDatosComandos = true;
+                                            gridViewDataPanico.setTitle('<center>Vista de Panicos: ' + personaComan + ' <br> Equipo: ' + idEquipoComandos + ' Desde: ' + dateStartComan + ' Hasta:' + dateFinishComan + '</center>');
+                                            storeViewPanico.load(
+                                                    {
+                                                        params: {
+                                                            idEquipo: idEquipoComandos,
+                                                            fechaIni: dateIni.getRawValue(),
+                                                            fechaFin: dateFin.getRawValue(),
+                                                            horaIniP: timeInipanico.getRawValue(),
+                                                            horaFinP: timeFinpanico.getRawValue(),
+                                                        }
+                                                    });
+
+                                        }
+                                    }
+                                });
+                            var tabExcesos = Ext.create('Ext.container.Container', {
+                                title: 'Panicos Detallados',
+                                closable: true,
+                                iconCls: 'icon-reset',
+                                layout: 'border',
+                                fullscreen: true,
+                                height: 485,
+                                width: 2000,
+                                region: 'center',
+                                items: [gridViewDataPanico,gridDataExcesos]
+                            });
+                            panelTabMapaAdmin.add(tabExcesos);
+                            panelTabMapaAdmin.setActiveTab(tabExcesos);
+                            winComandos.hide();
+                        },
+                        failure: function (form, action) {
+                            Ext.MessageBox.show({
+                                title: 'Información',
+                                msg: action.result.message,
+                                buttons: Ext.MessageBox.OK,
+                                icon: Ext.MessageBox.INFO
+                            });
+                        }
+                    });
                 }
-            }, {
+                }
+            }
+            , {
                 text: 'Cancelar',
                 iconCls: 'icon-cancelar',
-                handler: limpiar_datosCmdHist
+                handler: function () {
+                    winComandos.hide();
+                }
             }]
     });
 });
-
-function limpiar_datosCmdHist() {
-    contenedorwinCmdHist.getForm().reset();
-    contenedorwinCmdHist.down('[name=cbxVeh]').disable();
-
-    if (winCmdHist) {
-        winCmdHist.hide();
-    }
-}
-
-function ventanaCmdHistorial() {
-    if (!winCmdHist) {
-        winCmdHist = Ext.create('Ext.window.Window', {
+function  ventanaCmdHistorial() {
+    if (!winComandos) {
+        winComandos = Ext.create('Ext.window.Window', {
             layout: 'fit',
-            title: 'Cmd enviados',
+            title: 'Comandos',
             iconCls: 'icon-cmd-hist',
             resizable: false,
-            width: 560,
-            height: 200,
+            width: 350,
+            height: 375,
             closeAction: 'hide',
             plain: false,
-            items: [contenedorwinCmdHist],
-            listeners: {
-                close: function(panel, eOpts) {
-                    limpiar_datosCmdHist();
-                }
-            }
+            items: formComandos
         });
     }
-    contenedorwinCmdHist.getForm().reset();
-    winCmdHist.show();
-}
-
-
-function loadGridCmdHist() {
-    var empresa = contenedorwinCmdHist.down('[name=cbxEmpresas]').getRawValue();
-    var idEqp = contenedorwinCmdHist.down('[name=cbxVeh]').getValue();
-    var vehiculo = contenedorwinCmdHist.down('[name=cbxVeh]').getRawValue();
-    var fi = formatoFecha(contenedorwinCmdHist.down('[name=fechaIni]').getValue());
-    var ff = formatoFecha(contenedorwinCmdHist.down('[name=fechaFin]').getValue());
-    var hi = formatoHora(contenedorwinCmdHist.down('[name=horaIni]').getValue());
-    var hf = formatoHora(contenedorwinCmdHist.down('[name=horaFin]').getValue());
-
-    Ext.MessageBox.show({
-        title: "Obteniendo Datos",
-        msg: "Reportes",
-        progressText: "Obteniendo...",
-        wait: true,
-        waitConfig: {
-            interval: 200
-        }
-    });
-
-    var store = Ext.create('Ext.data.JsonStore', {
-        autoDestroy: true,
-        autoLoad: true,
-        proxy: {
-            type: 'ajax',
-            url: 'php/interface/report/cmd/getReportCmd.php?cbxEmpresas=' + empresa +
-                    '&cbxVeh=' + idEqp +
-                    '&fechaIni=' + fi +
-                    '&fechaFin=' + ff +
-                    '&horaIni=' + hi +
-                    '&horaFin=' + hf,
-            reader: {
-                type: 'json',
-                root: 'cmd_hist'
-            }
-        },
-
-        fields: ['usuario', 'comando', 'respuesta', 'fecha_creacion', 'fecha_envio', 'estado'],
-        listeners: {
-            load: function(thisObject, records, successful, eOpts) {
-
-                Ext.MessageBox.hide();
-
-                if (records.length > 0) {
-                    var columnCmdHist = [
-                        Ext.create('Ext.grid.RowNumberer'),
-                        {text: 'Usuario', width: 150, dataIndex: 'usuario'},
-                        {text: 'Comando', flex: 150, dataIndex: 'comando'},
-                        {text: 'Respuesta', dataIndex: 'respuesta', flex: 100},
-                        {text: 'Fecha Creacion', width: 150, dataIndex: 'fecha_creacion'},
-                        {text: 'Fecha Envio', width: 150, dataIndex: 'fecha_envio'},
-                        {text: 'Estado', width: 100, dataIndex: 'estado'}
-                    ]
-
-                    var gridCmdHist = Ext.create('Ext.grid.Panel', {
-                        width: '100%',
-                        height: 435,
-                        collapsible: true,
-                        title: '<center><span style="color:#000000">Empresa: ' + '<span style="color:#FFFF00">' + empresa + '</center>\
-                                    <center><span style="color:#000000">Vehiculo: ' + '<span style="color:#FFFF00">' + vehiculo + ' </center>\n\
-                                  <center><span style="color:#000000">Desde: ' + '<span style="color:#FFFF00">' + fi + ' |<span style="color:#000000"> Hasta: ' + '<span style="color:#FFFF00">' + ff + '</center> ',
-                        store: store,
-                        multiSelect: true,
-                        columnLines: true,
-                        viewConfig: {
-                            emptyText: 'No hay datos que Mostrar'
-                        },
-                        columns: columnCmdHist,
-                        tbar: [{
-                                xtype: 'button',
-                                iconCls: 'icon-excel',
-                                text: 'Exportar a Excel',
-                                handler: function() {
-                                    if (store.getCount() > 0) {
-                                        if (getNavigator() === 'img/chrome.png') {
-                                            var a = document.createElement('a');
-                                            var data_type = 'data:application/vnd.ms-excel';
-                                            var numFil = store.data.length;
-                                            var numCol = 6;
-                                            var tiLetra = 'Calibri';
-                                            var titulo = 'Registro de Comandos Enviados'
-                                            var table_div = "<?xml version='1.0'?><?mso-application progid='Excel.Sheet'?><Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'><DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'><Author>KRADAC SOLUCIONES TECNOLÃ“GICAS</Author><LastAuthor>KRADAC SOLUCIONES TECNOLÃ“GICAS</LastAuthor><Created>2014-08-20T15:33:48Z</Created><Company>KRADAC</Company><Version>15.00</Version>";
-                                            table_div += "</DocumentProperties> " +
-                                                    "<Styles> " +
-                                                    "<Style ss:ID='Default' ss:Name='Normal'>   <Alignment ss:Vertical='Bottom'/>   <Borders/>   <Font ss:FontName='" + tiLetra + "' x:Family='Swiss' ss:Size='11' ss:Color='#000000'/>   <Interior/>   <NumberFormat/>   <Protection/>  </Style>  " +
-                                                    "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
-                                                    "<Style ss:ID='datos'><NumberFormat ss:Format='@'/></Style> " +
-                                                    "</Styles>";
-                                            //Definir el numero de columnas y cantidad de filas de la hoja de calculo (numFil + 2))
-                                            table_div += "<Worksheet ss:Name='Datos'>";//Nombre de la hoja
-                                            table_div += "<Table ss:ExpandedColumnCount='" + numCol + "' ss:ExpandedRowCount='" + (numFil + 2) + "' x:FullColumns='1' x:FullRows='1' ss:DefaultColumnWidth='60' ss:DefaultRowHeight='15'>";
-                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='121.5'/>";
-                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                            table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                            table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
-                                            table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Usuario</Data></Cell>" +
-                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Comando</Data></Cell>" +
-                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Respuesta</Data></Cell>" +
-                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Fecha de Creación</Data></Cell>" +
-                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Fecha de Envio</Data></Cell>" +
-                                                    "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Estado</Data></Cell>" +
-                                                    "</Row>";
-                                            for (var i = 0; i < numFil; i++) {
-                                                table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store.data.items[i].data.usuario + " </Data></Cell > " +
-                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store.data.items[i].data.comando + " </Data></Cell > " +
-                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store.data.items[i].data.respuesta + " </Data></Cell > " +
-                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store.data.items[i].data.fecha_creacion + " </Data></Cell > " +
-                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store.data.items[i].data.fecha_envio + " </Data></Cell > " +
-                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store.data.items[i].data.estado + " </Data></Cell > " +
-                                                        "</Row>";
-                                            }
-                                            table_div += "</Table> </Worksheet></Workbook>";
-                                            var table_xml = table_div.replace(/ /g, '%20');
-                                            a.href = data_type + ', ' + table_xml;
-                                            a.download = 'Registro de Comandos Enviados' + '.xml';
-                                            a.click();
-                                        } else {
-                                            Ext.MessageBox.show({
-                                                title: 'Error',
-                                                msg: '<center> El servicio para este navegador no esta disponible <br> Use un navegador como Google Chrome </center>',
-                                                buttons: Ext.MessageBox.OK,
-                                                icon: Ext.MessageBox.ERROR
-                                            });
-                                        }
-                                    } else {
-                                        Ext.MessageBox.show({
-                                            title: 'Mensaje',
-                                            msg: 'No hay datos en la Lista a Exportar',
-                                            buttons: Ext.MessageBox.OK,
-                                            icon: Ext.MessageBox.ERROR
-                                        });
-                                    }
-                                }
-                            }],
-                    });
-
-                    var tab = Ext.create('Ext.form.Panel', {
-                        title: 'Reporte de Comandos',
-                        closable: true,
-                        iconCls: 'icon-cmd-hist',
-                        items: gridCmdHist
-                    });
-                    panelTabMapaAdmin.add(tab);
-                    panelTabMapaAdmin.setActiveTab(tab);
-                    winCmdHist.hide();
-                } else {
-                    Ext.MessageBox.show({
-                        title: 'Error...',
-                        msg: 'No hay Datos en estas fechas y horas...',
-                        buttons: Ext.MessageBox.OK,
-                        icon: Ext.MessageBox.ERROR
-                    });
-                }
-
-            }
-        }
-    });
+    winComandos.show();
+    formComandos.getForm().reset();
 }
