@@ -43,12 +43,8 @@ var label = Ext.create('Ext.form.Label', {
 
 var filters = {
     ftype: 'filters',
-    // encode and local configuration options defined previously for easier reuse
     encode: false, // json encode the filter query
     local: true, // defaults to false (remote filtering)
-
-    // Filters are most naturally placed in the column definition, but can also be
-    // added here.
     filters: [{
             type: 'boolean',
             dataIndex: 'visible'
@@ -64,12 +60,9 @@ var spot = Ext.create('Ext.ux.Spotlight', {
 
 Ext.onReady(function() {
     var idEqpMen, nameVeh;
-    //Ext.getCmp('tiempo').setValue((diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear()));
-
     Ext.apply(Ext.form.field.VTypes, {
         daterange: function(val, field) {
             var date = field.parseDate(val);
-
             if (!date) {
                 return false;
             }
@@ -89,7 +82,6 @@ Ext.onReady(function() {
         },
         daterangeText: 'Fecha de inicio debe ser menor que la fecha de finalización',
         placaValida: function(val, field) {
-
             var partes = val.split("");
             if (partes.length === 7) {
                 if (!/^[F]{1}[A]{1}[C]{1}[T]{1}[U]{1}[R]{1}[A]{1}$/.test(val.toUpperCase())) {
