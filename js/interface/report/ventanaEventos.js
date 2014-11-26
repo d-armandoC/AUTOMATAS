@@ -266,7 +266,9 @@ Ext.onReady(function() {
             }, {
                 text: 'Cancelar',
                 iconCls: 'icon-cancelar',
-                handler: limpiar_datosEvt
+                handler:function () {
+                    winEvt.hide();
+                }
             }]
     });
 });
