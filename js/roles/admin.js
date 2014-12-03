@@ -407,12 +407,9 @@ Ext.onReady(function() {
                     {text: 'Envio Correos', iconCls: 'icon-email', handler: function() {
                             visualizarEnviosGeoCercas();
                         }}
-                ]
-            },
-        ]
+                ]}
+            ]
     });
-
-
 
     var herraminetas = Ext.create('Ext.button.Button', {
         text: 'Herramientas',
@@ -427,7 +424,7 @@ Ext.onReady(function() {
                     ventanaCambiarContrasenia();
                 }},
             {text: 'Mantenimientos', iconCls: 'icon-mantenimiento', handler: function() {
-                    ventAddMantenimientos();
+                    ventAddMantenimientosPost();
                 }},
             {text: 'Vehiculos en Lugares', iconCls: 'icon-vehiculos_lugar', handler: function() {
                     ventanaVehLugares();

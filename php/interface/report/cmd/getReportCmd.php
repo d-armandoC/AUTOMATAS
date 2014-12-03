@@ -3,6 +3,7 @@
 include('../../../login/isLogin.php');
 include ('../../../../dll/config.php');
 extract($_POST);
+
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
@@ -27,7 +28,6 @@ END AS estado
 FROM karviewhistoricodb.comandos cm, karviewdb.usuarios us, karviewdb.equipos eq,  karviewdb.vehiculos v where cm.id_usuario = us.id_usuario and cm.id_equipo= eq.id_equipo and cm.id_equipo=v.id_equipo and v.id_vehiculo='$cbxVeh'
 and cm.fecha_hora_registro BETWEEN CONCAT('$fechaIni',' ', '$horaIniComando') AND CONCAT('$fechaFin',' ', '$horaFinComando');"
         ;
-        
     }
     $result = $mysqli->query($consultaSql);
     $haveData = false;
@@ -50,8 +50,9 @@ and cm.fecha_hora_registro BETWEEN CONCAT('$fechaIni',' ', '$horaIniComando') AN
     if ($haveData) {
         echo "{success: true,$objJson}";
     } else {
-        echo "{failure: true, msg: 'No hay Datos que Mostrar'}";
+        echo "{failure: true, msg: 'Problemas al Obtener los  Datos'}";
     }
+
 
     $mysqli->close();
 }

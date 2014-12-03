@@ -938,11 +938,11 @@ Ext.onReady(function () {
         ]
     });
 });
-function ventAddMantenimientos() {
+function ventAddMantenimientosPost() {
     if (!winAddVehiculos) {
         winAddVehiculos = Ext.create('Ext.window.Window', {
             layout: 'fit',
-            title: 'Servicio  de Mantenimiento',
+            title: 'Servicio  de Mantenimiento Post',
             iconCls: 'icon-mantenimiento',
             resizable: false,
             width: 1175,
@@ -1020,12 +1020,7 @@ function onCreateVehiculos() {
         formRecordsVehiculos.fireEvent('create', formAdminCompany, form.getValues());
         formRecordsVehiculos.down('#updateVeh').disable();
         form.reset();
-    }
-    ;
-//    } else {
-    //        Ext.Msg.alert('Failure', 'Debe Elegir el servicio por: Tiempo o Kilometros');
-//    }
-
+    };
 }
 
 function onResetVehiculos() {
@@ -1054,4 +1049,5 @@ function onDeleteClickVehiculos() {
         }
     });
 }
+
 

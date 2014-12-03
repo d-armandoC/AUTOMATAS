@@ -166,7 +166,7 @@ Ext.onReady(function () {
                         ],
                         listeners: {
                             change: function (field, newValue, oldValue) {
-                                switch (parseInt(newValue['rb'])) {
+                                switch (parseInt(newValue['rb6'])) {
                                     case 1:
                                         empresaComanodos = 1;
                                         cbxEmpresasBDComandos.enable();
@@ -206,8 +206,6 @@ Ext.onReady(function () {
                 ]
             }],
         buttons: [{
-                
-                ///////////////////////////////////////////////////////7
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
                 handler: function () {
@@ -223,15 +221,16 @@ Ext.onReady(function () {
                             idCompany: empresaComanodos
                         },
                         success: function (form, action) {
+                            console.log(action.response.responseText);
                             var storeDataExcesos = Ext.create('Ext.data.JsonStore', {
                                 data: action.result.data,
                                 proxy: {
                                     type: 'ajax',
                                     reader: 'array'
                                 },
-                                fields: ['empresaPanicos', 'personaPanicos', 'idEquipoPanicos', 'placaPanicos', 'cantidadPanicos']
+                                 fields: ['usuario', 'comando', 'respuesta', 'fecha_creacion', 'fecha_envio', 'estado'],
                             });
-                                var gridViewDataPanico = Ext.create('Ext.grid.Panel', {
+                                var gridViewDataComando = Ext.create('Ext.grid.Panel', {
                                     region: 'center',
                                     frame: true,
                                     width: '60%',
@@ -323,7 +322,7 @@ Ext.onReady(function () {
                                             }
                                         }]
                                 });
-                                gridViewDataPanico.setTitle('<center>Vista de Panicos: ' + storeDataExcesos.data.items[0].data.personaPanicos + ' Desde: ' + dateStartComan + ' Hasta:' + dateFinishComan + '</center>');
+                                gridViewDataComando.setTitle('<center>Vista de Panicos: ' + storeDataExcesos.data.items[0].data.personaPanicos + ' Desde: ' + dateStartComan + ' Hasta:' + dateFinishComan + '</center>');
                                 var gridDataExcesos = Ext.create('Ext.grid.Panel', {
                                     region: 'west',
                                     frame: true,
@@ -409,7 +408,7 @@ Ext.onReady(function () {
                                             personaComan = record.get('personaPanicos');
                                             banderaComan = 1;
                                             hayDatosComandos = true;
-                                            gridViewDataPanico.setTitle('<center>Vista de Panicos: ' + personaComan + ' <br> Equipo: ' + idEquipoComandos + ' Desde: ' + dateStartComan + ' Hasta:' + dateFinishComan + '</center>');
+                                            gridViewDataComando.setTitle('<center>Vista de Panicos: ' + personaComan + ' <br> Equipo: ' + idEquipoComandos + ' Desde: ' + dateStartComan + ' Hasta:' + dateFinishComan + '</center>');
                                             storeViewPanico.load(
                                                     {
                                                         params: {
@@ -433,7 +432,7 @@ Ext.onReady(function () {
                                 height: 485,
                                 width: 2000,
                                 region: 'center',
-                                items: [gridViewDataPanico,gridDataExcesos]
+                                items: [gridViewDataComando,gridDataExcesos]
                             });
                             panelTabMapaAdmin.add(tabExcesos);
                             panelTabMapaAdmin.setActiveTab(tabExcesos);

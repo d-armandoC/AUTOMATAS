@@ -47,7 +47,7 @@ if (!$mysqli = getConectionDb()) {
                     . "},";
         }
         $objJson .="]}";
-        echo $objJson;
+         echo utf8_encode($objJson);
     } else {
         echo "{success:false, msg: 'No hay datos que obtener'}";
     }

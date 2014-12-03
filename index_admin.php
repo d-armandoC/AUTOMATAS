@@ -56,6 +56,7 @@
         <script type="text/javascript" src="js/administracion/cmd/ventanaCmd.js"></script>
         <script type="text/javascript" src="js/administracion/ventanaSendMail.js"></script>
         <script type="text/javascript" src="js/administracion/ventanaEquipos.js"></script>
+        <script type="text/javascript" src="js/administracion/ventanaMantenimientoPost.js"></script>
         
 
         <script type="text/javascript" src="js/interface/report/ventanaAsignacion.js"></script>
