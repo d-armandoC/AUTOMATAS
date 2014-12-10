@@ -349,22 +349,12 @@ Ext.onReady(function () {
                     ventanaActualizarEmail();
                 }},
             '-',
-//            {text: 'Videos',
-//                iconCls: 'icon-video',
-//                handler: showVideo
-//            },
             {text: 'Creditos', iconCls: 'icon-credits', handler: function () {
                     credits();
                     spot.show('panel-credit');
                 }}
         ]
     });
-//    var monitoreo = Ext.create('Ext.button.Button', {
-//        text: 'Monitoreo', iconCls: 'icon-monitoreo', handler: function () {
-//            window.open('monitorTeam.php');
-//        }
-//
-//    });
     var salir = Ext.create('Ext.button.Button', {
         id: 'custom',
         text: 'Salir',
@@ -395,8 +385,6 @@ Ext.onReady(function () {
                                 }},
                             {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function () {
                                     ventanaexcesosvelociadadWin();
-                                    //   ventanaExcesoVelocidad();
-//                                    showWinExcesosDaily();
                                 }}
                             , {text: 'Mantenimiento General', iconCls: 'icon-config', handler: function () {
                                     ventanaMantenimiento();
@@ -414,7 +402,7 @@ Ext.onReady(function () {
                                 }},
                             {text: 'CMD Enviados', iconCls: 'icon-cmd-hist', handler: function () {
                                     ventanaCmdHistorial();
-                                }},
+                                }}
                         ]
                     }
                 ]
@@ -587,7 +575,8 @@ Ext.onReady(function () {
                             Ext.example.msg('Vehiculos', 'Recargado');
                             tree.body.unmask();
                         }
-                    }, {
+                    }, 
+                    {
                         type: 'search',
                         tooltip: 'Buscar Vehiculo',
                         handler: function (event, target, owner, tool) {
@@ -595,7 +584,8 @@ Ext.onReady(function () {
                             owner.child('#refresh_taxis').show();
                             winSearchVeh.showAt(event.getXY());
                         }
-                    }],
+                    }
+                ],
                 root: {
                     dataIndex: 'text',
                     expanded: true

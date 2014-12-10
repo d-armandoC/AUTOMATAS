@@ -285,7 +285,6 @@ Ext.onReady(function() {
                 items: ['->',
                     {iconCls: 'icon-update', itemId: 'updatePerson', text: 'Actualizar', scope: this, tooltip: 'Actualizar Datos', handler: onUpdatePersona},
                     {iconCls: 'icon-user-add', itemId: 'createPerson', text: 'Crear', scope: this, tooltip: 'Crear Persona', handler: onCreatePersona},
-//                    {iconCls: 'icon-delete', itemId: 'deletePerson', text: 'Eliminar', scope: this, tooltip: 'Eliminar Persona', handler: onDeleteClicket},
                     {iconCls: 'icon-cleans', text: 'Limpiar', tooltip: 'Limpiar Campos', scope: this, handler: onResetPersona},
                     {iconCls: 'icon-cancelar', tooltip: 'Cancelar', scope: this, handler: function() {
                             winAddPesonal.hide();

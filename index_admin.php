@@ -115,9 +115,16 @@
     
     
     </head>
-    <body oncontextmenu = "return false">        
+     <body oncontextmenu = "return false">        
         <header></header>
         <nav></nav>
+        <section id = 'icono'>
+            <div style="position: absolute; bottom: -75px; right: 0px">
+                <a href='http://www.kradac.com'>
+                    <img alt="www.kradac.com"   src='img/credits.png'/>
+                </a>    
+            </div>
+        </section>        
         <footer></footer>
     </body>
 </html>

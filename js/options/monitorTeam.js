@@ -499,7 +499,6 @@ Ext.onReady(function() {
             }
         }
     });
-    // lista negra
 
     gridListaNegra = Ext.create('Ext.grid.Panel', {
         region: 'center',
@@ -507,7 +506,7 @@ Ext.onReady(function() {
         store: storeListaNegra,
         iconCls: 'icon-estado-veh',
         columnLines: true,
-        
+        activeItem:0,
         multiSelect: true,
         features: [filters],
         listeners: {
@@ -635,6 +634,8 @@ Ext.onReady(function() {
         iconCls: 'icon-feed-error',
         store: storeDataInvalid,
         columnLines: true,
+        defaults:{xtype:'textfield'},
+        bodyStyle:'padding: 10px',
         features: [filters],
         viewConfig: {
             emptyText: '<center>No hay datos que Mostrar</center>',
