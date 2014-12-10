@@ -4,6 +4,9 @@ var gridAdminCompany;
 Ext.onReady(function() {
     Ext.define('DataCompany', {
         extend: 'Ext.data.Model',
+        
+        
+        
         fields: [
             {name: 'id', mapping: 'id_empresa', type: 'int'},
             {name: 'acronimo', type: 'string'},
