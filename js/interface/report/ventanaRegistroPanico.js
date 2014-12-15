@@ -465,7 +465,7 @@ function showWinPanicosDaily() {
     if (!winPanico) {
         winPanico = Ext.create('Ext.window.Window', {
             layout: 'fit',
-            title: 'Panicos Totales',
+            title: 'Registros de Panico',
             iconCls: 'icon-reset',
             resizable: false,
             width: 350,

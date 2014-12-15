@@ -374,7 +374,7 @@ function reporteWinperdidaGSM() {
     if (!VentanaGSM) {
         VentanaGSM = Ext.create('Ext.window.Window', {
             layout: 'fit',
-            title: 'Perdida GPS Y GSM',
+            title: 'Perdida de GPS y GSM',
             iconCls: 'icon-flota',
             resizable: false,
             width: 350,

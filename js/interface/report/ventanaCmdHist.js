@@ -463,7 +463,7 @@ function  ventanaCmdHistorial() {
     if (!winComandos) {
         winComandos = Ext.create('Ext.window.Window', {
             layout: 'fit',
-            title: 'Comandos',
+            title: 'CMD Enviados',
             iconCls: 'icon-cmd-hist',
             resizable: false,
             width: 350,

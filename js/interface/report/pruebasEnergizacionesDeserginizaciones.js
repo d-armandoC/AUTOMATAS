@@ -506,7 +506,7 @@ function showWinEnergizar() {
     if (!VentanaEnerg) {
         VentanaEnerg = Ext.create('Ext.window.Window', {
             layout: 'fit',
-            title: ' Evento de Energización',
+            title: ' Conexión y desconexión energía de Equipo',
             iconCls: 'icon-conexcion',
             resizable: false,
             width: 350,

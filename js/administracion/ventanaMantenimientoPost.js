@@ -1,12 +1,12 @@
 var winAddVehiculos;
 var contenedorVehiculos;
-var formRecordsVehiculos;
-var gridRecordsVehiculos;
+var formRecordsVehiculosPost;
+var gridRecordsVehiculosPost;
 var formImageVehiculos;
 var storeVehiculosMantenimiento;
 var matriz = new Array();
 var arregloEstandars;
-var formPanelGrid_Vehiculos;
+var formPanelGrid_VehiculosPost;
 var modal = 0;
 var obj_vehiculos;
 var obj_empresa;
@@ -38,64 +38,33 @@ var storecombo = new Ext.data.ArrayStore({
 });
 
 Ext.onReady(function () {
-
-
     //Genera campos de array para usar en el inicio del store por defecto
     Ext.define('DataObjectVehiculo', {
         extend: 'Ext.data.Model',
         fields: [
             //id
-            {name: 'id', mapping: 'idmantenimiento'},
+            {name: 'id', mapping: 'id_equipo'},
             //Registro Mantenimiento
-            {name: 'idempresa', type: 'int'},
-            {name: 'idestandar', type: 'int'},
-            {name: 'valorTipoServicio', type: 'int'},
-            {name: 'empresa', type: 'string'},
-            {name: 'propietario', type: 'string'},
-            {name: 'servicio', type: 'string'},
-            {name: 'vehiculo', type: 'string'},
-            {name: 'idvehiculo', type: 'int'},
-            //Mantenimiento
-
-            {name: 'valorTipoMantenimiento', type: 'int'},
-            {name: 'mkilometraje', type: 'int'},
-            {name: 'mdias', type: 'int'},
-            {name: 'mfecha', type: 'date', dateFormat: 'c'},
-            {name: 'mobservacion', type: 'string'},
-            //Reparación
-            {name: 'repaFecha', type: 'date', dateFormat: 'c'},
-            {name: 'repaDescripcion', type: 'string'},
-            {name: 'repaObservacion', type: 'string'},
+            {name: 'nombreMantenimiento', type: 'string'},
             //Repuesto
-            {name: 'repuMarca', type: 'string'},
-            {name: 'repuModelo', type: 'string'},
-            {name: 'repuCodigo', type: 'string'},
-            {name: 'repuSerie', type: 'string'},
-            {name: 'repuEstado'},
+            {name: 'equipo', type: 'string'},
             //Registrar servicios adicionales
-            {name: 'descripSoat', type: 'string'},
-            {name: 'fechaSoatReg', type: 'date', dateFormat: 'c'},
-            {name: 'fechaSoatVenc', type: 'date', dateFormat: 'c'},
-            {name: 'descripMatricula', type: 'string'},
-            {name: 'fechaMatriculaReg', type: 'date', dateFormat: 'c'},
-            {name: 'fechaMatriculaVenc', type: 'date', dateFormat: 'c'},
-            {name: 'descripSeguro', type: 'string'},
-            {name: 'fechaSeguroReg', type: 'date', dateFormat: 'c'},
-            {name: 'fechaSeguroVenc', type: 'date', dateFormat: 'c'}
+            {name: 'fecha_registro', type: 'date', dateFormat: 'c'},
+            {name: 'dato', type: 'int'}
         ]
     });
     // crea los datos del store
-    var gridWinStoreVehiculos = Ext.create('Ext.data.Store', {
+    var gridWinStoreVehiculosPost = Ext.create('Ext.data.Store', {
         utoLoad: true,
         autoSync: true,
         model: 'DataObjectVehiculo',
         proxy: {
             type: 'ajax',
             api: {
-                read: 'php/administracion/mantenimiento/read.php',
-                create: 'php/administracion/mantenimiento/create.php',
-                update: 'php/administracion/mantenimiento/update.php',
-                destroy: 'php/administracion/mantenimiento/destroy.php'
+                read: 'php/administracion/mantenimientoPost/read.php',
+                create: 'php/administracion/mantenimientoPost/create.php',
+                update: 'php/administracion/mantenimientoPost/update.php',
+                destroy: 'php/administracion/mantenimientoPost/destroy.php'
             },
             reader: {
                 type: 'json',
@@ -122,37 +91,48 @@ Ext.onReady(function () {
             write: function (store, operation, eOpts) {
                 if (operation.success) {
                     Ext.example.msg("Mensaje", operation._resultSet.message);
-                    gridWinStoreVehiculos.reload();
-                    formRecordsVehiculos.getForm().reset();
-                    formRecordsVehiculos.down('#updateVeh').disable();
+                    gridWinStoreVehiculosPost.reload();
+                    formRecordsVehiculosPost.getForm().reset();
+                    formRecordsVehiculosPost.down('#updateVeh').disable();
 
                 }
             }
         }
     });
-    var columnsRecords = [
-        {header: "<b>Organización</b>", width: 110, sortable: true, dataIndex: 'empresa', filter: {type: 'string'}},
-        {header: "<b>Propietario</b>", width: 160, sortable: true, dataIndex: 'propietario', filter: {type: 'string'}},
-        {header: "<b>Vehiculo</b>", width: 150, sortable: true, dataIndex: 'vehiculo', filter: {type: 'string'}},
-        {header: "<b>Servicio</b>", width: 250, sortable: true, dataIndex: 'servicio', filter: {type: 'string'}},
-        {header: "<b>Dias</b>", width: 60, sortable: true, dataIndex: 'mdias', filter: {type: 'string'}},
-        {header: "<b>Kilometros</b>", width: 100, sortable: true, dataIndex: 'mkilometraje', filter: {type: 'string'}}
+    var columnsRecordsPost = [
+        {header: '<b>Equipo</b>', dataIndex: 'equipo'},
+        {header: '<b>Vehiculo</b>', dataIndex: 'vehicuo'},
+        {header: '<b>Organización</b>', dataIndex: 'empresa'},
+        {header: '<b>Tipo Servicio</b>',dataIndex: 'id' ,width: 200, editor:
+                    new Ext.form.field.ComboBox({
+                        xtype: 'combobox',
+                        editable: false,
+                        store: storeVehiculosservicios,
+                        valueField: 'id',
+                        displayField: 'text',
+                        queryMode: 'local',
+                        typeAhead: true,
+                        triggerAction: 'all',
+                        selectOnTab: true,
+                        lazyRender: true,
+                        listClass: 'x-combo-list-small',
+                        emptyText: 'Seleccionar Servicio',
+                        listConfig: {
+                            minWidth: 350
+                        }
+                    })
+        }
     ];
     // declare the source Grid
-    gridRecordsVehiculos = Ext.create('Ext.grid.Panel', {
-        viewConfig: {
-            plugins: {
-                ddGroup: 'GridExample',
-                ptype: 'gridviewdragdrop',
-                enableDrop: false
-            }
-        },
-        store: gridWinStoreVehiculos,
-        columns: columnsRecords,
-        enableDragDrop: true,
-        stripeRows: true,
+    gridRecordsVehiculosPost = Ext.create('Ext.grid.Panel', {
+        store: gridWinStoreVehiculosPost,
+        columns: columnsRecordsPost,
+        plugins: [new Ext.grid.plugin.CellEditing({
+                clicksToEdit: 1,
+                autoCancel:false
+            })],
         height: 410,
-        selModel: Ext.create('Ext.selection.RowModel', {singleSelect: true}),
+//        selModel: Ext.create('Ext.selection.RowModel', {singleSelect: true}),
         features: [filters],
         //Para cuando de click a una de las filas se pasen los datos
         listeners: {
@@ -167,15 +147,17 @@ Ext.onReady(function () {
             }
         }
     });
-    formPanelGrid_Vehiculos = Ext.create('Ext.form.Panel', {
+
+
+    formPanelGrid_VehiculosPost = Ext.create('Ext.form.Panel', {
         width: '25%',
         margins: '0 2 0 0',
         region: 'west',
         autoScroll: true,
         title: '<b>Registros de Vehiculos</b>',
-        items: [gridRecordsVehiculos]
+        items: [gridRecordsVehiculosPost]
     });
-    formRecordsVehiculos = Ext.create('Ext.form.Panel', {
+    formRecordsVehiculosPost = Ext.create('Ext.form.Panel', {
         id: 'panel-datos-vehiculos',
         autoScroll: true,
         region: 'center',
@@ -241,7 +223,7 @@ Ext.onReady(function () {
                                                 width: 250,
                                                 listeners: {
                                                     select: function (combo, records, eOpts) {
-                                                        var listSelected = formRecordsVehiculos.down('[name=idvehiculo]');
+                                                        var listSelected = formRecordsVehiculosPost.down('[name=idvehiculo]');
                                                         listSelected.clearValue();
                                                         listSelected.store.removeAll();
                                                         obj_empresa = combo.getValue();
@@ -912,8 +894,8 @@ Ext.onReady(function () {
         ],
         listeners: {
             create: function (form, data) {
-                gridWinStoreVehiculos.insert(0, data);
-                gridWinStoreVehiculos.reload();
+                gridWinStoreVehiculosPost.insert(0, data);
+                gridWinStoreVehiculosPost.reload();
             }
         },
         dockedItems: [{
@@ -942,7 +924,7 @@ function ventAddMantenimientosPost() {
     if (!winAddVehiculos) {
         winAddVehiculos = Ext.create('Ext.window.Window', {
             layout: 'fit',
-            title: 'Servicio  de Mantenimiento Post',
+            title: ' Mantenimiento Post',
             iconCls: 'icon-mantenimiento',
             resizable: false,
             width: 1175,
@@ -951,8 +933,8 @@ function ventAddMantenimientosPost() {
             plain: false,
             items: [{
                     layout: 'border', bodyPadding: 5,
-                    items: [formPanelGrid_Vehiculos,
-                        formRecordsVehiculos]
+                    items: [formPanelGrid_VehiculosPost,
+                        formRecordsVehiculosPost]
                 }]
         });
     }
@@ -960,11 +942,11 @@ function ventAddMantenimientosPost() {
     winAddVehiculos.show();
     var nowDate = new Date();
     Ext.getCmp('mfecha').setValue(formatoFecha(nowDate));
-    formRecordsVehiculos.down('#updateVeh').disable();
-    formRecordsVehiculos.down('#createVeh').enable();
-    formRecordsVehiculos.down('#deleteVeh').disable();
-    if (gridRecordsVehiculos.getStore().getCount() === 0) {
-        gridRecordsVehiculos.getStore().load();
+    formRecordsVehiculosPost.down('#updateVeh').disable();
+    formRecordsVehiculosPost.down('#createVeh').enable();
+    formRecordsVehiculosPost.down('#deleteVeh').disable();
+    if (gridRecordsVehiculosPost.getStore().getCount() === 0) {
+        gridRecordsVehiculosPost.getStore().load();
     }
 
     //Esto se asegurará de que sólo caera al contenedor
@@ -973,33 +955,33 @@ function ventAddMantenimientosPost() {
         ddGroup: 'GridExample',
         notifyEnter: function (ddSource, e, data) {
             // Añadir un poco de brillo al momento de entrar al contenedor
-            formRecordsVehiculos.body.stopAnimation();
-            formRecordsVehiculos.body.highlight();
+            formRecordsVehiculosPost.body.stopAnimation();
+            formRecordsVehiculosPost.body.highlight();
         }
     });
 }
 
 function setActiveRecordVehiculos(record) {
-    formRecordsVehiculos.activeRecord = record;
+    formRecordsVehiculosPost.activeRecord = record;
     if (record) {
         storeVeh.load({
             params: {
                 cbxEmpresas: record.data.idempresa
             }
         });
-        formRecordsVehiculos.down('#updateVeh').enable();
-        formRecordsVehiculos.down('#createVeh').disable();
-        formRecordsVehiculos.down('#deleteVeh').enable();
-        formRecordsVehiculos.getForm().loadRecord(record);
+        formRecordsVehiculosPost.down('#updateVeh').enable();
+        formRecordsVehiculosPost.down('#createVeh').disable();
+        formRecordsVehiculosPost.down('#deleteVeh').enable();
+        formRecordsVehiculosPost.getForm().loadRecord(record);
     } else {
-        formRecordsVehiculos.down('#updateVeh').disable();
-        formRecordsVehiculos.getForm().reset();
+        formRecordsVehiculosPost.down('#updateVeh').disable();
+        formRecordsVehiculosPost.getForm().reset();
     }
 }
 
 function onUpdateVehiculos() {
-    var active = formRecordsVehiculos.activeRecord,
-            form = formRecordsVehiculos.getForm();
+    var active = formRecordsVehiculosPost.activeRecord,
+            form = formRecordsVehiculosPost.getForm();
     if (!active) {
         return;
     }
@@ -1014,37 +996,38 @@ function onCreateVehiculos() {
     Ext.getCmp('idempresa').setValue(obj_empresa);
     Ext.getCmp('idvehiculo').setValue(obj_vehiculos);
     //    if (Ext.getCmp('mkilometraje').getValue() !== ('') || Ext.getCmp('mdias').getValue() !== ('')) {
-    var form = formRecordsVehiculos.getForm();
+    var form = formRecordsVehiculosPost.getForm();
     if (form.isValid()) {
         console.log("creando");
-        formRecordsVehiculos.fireEvent('create', formAdminCompany, form.getValues());
-        formRecordsVehiculos.down('#updateVeh').disable();
+        formRecordsVehiculosPost.fireEvent('create', formAdminCompany, form.getValues());
+        formRecordsVehiculosPost.down('#updateVeh').disable();
         form.reset();
-    };
+    }
+    ;
 }
 
 function onResetVehiculos() {
     setActiveRecordVehiculos(null);
-    formRecordsVehiculos.down('#deleteVeh').disable();
-    formRecordsVehiculos.down('#createVeh').enable();
-    formRecordsVehiculos.getForm().reset();
+    formRecordsVehiculosPost.down('#deleteVeh').disable();
+    formRecordsVehiculosPost.down('#createVeh').enable();
+    formRecordsVehiculosPost.getForm().reset();
     Ext.getCmp('mkilometraje').disable();
 }
 
 function clearWinVehiculos() {
-    formRecordsVehiculos.down('#deleteVeh').disable();
-    formRecordsVehiculos.down('#createVeh').enable();
+    formRecordsVehiculosPost.down('#deleteVeh').disable();
+    formRecordsVehiculosPost.down('#createVeh').enable();
     winAddVehiculos.hide();
 }
 
 function onDeleteClickVehiculos() {
     Ext.MessageBox.confirm('Confirmar ', 'Realmente desea Eliminar el Servicio... ?', function (choice) {
         if (choice === 'yes') {
-            var selection = gridRecordsVehiculos.getView().getSelectionModel().getSelection()[0];
+            var selection = gridRecordsVehiculosPost.getView().getSelectionModel().getSelection()[0];
             if (selection) {
-                gridRecordsVehiculos.store.remove(selection);
-                formRecordsVehiculos.down('#deleteVeh').disable();
-                formRecordsVehiculos.down('#createVeh').enable();
+                gridRecordsVehiculosPost.store.remove(selection);
+                formRecordsVehiculosPost.down('#deleteVeh').disable();
+                formRecordsVehiculosPost.down('#createVeh').enable();
             }
         }
     });

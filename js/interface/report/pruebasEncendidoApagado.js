@@ -515,7 +515,7 @@ function showWinencendidoapagado() {
     if (!VentanaEA) {
         VentanaEA = Ext.create('Ext.window.Window', {
             layout: 'fit',
-            title: ' Evento de Encendido y Apagado',
+            title: ' Reporte de Encendido y Apagado',
             iconCls: 'icon-encendido',
             resizable: false,
             width: 350,

@@ -412,7 +412,7 @@ function ventanaBanderas() {
     if (!winBan) {
         winBan = Ext.create('Ext.window.Window', {
             layout: 'fit',
-            title: 'Todas las Banderas',
+            title: 'Recorridos General',
             iconCls: 'icon-all-flags',
             resizable: false,
             width: 510,

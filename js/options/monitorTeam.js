@@ -640,7 +640,8 @@ Ext.onReady(function() {
         viewConfig: {
             emptyText: '<center>No hay datos que Mostrar</center>',
             loadMask: false,
-            preserveScrollOnRefresh: true
+            enableTextSelection:true,
+            preserveScrollOnRefresh: false
         },
         tools: [{
                 type: 'refresh',
