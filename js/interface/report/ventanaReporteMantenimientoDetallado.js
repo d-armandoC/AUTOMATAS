@@ -1,7 +1,6 @@
 
 var formularioMantenimientoDetallado;
 var VentanaMantenimiento;
-var banderaMantenimiento = 0;
 var storeViewMantenimiento;
 var fechaInicio;
 var fechaFinal;
@@ -12,15 +11,48 @@ var storeDataMantenimiento;
 var empresaMantenimiento = 1;
 var cbxEmpresasMantenimiento;
 var vistaVistaRegistrosMantenimiento;
-var empresa;
 var id_vehiculo;
 var vehiculo;
 var porEquipoManten;
 var cbxVehBDManten;
 var timeIniMantenimiento;
 var timeFinMantenimiento;
+var placa;
+var empresa;
+var banderaMantenimiento;
 
 Ext.onReady(function () {
+    if (idCompanyKarview == 1) {
+        banderaMantenimiento = 1;
+    } else {
+        banderaMantenimiento = storeEmpresas.data.items[0].data.id;
+    }
+    
+    cbxEmpresasMantenimiento = Ext.create('Ext.form.ComboBox', {
+        fieldLabel: 'Organización',
+        name: 'idCompanyMantenimiento',
+        store: storeEmpresas,
+        valueField: 'id',
+        displayField: 'text',
+        queryMode: 'local',
+        emptyText: 'Seleccionar Organización...',
+        editable: false,
+        allowBlank: false,
+        value: banderaMantenimiento,
+        listeners: {
+            select: function (combo, records, eOpts) {
+                if (porEquipoManten) {
+                    cbxVehBDManten.clearValue();
+                    cbxVehBDManten.enable();
+                    storeVeh.load({
+                        params: {
+                            cbxEmpresas: records[0].data.id
+                        }
+                    });
+                }
+            }
+        }
+    });
 
     storeViewMantenimiento = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
@@ -38,31 +70,6 @@ Ext.onReady(function () {
             'idTipoServicio', 'responsable']
     });
 
-    cbxEmpresasMantenimiento = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Organización',
-        name: 'idCompanyMantenimiento',
-        store: storeEmpresas,
-        valueField: 'id',
-        displayField: 'text',
-        queryMode: 'local',
-        emptyText: 'Seleccionar Organización...',
-        editable: false,
-        allowBlank: false,
-        value: 1,
-        listeners: {
-            select: function (combo, records, eOpts) {
-                if (porEquipoManten) {
-                    cbxVehBDManten.clearValue();
-                    cbxVehBDManten.enable();
-                    storeVeh.load({
-                        params: {
-                            cbxEmpresas: records[0].data.id
-                        }
-                    });
-                }
-            }
-        }
-    });
     cbxVehBDManten = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Vehículos',
         name: 'cbxVeh',
@@ -108,7 +115,7 @@ Ext.onReady(function () {
     timeIniMantenimiento = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
         name: 'horaInManten',
-        value: '00:01',
+        value: '00:00',
         format: 'H:i',
         allowBlank: false,
         emptyText: 'Hora Inicial...',

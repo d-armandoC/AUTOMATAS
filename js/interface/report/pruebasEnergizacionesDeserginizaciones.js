@@ -7,20 +7,13 @@ var timeStart;
 var timeFinish;
 var persona;
 var idEquipoEnergD;
-//var gridViewDataPanicoTotal;
-//var gridViewDataPanicoGeneral;
 var gridDataExcesos;
-//var storeDataPanicoD;
 var empresa = 1;
 var empresaNom = 'KRADAC';
 var cbxEmpresasBDEnergD;
 var cbxVehBDEnergD;
 var porEquipo = false;
 var hayDatos = false;
-//var gridViewDataPanico;
-
-
-
 
 Ext.onReady(function() {
     storeViewEnerg = Ext.create('Ext.data.JsonStore', {
@@ -111,7 +104,7 @@ Ext.onReady(function() {
     var timeIniEnergD = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
         name: 'horaIniED',
-        value: '00:01',
+        value: '00:00',
         format: 'H:i',
         allowBlank: false,
         emptyText: 'Hora Inicial...',
@@ -137,7 +130,7 @@ Ext.onReady(function() {
             var nowDate = new Date();
             dateIniEnergD.setValue(nowDate);
             dateFinEnergD.setValue(nowDate);
-            timeIniEnergD.setValue('00:01');
+            timeIniEnergD.setValue('00:00');
             timeFinEnergD.setValue('23:59');
         }
     });
@@ -148,7 +141,7 @@ Ext.onReady(function() {
             var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
             dateIniEnergD.setValue(yestDate);
             dateFinEnergD.setValue(yestDate);
-            timeIniEnergD.setValue('00:01');
+            timeIniEnergD.setValue('00:00');
             timeFinEnergD.setValue('23:59');
         }
     });
@@ -506,7 +499,7 @@ function showWinEnergizar() {
     if (!VentanaEnerg) {
         VentanaEnerg = Ext.create('Ext.window.Window', {
             layout: 'fit',
-            title: ' Conexión y desconexión energía de Equipo',
+            title: ' Conexión Desconexión del Equipo',
             iconCls: 'icon-conexcion',
             resizable: false,
             width: 350,

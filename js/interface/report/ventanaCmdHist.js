@@ -18,9 +18,15 @@ var cbxVehBDComanodos;
 var porEquipoComan = false;
 var hayDatosComandos = false;
 var gridViewDataComandos;
-
+var placacomandos;
+var empresaComandos;
+var banderaComandos;
 Ext.onReady(function () {
-
+    if (idCompanyKarview == 1) {
+        banderaComandos = 1;
+    } else {
+        banderaComandos = storeEmpresas.data.items[0].data.id;
+    }
     cbxEmpresasBDComandos = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Organización',
         name: 'idCompanyComando',
@@ -31,9 +37,11 @@ Ext.onReady(function () {
         emptyText: 'Seleccionar Organización...',
         editable: false,
         allowBlank: false,
-        value: 1,
+        value: banderaComandos,
         listeners: {
             select: function (combo, records, eOpts) {
+                empresaComandos = cbxEmpresasBDPanico.getRawValue();
+                placacomandos = " ";
                 if (porEquipoComan) {
                     cbxVehBDComanodos.clearValue();
                     cbxVehBDComanodos.enable();
@@ -46,9 +54,6 @@ Ext.onReady(function () {
             }
         }
     });
-    
-    
-
     cbxVehBDComanodos = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Vehículos',
         name: 'cbxVeh',
@@ -62,11 +67,14 @@ Ext.onReady(function () {
         allowBlank: false,
         listConfig: {
             minWidth: 450
+        },
+        listeners: {
+            select: function (combo, records, eOpts) {
+                placacomandos = records[0].data.placa;
+            }
         }
     });
-    
-    
-    var dateIni = Ext.create('Ext.form.field.Date', {
+    var dateIniComandos = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
         id: 'fechaIniComando',
@@ -79,8 +87,7 @@ Ext.onReady(function () {
         endDateField: 'fechaFinPanico',
         emptyText: 'Fecha Inicial...'
     });
-
-    var dateFin = Ext.create('Ext.form.field.Date', {
+    var dateFinComandos = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Hasta el',
         format: 'Y-m-d',
         id: 'fechaFinComando',
@@ -92,11 +99,10 @@ Ext.onReady(function () {
         startDateField: 'fechaIniPanico',
         emptyText: 'Fecha Final...'
     });
-    
-    var timeInipanico = Ext.create('Ext.form.field.Time', {
+    var timeIniComandos = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
         name: 'horaIniComando',
-        value: '00:01',
+        value: '00:00',
         format: 'H:i',
         allowBlank: false,
         emptyText: 'Hora Inicial...',
@@ -104,7 +110,7 @@ Ext.onReady(function () {
             minWidth: 300
         }
     });
-    var timeFinpanico = Ext.create('Ext.form.field.Time', {
+    var timeFinComandos = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Hasta las',
         name: 'horaFinComando',
         value: '23:59',
@@ -115,26 +121,26 @@ Ext.onReady(function () {
             minWidth: 450
         }
     });
-    var btnToday = Ext.create('Ext.button.Button', {
+    var btnTodayComandos = Ext.create('Ext.button.Button', {
         text: 'Hoy',
         iconCls: 'icon-today',
         handler: function () {
             var nowDate = new Date();
-            dateIni.setValue(nowDate);
-            dateFin.setValue(nowDate);
-            timeInipanico.setValue('00:01');
-            timeFinpanico.setValue('23:59');
+            dateIniComandos.setValue(nowDate);
+            dateFinComandos.setValue(nowDate);
+            timeIniComandos.setValue('00:00');
+            timeFinComandos.setValue('23:59');
         }
     });
-    var btnYesterday = Ext.create('Ext.button.Button', {
+    var btnYesterdayComandos = Ext.create('Ext.button.Button', {
         text: 'Ayer',
         iconCls: 'icon-yesterday',
         handler: function () {
             var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
-            dateIni.setValue(yestDate);
-            dateFin.setValue(yestDate);
-            timeInipanico.setValue('00:01');
-            timeFinpanico.setValue('23:59');
+            dateIniComandos.setValue(yestDate);
+            dateFinComandos.setValue(yestDate);
+            timeIniComandos.setValue('00:00');
+            timeFinComandos.setValue('23:59');
         }
     });
     var panelButtonsComandos = Ext.create('Ext.panel.Panel', {
@@ -143,9 +149,8 @@ Ext.onReady(function () {
         defaults: {
             margin: '0 5 0 0'
         },
-        items: [btnToday, btnYesterday]
+        items: [btnTodayComandos, btnYesterdayComandos]
     });
-
     formComandos = Ext.create('Ext.form.Panel', {
         bodyPadding: '10 10 0 10',
         fieldDefaults: {
@@ -198,10 +203,10 @@ Ext.onReady(function () {
                 xtype: 'fieldset',
                 title: '<b>Fechas</b>',
                 items: [
-                    dateIni,
-                    dateFin,
-                    timeInipanico,
-                    timeFinpanico,
+                    dateIniComandos,
+                    dateFinComandos,
+                    timeIniComandos,
+                    timeFinComandos,
                     panelButtonsComandos
                 ]
             }],
@@ -209,126 +214,33 @@ Ext.onReady(function () {
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
                 handler: function () {
-                    dateStartComan = dateIni.getRawValue();
-                    dateFinishComan = dateFin.getRawValue();
+                    dateStartComan = dateIniComandos.getRawValue();
+                    dateFinishComan = dateFinComandos.getRawValue();
                     var formulario = formComandos.getForm();
                     if (formulario.isValid()) {
-                    formulario.submit({
-                        url: 'php/interface/report/cmd/getReportCmd.php',
-                        waitTitle: 'Procesando...',
-                        waitMsg: 'Obteniendo Información',
-                        params: {
-                            idCompany: empresaComanodos
-                        },
-                        success: function (form, action) {
-                            console.log(action.response.responseText);
-                            var storeDataExcesos = Ext.create('Ext.data.JsonStore', {
-                                data: action.result.data,
-                                proxy: {
-                                    type: 'ajax',
-                                    reader: 'array'
-                                },
-                                 fields: ['usuario', 'comando', 'respuesta', 'fecha_creacion', 'fecha_envio', 'estado'],
-                            });
-                                var gridViewDataComando = Ext.create('Ext.grid.Panel', {
-                                    region: 'center',
-                                    frame: true,
-                                    width: '60%',
-                                    title: '<center>Detalle: ',
-                                    store: storeViewPanico,
-                                    features: [filters],
-                                    multiSelect: true,
-                                    viewConfig: {
-                                        emptyText: 'No hay datos que Mostrar'
+                        
+                        formulario.submit({
+                            url: 'php/interface/report/cmd/getReportCmd.php',
+                            waitTitle: 'Procesando...',
+                            waitMsg: 'Obteniendo Información',
+                            params: {
+                                idCompany: empresaComanodos
+                            },
+                            success: function (form, action) {
+                                var storeDataComandos = Ext.create('Ext.data.JsonStore', {
+                                    data: action.result.data,
+                                    proxy: {
+                                        type: 'ajax',
+                                        reader: 'array'
                                     },
-                                    columns: [
-                                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                        {text: 'Velocidad', width: 130, dataIndex: 'velocidad', align: 'center', xtype: 'numbercolumn', format: '0.00'},
-                                        {text: 'Fecha', width: 200, dataIndex: 'fecha', align: 'center'},
-                                        {text: 'Hora', width: 200, dataIndex: 'hora', align: 'center'},
-                                        {text: 'Evento', width: 250, dataIndex: 'evento', align: 'center'},
-                                        {text: 'Latitud', width: 250, dataIndex: 'latitud', align: 'center'},
-                                        {text: 'Longitud', width: 250, dataIndex: 'longitud', align: 'center'}
-                                    ],
-                                    tbar: [{
-                                            xtype: 'button',
-                                            iconCls: 'icon-excel',
-                                            text: 'Exportar a Excel',
-                                            handler: function () {
-                                                if (storeViewPanico.getCount() > 0) {
-                                                    if (getNavigator() === 'img/chrome.png') {
-                                                        var a = document.createElement('a');
-                                                        var data_type = 'data:application/vnd.ms-excel';
-                                                        var numFil = storeViewPanico.data.length;
-                                                        var numCol = 6;
-                                                        var tiLetra = 'Calibri';
-                                                        var titulo = 'Registro de Panico en la Fecha:' + storeViewPanico.data.items[0].data.fecha;
-                                                        var table_div = "<?xml version='1.0'?><?mso-application progid='Excel.Sheet'?><Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'><DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'><Author>KRADAC SOLUCIONES TECNOLÃ“GICAS</Author><LastAuthor>KRADAC SOLUCIONES TECNOLÃ“GICAS</LastAuthor><Created>2014-08-20T15:33:48Z</Created><Company>KRADAC</Company><Version>15.00</Version>";
-                                                        table_div += "</DocumentProperties> " +
-                                                                "<Styles> " +
-                                                                "<Style ss:ID='Default' ss:Name='Normal'>   <Alignment ss:Vertical='Bottom'/>   <Borders/>   <Font ss:FontName='" + tiLetra + "' x:Family='Swiss' ss:Size='11' ss:Color='#000000'/>   <Interior/>   <NumberFormat/>   <Protection/>  </Style>  " +
-                                                                "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
-                                                                "<Style ss:ID='datos'><NumberFormat ss:Format='@'/></Style> " +
-                                                                "</Styles>";
-                                                        //Definir el numero de columnas y cantidad de filas de la hoja de calculo (numFil + 2))
-                                                        table_div += "<Worksheet ss:Name='Datos'>"; //Nombre de la hoja
-                                                        table_div += "<Table ss:ExpandedColumnCount='" + numCol + "' ss:ExpandedRowCount='" + (numFil + 2) + "' x:FullColumns='1' x:FullRows='1' ss:DefaultColumnWidth='60' ss:DefaultRowHeight='15'>";
-                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='121.5'/>";
-                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                        table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
-                                                        table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Velocidad</Data></Cell>" +
-                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Fecha</Data></Cell>" +
-                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Hora</Data></Cell>" +
-                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Evento</Data></Cell>" +
-                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Latitutd</Data></Cell>" +
-                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Longitud</Data></Cell>" +
-                                                                "</Row>";
-                                                        for (var i = 0; i < numFil; i++) {
-                                                            table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewPanico.data.items[i].data.velocidad + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewPanico.data.items[i].data.fecha + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewPanico.data.items[i].data.hora + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewPanico.data.items[i].data.evento + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewPanico.data.items[i].data.latitud + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewPanico.data.items[i].data.longitud + " </Data></Cell > " +
-                                                                    "</Row>";
-                                                        }
-                                                        table_div += "</Table> </Worksheet></Workbook>";
-                                                        var table_xml = table_div.replace(/ /g, '%20');
-                                                        a.href = data_type + ', ' + table_xml;
-                                                        a.download = 'Registro Panicos' + '.xml';
-                                                        a.click();
-                                                    } else {
-                                                        Ext.MessageBox.show({
-                                                            title: 'Error',
-                                                            msg: '<center> El servicio para este navegador no esta disponible <br> Use un navegador como Google Chrome </center>',
-                                                            buttons: Ext.MessageBox.OK,
-                                                            icon: Ext.MessageBox.ERROR
-                                                        });
-                                                    }
-                                                } else {
-                                                    Ext.MessageBox.show({
-                                                        title: 'Mensaje',
-                                                        msg: 'No hay datos en la Lista a Exportar',
-                                                        buttons: Ext.MessageBox.OK,
-                                                        icon: Ext.MessageBox.ERROR
-                                                    });
-                                                }
-                                            }
-                                        }]
+                                    fields: ['usuario', 'comando', 'respuesta', 'fecha_creacion', 'fecha_envio', 'estado']
                                 });
-                                gridViewDataComando.setTitle('<center>Vista de Panicos: ' + storeDataExcesos.data.items[0].data.personaPanicos + ' Desde: ' + dateStartComan + ' Hasta:' + dateFinishComan + '</center>');
-                                var gridDataExcesos = Ext.create('Ext.grid.Panel', {
+                                var gridDataComandos = Ext.create('Ext.grid.Panel', {
                                     region: 'west',
                                     frame: true,
-                                    width: '40%',
-                                    title: '<center>Panicos Totales ' + '<br>Desde: ' + dateStartComan + ' | Hasta: ' + dateFinishComan + '</center>',
-                                    store: storeDataExcesos,
+                                    width: '100%',
+                                    title: '<center>Lista de Comandos ' + '<br>Desde: ' + dateStartComan + ' | Hasta: ' + dateFinishComan + '</center>',
+                                    store: storeDataComandos,
                                     features: [filters],
                                     multiSelect: true,
                                     viewConfig: {
@@ -336,21 +248,24 @@ Ext.onReady(function () {
                                     },
                                     columns: [
                                         Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                        {text: 'Empresa', width: 150, dataIndex: 'empresaPanicos', align: 'center'},
-                                        {text: 'Placa', width: 100, dataIndex: 'placaPanicos', align: 'center'},
-                                        {text: 'Cantidad', width: 100, dataIndex: 'cantidadPanicos', align: 'center'},
+                                        {text: 'Usuario', width: 130, dataIndex: 'usuario', align: 'center'},
+                                        {text: 'Comando', width: 200, dataIndex: 'comando', align: 'center'},
+                                        {text: 'Respuesta', width: 200, dataIndex: 'respuesta', align: 'center'},
+                                        {text: 'Fecha Creación', width: 250, dataIndex: 'fecha_creacion', align: 'center'},
+                                        {text: 'Fecha Envio', width: 250, dataIndex: 'fecha_envio', align: 'center'},
+                                        {text: 'Estado', width: 250, dataIndex: 'estado', align: 'center'}
                                     ],
                                     tbar: [{
                                             xtype: 'button',
                                             iconCls: 'icon-excel',
                                             text: 'Exportar a Excel',
                                             handler: function () {
-                                                if (storeDataExcesos.getCount() > 0) {
+                                                if (storeDataComandos.getCount() > 0) {
                                                     if (getNavigator() === 'img/chrome.png') {
                                                         var a = document.createElement('a');
                                                         var data_type = 'data:application/vnd.ms-excel';
-                                                        var numFil = storeDataExcesos.data.length;
-                                                        var numCol = 3;
+                                                        var numFil = storeDataComandos.data.length;
+                                                        var numCol = 6;
                                                         var tiLetra = 'Calibri';
                                                         var titulo = 'Registro de Panico';
                                                         var table_div = "<?xml version='1.0'?><?mso-application progid='Excel.Sheet'?><Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'><DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'><Author>KRADAC SOLUCIONES TECNOLÃ“GICAS</Author><LastAuthor>KRADAC SOLUCIONES TECNOLÃ“GICAS</LastAuthor><Created>2014-08-20T15:33:48Z</Created><Company>KRADAC</Company><Version>15.00</Version>";
@@ -358,6 +273,11 @@ Ext.onReady(function () {
                                                                 "<Styles> " +
                                                                 "<Style ss:ID='Default' ss:Name='Normal'>   <Alignment ss:Vertical='Bottom'/>   <Borders/>   <Font ss:FontName='" + tiLetra + "' x:Family='Swiss' ss:Size='11' ss:Color='#000000'/>   <Interior/>   <NumberFormat/>   <Protection/>  </Style>  " +
                                                                 "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
+                                                                "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
+                                                                "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
+                                                                "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
+                                                                "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
+                                                                "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
                                                                 "<Style ss:ID='datos'><NumberFormat ss:Format='@'/></Style> " +
                                                                 "</Styles>";
                                                         //Definir el numero de columnas y cantidad de filas de la hoja de calculo (numFil + 2))
@@ -366,23 +286,33 @@ Ext.onReady(function () {
                                                         table_div += "<Column ss:AutoFitWidth='0' ss:Width='121.5'/>";
                                                         table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
                                                         table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
+                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
                                                         table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
                                                         table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Empresa</Data></Cell>" +
-                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Placa</Data></Cell>" +
-                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Cantidad de Panicos</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Usuario</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Comando</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Respuesta</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Fecha de Creación</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Fecha de Envio</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Estado</Data></Cell>" +
                                                                 "</Row>";
                                                         for (var i = 0; i < numFil; i++) {
                                                             table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataExcesos.data.items[i].data.empresaPanicos + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataExcesos.data.items[i].data.placaPanicos + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataExcesos.data.items[i].data.cantidadPanicos + " </Data></Cell > " +
+//                                                                                                              fields: ['usuario', 'comando', 'respuesta', 'fecha_creacion', 'fecha_envio', 'estado']
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataComandos.data.items[i].data.usuario + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataComandos.data.items[i].data.comando + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataComandos.data.items[i].data.respuesta + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataComandos.data.items[i].data.fecha_creacion + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataComandos.data.items[i].data.fecha_envio + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataComandos.data.items[i].data.estado + " </Data></Cell > " +
                                                                     "</Row>";
                                                         }
                                                         table_div += "</Table> </Worksheet></Workbook>";
                                                         var table_xml = table_div.replace(/ /g, '%20');
                                                         a.href = data_type + ', ' + table_xml;
-                                                        a.download = 'Registro Panicos' + '.xml';
+                                                        a.download = 'Envio Comandos' + '.xml';
                                                         a.click();
                                                     } else {
                                                         Ext.MessageBox.show({
@@ -408,46 +338,45 @@ Ext.onReady(function () {
                                             personaComan = record.get('personaPanicos');
                                             banderaComan = 1;
                                             hayDatosComandos = true;
-                                            gridViewDataComando.setTitle('<center>Vista de Panicos: ' + personaComan + ' <br> Equipo: ' + idEquipoComandos + ' Desde: ' + dateStartComan + ' Hasta:' + dateFinishComan + '</center>');
-                                            storeViewPanico.load(
+                                            gridViewDataComando.setTitle('<center>Vista de Comandos: ' + personaComan + ' <br> Equipo: ' + idEquipoComandos + ' Desde: ' + dateStartComan + ' Hasta:' + dateFinishComan + '</center>');
+                                            storeDataComandos.load(
                                                     {
                                                         params: {
                                                             idEquipo: idEquipoComandos,
-                                                            fechaIni: dateIni.getRawValue(),
-                                                            fechaFin: dateFin.getRawValue(),
-                                                            horaIniP: timeInipanico.getRawValue(),
-                                                            horaFinP: timeFinpanico.getRawValue(),
+                                                            fechaIni: dateIniComandos.getRawValue(),
+                                                            fechaFin: dateFinComandos.getRawValue(),
+                                                            horaIniP: timeIniComandos.getRawValue(),
+                                                            horaFinP: timeFinComandos.getRawValue(),
                                                         }
                                                     });
-
                                         }
                                     }
                                 });
-                            var tabExcesos = Ext.create('Ext.container.Container', {
-                                title: 'Panicos Detallados',
-                                closable: true,
-                                iconCls: 'icon-reset',
-                                layout: 'border',
-                                fullscreen: true,
-                                height: 485,
-                                width: 2000,
-                                region: 'center',
-                                items: [gridViewDataComando,gridDataExcesos]
-                            });
-                            panelTabMapaAdmin.add(tabExcesos);
-                            panelTabMapaAdmin.setActiveTab(tabExcesos);
-                            winComandos.hide();
-                        },
-                        failure: function (form, action) {
-                            Ext.MessageBox.show({
-                                title: 'Información',
-                                msg: action.result.message,
-                                buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.INFO
-                            });
-                        }
-                    });
-                }
+                                var tabComandos = Ext.create('Ext.container.Container', {
+                                    title: '<div id="titulosForm">Reporte envio Comados ' + empresaComandos + " : " + placacomandos + '</div>',
+                                    closable: true,
+                                    iconCls: 'icon-cmd-hist',
+                                    layout: 'border',
+                                    fullscreen: true,
+                                    height: 485,
+                                    width: 8000,
+                                    region: 'center',
+                                    items: [gridDataComandos]
+                                });
+                                panelTabMapaAdmin.add(tabComandos);
+                                panelTabMapaAdmin.setActiveTab(tabComandos);
+                                winComandos.hide();
+                            },
+                            failure: function (form, action) {
+                                Ext.MessageBox.show({
+                                    title: 'Información',
+                                    msg: action.result.message,
+                                    buttons: Ext.MessageBox.OK,
+                                    icon: Ext.MessageBox.INFO
+                                });
+                            }
+                        });
+                    }
                 }
             }
             , {

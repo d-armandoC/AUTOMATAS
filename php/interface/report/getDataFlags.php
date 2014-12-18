@@ -6,6 +6,7 @@ extract($_POST);
 if (!$mysqli = getConectionDb()) {
     echo "{failure: true, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
+    
     $haveData = false;
     $consultaSql = "select v.placa, v.vehiculo,r.latitud, r.longitud,r.fecha, r.hora, r.fecha_hora_registro, r.velocidad, 
             r.bateria, r.gsm, r.gps, r.ign, r.direccion, se.color, se.sky_evento, r.id_sky_evento, 
@@ -30,11 +31,13 @@ if (!$mysqli = getConectionDb()) {
             $fechaHoraIni = $fechaIni . " " . $horaIni;
             $fechaHoraFin = $fechaFin . " " . $horaFin;
             $json = "puntos: [";
+             $c = 0;
             $haveData = false;
             while ($myrow = $result->fetch_assoc()) {
                 $haveData = true;
-//        
+                 $c++;
                 $json .= "{"
+                        . "idData: " . $c . ","
                         . "company:'" . utf8_encode($myrow["empresa"]) . "',"
                         . "latitud: " . $myrow["latitud"] . ","
                         . "longitud: " . $myrow["longitud"] . ","

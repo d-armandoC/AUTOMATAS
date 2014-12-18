@@ -23,11 +23,16 @@ var fechaFngsm;
 var cbxVehBDManten;
 var porEquipoPerdidaGpsGsm;
 var cbxVehPedidaGpsGsm;
-
+var placaPerdidaGsm;
+var empresaPerdidaGsm;
+var banderaRegistroPanico;
 
 Ext.onReady(function () {
-    
-    
+    if (idCompanyKarview == 1) {
+        banderaRegistroPanico = 1;
+    } else {
+        banderaRegistroPanico = storeEmpresaPanicos.data.items[0].data.id;
+    }
     cbxEmpresasGSM = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Organización',
         name: 'idempresagsm',
@@ -38,11 +43,12 @@ Ext.onReady(function () {
         emptyText: 'Seleccionar Organización...',
         editable: false,
         allowBlank: false,
-        value: 1,
+        value: banderaRegistroPanico,
         listeners: {
             select: function (combo, records, eOpts) {
-//                id_empresagsms = records[0].data.id;
-                     if (porEquipoPerdidaGpsGsm) {
+                empresaPerdidaGsm = cbxEmpresasGSM.getRawValue();
+                placaPerdidaGsm = " ";
+                if (porEquipoPerdidaGpsGsm) {
                     cbxVehPedidaGpsGsm.clearValue();
                     cbxVehPedidaGpsGsm.enable();
                     storeVeh.load({
@@ -54,8 +60,8 @@ Ext.onReady(function () {
             }
         }
     });
-    
-    
+
+
     cbxVehPedidaGpsGsm = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Vehículos',
         name: 'cbxVeh',
@@ -69,6 +75,11 @@ Ext.onReady(function () {
         allowBlank: false,
         listConfig: {
             minWidth: 450
+        },
+        listeners: {
+            select: function (combo, records, eOpts) {
+                placaPerdidaGsm = records[0].data.placa;
+            }
         }
     });
 
@@ -105,7 +116,7 @@ Ext.onReady(function () {
             var nowDate = new Date();
             fechaInigsm.setValue(nowDate);
             fechaFingsm.setValue(nowDate);
-            timeInigsm.setValue('00:01');
+            timeInigsm.setValue('00:00');
             timeFingsm.setValue('23:59');
 
         }
@@ -117,7 +128,7 @@ Ext.onReady(function () {
             var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
             fechaInigsm.setValue(yestDate);
             fechaFingsm.setValue(yestDate);
-            timeInigsm.setValue('00:01');
+            timeInigsm.setValue('00:00');
             timeFingsm.setValue('23:59');
         }
     });
@@ -188,14 +199,14 @@ Ext.onReady(function () {
                             change: function (field, newValue, oldValue) {
                                 switch (parseInt(newValue['rb4'])) {
                                     case 1:
-                                          empresaGSM = 1;
+                                        empresaGSM = 1;
                                         cbxEmpresasGSM.enable();
                                         cbxVehPedidaGpsGsm.clearValue();
                                         cbxVehPedidaGpsGsm.disable();
                                         porEquipoPerdidaGpsGsm = false;
                                         break;
                                     case 2:
-                                           porEquipoPerdidaGpsGsm = true;
+                                        porEquipoPerdidaGpsGsm = true;
                                         empresaGSM = cbxEmpresasGSM.getValue();
                                         if (porEquipoPerdidaGpsGsm) {
                                             cbxVehPedidaGpsGsm.enable();
@@ -351,7 +362,7 @@ function cargardatosalGridGpsGsm(datos) {
     });
 
     var tabGpsGsm = Ext.create('Ext.container.Container', {
-        title: 'Perdida de GPS y GSM',
+        title: '<div id="titulosForm">Perdida de GPS y GSM -' + empresaPerdidaGsm + " : " + placaPerdidaGsm + '</div>',
         closable: true,
         iconCls: 'icon-flota',
         layout: 'border',

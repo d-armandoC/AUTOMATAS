@@ -1,9 +1,18 @@
 var contenedorWinBan;
 var winBan;
 var tabpanelContain;
+var empresaRecorrido;
+var placaRecorrido;
+var banderaRecorrido;
+ var cbxVehBD;
 
-Ext.onReady(function() {
 
+Ext.onReady(function () {
+    if (idCompanyKarview == 1) {
+        banderaRecorrido = 1;
+    } else {
+        banderaRecorrido = storeEmpresas.data.items[0].data.id;
+    }
     var cbxEmpresasBD = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Organización',
         name: 'cbxEmpresas',
@@ -14,11 +23,13 @@ Ext.onReady(function() {
         emptyText: 'Seleccionar Organización...',
         editable: false,
         allowBlank: false,
+        value: banderaRecorrido,
         listeners: {
-            select: function(combo, records, eOpts) {
+            select: function (combo, records, eOpts) {
+                empresaRecorrido = cbxEmpresasBD.getRawValue();
                 cbxVehBD.enable();
                 cbxVehBD.clearValue();
-
+                console.log('hola');
                 storeVeh.load({
                     params: {
                         cbxEmpresas: records[0].data.id
@@ -28,7 +39,7 @@ Ext.onReady(function() {
         }
     });
 
-    var cbxVehBD = Ext.create('Ext.form.ComboBox', {
+    cbxVehBD = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Vehículos',
         name: 'cbxVeh',
         store: storeVeh,
@@ -41,6 +52,11 @@ Ext.onReady(function() {
         allowBlank: false,
         listConfig: {
             minWidth: 450
+        },
+        listeners: {
+            select: function (combo, records, eOpts) {
+                placaRecorrido = records[0].data.placa;
+            }
         }
     });
 
@@ -76,6 +92,7 @@ Ext.onReady(function() {
     var timeIni = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
         name: 'horaIni',
+        value: '00:00',
         format: 'H:i',
         allowBlank: false,
         emptyText: 'Hora Inicial...'
@@ -84,48 +101,34 @@ Ext.onReady(function() {
     var timeFin = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Hasta las',
         name: 'horaFin',
+        value: '23:59',
         format: 'H:i',
         allowBlank: false,
         emptyText: 'Hora Final...'
     });
-
     var today = Ext.create('Ext.button.Button', {
         text: 'Hoy',
         iconCls: 'icon-today',
-        handler: function() {
+        handler: function () {
             var nowDate = new Date();
-
-            dateIni.setValue(formatoFecha(nowDate));
-            dateFin.setValue(formatoFecha(nowDate));
-
-            timeIni.setValue('00:01');
+            dateIni.setValue(nowDate);
+            dateFin.setValue(nowDate);
+            timeIni.setValue('00:00');
             timeFin.setValue('23:59');
         }
     });
-
     var yesterday = Ext.create('Ext.button.Button', {
         text: 'Ayer',
         iconCls: 'icon-yesterday',
-        handler: function() {
-            var nowDate = new Date();
-            var año = nowDate.getFullYear();
-            var mes = nowDate.getMonth() + 1;
-            if (mes < 10) {
-                mes = "0" + mes;
-            }
-            var dia = nowDate.getDate() - 1;
-            if (dia < 10) {
-                dia = "0" + dia;
-            }
-            nowDate.setMinutes(nowDate.getMinutes() + 10);
-
-            dateIni.setValue(año + "-" + mes + "-" + dia);
-            dateFin.setValue(año + "-" + mes + "-" + dia);
-
-            timeIni.setValue('00:01');
+        handler: function () {
+            var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
+            dateIni.setValue(yestDate);
+            dateFin.setValue(yestDate);
+            timeIni.setValue('00:00');
             timeFin.setValue('23:59');
         }
     });
+
 
     var panelBotones = Ext.create('Ext.form.Panel', {
         layout: 'column',
@@ -154,7 +157,7 @@ Ext.onReady(function() {
                 baseCls: 'x-plain',
                 items: [{
 //                        columnWidth: .5,
-                        
+
                         baseCls: 'x-plain',
                         items: [
                             cbxEmpresasBD,
@@ -204,16 +207,14 @@ Ext.onReady(function() {
             {
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
-                handler: function() {
+                handler: function () {
                     if (contenedorWinBan.getForm().isValid()) {
                         var trazar_ruta = this.up('form').down('[name=trazar_ruta]').getValue();
                         var reporte_ruta = this.up('form').down('[name=reporte_ruta]').getValue();
                         var fechaInicial = this.up('form').down('[name=fechaIni]').getValue();
                         var fechaFinal = this.up('form').down('[name=fechaFin]').getValue();
-
-
+                        var empresaCombo = cbxEmpresasBD.getRawValue();
                         if (trazar_ruta || reporte_ruta) {
-
                             contenedorWinBan.getForm().submit({
                                 url: 'php/interface/report/getDataFlags.php',
                                 method: 'POST',
@@ -221,7 +222,7 @@ Ext.onReady(function() {
                                 params: {
                                     nameVeh: cbxVehBD.getRawValue()
                                 },
-                                failure: function(form, action) {
+                                failure: function (form, action) {
                                     switch (action.failureType) {
                                         case Ext.form.action.Action.CLIENT_INVALID:
                                             Ext.Msg.alert('Error', 'Los campos no se pueden enviar con valores invalidos.');
@@ -234,7 +235,7 @@ Ext.onReady(function() {
                                             break;
                                     }
                                 },
-                                success: function(form, action) {
+                                success: function (form, action) {
                                     var resultado = action.result;
                                     if (trazar_ruta) {
                                         clearLienzoTravel();
@@ -379,8 +380,8 @@ Ext.onReady(function() {
                                                 cbxVehBD.getValue(),
                                                 formatoFecha(dateIni.getValue()),
                                                 formatoFecha(dateFin.getValue()),
-                                                formatoHora(timeIni.getValue()),
-                                                formatoHora(timeFin.getValue()),
+                                                timeIni.getRawValue(),
+                                                timeFin.getRawValue(),
                                                 cbxVehBD.getRawValue()
                                                 );
                                     }
@@ -401,14 +402,14 @@ Ext.onReady(function() {
             }, {
                 text: 'Cancelar',
                 iconCls: 'icon-cancelar',
-                handler: function() {
+                handler: function () {
                     winBan.hide();
                 }
             }]
     });
 });
 
-function ventanaBanderas() {
+function recorridosGeneral() {
     if (!winBan) {
         winBan = Ext.create('Ext.window.Window', {
             layout: 'fit',
@@ -416,22 +417,27 @@ function ventanaBanderas() {
             iconCls: 'icon-all-flags',
             resizable: false,
             width: 510,
-            height:300,
+            height: 300,
             closeAction: 'hide',
             plain: false,
             items: [contenedorWinBan]
         });
     }
     contenedorWinBan.getForm().reset();
-    contenedorWinBan.down('[name=cbxVeh]').disable();
-
+//    contenedorWinBan.down('[name=cbxVeh]').disable();
     var nowDate = new Date();
     contenedorWinBan.down('[name=fechaIni]').setValue(formatoFecha(nowDate));
     contenedorWinBan.down('[name=fechaFin]').setValue(formatoFecha(nowDate));
-    contenedorWinBan.down('[name=horaIni]').setValue('00:01');
+    contenedorWinBan.down('[name=horaIni]').setValue('00:00');
     contenedorWinBan.down('[name=horaFin]').setValue('23:59');
-
     winBan.show();
+    cbxVehBD.enable();
+    cbxVehBD.clearValue();
+    storeVeh.load({
+        params: {
+            cbxEmpresas: banderaRecorrido
+        }
+    });
 }
 
 function ventanaBanderasClick(coop, eqp) {
@@ -442,20 +448,16 @@ function ventanaBanderasClick(coop, eqp) {
             menuClick: 1
         }
     });
-
     contenedorWinBan.down('[name=cbxEmpresas]').setValue(coop);
-    contenedorWinBan.down('[name=cbxVeh]').enable();
-
+//    contenedorWinBan.down('[name=cbxVeh]').enable();
     storeVeh.load({
         params: {
             cbxEmpresas: coop
         }
     });
-
     contenedorWinBan.down('[name=cbxVeh]').setValue(eqp);
 }
 ;
-
 
 function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
     var arrayColumn = new Array();
@@ -474,19 +476,18 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
     });
     var columnFlags = [];
     columnFlags = [
-        Ext.create('Ext.grid.RowNumberer', {text: '<b>Nº</b>', align: 'center', width: 40}),
-        {text: '<b>Fecha y Hora</b>', xtype: 'datecolumn', format: 'd-m-Y H:i:s', width: 150, dataIndex: 'fecha_hora', align: 'center'},
-        {text: '<b>Registro</b>', xtype: 'datecolumn', format: 'd-m-Y H:i:s', width: 150, dataIndex: 'fecha_hora_reg', align: 'center'},
-        {text: '<b>Vel (Km/h)</b>', dataIndex: 'velocidad', align: 'center', width: 95, cls: 'listview-filesize', renderer: formatSpeed},
-        {text: '<b>Bateria</b>', width: 80, dataIndex: 'bateria', align: 'center', renderer: formatBatIgnGsmGps2},
-        {text: '<b>IGN</b>', width: 70, dataIndex: 'ign', align: 'center', renderer: formatBatIgnGsmGps2},
-        {text: '<b>GSM</b>', width: 70, dataIndex: 'gsm', align: 'center', renderer: formatBatIgnGsmGps2},
-        {text: '<b>GPS</b>', width: 70, dataIndex: 'gps2', align: 'center', renderer: formatBatIgnGsmGps2},
-        {text: '<b>G1</b>', width: 90, dataIndex: 'g1', align: 'center', renderer: formatStateTaxy, },
-        {text: '<b>G2</b>', width: 70, dataIndex: 'g2', align: 'center', renderer: formatPanic},
-        {text: '<b>Salida</b>', width: 70, dataIndex: 'salida', align: 'center'},
-        {text: '<b>Evento</b>', width: 280, dataIndex: 'evento', align: 'center'},
-        {text: '<b>Id Evento</b>', width: 80, dataIndex: 'idEvento', align: 'center'},
+        {text: '<b>Trama</b>', width: 65, dataIndex: 'idData', align: 'center'},
+        {text: '<b>Evento</b>', width: 180, dataIndex: 'evento', align: 'center'},
+        {text: '<b>Fecha y Hora <br> de Equipo</b>', xtype: 'datecolumn', format: 'd-m-Y H:i:s', width: 160, dataIndex: 'fecha_hora', align: 'center'},
+        {text: '<b>Fecha y Hora <br> Registro</b>', xtype: 'datecolumn', format: 'd-m-Y H:i:s', width: 170, dataIndex: 'fecha_hora_reg', align: 'center'},
+        {text: '<b>Vel (Km/h)</b>', dataIndex: 'velocidad', align: 'center', width: 100, cls: 'listview-filesize', renderer: formatSpeed},
+        {text: '<b>Bateria</b>', width: 120, dataIndex: 'bateria', align: 'center', renderer: formatBat},
+        {text: '<b>Estado Vehiculo <br> IGN</b>', width: 175, dataIndex: 'ign', align: 'center', renderer: estadoVehiculo},
+        {text: '<b>GSM</b>', width: 110, dataIndex: 'gsm', align: 'center', renderer: estadoGsm},
+        {text: '<b>GPS</b>', width: 100, dataIndex: 'gps2', align: 'center', renderer: estadoGps},
+//        {text: '<b>G1</b>', width: 100, dataIndex: 'g1', align: 'center', renderer: formatStateTaxy},
+//        {text: '<b>G2</b>', width: 100, dataIndex: 'g2', align: 'center', renderer: formatPanic},
+        {text: '<b>Id Evento</b>', width: 80, dataIndex: 'idEvento', align: 'center'}
     ];
     var gridFlags = Ext.create('Ext.grid.Panel', {
         title: '<center>Informe Detallado</center>',
@@ -502,7 +503,7 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
         },
         columns: columnFlags,
         listeners: {
-            itemcontextmenu: function(thisObj, record, item, index, e, eOpts) {
+            itemcontextmenu: function (thisObj, record, item, index, e, eOpts) {
                 e.stopEvent();
                 Ext.create('Ext.menu.Menu', {
                     items: [
@@ -510,7 +511,7 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
                             iconCls: 'icon-vehiculos_lugar', // Use a URL in the icon config
                             text: 'Ver Ubicación en el Mapa',
                             disabled: false,
-                            handler: function(widget, event) {
+                            handler: function (widget, event) {
                                 panelTabMapaAdmin.setActiveTab('panelMapaTab');
                                 localizarDireccion(record.data.longitud, record.data.latitud, 17);
                             }
@@ -534,7 +535,7 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
     });
 
     var tab = Ext.create('Ext.container.Container', {
-        title: 'Reporte de Recorrido General  ',
+        title: '<div id="titulosForm">Reporte de Recorrido General: ' + " " + empresaRecorrido + ":" + placaRecorrido + '</div>',
         closable: true,
         iconCls: 'icon-all-flags',
         layout: 'border',

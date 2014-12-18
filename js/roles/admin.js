@@ -491,7 +491,7 @@ Ext.onReady(function() {
                                     showWinMantenimientoGeneral();
                                 }},
                             {text: 'Recorridos General', iconCls: 'icon-all-flags', handler: function() {
-                                    ventanaBanderas();
+                                    recorridosGeneral();
                                 }},
                             {text: 'Perdida de GPS y GSM', iconCls: 'icon-flota', handler: function() {
                                     reporteWinperdidaGSM();
@@ -508,7 +508,7 @@ Ext.onReady(function() {
                             {text: 'Reporte de Encendido y Apagado', iconCls: 'icon-encendido', handler: function() {
                                     showWinencendidoapagado();
                                 }},
-                            {text: 'Conexión y desconexión energía de Equipo', iconCls: 'icon-conexcion', handler: function() {
+                            {text: 'Conexión Desconexión del Equipo', iconCls: 'icon-conexcion', handler: function() {
                                     showWinEnergizar();
                                 }},
                             {text: 'Reporte de Eventos', iconCls: 'icon-eventos', handler: function() {
@@ -516,7 +516,6 @@ Ext.onReady(function() {
                                 }}
                         ]
                     }
-
                 ]
             },
             herraminetas,

@@ -203,3 +203,10 @@ body {
             zoom: 1;
             font-size: 0;
         }
+        
+        
+        #titulosForm{
+        font-family: arial;
+        font-size: 10px;
+        color: #000000;
+        }

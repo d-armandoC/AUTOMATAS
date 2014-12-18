@@ -110,12 +110,12 @@ var storeViewPanico = Ext.create('Ext.data.Store', {
             root: 'data'
         }
     },
-   fields: ['fecha', 'hora', 'evento', 'latitud', 'longitud', 'velocidad']
+    fields: ['fecha', 'hora', 'evento', 'latitud', 'longitud', 'velocidad']
 });
 
-    
-    
- var storeEmpresaPanicos = Ext.create('Ext.data.Store', {
+
+
+var storeEmpresaPanicos = Ext.create('Ext.data.Store', {
     autoLoad: true,
     autoDestroy: true,
     proxy: {
@@ -129,7 +129,7 @@ var storeViewPanico = Ext.create('Ext.data.Store', {
     fields: ['id', 'text']
 });
 
- var storeViewEncendidoApag = Ext.create('Ext.data.Store', {
+var storeViewEncendidoApag = Ext.create('Ext.data.Store', {
     autoLoad: true,
     autoDestroy: true,
     proxy: {
@@ -143,6 +143,7 @@ var storeViewPanico = Ext.create('Ext.data.Store', {
     fields: ['fechaEA', 'horaEA', 'eventoEA', 'velocidadEA', 'latitudEA', 'longitudEA', 'bateriaEA', 'gsmEA', 'gpsEA', 'direccionEA']
 });
 
+
 var storeEmpresas = Ext.create('Ext.data.Store', {
     autoLoad: true,
     autoDestroy: true,
@@ -154,7 +155,7 @@ var storeEmpresas = Ext.create('Ext.data.Store', {
             root: 'empresas'
         }
     },
-    fields: ['id', 'idTipoEmpresa', 'text', 'latitud', 'longitud', 'direccion', 'telefono', 'email'],
+    fields: ['id', 'idTipoEmpresa', 'text','acronimo' ,'latitud', 'longitud', 'direccion', 'telefono', 'email'],
     listeners: {
         load: function (thisObject, records, successful, eOpts) {
             for (var i = 0; i < records.length; i++) {

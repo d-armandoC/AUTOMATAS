@@ -1,7 +1,15 @@
 var contenedorwinEvt;
 var winEvt;
+var placaEventos;
+var empresaEventos;
+var banderaEventos;
 
-Ext.onReady(function() {
+Ext.onReady(function () {
+    if (idCompanyKarview == 1) {
+        banderaEventos = 1;
+    } else {
+        banderaEventos = storeEmpresaPanicos.data.items[0].data.id;
+    }
 
     var storeVeh = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
@@ -40,12 +48,14 @@ Ext.onReady(function() {
         emptyText: 'Seleccionar Organización...',
         editable: false,
         allowBlank: false,
+        value: banderaEventos,
         listeners: {
-            select: function(combo, records, eOpts) {
+            select: function (combo, records, eOpts) {
+                empresaEventos = cbxEmpresasBDPanico.getRawValue();
+                placaEventos = " ";
                 var listSelected = contenedorwinEvt.down('[name=listVehEvent]');
                 listSelected.clearValue();
                 listSelected.fromField.store.removeAll();
-
                 storeVeh.load({
                     params: {
                         cbxEmpresas: records[0].data.id
@@ -68,6 +78,11 @@ Ext.onReady(function() {
         allowBlank: false,
         listConfig: {
             minWidth: 300
+        },
+        listeners: {
+            select: function (combo, records, eOpts) {
+                placaEventos = records[0].data.placa;
+            }
         }
     });
 
@@ -101,7 +116,7 @@ Ext.onReady(function() {
         fieldLabel: 'Desde las',
         name: 'horaIniEvent',
         format: 'H:i',
-        value: '00:01',
+        value: '00:00',
         allowBlank: false,
         emptyText: 'Hora Inicial...'
     });
@@ -118,11 +133,11 @@ Ext.onReady(function() {
     var today = Ext.create('Ext.button.Button', {
         text: 'Hoy',
         iconCls: 'icon-today',
-        handler: function() {
+        handler: function () {
             var nowDate = new Date();
             dateIni.setValue(formatoFecha(nowDate));
             dateFin.setValue(formatoFecha(nowDate));
-            timeIni.setValue('00:01');
+            timeIni.setValue('00:00');
             timeFin.setValue('23:59');
         }
     });
@@ -130,7 +145,7 @@ Ext.onReady(function() {
     var yesterday = Ext.create('Ext.button.Button', {
         text: 'Ayer',
         iconCls: 'icon-yesterday',
-        handler: function() {
+        handler: function () {
             var nowDate = new Date();
             var año = nowDate.getFullYear();
             var mes = nowDate.getMonth() + 1;
@@ -146,7 +161,7 @@ Ext.onReady(function() {
             dateIni.setValue(año + "-" + mes + "-" + dia);
             dateFin.setValue(año + "-" + mes + "-" + dia);
 
-            timeIni.setValue('00:01');
+            timeIni.setValue('00:00');
             timeFin.setValue('23:59');
         }
     });
@@ -250,7 +265,7 @@ Ext.onReady(function() {
         buttons: [{
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
-                handler: function() {
+                handler: function () {
                     if (contenedorwinEvt.getForm().isValid()) {
                         loadGridEvents();
                     } else {
@@ -266,7 +281,7 @@ Ext.onReady(function() {
             }, {
                 text: 'Cancelar',
                 iconCls: 'icon-cancelar',
-                handler:function () {
+                handler: function () {
                     winEvt.hide();
                 }
             }]
@@ -293,7 +308,7 @@ function ventanaEventos() {
             plain: false,
             items: [contenedorwinEvt],
             listeners: {
-                close: function(panel, eOpts) {
+                close: function (panel, eOpts) {
                     limpiar_datosEvt();
                 }
             }
@@ -351,7 +366,7 @@ function loadGridEvents() {
         },
         fields: ['vehiculor', 'latitudr', 'longitudr', 'fecha_horar', 'velocidadr', 'bateriar', 'gsmr', 'gps2r', 'ignr', 'evtr', 'direccionr'],
         listeners: {
-            load: function(thisObject, records, successful, eOpts) {
+            load: function (thisObject, records, successful, eOpts) {
 
                 Ext.MessageBox.hide();
 
@@ -392,7 +407,7 @@ function loadGridEvents() {
                                 xtype: 'button',
                                 iconCls: 'icon-excel',
                                 text: 'Exportar a Excel',
-                                handler: function() {
+                                handler: function () {
                                     if (store.getCount() > 0) {
                                         if (getNavigator() === 'img/chrome.png') {
                                             var a = document.createElement('a');
@@ -475,7 +490,7 @@ function loadGridEvents() {
                                 }
                             }],
                         listeners: {
-                            itemcontextmenu: function(thisObj, record, item, index, e, eOpts) {
+                            itemcontextmenu: function (thisObj, record, item, index, e, eOpts) {
                                 panelTabMapaAdmin.setActiveTab('panelMapaTab');
                                 localizarDireccion(record.data.longitud, record.data.latitud, 17);
                             }
@@ -483,7 +498,7 @@ function loadGridEvents() {
                     });
 
                     var tab = Ext.create('Ext.form.Panel', {
-                        title: 'Reporte de Eventos',
+                        title: '<div id="titulosForm">Reporte de Eventos ' + empresaEventos + " : " + placaEventos + '</div>',
                         closable: true,
                         iconCls: 'icon-eventos',
                         items: gridEvents

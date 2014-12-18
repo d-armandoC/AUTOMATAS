@@ -102,7 +102,7 @@ Ext.onReady(function() {
     var timeIniEncendidoApag = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
         name: 'horaIniEncApag',
-        value: '00:01',
+        value: '00:00',
         format: 'H:i',
         allowBlank: false,
         emptyText: 'Hora Inicial...',
@@ -128,7 +128,7 @@ Ext.onReady(function() {
             var nowDate = new Date();
             dateIni.setValue(nowDate);
             dateFin.setValue(nowDate);
-            timeIniEncendidoApag.setValue('00:01');
+            timeIniEncendidoApag.setValue('00:00');
             timeFinEncendidoApag.setValue('23:59');
         }
     });
@@ -139,7 +139,7 @@ Ext.onReady(function() {
             var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
             dateIni.setValue(yestDate);
             dateFin.setValue(yestDate);
-            timeIniEncendidoApag.setValue('00:01');
+            timeIniEncendidoApag.setValue('00:00');
             timeFinEncendidoApag.setValue('23:59');
         }
     });

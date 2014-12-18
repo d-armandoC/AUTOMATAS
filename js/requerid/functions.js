@@ -243,11 +243,43 @@ function formatoHora(time) {
     return hora + ':' + minuto + ':' + segundo;
 }
 
+function formatBat(val) {
+    if (val === 1) {
+        return '<span style="color:green;">Bat del Vehiculo</span>';
+    } else {
+        return '<span style="color:red;">Bat del Equipo</span>';
+    }
+}
+
+function estadoVehiculo(val) {
+    if (val === 1) {
+        return '<span style="color:green;">Encendido</span>';
+    } else {
+        return '<span style="color:red;">Apagado</span>';
+    }
+}
+
 function formatBatIgnGsmGps2(val) {
     if (val === 1) {
-        return '<span style="color:green;">SI</span>';
+        return '<span style="color:green;">Con Cobertura</span>';
     } else {
-        return '<span style="color:red;">NO</span>';
+        return '<span style="color:red;">Sin Cobertura</span>';
+    }
+}
+
+function estadoGsm(val) {
+    if (val === 1) {
+        return '<span style="color:green;">Con Cobertura</span>';
+    } else {
+        return '<span style="color:red;">Sin Cobertura</span>';
+    }
+}
+
+function estadoGps(val) {
+    if (val === 1) {
+        return '<span style="color:green;">Con Gps</span>';
+    } else {
+        return '<span style="color:red;">Sin Gps</span>';
     }
 }
 

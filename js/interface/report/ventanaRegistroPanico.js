@@ -11,46 +11,50 @@ var gridViewDataPanicoTotal;
 var gridViewDataPanicoGeneral;
 var gridDataExcesos;
 var storeDataPanicoD;
-var empresa = 1;
 var empresaNom = 'KRADAC';
 var cbxEmpresasBDPanico;
 var cbxVehBDPanico;
 var porEquipo = false;
 var hayDatos = false;
 var gridViewDataPanico;
-
-
-
+var placa;
+var empresa;
+var banderapanico;
 
 Ext.onReady(function () {
-
-    cbxEmpresasBDPanico = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Organización',
-        name: 'idCompanyPanico',
-        store: storeEmpresaPanicos,
-        valueField: 'id',
-        displayField: 'text',
-        queryMode: 'local',
-        emptyText: 'Seleccionar Organización...',
-        editable: false,
-        allowBlank: false,
-        value: 1,
-        listeners: {
-            select: function (combo, records, eOpts) {
-                if (porEquipo) {
-                    cbxVehBDPanico.clearValue();
-                    cbxVehBDPanico.enable();
-                    storeVeh.load({
-                        params: {
-                            cbxEmpresas: records[0].data.id
-                        }
-                    });
+    
+    if (idCompanyKarview == 1) {
+         banderapanico = 1;
+    } else {
+         banderapanico = storeEmpresaPanicos.data.items[0].data.id;
+    }
+        cbxEmpresasBDPanico = Ext.create('Ext.form.ComboBox', {
+            fieldLabel: 'Organización',
+            name: 'idCompanyPanico',
+            store: storeEmpresaPanicos,
+            valueField: 'id',
+            displayField: 'text',
+            queryMode: 'local',
+            emptyText: 'Seleccionar Organización...',
+            editable: false,
+            allowBlank: false,
+            value: banderapanico,
+            listeners: {
+                select: function (combo, records, eOpts) {
+                    empresa = cbxEmpresasBDPanico.getRawValue();
+                    placa = " ";
+                    if (porEquipo) {
+                        cbxVehBDPanico.clearValue();
+                        cbxVehBDPanico.enable();
+                        storeVeh.load({
+                            params: {
+                                cbxEmpresas: records[0].data.id
+                            }
+                        });
+                    }
                 }
             }
-        }
-    });
-    
-    
+        });
 
     cbxVehBDPanico = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Vehículos',
@@ -65,10 +69,15 @@ Ext.onReady(function () {
         allowBlank: false,
         listConfig: {
             minWidth: 450
+        },
+        listeners: {
+            select: function (combo, records, eOpts) {
+                placa = records[0].data.placa;
+            }
         }
     });
-    
-    
+
+
     var dateIni = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
@@ -95,11 +104,11 @@ Ext.onReady(function () {
         startDateField: 'fechaIniPanico',
         emptyText: 'Fecha Final...'
     });
-    
+
     var timeInipanico = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
         name: 'horaIniPanico',
-        value: '00:01',
+        value: '00:00',
         format: 'H:i',
         allowBlank: false,
         emptyText: 'Hora Inicial...',
@@ -125,7 +134,7 @@ Ext.onReady(function () {
             var nowDate = new Date();
             dateIni.setValue(nowDate);
             dateFin.setValue(nowDate);
-            timeInipanico.setValue('00:01');
+            timeInipanico.setValue('00:00');
             timeFinpanico.setValue('23:59');
         }
     });
@@ -136,7 +145,7 @@ Ext.onReady(function () {
             var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
             dateIni.setValue(yestDate);
             dateFin.setValue(yestDate);
-            timeInipanico.setValue('00:01');
+            timeInipanico.setValue('00:00');
             timeFinpanico.setValue('23:59');
         }
     });
@@ -158,6 +167,7 @@ Ext.onReady(function () {
         items: [{
                 xtype: 'fieldset',
                 title: '<b>Datos</b>',
+                layout: 'hbox',
                 items: [
                     {
                         xtype: 'radiogroup',
@@ -216,22 +226,22 @@ Ext.onReady(function () {
                     dateFinish = dateFin.getRawValue();
                     var formulario = formPanico.getForm();
                     if (formulario.isValid()) {
-                    formulario.submit({
-                        url: 'php/interface/report/panicos/getPanicos.php',
-                        waitTitle: 'Procesando...',
-                        waitMsg: 'Obteniendo Información',
-                        params: {
-                            idCompany: empresa
-                        },
-                        success: function (form, action) {
-                            var storeDataExcesos = Ext.create('Ext.data.JsonStore', {
-                                data: action.result.data,
-                                proxy: {
-                                    type: 'ajax',
-                                    reader: 'array'
-                                },
-                                fields: ['empresaPanicos', 'personaPanicos', 'idEquipoPanicos', 'placaPanicos', 'cantidadPanicos']
-                            });
+                        formulario.submit({
+                            url: 'php/interface/report/panicos/getPanicos.php',
+                            waitTitle: 'Procesando...',
+                            waitMsg: 'Obteniendo Información',
+                            params: {
+                                idCompany: empresa
+                            },
+                            success: function (form, action) {
+                                var storeDataExcesos = Ext.create('Ext.data.JsonStore', {
+                                    data: action.result.data,
+                                    proxy: {
+                                        type: 'ajax',
+                                        reader: 'array'
+                                    },
+                                    fields: ['empresaPanicos', 'personaPanicos', 'idEquipoPanicos', 'placaPanicos', 'cantidadPanicos']
+                                });
                                 var gridViewDataPanico = Ext.create('Ext.grid.Panel', {
                                     region: 'center',
                                     frame: true,
@@ -425,31 +435,31 @@ Ext.onReady(function () {
                                         }
                                     }
                                 });
-                            var tabExcesos = Ext.create('Ext.container.Container', {
-                                title: 'Panicos Detallados',
-                                closable: true,
-                                iconCls: 'icon-reset',
-                                layout: 'border',
-                                fullscreen: true,
-                                height: 485,
-                                width: 2000,
-                                region: 'center',
-                                items: [gridViewDataPanico,gridDataExcesos]
-                            });
-                            panelTabMapaAdmin.add(tabExcesos);
-                            panelTabMapaAdmin.setActiveTab(tabExcesos);
-                            winPanico.hide();
-                        },
-                        failure: function (form, action) {
-                            Ext.MessageBox.show({
-                                title: 'Información',
-                                msg: action.result.message,
-                                buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.INFO
-                            });
-                        }
-                    });
-                }
+                                var tabExcesos = Ext.create('Ext.container.Container', {
+                                    title: '<div id="titulosForm">Panicos Detallados ' + empresa + " : " + placa + '</div>',
+                                    closable: true,
+                                    iconCls: 'icon-reset',
+                                    layout: 'border',
+                                    fullscreen: true,
+                                    height: 485,
+                                    width: 2000,
+                                    region: 'center',
+                                    items: [gridViewDataPanico, gridDataExcesos]
+                                });
+                                panelTabMapaAdmin.add(tabExcesos);
+                                panelTabMapaAdmin.setActiveTab(tabExcesos);
+                                winPanico.hide();
+                            },
+                            failure: function (form, action) {
+                                Ext.MessageBox.show({
+                                    title: 'Información',
+                                    msg: action.result.message,
+                                    buttons: Ext.MessageBox.OK,
+                                    icon: Ext.MessageBox.INFO
+                                });
+                            }
+                        });
+                    }
                 }
             }
             , {

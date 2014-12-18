@@ -22,8 +22,17 @@ var fechaFnExcesos;
 var porEquipoEx = false;
 var cbxVehExceso;
 var empresaNom = 'KRADAC';
-Ext.onReady(function () {
+var empresaExcesos;
+var placaExcesos;
+var banderaExcesos;
 
+Ext.onReady(function () {
+    
+    if (idCompanyKarview == 1) {
+        banderaExcesos = 1;
+    } else {
+        banderaExcesos = storeEmpresas.data.items[0].data.id;
+    }
     cbxEmpresasExcesos = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Organización',
         name: 'idempresasExcesos',
@@ -34,9 +43,11 @@ Ext.onReady(function () {
         emptyText: 'Seleccionar Organización...',
         editable: false,
         allowBlank: false,
-        value: 1,
+        value: banderaExcesos,
         listeners: {
             select: function (combo, records, eOpts) {
+                empresaExcesos = cbxEmpresasExcesos.getRawValue();
+                placaExcesos = " ";
                 if (porEquipoEx) {
                     cbxVehExceso.clearValue();
                     cbxVehExceso.enable();
@@ -64,6 +75,11 @@ Ext.onReady(function () {
         allowBlank: false,
         listConfig: {
             minWidth: 450
+        },
+        listeners: {
+            select: function (combo, records, eOpts) {
+                placaExcesos = records[0].data.placa;
+            }
         }
     });
     fechaIniExcesos = Ext.create('Ext.form.field.Date', {
@@ -99,9 +115,8 @@ Ext.onReady(function () {
             var nowDate = new Date();
             fechaIniExcesos.setValue(nowDate);
             fechaFinExcesos.setValue(nowDate);
-            timeIniExcesos.setValue('00:01');
+            timeIniExcesos.setValue('00:00');
             timeFinExcesos.setValue('23:59');
-
         }
     });
     bt_HayerExcesos = Ext.create('Ext.button.Button', {
@@ -111,7 +126,7 @@ Ext.onReady(function () {
             var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
             fechaIniExcesos.setValue(yestDate);
             fechaFinExcesos.setValue(yestDate);
-            timeIniExcesos.setValue('00:01');
+            timeIniExcesos.setValue('00:00');
             timeFinExcesos.setValue('23:59');
         }
     });
@@ -119,7 +134,7 @@ Ext.onReady(function () {
     timeIniExcesos = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
         name: 'horaIniExcesos',
-        value: '00:01',
+        value: '00:00',
         format: 'H:i',
         allowBlank: false,
         emptyText: 'Hora Inicial...',
@@ -190,7 +205,7 @@ Ext.onReady(function () {
                                         porEquipoEx = false;
                                         break;
                                     case 2:
-                                         porEquipoEx = true;
+                                        porEquipoEx = true;
                                         empresaExcesos = cbxEmpresasExcesos.getValue();
                                         empresaNom = cbxEmpresasExcesos.getRawValue();
                                         if (porEquipoEx) {
@@ -225,7 +240,6 @@ Ext.onReady(function () {
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
                 handler: function () {
-
                     fechaInExcesos = fechaIniExcesos.getRawValue();
                     fechaFnExcesos = fechaFinExcesos.getRawValue();
                     horaIni = timeIniExcesos.getRawValue();
@@ -287,13 +301,13 @@ function cargardatosalGrid(datos) {
         data: datos,
         storeId: 'recaudoId',
         model: 'Registros',
-        sorters: ['acronimo', 'equipo', 'empresa', 'placa','evento'],
+        sorters: ['acronimo', 'equipo', 'empresa', 'placa', 'evento'],
         groupField: 'acronimo',
         proxy: {
             type: 'ajax',
             reader: 'array'
         },
-        fields: ['acronimo', 'equipo', 'empresa','evento']
+        fields: ['acronimo', 'equipo', 'empresa', 'evento']
     });
 
     var groupingFeature = Ext.create('Ext.grid.feature.Grouping', {
@@ -347,7 +361,8 @@ function cargardatosalGrid(datos) {
     });
 
     var tabExcesosVelocidad = Ext.create('Ext.container.Container', {
-        title: 'Reporte de Excesos de velocidad',
+        //title: 'Reporte de Excesos de velocidad',
+        title: '<div id="titulosForm">Reporte de Excesos de velocidad: ' + " " + empresa + ":" + placaExcesos + '</div>',
         closable: true,
         iconCls: 'icon-exceso-vel',
         layout: 'border',
@@ -362,7 +377,6 @@ function cargardatosalGrid(datos) {
             }
         ]
     });
-
     panelTabMapaAdmin.add(tabExcesosVelocidad);
     panelTabMapaAdmin.setActiveTab(tabExcesosVelocidad);
 }

@@ -16,6 +16,8 @@ var id_vehiculo_paradas;
 var empresaNom = 'KRADAC';
 var porEquipoParadas;
 var cbxVehBDParadas;
+var placaReporteParadas;
+var empresaParadas;
 Ext.onReady(function () {
     storeViewParadas = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
@@ -31,7 +33,7 @@ Ext.onReady(function () {
     });
 
     cbxEmpresasParada = Ext.create('Ext.form.ComboBox', {
-        fieldLabel: 'Organización',
+        fieldLabel: 'Organización Parada',
         name: 'idempresaparada',
         store: storeEmpresas,
         valueField: 'id',
@@ -43,6 +45,8 @@ Ext.onReady(function () {
         value: 1,
         listeners: {
             select: function (combo, records, eOpts) {
+                empresaParadas = cbxEmpresasParada.getRawValue(); 
+                placaReporteParadas=" ";
                 if (porEquipoParadas) {
                     cbxVehBDParadas.clearValue();
                     cbxVehBDParadas.enable();
@@ -70,6 +74,12 @@ Ext.onReady(function () {
         allowBlank: false,
         listConfig: {
             minWidth: 450
+        },
+         listeners: {
+            select: function (combo, records, eOpts) {
+                placaReporteParadas=records[0].data.placa;
+                console.log(placaReporteParadas);
+            }
         }
     });
 
@@ -111,7 +121,7 @@ Ext.onReady(function () {
      var timeInipanico = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
         name: 'horaIniParadas',
-        value: '00:01',
+        value: '00:00',
         format: 'H:i',
         allowBlank: false,
         emptyText: 'Hora Inicial...',
@@ -457,7 +467,7 @@ Ext.onReady(function () {
                                         }]
                                 });
                                 var tabExces = Ext.create('Ext.container.Container', {
-                                    title: 'Reporte de Paradas',
+                                    title: '<div id="titulosForm">Reporte de Paradas -' +empresaParadas+" : "+placaReporteParadas + '</div>',
                                     closable: true,
                                     iconCls: 'icon-unlock',
                                     layout: 'border',

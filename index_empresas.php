@@ -42,6 +42,7 @@ echo "
                 ";
 ?>
         </script>
+        <script type="text/javascript" src="js/ext-lang-es.js">  </script>
         <script type="text/javascript" src="js/requerid/functions.js"></script>
         <script type="text/javascript" src="js/roles/empresas.js"></script>
         <script type="text/javascript" src="js/complements/loadLayer.js"></script>        
@@ -59,7 +60,7 @@ echo "
 
 
         <script type="text/javascript" src="js/interface/report/ventanaAsignacion.js"></script>
-        <script type="text/javascript" src="js/interface/report/ventanaBanderas.js"></script>
+        <script type="text/javascript" src="js/interface/report/recorridoGeneral.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaEstadoVeh.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaFranjasHorarias.js"></script>        
         <script type="text/javascript" src="js/interface/report/ventanaNoAtendidas.js"></script>
@@ -79,7 +80,6 @@ echo "
         <script type="text/javascript" src="js/interface/report/ventanaReporteExcesosVelocidadNew.js"></script>
         <script type="text/javascript" src="js/interface/adminGeo/ventanaAgregarGeo.js"></script>
         <script type="text/javascript" src="js/interface/adminGeo/ventanaSendMailGeoPrueba.js"></script>
-        <script type="text/javascript" src="js/interface/adminGeo/ventanaMantenimientoPost.js"></script>
 
 
         <script type="text/javascript" src="js/extra/Video.js"></script>

@@ -46,11 +46,10 @@
                 ";
             ?>
         </script>
-        
-        
+        <script type="text/javascript" src="js/ext-lang-es.js">  </script>
         <script type="text/javascript" src="js/requerid/functions.js"></script>
         <script type="text/javascript" src="js/roles/admin.js"></script>
-        <script type="text/javascript" src="js/ext-lang-es.js">  </script>
+      
 
         <script type="text/javascript" src="js/administracion/ventanaPersonal.js"></script>
         <script type="text/javascript" src="js/administracion/ventanaMantenimineto.js"></script>
@@ -64,7 +63,7 @@
         
 
         <script type="text/javascript" src="js/interface/report/ventanaAsignacion.js"></script>
-        <script type="text/javascript" src="js/interface/report/ventanaBanderas.js"></script>
+        <script type="text/javascript" src="js/interface/report/recorridoGeneral.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaEstadoVeh.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaFranjasHorarias.js"></script>        
         <script type="text/javascript" src="js/interface/report/ventanaNoAtendidas.js"></script>

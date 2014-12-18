@@ -285,7 +285,7 @@ Ext.onReady(function () {
                 for (var i = 0; i < showCoopMap.length; i++) {
                     if (showCoopMap[i][0] === item.getItemId()) {
                         showCoopMap[i][2] = item.checked;
-                        
+
                         if (!item.checked) {
                             var form = Ext.create('Ext.form.Panel');
                             form.getForm().submit({
@@ -384,16 +384,12 @@ Ext.onReady(function () {
                                 }},
                             {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function () {
                                     ventanaexcesosvelociadadWin();
-                                }}
-                            , {text: 'Mantenimiento General', iconCls: 'icon-config', handler: function () {
-                                    ventanaMantenimiento();
-                                }}
-                            , {text: 'Mantenimiento Detallado', iconCls: 'icon-servicios', handler: function () {
+                                }},
+                            {text: 'Mantenimiento Detallado', iconCls: 'icon-servicios', handler: function () {
                                     showWinMantenimientoGeneral();
-                                }}
-                            ,
+                                }},
                             {text: 'Recorridos General', iconCls: 'icon-all-flags', handler: function () {
-                                    ventanaBanderas();
+                                    recorridosGeneral();
                                 }}
                             ,
                             {text: 'Eventos', iconCls: 'icon-eventos', handler: function () {
@@ -409,11 +405,11 @@ Ext.onReady(function () {
             herraminetas,
             administracion,
             salir, '->',
-             {
+            {
                 xtype: 'button',
                 iconCls: 'icon-act-mapa',
                 tooltip: 'Limpiar Mapa',
-                handler: function() {
+                handler: function () {
                     clearLienzoPointTravel();
                     var lonlatCenter = new OpenLayers.LonLat(0, 100000000);
                     map.setCenter(lonlatCenter, 7);
@@ -574,7 +570,7 @@ Ext.onReady(function () {
                             Ext.example.msg('Vehiculos', 'Recargado');
                             tree.body.unmask();
                         }
-                    }, 
+                    },
                     {
                         type: 'search',
                         tooltip: 'Buscar Vehiculo',
@@ -707,16 +703,16 @@ Ext.onReady(function () {
 ////                },
 //                pageSize: 10
 //            }
-        '->'
-            , {
-                xtype: 'button',
-                iconCls: 'icon-geoloc',
-                tooltip: 'Ubicar mi Posición',
-                handler: function () {
-                    getLocation();
-                    panelTabMapaAdmin.setActiveTab(0);
-                }
-            }, {
+            '->'
+                    , {
+                        xtype: 'button',
+                        iconCls: 'icon-geoloc',
+                        tooltip: 'Ubicar mi Posición',
+                        handler: function () {
+                            getLocation();
+                            panelTabMapaAdmin.setActiveTab(0);
+                        }
+                    }, {
                 xtype: 'splitbutton',
                 text: 'Cooperativas',
                 iconCls: 'icon-central',
@@ -763,8 +759,8 @@ Ext.onReady(function () {
         ],
         listeners: {
             itemclick: function (thisObject, record, item, index, e, eOpts) {
-             panelTabMapaAdmin.setActiveTab(0);
-                localizarDireccion(record.data.longitud,record.data.latitud, 15);
+                panelTabMapaAdmin.setActiveTab(0);
+                localizarDireccion(record.data.longitud, record.data.latitud, 15);
             }
         }
     });
@@ -773,7 +769,7 @@ Ext.onReady(function () {
         region: 'center',
         layout: 'border',
         items: [
-              toolBarOnMap,
+            toolBarOnMap,
             panelTabMapaAdmin,
             gridEventos
         ]

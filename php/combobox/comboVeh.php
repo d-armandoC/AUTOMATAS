@@ -43,7 +43,8 @@ if (!$mysqli = getConectionDb()) {
 
             $objJson .= "{"
                     . "id:" . $myrow["id_vehiculo"] . ","
-                    . "text:'" .$placa . ' - ' . $veh . ' - ' . $persona . "'"
+                    . "text:'" .$placa . ' - ' . $veh . ' - ' . $persona . "',"
+                    . "placa:'" .$placa. "',"
                     . "},";
         }
         $objJson .="]}";
