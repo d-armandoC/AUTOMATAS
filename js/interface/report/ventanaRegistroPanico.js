@@ -167,12 +167,13 @@ Ext.onReady(function () {
         items: [{
                 xtype: 'fieldset',
                 title: '<b>Datos</b>',
-                layout: 'hbox',
+                layout: 'vbox',
                 items: [
                     {
                         xtype: 'radiogroup',
-                        columns: 2,
+                        columns: 4,
                         vertical: true,
+                        layout: 'hbox',
                         items: [
                             {boxLabel: 'Por Organización', name: 'rb', inputValue: '1', checked: true},
                             {boxLabel: 'Por Vehiculo', name: 'rb', inputValue: '2'}
