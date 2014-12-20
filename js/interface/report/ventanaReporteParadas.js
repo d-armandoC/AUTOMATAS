@@ -18,6 +18,8 @@ var porEquipoParadas;
 var cbxVehBDParadas;
 var placaReporteParadas;
 var empresaParadas;
+
+
 Ext.onReady(function () {
     storeViewParadas = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
@@ -29,7 +31,7 @@ Ext.onReady(function () {
                 root: 'data'
             }
         },
-        fields: ['empresa', 'vehiculo', 'placa', 'latitud', 'longitud', 'fecha', 'hora', 'velocidad', 'bateria', 'gsm', 'gps', 'ign', 'sky_evento']
+        fields: ['idData','empresa', 'vehiculo', 'placa', 'latitud', 'longitud', 'fecha', 'hora', 'velocidad', 'bateria', 'gsm', 'gps', 'ign', 'sky_evento']
     });
 
     cbxEmpresasParada = Ext.create('Ext.form.ComboBox', {
@@ -45,8 +47,8 @@ Ext.onReady(function () {
         value: 1,
         listeners: {
             select: function (combo, records, eOpts) {
-                empresaParadas = cbxEmpresasParada.getRawValue(); 
-                placaReporteParadas=" ";
+                empresaParadas = cbxEmpresasParada.getRawValue();
+                placaReporteParadas = " ";
                 if (porEquipoParadas) {
                     cbxVehBDParadas.clearValue();
                     cbxVehBDParadas.enable();
@@ -75,9 +77,9 @@ Ext.onReady(function () {
         listConfig: {
             minWidth: 450
         },
-         listeners: {
+        listeners: {
             select: function (combo, records, eOpts) {
-                placaReporteParadas=records[0].data.placa;
+                placaReporteParadas = records[0].data.placa;
                 console.log(placaReporteParadas);
             }
         }
@@ -107,7 +109,7 @@ Ext.onReady(function () {
         startDateField: 'fechaIniParadas',
         emptyText: 'Fecha Final...'
     });
-    
+
     var btnTodayparadas = Ext.create('Ext.button.Button', {
         text: 'Hoy',
         iconCls: 'icon-today',
@@ -117,8 +119,8 @@ Ext.onReady(function () {
             dateFinParadas.setValue(nowDate);
         }
     });
-    
-     var timeInipanico = Ext.create('Ext.form.field.Time', {
+
+    var timeInipanico = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
         name: 'horaIniParadas',
         value: '00:00',
@@ -140,7 +142,7 @@ Ext.onReady(function () {
             minWidth: 450
         }
     });
-    
+
     var btnYesterdayparadas = Ext.create('Ext.button.Button', {
         text: 'Ayer',
         iconCls: 'icon-yesterday',
@@ -373,6 +375,29 @@ Ext.onReady(function () {
                                         {text: 'IGN', width: 200, dataIndex: 'ign', align: 'center'},
                                         {text: 'Evento', width: 200, dataIndex: 'sky_evento', align: 'center'}
                                     ],
+                                    listeners: {
+                                        itemcontextmenu: function (thisObj, record, item, index, e, eOpts) {
+                                            e.stopEvent();
+                                            Ext.create('Ext.menu.Menu', {
+                                                items: [
+                                                    Ext.create('Ext.Action', {
+                                                        iconCls: 'icon-vehiculos_lugar', // Use a URL in the icon config
+                                                        text: 'Ver Ubicación en el Mapa',
+                                                        disabled: false,
+                                                        handler: function (widget, event) {
+                                                            clearLienzoPointTravel();
+                                                            clearLienzoTravel();
+                                                            panelTabMapaAdmin.setActiveTab('panelMapaTab');
+                                                            drawPointsParadas(record.data);
+                                                            localizarDireccion(record.data.longitud, record.data.latitud, 17);
+
+                                                        }
+                                                    })
+                                                ]
+                                            }).showAt(e.getXY());
+                                            return false;
+                                        }
+                                    },
                                     tbar: [{
                                             xtype: 'button',
                                             iconCls: 'icon-excel',
@@ -467,7 +492,7 @@ Ext.onReady(function () {
                                         }]
                                 });
                                 var tabExces = Ext.create('Ext.container.Container', {
-                                    title: '<div id="titulosForm">Reporte de Paradas -' +empresaParadas+" : "+placaReporteParadas + '</div>',
+                                    title: '<div id="titulosForm">Reporte de Paradas -' + empresaParadas + " : " + placaReporteParadas + '</div>',
                                     closable: true,
                                     iconCls: 'icon-unlock',
                                     layout: 'border',

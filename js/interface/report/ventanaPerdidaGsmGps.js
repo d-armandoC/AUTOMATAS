@@ -240,7 +240,6 @@ Ext.onReady(function () {
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
                 handler: function () {
-
                     fechaInperdgsm = fechaInigsm.getRawValue();
                     fechaFngsm = fechaFingsm.getRawValue();
                     horaIni = timeInigsm.getRawValue();
@@ -314,6 +313,7 @@ function cargardatosalGridGpsGsm(datos) {
     });
 
     var columnGsmGps = [
+         {text: '<b>Trama</b>', width: 65, dataIndex: 'idData', align: 'center'},
         {text: 'Empresa', flex: 80, dataIndex: 'empresa', filter: {type: 'string'}},
         {text: 'Equipo', flex: 80, dataIndex: 'equipo', filter: {type: 'string'}},
         {text: 'Placa', flex: 80, dataIndex: 'placa', filter: {type: 'string'}},
@@ -358,7 +358,30 @@ function cargardatosalGridGpsGsm(datos) {
                             }
                         }}]
             }],
-        columns: columnGsmGps
+        columns: columnGsmGps,
+        listeners: {
+            itemcontextmenu: function (thisObj, record, item, index, e, eOpts) {
+                e.stopEvent();
+                Ext.create('Ext.menu.Menu', {
+                    items: [
+                        Ext.create('Ext.Action', {
+                            iconCls: 'icon-vehiculos_lugar', // Use a URL in the icon config
+                            text: 'Ver Ubicación en el Mapa',
+                            disabled: false,
+                            handler: function (widget, event) {
+                                clearLienzoPointTravel();
+                                clearLienzoTravel();
+                                drawPointsGsmGps(record.data);
+                                 panelTabMapaAdmin.setActiveTab('panelMapaTab');
+                                localizarDireccion(record.data.longitud, record.data.latitud, 17);
+                            }
+                        })
+                    ]
+                }).showAt(e.getXY());
+                return false;
+            }
+        }
+
     });
 
     var tabGpsGsm = Ext.create('Ext.container.Container', {
@@ -381,7 +404,7 @@ function cargardatosalGridGpsGsm(datos) {
     panelTabMapaAdmin.add(tabGpsGsm);
     panelTabMapaAdmin.setActiveTab(tabGpsGsm);
 }
-function reporteWinperdidaGSM() {
+function reporteWinperdidaGpsGsm() {
     if (!VentanaGSM) {
         VentanaGSM = Ext.create('Ext.window.Window', {
             layout: 'fit',
@@ -396,7 +419,6 @@ function reporteWinperdidaGSM() {
         });
     }
     formularioGSM.getForm().reset();
-//    cbxEmpresasGSM.disable();
     VentanaGSM.show();
 }
 

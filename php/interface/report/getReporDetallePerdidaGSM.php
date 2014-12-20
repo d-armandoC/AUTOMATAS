@@ -22,9 +22,12 @@ if (!$mysqli = getConectionDb()) {
     }
         $result = $mysqli->query($consultaSql);
         if ($result->num_rows > 0) {
+             $c = 0;
             $objJson = "{data : [";
             while ($myrow1 = $result->fetch_assoc()) {
+                   $c++;
                 $objJson .= "{"
+                        . "idData: " .$c.","
                         . "empresa:'" . $myrow1["empresa"] . "',"
                         . "equipo:'" . $myrow1["equipo"] . "',"
                         . "placa:'" . $myrow1["placa"] . "',"
@@ -41,8 +44,11 @@ if (!$mysqli = getConectionDb()) {
 
         $resultRec = $mysqli->query($consultaSqlRec);
         if ($resultRec->num_rows > 0) {
+            $c = 0;
             while ($myrow2 = $resultRec->fetch_assoc()) {
+                $c++;
                 $objJson .= "{"
+                        . "idData: ".$c.","
                         . "empresa:'" . $myrow2["empresa"] . "',"
                         . "equipo:'" . $myrow2["equipo"] . "',"
                         . "placa:'" . $myrow2["placa"] . "',"

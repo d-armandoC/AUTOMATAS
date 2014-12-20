@@ -22,39 +22,39 @@ var empresa;
 var banderapanico;
 
 Ext.onReady(function () {
-    
+
     if (idCompanyKarview == 1) {
-         banderapanico = 1;
+        banderapanico = 1;
     } else {
-         banderapanico = storeEmpresaPanicos.data.items[0].data.id;
+        banderapanico = storeEmpresaPanicos.data.items[0].data.id;
     }
-        cbxEmpresasBDPanico = Ext.create('Ext.form.ComboBox', {
-            fieldLabel: 'Organización',
-            name: 'idCompanyPanico',
-            store: storeEmpresaPanicos,
-            valueField: 'id',
-            displayField: 'text',
-            queryMode: 'local',
-            emptyText: 'Seleccionar Organización...',
-            editable: false,
-            allowBlank: false,
-            value: banderapanico,
-            listeners: {
-                select: function (combo, records, eOpts) {
-                    empresa = cbxEmpresasBDPanico.getRawValue();
-                    placa = " ";
-                    if (porEquipo) {
-                        cbxVehBDPanico.clearValue();
-                        cbxVehBDPanico.enable();
-                        storeVeh.load({
-                            params: {
-                                cbxEmpresas: records[0].data.id
-                            }
-                        });
-                    }
+    cbxEmpresasBDPanico = Ext.create('Ext.form.ComboBox', {
+        fieldLabel: 'Organización',
+        name: 'idCompanyPanico',
+        store: storeEmpresaPanicos,
+        valueField: 'id',
+        displayField: 'text',
+        queryMode: 'local',
+        emptyText: 'Seleccionar Organización...',
+        editable: false,
+        allowBlank: false,
+        value: banderapanico,
+        listeners: {
+            select: function (combo, records, eOpts) {
+                empresa = cbxEmpresasBDPanico.getRawValue();
+                placa = " ";
+                if (porEquipo) {
+                    cbxVehBDPanico.clearValue();
+                    cbxVehBDPanico.enable();
+                    storeVeh.load({
+                        params: {
+                            cbxEmpresas: records[0].data.id
+                        }
+                    });
                 }
             }
-        });
+        }
+    });
 
     cbxVehBDPanico = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Vehículos',
@@ -167,13 +167,11 @@ Ext.onReady(function () {
         items: [{
                 xtype: 'fieldset',
                 title: '<b>Datos</b>',
-                layout: 'vbox',
                 items: [
                     {
                         xtype: 'radiogroup',
-                        columns: 4,
-                        vertical: true,
-                        layout: 'hbox',
+                        columns: 2,
+                        vertical: false,
                         items: [
                             {boxLabel: 'Por Organización', name: 'rb', inputValue: '1', checked: true},
                             {boxLabel: 'Por Vehiculo', name: 'rb', inputValue: '2'}
@@ -263,6 +261,28 @@ Ext.onReady(function () {
                                         {text: 'Latitud', width: 250, dataIndex: 'latitud', align: 'center'},
                                         {text: 'Longitud', width: 250, dataIndex: 'longitud', align: 'center'}
                                     ],
+                                    listeners: {
+                                        itemcontextmenu: function (thisObj, record, item, index, e, eOpts) {
+                                            e.stopEvent();
+                                            Ext.create('Ext.menu.Menu', {
+                                                items: [
+                                                    Ext.create('Ext.Action', {
+                                                        iconCls: 'icon-vehiculos_lugar', // Use a URL in the icon config
+                                                        text: 'Ver Ubicación en el Mapa',
+                                                        disabled: false,
+                                                        handler: function (widget, event) {
+                                                            panelTabMapaAdmin.setActiveTab('panelMapaTab');
+                                                            clearLienzoPointTravel();
+                                                            clearLienzoTravel();
+                                                            drawPointsPanicos(record.data);
+                                                            localizarDireccion(record.data.longitud, record.data.latitud, 17);
+                                                        }
+                                                    })
+                                                ]
+                                            }).showAt(e.getXY());
+                                            return false;
+                                        }
+                                    },
                                     tbar: [{
                                             xtype: 'button',
                                             iconCls: 'icon-excel',

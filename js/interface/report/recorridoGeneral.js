@@ -156,8 +156,6 @@ Ext.onReady(function () {
                 layout: 'column',
                 baseCls: 'x-plain',
                 items: [{
-//                        columnWidth: .5,
-
                         baseCls: 'x-plain',
                         items: [
                             cbxEmpresasBD,
@@ -165,8 +163,6 @@ Ext.onReady(function () {
                             timeIni
                         ]
                     }, {
-//                        columnWidth: .5,
-//                        margin: '10 0 0 20',
                         baseCls: 'x-plain',
                         items: [
                             cbxVehBD,
@@ -240,6 +236,7 @@ Ext.onReady(function () {
                                     if (trazar_ruta) {
                                         clearLienzoTravel();
                                         clearLienzoPointTravel();
+                                        console.log(resultado.puntos);
                                         drawPointsRoute(resultado.puntos, "Puntos");
                                         drawRutaMapa(resultado.puntos);
 
@@ -416,7 +413,7 @@ function recorridosGeneral() {
             title: 'Recorridos General',
             iconCls: 'icon-all-flags',
             resizable: false,
-            width: 510,
+            width: 500,
             height: 300,
             closeAction: 'hide',
             plain: false,

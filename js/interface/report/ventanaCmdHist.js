@@ -218,7 +218,6 @@ Ext.onReady(function () {
                     dateFinishComan = dateFinComandos.getRawValue();
                     var formulario = formComandos.getForm();
                     if (formulario.isValid()) {
-                        
                         formulario.submit({
                             url: 'php/interface/report/cmd/getReportCmd.php',
                             waitTitle: 'Procesando...',

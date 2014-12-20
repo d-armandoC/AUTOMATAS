@@ -26,7 +26,7 @@ Ext.onReady(function() {
                 root: 'data'
             }
         },
-        fields: ['fechaED', 'horaED', 'eventoED', 'velocidadED', 'latitudED', 'longitudED', 'bateriaED', 'gsmED', 'gpsED', 'direccionED']
+        fields: ['idData','fechaED', 'horaED', 'eventoED', 'velocidadED', 'latitudED', 'longitudED', 'bateriaED', 'gsmED', 'gpsED', 'direccionED']
     });
     cbxEmpresasBDEnergD = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Organización',
@@ -249,7 +249,7 @@ Ext.onReady(function() {
                                         emptyText: 'No hay datos que Mostrar'
                                     },
                                     columns: [
-                                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
+                                        {text: 'Trama', width: 150, dataIndex: 'idData', align: 'center'},
                                         {text: 'Fecha', width: 150, dataIndex: 'fechaED', align: 'center'},
                                         {text: 'Hora', width: 150, dataIndex: 'horaED', align: 'center'},
                                         {text: 'evento', width: 150, dataIndex: 'eventoED', align: 'center'},
@@ -259,8 +259,30 @@ Ext.onReady(function() {
                                         {text: 'Bateria', width: 200, dataIndex: 'bateriaED', align: 'center'},
                                         {text: 'GSM', width: 200, dataIndex: 'gsmED', align: 'center'},
                                         {text: 'GPS', width: 200, dataIndex: 'gpsED', align: 'center'},
-                                        {text: 'Direccion', width: 200, dataIndex: 'direccionED', align: 'center'},
+                                        {text: 'Direccion', width: 200, dataIndex: 'direccionED', align: 'center'}
                                     ],
+                                       listeners: {
+                                        itemcontextmenu: function (thisObj, record, item, index, e, eOpts) {
+                                            e.stopEvent();
+                                            Ext.create('Ext.menu.Menu',{
+                                                items: [
+                                                    Ext.create('Ext.Action', {
+                                                        iconCls: 'icon-vehiculos_lugar', // Use a URL in the icon config
+                                                        text: 'Ver Ubicación en el Mapa',
+                                                        disabled: false,
+                                                        handler: function (widget, event) {
+                                                            panelTabMapaAdmin.setActiveTab('panelMapaTab');
+                                                            clearLienzoPointTravel();
+                                                            clearLienzoTravel();
+                                                            drawPointsEnergDeserg(record.data);
+                                                            localizarDireccion(record.data.longitudED, record.data.latitudED, 17);
+                                                        }
+                                                    })
+                                                ]
+                                            }).showAt(e.getXY());
+                                            return false;
+                                        }
+                                    },
                                     tbar: [{
                                             xtype: 'button',
                                             iconCls: 'icon-excel',

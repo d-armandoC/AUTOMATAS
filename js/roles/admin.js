@@ -494,7 +494,7 @@ Ext.onReady(function() {
                                     recorridosGeneral();
                                 }},
                             {text: 'Perdida de GPS y GSM', iconCls: 'icon-flota', handler: function() {
-                                    reporteWinperdidaGSM();
+                                    reporteWinperdidaGpsGsm();
                                 }},
                             {text: 'Reporte de Paradas', iconCls: 'icon-unlock', handler: function() {
                                     showWinPradas();
@@ -528,9 +528,9 @@ Ext.onReady(function() {
                 tooltip: 'Limpiar Mapa',
                 handler: function() {
                     clearLienzoPointTravel();
+                    clearLienzoTravel();
                     var lonlatCenter = new OpenLayers.LonLat(0, 100000000);
                     map.setCenter(lonlatCenter, 7);
-
                 }},
             salir,
             {

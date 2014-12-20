@@ -13,10 +13,12 @@ if (!$mysqli = getConectionDb()) {
     and (skp.fecha between '$fechainiParadas' and '$fechafinParadas') and SE.id_sky_evento= 13 and v.id_vehiculo='$idVehiculo'";
     $result = $mysqli->query($consultaSql);
     if (($result->num_rows > 0)) {
-
+         $c = 0;
         $json = "data: [";
         while ($myrow = $result->fetch_assoc()) {
+            $c++;
             $json .= "{"
+                    . "idData: " . $c . ","
                     . "empresa: '" . $myrow["empresa"] . "',"
                     . "vehiculo: '".$myrow["vehiculo"]."',"
                     . "placa:'".$myrow["placa"]. "',"

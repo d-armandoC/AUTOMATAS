@@ -26,7 +26,7 @@ var gridViewDataPanico;
 
 
 
-Ext.onReady(function() {
+Ext.onReady(function () {
 
     cbxEmpresasBDEncendidoApag = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Organización',
@@ -40,7 +40,7 @@ Ext.onReady(function() {
         allowBlank: false,
         value: 1,
         listeners: {
-            select: function(combo, records, eOpts) {
+            select: function (combo, records, eOpts) {
                 if (porEquipo) {
                     cbxVehBDEncendidoApag.clearValue();
                     cbxVehBDEncendidoApag.enable();
@@ -78,7 +78,6 @@ Ext.onReady(function() {
         name: 'fechaIniEA',
         value: new Date(),
         maxValue: new Date(),
-                
         maxText: 'La fecha debe ser igual o anterior a <br> {0}',
         allowBlank: false,
         invalidText: '{0} No es una fecha validad- Debe estar en formato {1}"',
@@ -93,7 +92,7 @@ Ext.onReady(function() {
         name: 'fechaFinEA',
         value: new Date(),
         maxValue: new Date(),
-        vtype:'daterange',
+        vtype: 'daterange',
         invalidText: '{0} No es una fecha validad- Debe estar en formato {1}"',
         allowBlank: false,
         startDateField: 'fechaIniEncApag',
@@ -124,7 +123,7 @@ Ext.onReady(function() {
     var btnToday = Ext.create('Ext.button.Button', {
         text: 'Hoy',
         iconCls: 'icon-today',
-        handler: function() {
+        handler: function () {
             var nowDate = new Date();
             dateIni.setValue(nowDate);
             dateFin.setValue(nowDate);
@@ -135,7 +134,7 @@ Ext.onReady(function() {
     var btnYesterday = Ext.create('Ext.button.Button', {
         text: 'Ayer',
         iconCls: 'icon-yesterday',
-        handler: function() {
+        handler: function () {
             var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
             dateIni.setValue(yestDate);
             dateFin.setValue(yestDate);
@@ -172,7 +171,7 @@ Ext.onReady(function() {
 
                         ],
                         listeners: {
-                            change: function(field, newValue, oldValue) {
+                            change: function (field, newValue, oldValue) {
                                 switch (parseInt(newValue['rbEA'])) {
                                     case 1:
                                         empresa = 1;
@@ -216,7 +215,7 @@ Ext.onReady(function() {
         buttons: [{
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
-                handler: function() {
+                handler: function () {
                     dateStart = dateIni.getRawValue();
                     dateFinish = dateFin.getRawValue();
                     var formulario = formEncendidoApag.getForm();
@@ -225,10 +224,7 @@ Ext.onReady(function() {
                             url: 'php/interface/report/encendidoApagado/getReportGeneralEncApag.php',
                             waitTitle: 'Procesando...',
                             waitMsg: 'Obteniendo Información',
-//                            params: {
-//                                idCompany: empresa
-//                            },
-                            success: function(form, action) {
+                            success: function (form, action) {
                                 var storeDataEncApag = Ext.create('Ext.data.JsonStore', {
                                     data: action.result.data,
                                     proxy: {
@@ -237,23 +233,11 @@ Ext.onReady(function() {
                                     },
                                     fields: ['empresaEncApag', 'personaEncApag', 'placaEncApag', 'idEquipoEncApag', 'equipoEncApag', 'totalEncApag'],
                                 });
-//                                console.log(storeViewPanico);
-//                                storeViewPanico.load(
-//                                        {
-//                                            params: {
-//                                                idEquipo: storeDataExcesos.data.items[0].data.idEquipoPanicos,
-//                                                fechaIni: dateIni.getRawValue(),
-//                                                fechaFin: dateFin.getRawValue(),
-//                                                horaIniP: timeInipanico.getRawValue(),
-//                                                horaFinP: timeFinpanico.getRawValue(),
-//                                            }
-//                                        });
-//                                        
+
                                 var gridViewDataEncApag = Ext.create('Ext.grid.Panel', {
                                     region: 'center',
                                     frame: true,
                                     width: '60%',
-                                    title: '<center>Detalle: ',
                                     store: storeViewEncendidoApag,
                                     features: [filters],
                                     multiSelect: true,
@@ -261,7 +245,7 @@ Ext.onReady(function() {
                                         emptyText: 'No hay datos que Mostrar'
                                     },
                                     columns: [
-                                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
+                                        {text: 'Trama', width: 100, dataIndex: 'idData', align: 'center'},
                                         {text: 'Fecha', width: 130, dataIndex: 'fechaEA', align: 'center'},
                                         {text: 'Hora', width: 200, dataIndex: 'horaEA', align: 'center'},
                                         {text: 'Evento', width: 250, dataIndex: 'eventoEA', align: 'center'},
@@ -273,11 +257,33 @@ Ext.onReady(function() {
                                         {text: 'GPS', width: 200, dataIndex: 'gpsEA', align: 'center'},
                                         {text: 'Dirección', width: 200, dataIndex: 'direccionEA', align: 'center'}
                                     ],
+                                    listeners: {
+                                        itemcontextmenu: function (thisObj, record, item, index, e, eOpts) {
+                                            e.stopEvent();
+                                            Ext.create('Ext.menu.Menu', {
+                                                items: [
+                                                    Ext.create('Ext.Action', {
+                                                        iconCls: 'icon-vehiculos_lugar', // Use a URL in the icon config
+                                                        text: 'Ver Ubicación en el Mapa',
+                                                        disabled: false,
+                                                        handler: function (widget, event) {
+                                                            panelTabMapaAdmin.setActiveTab('panelMapaTab');
+                                                            clearLienzoPointTravel();
+                                                            clearLienzoTravel();
+                                                            drawPointEncendidoApagado(record.data);
+                                                            localizarDireccion(record.data.longitudEA, record.data.latitudEA, 17);
+                                                        }
+                                                    })
+                                                ]
+                                            }).showAt(e.getXY());
+                                            return false;
+                                        }
+                                    },
                                     tbar: [{
                                             xtype: 'button',
                                             iconCls: 'icon-excel',
                                             text: 'Exportar a Excel',
-                                            handler: function() {
+                                            handler: function () {
                                                 if (storeViewEncendidoApag.getCount() > 0) {
                                                     if (getNavigator() === 'img/chrome.png') {
                                                         var a = document.createElement('a');
@@ -360,7 +366,6 @@ Ext.onReady(function() {
                                             }
                                         }]
                                 });
-//                                gridViewDataEncApag.setTitle('<center>Vista de Encendido y apagado de vehículo: ' + storeDataEncApag.data.items[0].data.personaEncApag + '<br> Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
                                 gridViewDataEncApag.setTitle('<center>Vista de Encendido y apagado de vehículo: ' + '<br> Desde: ' + dateStart + ' Hasta:' + dateFinish + '</center>');
                                 var gridDataExcesos = Ext.create('Ext.grid.Panel', {
                                     region: 'west',
@@ -385,7 +390,7 @@ Ext.onReady(function() {
                                             xtype: 'button',
                                             iconCls: 'icon-excel',
                                             text: 'Exportar a Excel',
-                                            handler: function() {
+                                            handler: function () {
                                                 if (storeDataEncApag.getCount() > 0) {
                                                     if (getNavigator() === 'img/chrome.png') {
                                                         var a = document.createElement('a');
@@ -453,7 +458,7 @@ Ext.onReady(function() {
                                             }
                                         }],
                                     listeners: {
-                                        itemclick: function(thisObj, record, item, index, e, eOpts) {
+                                        itemclick: function (thisObj, record, item, index, e, eOpts) {
                                             idEquipoEA = record.get('idEquipoEncApag');
                                             persona = record.get('personaEncApag');
                                             bandera = 1;
@@ -488,7 +493,7 @@ Ext.onReady(function() {
                                 panelTabMapaAdmin.setActiveTab(tabExcesos);
                                 VentanaEA.hide();
                             },
-                            failure: function(form, action) {
+                            failure: function (form, action) {
                                 Ext.MessageBox.show({
                                     title: 'Información',
                                     msg: "No se existen datos para mostrar",
@@ -497,7 +502,7 @@ Ext.onReady(function() {
                                 });
                             }
                         });
-                    }else {
+                    } else {
                         Ext.example.msg("Alerta", 'Llenar los campos marcados en rojo correctamente ');
                     }
                 }
@@ -505,7 +510,7 @@ Ext.onReady(function() {
             , {
                 text: 'Cancelar',
                 iconCls: 'icon-cancelar',
-                handler: function() {
+                handler: function () {
                     VentanaEA.hide();
                 }
             }]

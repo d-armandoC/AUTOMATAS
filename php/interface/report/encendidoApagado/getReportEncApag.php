@@ -15,8 +15,11 @@ if (!$mysqli = getConectionDb()) {
     if ($result->num_rows > 0) {
         $haveData = true;
         $objJson = "data: [";
+         $c = 0;
         while ($myrow = $result->fetch_assoc()) {
+             $c++;
             $objJson .= "{"
+                    . "idData: ".$c.","
                     . "fechaEA: '" . $myrow["fecha"] . "',"
                     . "horaEA: '" . $myrow["hora"] . "',"
                     . "eventoEA: '" . utf8_encode($myrow["sky_evento"]) . "',"

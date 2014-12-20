@@ -8,7 +8,6 @@ var personaExcesos;
 var gridViewDataExcesos;
 var storeViewExcesosExcesos;
 var storeDataExcesos;
-var empresaExcesos = 1;
 var id_empresaExcesos = 1;
 var cbxEmpresasExcesos;
 var fechaIniExcesos;
@@ -384,7 +383,7 @@ function cargardatosalGrid(datos) {
 function ventanaexcesosvelociadadWin() {
     if (!winExcesos) {
         winExcesos = Ext.create('Ext.window.Window', {
-            //layout : 'fit',
+            layout : 'fit',
             title: 'Excesos de Velocidad',
             iconCls: 'icon-exceso-vel',
             resizable: false,
