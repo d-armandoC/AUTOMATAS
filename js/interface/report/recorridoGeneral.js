@@ -508,15 +508,16 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
         fields: ['latitud', 'longitud', {name: 'fecha_hora', type: 'date', dateFormat: 'c'}, {name: 'fecha_hora_reg', type: 'date', dateFormat: 'c'}, 'velocidad', 'bateria',
             'gsm', 'gps2', 'ign', 'direccion', 'color', 'evento', 'idEvento', 'g1', 'g2', 'salida', 'eventos']
     });
+    
     var columnFlags = [];
     columnFlags = [
         {text: '<b>Trama</b>', width: 65, dataIndex: 'idData', align: 'center'},
         {text: '<b>Evento</b>', width: 300, dataIndex: 'evento', align: 'center'},
         {text: '<b>Fecha y Hora <br> del Equipo</b>', xtype: 'datecolumn', format: 'd-m-Y H:i:s', width: 160, dataIndex: 'fecha_hora', align: 'center'},
         {text: '<b>Fecha y Hora <br> Registro</b>', xtype: 'datecolumn', format: 'd-m-Y H:i:s', width: 170, dataIndex: 'fecha_hora_reg', align: 'center'},
-        {text: '<b>Velocidad (Km/h)</b>', dataIndex: 'velocidad', align: 'center', width: 100, cls: 'listview-filesize', renderer: formatSpeed},
+        {text: '<b>Velocidad <br> (Km/h)</b>', dataIndex: 'velocidad', align: 'center', width: 100, cls: 'listview-filesize', renderer: formatSpeed},
         {text: '<b>Bateria</b>', width: 120, dataIndex: 'bateria', align: 'center', renderer: formatBat},
-        {text: '<b>Estado del Vehículo(Ign)</b>', width: 175, dataIndex: 'ign', align: 'center', renderer: estadoVehiculo},
+        {text: '<b>Estado <br> del Vehículo(Ign)</b>', width: 175, dataIndex: 'ign', align: 'center', renderer: estadoVehiculo},
         {text: '<b>GSM</b>', width: 110, dataIndex: 'gsm', align: 'center', renderer: estadoGsm},
         {text: '<b>GPS</b>', width: 100, dataIndex: 'gps2', align: 'center', renderer: estadoGps},
         {text: '<b>G1</b>', width: 100, dataIndex: 'g1', align: 'center', renderer: formatStateTaxy},
