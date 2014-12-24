@@ -13,7 +13,8 @@ var obj_empresa;
 var dateMantenimiento;
 var servicioSeleccionado = false;
 var edadDate;
-
+var selecionado;
+var estandar;
 
 var fechaSoat = Ext.create('Ext.form.field.Date', {
     fieldLabel: 'Desde el',
@@ -49,15 +50,22 @@ Ext.onReady(function () {
             {name: 'valorTipoServicio', type: 'int'},
             //Repuesto
             {name: 'equipo', type: 'string'},
+            //estandar
+//            {name: 'estandar', type: 'string'},
             //Registrar servicios adicionales
             {name: 'fecha_registro', type: 'date', dateFormat: 'c'},
             {name: 'estandar_vehiculo', type: 'string'},
 //            {name: 'id_vehiculo', type: 'int', convert: function (value, record) {
 //                    var pct = record.get('id_vehiculo');
-//                    
-//                    
-                    
-//                }}
+            {name: 'estandar', type: 'string', convert: function (value, record) {
+                    var pct = record.data.estandar;
+                    storeServicios.load({
+                        params: {
+                            lisEstandar: pct
+                        }
+                    });
+
+                }}
         ]
     });
     // crea los datos del store
@@ -68,10 +76,10 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             api: {
-                read: 'php/administracion/mantenimientoPost/read.php',
-                create: 'php/administracion/mantenimientoPost/create.php',
-                update: 'php/administracion/mantenimientoPost/update.php',
-                destroy: 'php/administracion/mantenimientoPost/destroy.php'
+                read: 'php/administracion/mantenimientoPost/read.php'
+//                create: 'php/administracion/mantenimientoPost/create.php',
+//                update: 'php/administracion/mantenimientoPost/update.php',
+//                destroy: 'php/administracion/mantenimientoPost/destroy.php'
             },
             reader: {
                 type: 'json',
@@ -79,31 +87,31 @@ Ext.onReady(function () {
                 root: 'veh',
                 messageProperty: 'message',
             },
-            writer: {
-                type: 'json',
-                writeAllFields: false
-            },
-            listeners: {
-                exception: function (proxy, response, operation) {
-                    Ext.MessageBox.show({
-                        title: 'ERROR',
-                        msg: operation.getError(),
-                        icon: Ext.MessageBox.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                }
-            }
-        },
-        listeners: {
-            write: function (store, operation, eOpts) {
-                if (operation.success) {
-                    Ext.example.msg("Mensaje", operation._resultSet.message);
-                    gridWinStoreVehiculosPost.reload();
-                    formRecordsVehiculosPost.getForm().reset();
-                    formRecordsVehiculosPost.down('#updateVeh').disable();
-
-                }
-            }
+//            writer: {
+//                type: 'json',
+//                writeAllFields: false
+//            },
+//            listeners: {
+//                exception: function (proxy, response, operation) {
+//                    Ext.MessageBox.show({
+//                        title: 'ERROR',
+//                        msg: operation.getError(),
+//                        icon: Ext.MessageBox.ERROR,
+//                        buttons: Ext.Msg.OK
+//                    });
+//                }
+//            }
+//        },
+//        listeners: {
+//            write: function (store, operation, eOpts) {
+//                if (operation.success) {
+//                    Ext.example.msg("Mensaje", operation._resultSet.message);
+//                    gridWinStoreVehiculosPost.reload();
+//                    formRecordsVehiculosPost.getForm().reset();
+//                    formRecordsVehiculosPost.down('#updateVeh').disable();
+//
+//                }
+//            }
         }
     });
     var columnsRecordsPost = [
@@ -114,7 +122,7 @@ Ext.onReady(function () {
                     new Ext.form.field.ComboBox({
                         xtype: 'combobox',
                         editable: false,
-                        store: storeVehiculosservicios,
+                        store: storeServicios,
                         valueField: 'id',
                         displayField: 'text',
                         queryMode: 'local',
@@ -126,6 +134,67 @@ Ext.onReady(function () {
                         emptyText: 'Seleccionar Servicio',
                         listConfig: {
                             minWidth: 350
+                        },
+                        listeners: {
+                            select: function (combo, records, eOpts) {
+                                estandar = records[0].data.id;
+//                                console.log(records[0].data.id);
+//                                console.log(seleccionado.data.id);
+                                formPanelGrid_VehiculosPost.getForm().submit({
+                                    url: 'php/administracion/mantenimientoPost/readHistorico.php',
+                                    params: {
+                                        idVehiculoStandar: seleccionado.data.id,
+                                        idEstandar: records[0].data.id
+                                    },
+                                    failure: function (form, action) {
+                                        Ext.MessageBox.show({
+                                            title: 'Error...',
+                                            msg: 'No se pudo guardar',
+                                            buttons: Ext.MessageBox.ERROR,
+                                            icon: Ext.MessageBox.ERROR
+                                        });
+                                    },
+                                    success: function (form, action) {
+                                        Ext.example.msg("Mensaje", 'Datos cargados');
+                                        console.log('llego');
+                                        var resultado = action.result;
+                                        formRecordsVehiculosPost.down('#updateVeh').enable();
+                                        formRecordsVehiculosPost.down('#createVeh').disable();
+                                        storeVeh.load({
+                                            params: {
+                                                cbxEmpresas: resultado.datos[0].idempresa
+                                            }
+                                        });
+                                        Ext.getCmp('idempresa').setValue(resultado.datos[0].idempresa);
+                                        Ext.getCmp('idestandar').setValue(resultado.datos[0].idestandar);
+                                        Ext.getCmp('s1').setValue(resultado.datos[0].valorTipoServicio);
+                                        Ext.getCmp('idvehiculo').setValue(resultado.datos[0].idvehiculo);
+                                        Ext.getCmp('mt').setValue(resultado.datos[0].valorTipoMantenimiento);
+                                        Ext.getCmp('mkilometraje').setValue(resultado.datos[0].mkilometraje);
+                                        Ext.getCmp('mdias').setValue(resultado.datos[0].mdias);
+                                        Ext.getCmp('mfecha').setValue(resultado.datos[0].mfecha);
+                                        Ext.getCmp('mobservacion').setValue(resultado.datos[0].mobservacion);
+                                        Ext.getCmp('repaFecha').setValue(resultado.datos[0].repaFecha);
+                                        Ext.getCmp('repaDescripcion').setValue(resultado.datos[0].repaDescripcion);
+                                        Ext.getCmp('repaObservacion').setValue(resultado.datos[0].repaObservacion);
+                                        Ext.getCmp('repuMarca').setValue(resultado.datos[0].repuMarca);
+                                        Ext.getCmp('repuModelo').setValue(resultado.datos[0].repuModelo);
+                                        Ext.getCmp('repuCodigo').setValue(resultado.datos[0].repuCodigo);
+                                        Ext.getCmp('repuSerie').setValue(resultado.datos[0].repuSerie);
+                                        Ext.getCmp('repuEstado').setValue(resultado.datos[0].repuEstado);
+                                        Ext.getCmp('descripSoat').setValue(resultado.datos[0].descripSoat);
+                                        Ext.getCmp('fechaSoatReg').setValue(resultado.datos[0].fechaSoatReg);
+                                        Ext.getCmp('fechaSoatVenc').setValue(resultado.datos[0].fechaSoatVenc);
+                                        Ext.getCmp('matricula').setValue(resultado.datos[0].descripMatricula);
+                                        Ext.getCmp('fechaMatriculaReg').setValue(resultado.datos[0].fechaMatriculaReg);
+                                        Ext.getCmp('fechaMatriculaVenc').setValue(resultado.datos[0].fechaMatriculaVenc);
+                                        Ext.getCmp('descripSeguro').setValue(resultado.datos[0].descripSeguro);
+                                        Ext.getCmp('fechaSeguroReg').setValue(resultado.datos[0].fechaSeguroReg);
+                                        Ext.getCmp('fechaSeguroVenc').setValue(resultado.datos[0].fechaSeguroVenc);
+
+                                    }
+                                });
+                            }
                         }
                     })
         }
@@ -146,13 +215,19 @@ Ext.onReady(function () {
                 console.log('hola');
             },
             selectionchange: function (thisObject, selected, eOpts) {
-                setActiveRecordVehiculos(selected[0] || null);
-                servicioSeleccionado = false;
-                Ext.getCmp('mt').disable();
-                Ext.getCmp('mk').disable();
-                Ext.getCmp('mtyk').disable();
-                Ext.getCmp('mtok').disable();
-                Ext.getCmp('idReparacion').toggle();
+//                setActiveRecordVehiculos(selected[0] || null);
+                seleccionado = selected[0];
+                storeServicios.load({
+                    params: {
+                        lisEstandar: selected[0].data.estandar
+                    }
+                });
+//                servicioSeleccionado = false;
+//                Ext.getCmp('mt').disable();
+//                Ext.getCmp('mk').disable();
+//                Ext.getCmp('mtyk').disable();
+//                Ext.getCmp('mtok').disable();
+//                Ext.getCmp('idReparacion').toggle();
             }
         }
     });
@@ -287,6 +362,15 @@ Ext.onReady(function () {
                                                     select: {
                                                         fn: function (combo, record, index) {
                                                             if (record.length > 0 && record.length !== null) {
+                                                                var val = seleccionado.data.estandar.split(',');
+                                                                for (i = 0; i < val.length; i++) {
+                                                                    console.log(val[i]);
+
+                                                                    if (val[i] !== estandar) {
+                                                                        formRecordsVehiculosPost.down('#updateVeh').disable();
+                                                                        formRecordsVehiculosPost.down('#createVeh').enable();
+                                                                    }
+                                                                }
                                                                 servicioSeleccionado = true;
                                                                 Ext.getCmp('mk').enable();
                                                                 Ext.getCmp('mt').enable();
@@ -903,8 +987,8 @@ Ext.onReady(function () {
         ],
         listeners: {
             create: function (form, data) {
-                gridWinStoreVehiculosPost.insert(0, data);
-                gridWinStoreVehiculosPost.reload();
+//                gridWinStoreVehiculosPost.insert(0, data);
+//                gridWinStoreVehiculosPost.reload();
             }
         },
         dockedItems: [{
@@ -971,21 +1055,24 @@ function ventAddMantenimientosPost() {
 }
 
 function setActiveRecordVehiculos(record) {
-    formRecordsVehiculosPost.activeRecord = record;
+    seleccionado = record;
+//    formRecordsVehiculosPost.activeRecord = record;
     if (record) {
         storeVeh.load({
             params: {
                 cbxEmpresas: record.data.idempresa
             }
         });
-        formRecordsVehiculosPost.down('#updateVeh').enable();
-        formRecordsVehiculosPost.down('#createVeh').disable();
-        formRecordsVehiculosPost.down('#deleteVeh').enable();
-        formRecordsVehiculosPost.getForm().loadRecord(record);
-    } else {
-        formRecordsVehiculosPost.down('#updateVeh').disable();
-        formRecordsVehiculosPost.getForm().reset();
+
+//        formRecordsVehiculosPost.down('#updateVeh').enable();
+//        formRecordsVehiculosPost.down('#createVeh').disable();
+//        formRecordsVehiculosPost.down('#deleteVeh').enable();
+//        formRecordsVehiculosPost.getForm().loadRecord(record);
     }
+//    else {
+//        formRecordsVehiculosPost.down('#updateVeh').disable();
+//        formRecordsVehiculosPost.getForm().reset();
+//    }
 }
 
 function onUpdateVehiculos() {
@@ -1002,18 +1089,30 @@ function onUpdateVehiculos() {
 }
 
 function onCreateVehiculos() {
-    Ext.getCmp('idempresa').setValue(obj_empresa);
-    Ext.getCmp('idvehiculo').setValue(obj_vehiculos);
-    //    if (Ext.getCmp('mkilometraje').getValue() !== ('') || Ext.getCmp('mdias').getValue() !== ('')) {
-    var form = formRecordsVehiculosPost.getForm();
-    if (form.isValid()) {
-        console.log("creando");
-        formRecordsVehiculosPost.fireEvent('create', formAdminCompany, form.getValues());
-        formRecordsVehiculosPost.down('#updateVeh').disable();
-        form.reset();
-    }
-    ;
+
+    formPanelGrid_VehiculosPost.getForm().submit({
+        url: 'php/administracion/mantenimientoPost/create.php',
+        params: {
+            
+            
+        },
+        failure: function (form, action) {
+            Ext.MessageBox.show({
+                title: 'Error...',
+                msg: 'No se pudo guardar',
+                buttons: Ext.MessageBox.ERROR,
+                icon: Ext.MessageBox.ERROR
+            });
+        },
+        success: function (form, action) {
+            Ext.example.msg("Mensaje", 'Servicio Generado Correctamente');
+            console.log('llego');
+            formPanelGrid_VehiculosPost.getForm().reset();
+            gridWinStoreVehiculosPost.load();
+        }
+    });
 }
+
 
 function onResetVehiculos() {
     setActiveRecordVehiculos(null);
