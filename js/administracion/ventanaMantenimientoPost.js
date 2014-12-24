@@ -43,14 +43,21 @@ Ext.onReady(function () {
         extend: 'Ext.data.Model',
         fields: [
             //id
-            {name: 'id', mapping: 'id_equipo'},
+            {name: 'id', mapping: 'id_vehiculo'},
             //Registro Mantenimiento
             {name: 'nombreMantenimiento', type: 'string'},
+            {name: 'valorTipoServicio', type: 'int'},
             //Repuesto
             {name: 'equipo', type: 'string'},
             //Registrar servicios adicionales
             {name: 'fecha_registro', type: 'date', dateFormat: 'c'},
-            {name: 'dato', type: 'int'}
+            {name: 'estandar_vehiculo', type: 'string'},
+//            {name: 'id_vehiculo', type: 'int', convert: function (value, record) {
+//                    var pct = record.get('id_vehiculo');
+//                    
+//                    
+                    
+//                }}
         ]
     });
     // crea los datos del store
@@ -70,7 +77,7 @@ Ext.onReady(function () {
                 type: 'json',
                 successProperty: 'success',
                 root: 'veh',
-                messageProperty: 'message'
+                messageProperty: 'message',
             },
             writer: {
                 type: 'json',
@@ -100,10 +107,10 @@ Ext.onReady(function () {
         }
     });
     var columnsRecordsPost = [
-        {header: '<b>Equipo</b>', dataIndex: 'equipo'},
-        {header: '<b>Vehiculo</b>', dataIndex: 'vehicuo'},
-        {header: '<b>Organización</b>', dataIndex: 'empresa'},
-        {header: '<b>Tipo Servicio</b>',dataIndex: 'id' ,width: 200, editor:
+        {header: '<b>Equipo</b>', width: 100, dataIndex: 'equipo'},
+        {header: '<b>Vehiculo</b>', width: 150, dataIndex: 'vehicuo'},
+        {header: '<b>Organización</b>', width: 130, dataIndex: 'empresa'},
+        {header: '<b>Estandar Servicio</b>', width: 300, dataIndex: 'estandar_vehiculo', editor:
                     new Ext.form.field.ComboBox({
                         xtype: 'combobox',
                         editable: false,
@@ -129,13 +136,15 @@ Ext.onReady(function () {
         columns: columnsRecordsPost,
         plugins: [new Ext.grid.plugin.CellEditing({
                 clicksToEdit: 1,
-                autoCancel:false
+                autoCancel: false
             })],
         height: 410,
-//        selModel: Ext.create('Ext.selection.RowModel', {singleSelect: true}),
         features: [filters],
         //Para cuando de click a una de las filas se pasen los datos
         listeners: {
+            change: function (thisObject, selected, eOpts) {
+                console.log('hola');
+            },
             selectionchange: function (thisObject, selected, eOpts) {
                 setActiveRecordVehiculos(selected[0] || null);
                 servicioSeleccionado = false;
@@ -150,7 +159,7 @@ Ext.onReady(function () {
 
 
     formPanelGrid_VehiculosPost = Ext.create('Ext.form.Panel', {
-        width: '25%',
+        width: '23%',
         margins: '0 2 0 0',
         region: 'west',
         autoScroll: true,

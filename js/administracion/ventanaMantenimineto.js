@@ -38,8 +38,6 @@ var storecombo = new Ext.data.ArrayStore({
 });
 
 Ext.onReady(function () {
-
-
     //Genera campos de array para usar en el inicio del store por defecto
     Ext.define('DataObjectVehiculo', {
         extend: 'Ext.data.Model',
@@ -56,7 +54,6 @@ Ext.onReady(function () {
             {name: 'vehiculo', type: 'string'},
             {name: 'idvehiculo', type: 'int'},
             //Mantenimiento
-
             {name: 'valorTipoMantenimiento', type: 'int'},
             {name: 'mkilometraje', type: 'int'},
             {name: 'mdias', type: 'int'},

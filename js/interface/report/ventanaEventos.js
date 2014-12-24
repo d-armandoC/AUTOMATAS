@@ -184,6 +184,7 @@ Ext.onReady(function () {
         bodyStyle: 'padding: 10px; background-color: #DFE8F6',
         baseCls: 'x-plain',
         frame: false,
+        autoScroll: true,
         padding: '5 5 5 5',
         items: [{
                 xtype: 'form',
@@ -303,7 +304,7 @@ function ventanaEventos() {
             iconCls: 'icon-eventos',
             resizable: false,
             width: 600,
-            height: 550,
+            height: 555,
             closeAction: 'hide',
             plain: false,
             items: [contenedorwinEvt],

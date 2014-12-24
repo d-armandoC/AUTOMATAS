@@ -2,6 +2,7 @@
 
 include ('../../../dll/config.php');
 extract($_GET);
+
 $existe = substr_count($listVeh, ',');
 if ($existe > 0) {
     $VEHC = str_replace(",", "','", $listVeh);
