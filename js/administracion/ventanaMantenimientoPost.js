@@ -52,13 +52,16 @@ Ext.onReady(function () {
             //Registrar servicios adicionales
             {name: 'fecha_registro', type: 'date', dateFormat: 'c'},
             {name: 'estandar_vehiculo', type: 'string'},
-//            {name: 'id_vehiculo', type: 'int', convert: function (value, record) {
+            {name: 'id_vehiculo', type: 'int', convert: function (value, record) {
+                    var pct = record.get('id_vehiculo');
+                    console.log('datos');
+                }}
+        ]//            {name: 'id_vehiculo', type: 'int', convert: function (value, record) {
 //                    var pct = record.get('id_vehiculo');
 //                    
 //                    
                     
 //                }}
-        ]
     });
     // crea los datos del store
     var gridWinStoreVehiculosPost = Ext.create('Ext.data.Store', {
