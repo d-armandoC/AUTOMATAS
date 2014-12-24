@@ -352,7 +352,7 @@ Ext.onReady(function () {
                                     }
                                 });
                                 var tabComandos = Ext.create('Ext.container.Container', {
-                                    title: '<div id="titulosForm">Reporte envio Comados ' + empresaComandos + " : " + placacomandos + '</div>',
+                                    title: '<div id="titulosForm">' + empresaComandos + " : " + placacomandos + '</div>',
                                     closable: true,
                                     iconCls: 'icon-cmd-hist',
                                     layout: 'border',
