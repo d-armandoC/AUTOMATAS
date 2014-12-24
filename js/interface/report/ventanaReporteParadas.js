@@ -492,7 +492,7 @@ Ext.onReady(function () {
                                         }]
                                 });
                                 var tabExces = Ext.create('Ext.container.Container', {
-                                    title: '<div id="titulosForm">Reporte de Paradas -' + empresaParadas + " : " + placaReporteParadas + '</div>',
+                                    title: '<div id="titulosForm">' + empresaParadas + " : " + placaReporteParadas + '</div>',
                                     closable: true,
                                     iconCls: 'icon-unlock',
                                     layout: 'border',

@@ -313,7 +313,7 @@ function cargardatosalGridGpsGsm(datos) {
     });
 
     var columnGsmGps = [
-         {text: '<b>Trama</b>', width: 65, dataIndex: 'idData', align: 'center'},
+        {text: '<b>Trama</b>', width: 65, dataIndex: 'idData', align: 'center'},
         {text: 'Empresa', flex: 80, dataIndex: 'empresa', filter: {type: 'string'}},
         {text: 'Equipo', flex: 80, dataIndex: 'equipo', filter: {type: 'string'}},
         {text: 'Placa', flex: 80, dataIndex: 'placa', filter: {type: 'string'}},
@@ -372,7 +372,7 @@ function cargardatosalGridGpsGsm(datos) {
                                 clearLienzoPointTravel();
                                 clearLienzoTravel();
                                 drawPointsGsmGps(record.data);
-                                 panelTabMapaAdmin.setActiveTab('panelMapaTab');
+                                panelTabMapaAdmin.setActiveTab('panelMapaTab');
                                 localizarDireccion(record.data.longitud, record.data.latitud, 17);
                             }
                         })
@@ -412,7 +412,7 @@ function reporteWinperdidaGpsGsm() {
             iconCls: 'icon-flota',
             resizable: false,
             width: 350,
-            height: 365,
+            height: 375,
             closeAction: 'hide',
             plain: false,
             items: formularioGSM

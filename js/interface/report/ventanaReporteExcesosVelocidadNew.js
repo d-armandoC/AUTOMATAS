@@ -361,7 +361,7 @@ function cargardatosalGrid(datos) {
 
     var tabExcesosVelocidad = Ext.create('Ext.container.Container', {
         //title: 'Reporte de Excesos de velocidad',
-        title: '<div id="titulosForm">Reporte de Excesos de velocidad: ' + " " + empresa + ":" + placaExcesos + '</div>',
+        title: '<div id="titulosForm">' + empresa + ":" + placaExcesos + '</div>',
         closable: true,
         iconCls: 'icon-exceso-vel',
         layout: 'border',

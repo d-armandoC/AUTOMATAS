@@ -499,7 +499,7 @@ function loadGridEvents() {
                     });
 
                     var tab = Ext.create('Ext.form.Panel', {
-                        title: '<div id="titulosForm">Reporte de Eventos ' + empresaEventos + " : " + placaEventos + '</div>',
+                        title: '<div id="titulosForm">' + empresaEventos + " : " + placaEventos + '</div>',
                         closable: true,
                         iconCls: 'icon-eventos',
                         items: gridEvents

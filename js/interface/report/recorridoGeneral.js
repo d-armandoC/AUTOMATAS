@@ -4,8 +4,8 @@ var tabpanelContain;
 var empresaRecorrido;
 var placaRecorrido;
 var banderaRecorrido;
- var cbxVehBD;
-
+var cbxVehBD;
+var eventos;
 
 Ext.onReady(function () {
     if (idCompanyKarview == 1) {
@@ -146,16 +146,16 @@ Ext.onReady(function () {
 
     contenedorWinBan = Ext.create('Ext.form.Panel', {
         frame: false,
-        padding: '5 5 5 5',
+        padding: '6 6 6 6',
         fieldDefaults: {
             labelAlign: 'left',
-            labelWidth: 70,
-            width: 240
+            width: '100%'
         },
         items: [{
                 layout: 'column',
                 baseCls: 'x-plain',
                 items: [{
+                        columnWidth: .5,
                         baseCls: 'x-plain',
                         items: [
                             cbxEmpresasBD,
@@ -163,6 +163,7 @@ Ext.onReady(function () {
                             timeIni
                         ]
                     }, {
+                        columnWidth: .5,
                         baseCls: 'x-plain',
                         items: [
                             cbxVehBD,
@@ -176,9 +177,9 @@ Ext.onReady(function () {
                 title: 'Opciones de Reporte',
                 collapsible: true,
                 layout: 'anchor',
-                margin: '10 20 0 0',
+                margin: '10 10 10 10',
                 defaults: {
-                    anchor: '90%'
+                    anchor: '100%'
                 },
                 items: [{
                         xtype: 'checkboxgroup',
@@ -237,6 +238,21 @@ Ext.onReady(function () {
                                         clearLienzoTravel();
                                         clearLienzoPointTravel();
                                         console.log(resultado.puntos);
+                                        //para cantidad de eventos
+
+                                        var valor = resultado.puntos[0].eventos.split(";");
+                                        console.log(valor.length);
+                                        eventos = '<TABLE id="tablestados"><TR class="alt"><TD> <IMG SRC="img/inicio.png"> <b>EVENTO:</b></td><TD> <IMG SRC="img/inicio.png"> <b>CANTIDAD:</b></td></TR>';
+
+                                        for (var i = 0; i < valor.length - 1; i++) {
+                                            var dato = valor[i].split(",")
+                                            console.log(dato[0]);
+                                            eventos = eventos +
+                                                    '<TR class="alt"><TD align="CENTER "> ' + dato[0] + ' ' + '</TD> ' +
+                                                    '   <TD align="CENTER "> ' + dato[1] + ' ' + '</TD></TR> ';
+                                        }
+                                        eventos = eventos + '</TABLE>';
+
                                         drawPointsRoute(resultado.puntos, "Puntos");
                                         drawRutaMapa(resultado.puntos);
 
@@ -247,10 +263,8 @@ Ext.onReady(function () {
                                         var velMaxima = velocidadmaxima(resultado.puntos);
                                         var velMinima = velocidadMinimo(resultado.puntos);
                                         var velMedia = velociadadMedia(resultado.puntos);
-
                                         var mayor60 = velociadadMayor60(resultado.puntos);
                                         var mayor90 = velociadadMayor90(resultado.puntos);
-
                                         tabpanelContain = Ext.create('Ext.form.Panel', {
                                             closable: true,
                                             title: '<b>Informe Tecnico</b>',
@@ -365,6 +379,30 @@ Ext.onReady(function () {
                                                                             ' </TABLE>'
                                                                 }]}
                                                     ]
+                                                },
+                                                {
+                                                    xtype: 'fieldset',
+                                                    autoHeight: true,
+                                                    border: false,
+                                                    disable: true,
+                                                    layout: 'hbox',
+                                                    padding: '5 5 5 15',
+                                                    items: [
+                                                        {
+                                                            xtype: 'fieldset',
+                                                            flex: 2,
+                                                            title: '<b>Cantidad de Eventos</b>',
+                                                            padding: '5 5 5 5',
+                                                            border: false,
+                                                            layout: 'anchor',
+                                                            defaults: {
+                                                                anchor: '100%',
+                                                                hideEmptyLabel: false
+                                                            }, items: [
+                                                                {
+                                                                    html: eventos
+                                                                }]}
+                                                    ]
                                                 }
                                             ]
                                         });
@@ -413,7 +451,7 @@ function recorridosGeneral() {
             title: 'Recorridos General',
             iconCls: 'icon-all-flags',
             resizable: false,
-            width: 500,
+            width: 580,
             height: 300,
             closeAction: 'hide',
             plain: false,
@@ -461,7 +499,6 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
     for (var i = 0; i <= 9; i++) {
         arrayColumn[i] = 1;
     }
-
     var storeFlags = Ext.create('Ext.data.JsonStore', {
         data: records,
         proxy: {
@@ -469,22 +506,22 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
             reader: 'array'
         },
         fields: ['latitud', 'longitud', {name: 'fecha_hora', type: 'date', dateFormat: 'c'}, {name: 'fecha_hora_reg', type: 'date', dateFormat: 'c'}, 'velocidad', 'bateria',
-            'gsm', 'gps2', 'ign', 'direccion', 'color', 'evento', 'idEvento', 'g1', 'g2', 'salida']
+            'gsm', 'gps2', 'ign', 'direccion', 'color', 'evento', 'idEvento', 'g1', 'g2', 'salida', 'eventos']
     });
     var columnFlags = [];
     columnFlags = [
         {text: '<b>Trama</b>', width: 65, dataIndex: 'idData', align: 'center'},
-        {text: '<b>Evento</b>', width: 180, dataIndex: 'evento', align: 'center'},
-        {text: '<b>Fecha y Hora <br> de Equipo</b>', xtype: 'datecolumn', format: 'd-m-Y H:i:s', width: 160, dataIndex: 'fecha_hora', align: 'center'},
+        {text: '<b>Evento</b>', width: 300, dataIndex: 'evento', align: 'center'},
+        {text: '<b>Fecha y Hora <br> del Equipo</b>', xtype: 'datecolumn', format: 'd-m-Y H:i:s', width: 160, dataIndex: 'fecha_hora', align: 'center'},
         {text: '<b>Fecha y Hora <br> Registro</b>', xtype: 'datecolumn', format: 'd-m-Y H:i:s', width: 170, dataIndex: 'fecha_hora_reg', align: 'center'},
-        {text: '<b>Vel (Km/h)</b>', dataIndex: 'velocidad', align: 'center', width: 100, cls: 'listview-filesize', renderer: formatSpeed},
+        {text: '<b>Velocidad (Km/h)</b>', dataIndex: 'velocidad', align: 'center', width: 100, cls: 'listview-filesize', renderer: formatSpeed},
         {text: '<b>Bateria</b>', width: 120, dataIndex: 'bateria', align: 'center', renderer: formatBat},
-        {text: '<b>Estado Vehiculo <br> IGN</b>', width: 175, dataIndex: 'ign', align: 'center', renderer: estadoVehiculo},
+        {text: '<b>Estado del Vehículo(Ign)</b>', width: 175, dataIndex: 'ign', align: 'center', renderer: estadoVehiculo},
         {text: '<b>GSM</b>', width: 110, dataIndex: 'gsm', align: 'center', renderer: estadoGsm},
         {text: '<b>GPS</b>', width: 100, dataIndex: 'gps2', align: 'center', renderer: estadoGps},
-//        {text: '<b>G1</b>', width: 100, dataIndex: 'g1', align: 'center', renderer: formatStateTaxy},
-//        {text: '<b>G2</b>', width: 100, dataIndex: 'g2', align: 'center', renderer: formatPanic},
-        {text: '<b>Id Evento</b>', width: 80, dataIndex: 'idEvento', align: 'center'}
+        {text: '<b>G1</b>', width: 100, dataIndex: 'g1', align: 'center', renderer: formatStateTaxy},
+        {text: '<b>G2</b>', width: 200, dataIndex: 'g2', align: 'center', renderer: formatPanic},
+//        {text: '<b>Id Evento</b>', width: 80, dataIndex: 'idEvento', align: 'center'}
     ];
     var gridFlags = Ext.create('Ext.grid.Panel', {
         title: '<center>Informe Detallado</center>',
@@ -532,7 +569,7 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
     });
 
     var tab = Ext.create('Ext.container.Container', {
-        title: '<div id="titulosForm">Reporte de Recorrido General: ' + " " + empresaRecorrido + ":" + placaRecorrido + '</div>',
+        title: '<div id="titulosForm">' + empresaRecorrido + ":" + placaRecorrido + '</div>',
         closable: true,
         iconCls: 'icon-all-flags',
         layout: 'border',
