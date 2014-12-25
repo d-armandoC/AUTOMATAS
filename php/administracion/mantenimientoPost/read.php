@@ -29,13 +29,22 @@ Where esvm.id_estandar_vehiculo=mv.id_estandar_vehiculo and mv.id_vehiculo=vh.id
         FROM karviewdb.mantenimiento mv, karviewdb.estandar_vehiculos sm,  empresas em, karviewdb.vehiculos v, karviewdb.personas p where mv.id_vehiculo= v.id_vehiculo and mv.id_estandar_vehiculo=sm.id_estandar_vehiculo and v.id_persona=p.id_persona and v.id_empresa=em.id_empresa and v.id_persona='$idPersona'";
     }
     $result = $mysqli->query($consultaSql);
-    $mysqli->close();
     if ($result->num_rows > 0) {
         $objJson = "{veh: [";
         while ($myrow = $result->fetch_assoc()) {
+            $idVehiculo = $myrow["id_vehiculo"];
+            $consultaSql1 = "SELECT id_estandar_vehiculo FROM karviewhistoricodb.historicomantenimientovehiculo where id_Vehiculo='$idVehiculo'";
+            $result1 = $mysqli->query($consultaSql1);
+            $estandar = '';
+            while ($myrow1 = $result1->fetch_assoc()) {
+                $estandar = $estandar . $myrow1["id_estandar_vehiculo"] . ',';
+            }
+            $estandar = $estandar . $myrow["id_estandar_vehiculo"];
+
             $objJson .= "{
                 id_vehiculo:" . $myrow["id_vehiculo"] . ",
                 equipo:'" . $myrow["equipo"] . "',
+                estandar:'" . $estandar . "',
                 vehicuo:'" . $myrow["vehiculo"] . "',
                 empresa:'" . $myrow["empresa"] . "',
                 estandar_vehiculo:'" . utf8_encode($myrow["estandar_vehiculo"]) . "',
@@ -46,6 +55,7 @@ Where esvm.id_estandar_vehiculo=mv.id_estandar_vehiculo and mv.id_vehiculo=vh.id
         }
         $objJson .= "]}";
         echo $objJson;
+        $mysqli->close();
     } else {
         echo "{failure:true, message:'No hay datos que obtener'}";
     }

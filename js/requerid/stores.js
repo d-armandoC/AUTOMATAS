@@ -80,6 +80,20 @@ var storeVehiculosservicios = Ext.create('Ext.data.JsonStore', {
     fields: [{name: 'value', mapping: 'id'}, {name: 'text'}, {name: 'tiempo'}, {name: 'kilometro'}],
 });
 
+var storeServicios = Ext.create('Ext.data.JsonStore', {
+    autoDestroy: true,
+    autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        url: 'php/combobox/comboEstandarsDisponibles.php',
+        reader: {
+            type: 'json',
+            root: 'veh'
+        }
+    },
+    fields: [{name: 'value', mapping: 'id'}, {name: 'text'}, {name: 'tiempo'}, {name: 'kilometro'}],
+});
+
 
 var storeDevice = Ext.create('Ext.data.Store', {
     autoDestroy: true,

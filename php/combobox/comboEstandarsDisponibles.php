@@ -7,12 +7,6 @@ if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
 
-    $existe = substr_count($lisEstandar, ',');
-    if ($existe > 0) {
-        $VEHC = str_replace(",", "','", $lisEstandar);
-    } else {
-        $VEHC = $lisEstandar;
-    }
 
     $consultaSql = "SELECT id_estandar_vehiculo,estandar_vehiculo,tiempo, kilometro FROM karviewdb.estandar_vehiculos "
             . "where id_estandar_vehiculo in($lisEstandar);";
