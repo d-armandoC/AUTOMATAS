@@ -13,8 +13,7 @@ var obj_empresa;
 var dateMantenimiento;
 var servicioSeleccionado = false;
 var edadDate;
-var selecionado;
-var estandar;
+
 
 var fechaSoat = Ext.create('Ext.form.field.Date', {
     fieldLabel: 'Desde el',
@@ -50,8 +49,6 @@ Ext.onReady(function () {
             {name: 'valorTipoServicio', type: 'int'},
             //Repuesto
             {name: 'equipo', type: 'string'},
-            //estandar
-//            {name: 'estandar', type: 'string'},
             //Registrar servicios adicionales
             {name: 'fecha_registro', type: 'date', dateFormat: 'c'},
             {name: 'estandar_vehiculo', type: 'string'},
@@ -59,17 +56,17 @@ Ext.onReady(function () {
                     var pct = record.get('id_vehiculo');
                     console.log('datos');
                 }}
-        ]//            {name: 'id_vehiculo', type: 'int', convert: function (value, record) {
-//                    var pct = record.get('id_vehiculo');
-            {name: 'estandar', type: 'string', convert: function (value, record) {
-                    var pct = record.data.estandar;
-                    storeServicios.load({
-                        params: {
-                            lisEstandar: pct
-                        }
-                    });
-
-                }}
+//        ]//            {name: 'id_vehiculo', type: 'int', convert: function (value, record) {
+////                    var pct = record.get('id_vehiculo');
+////            {name: 'estandar', type: 'string', convert: function (value, record) {
+////                    var pct = record.data.estandar;
+////                    storeServicios.load({
+////                        params: {
+////                            lisEstandar: pct
+////                        }
+////                    });
+////
+////                }}
         ]
     });
     // crea los datos del store
