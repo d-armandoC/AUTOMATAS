@@ -191,7 +191,7 @@ Ext.onReady(function () {
                         }
                     })
         },
-        {header: '<b>Organización</b>', width: 130, dataIndex: 'empresa'},
+        {header: '<b>Organización</b>', width: 130, dataIndex: 'empresa'}
     ];
     // declare the source Grid
     gridRecordsVehiculosPost = Ext.create('Ext.grid.Panel', {
@@ -211,11 +211,6 @@ Ext.onReady(function () {
         features: [filters],
         //Para cuando de click a una de las filas se pasen los datos
         listeners: {
-            change: function (thisObject, selected, eOpts) {
-            },
-            select: function (thisObject, selected, eOpts) {
-
-            },
             selectionchange: function (thisObject, selected, eOpts) {
                 if (selected[0] !== null) {
                     //para controlar que hay un seleccionado
@@ -712,7 +707,7 @@ Ext.onReady(function () {
                     'beforeexpand': function () {
                         Ext.getCmp('fsreparacion').collapse();
                         Ext.getCmp('fsrepuesto').collapse();
-                        Ext.getCmp('idReparacion').collapse();
+//                        Ext.getCmp('idReparacion').collapse();
                         Ext.getCmp('s1').setValue(true);
                         Ext.getCmp('repaFecha').reset();
                         Ext.getCmp('repaDescripcion').reset();
@@ -877,7 +872,7 @@ Ext.onReady(function () {
                     'beforeexpand': function () {
                         Ext.getCmp('fsmantenimiento').collapse();
                         Ext.getCmp('fsrepuesto').collapse();
-                        Ext.getCmp('idReparacion').collapse();
+//                        Ext.getCmp('idReparacion').collapse();
                         Ext.getCmp('s2').setValue(true);
                         Ext.getCmp('mt').reset();
                         Ext.getCmp('mk').reset();
@@ -971,7 +966,7 @@ Ext.onReady(function () {
                     'beforeexpand': function () {
                         Ext.getCmp('fsmantenimiento').collapse();
                         Ext.getCmp('fsreparacion').collapse();
-                        Ext.getCmp('idReparacion').collapse();
+//                        Ext.getCmp('idReparacion').collapse();
                         Ext.getCmp('s3').setValue(true);
                         Ext.getCmp('mt').reset();
                         Ext.getCmp('mk').reset();
