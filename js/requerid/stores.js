@@ -247,7 +247,7 @@ var storeclasseVehiculo = Ext.create('Ext.data.Store', {
 
 var storeVeh = Ext.create('Ext.data.JsonStore', {
     autoLoad: true,
-    //autoDestroy: true,
+    autoDestroy: true,
     proxy: {
         type: 'ajax',
         url: 'php/combobox/comboVeh.php',

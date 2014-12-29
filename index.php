@@ -19,13 +19,13 @@
         <script type="text/javascript" src="js/requerid/functions.js"></script>
     </head>
     <body>
-        <nav>
+<!--        <nav>
           <ul class="breadcrumb">
               <li><a href="http://www.kradac.com">Información</a> <span class="divider">/</span></li>
               <li><a href="#">Contactos</a> <span class="divider">/</span></li>
               <li class="active">Data</li>
             </ul>
-        </nav>
+        </nav>-->
         
         <header>            
             <img src="img/karview.png" alt="Kradac">

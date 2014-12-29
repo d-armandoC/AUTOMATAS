@@ -17,15 +17,17 @@ var cbxVehBDPanico;
 var porEquipo = false;
 var hayDatos = false;
 var gridViewDataPanico;
-var placa;
+var placa="";
 var empresa;
 var banderapanico;
+var empresaPanico='KRADAC';
 
 Ext.onReady(function () {
 
     if (idCompanyKarview == 1) {
         banderapanico = 1;
     } else {
+        empresaPanico='COOPMEGO';
         banderapanico = storeEmpresaPanicos.data.items[0].data.id;
     }
     cbxEmpresasBDPanico = Ext.create('Ext.form.ComboBox', {
@@ -41,7 +43,7 @@ Ext.onReady(function () {
         value: banderapanico,
         listeners: {
             select: function (combo, records, eOpts) {
-                empresa = cbxEmpresasBDPanico.getRawValue();
+                empresaPanico = cbxEmpresasBDPanico.getRawValue();
                 placa = " ";
                 if (porEquipo) {
                     cbxVehBDPanico.clearValue();
@@ -217,7 +219,8 @@ Ext.onReady(function () {
                     panelButtons
                 ]
             }],
-        buttons: [{
+        buttons: [
+            {
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
                 handler: function () {
@@ -457,7 +460,7 @@ Ext.onReady(function () {
                                     }
                                 });
                                 var tabExcesos = Ext.create('Ext.container.Container', {
-                                    title: '<div id="titulosForm">Panicos Detallados ' + empresa + " : " + placa + '</div>',
+                                    title: '<div id="titulosForm"> Registros de Panico'+ empresaPanico + " : " + placa + '</div>',
                                     closable: true,
                                     iconCls: 'icon-reset',
                                     layout: 'border',

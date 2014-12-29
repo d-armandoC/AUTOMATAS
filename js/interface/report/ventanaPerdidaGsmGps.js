@@ -23,14 +23,15 @@ var fechaFngsm;
 var cbxVehBDManten;
 var porEquipoPerdidaGpsGsm;
 var cbxVehPedidaGpsGsm;
-var placaPerdidaGsm;
-var empresaPerdidaGsm;
 var banderaRegistroPanico;
+var empresaPerdidaGsm='KRADAC';
+var placaPerdidaGsm=" ";
 
 Ext.onReady(function () {
     if (idCompanyKarview == 1) {
         banderaRegistroPanico = 1;
     } else {
+        empresaPerdidaGsm='COOPMEGO';
         banderaRegistroPanico = storeEmpresaPanicos.data.items[0].data.id;
     }
     cbxEmpresasGSM = Ext.create('Ext.form.ComboBox', {
@@ -57,6 +58,7 @@ Ext.onReady(function () {
                         }
                     });
                 }
+                
             }
         }
     });
@@ -385,7 +387,7 @@ function cargardatosalGridGpsGsm(datos) {
     });
 
     var tabGpsGsm = Ext.create('Ext.container.Container', {
-        title: '<div id="titulosForm">Perdida de GPS y GSM -' + empresaPerdidaGsm + " : " + placaPerdidaGsm + '</div>',
+        title: '<div id="titulosForm"> Perdida de GPS y GSM' + empresaPerdidaGsm + " : " + placaPerdidaGsm + '</div>',
         closable: true,
         iconCls: 'icon-flota',
         layout: 'border',

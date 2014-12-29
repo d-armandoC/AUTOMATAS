@@ -7,6 +7,7 @@ extract($_GET);
 if (!$mysqli = getConectionDb()) {
     echo "{failure:true, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
+    
  $consultaSql = "SELECT v.vehiculo, v.placa, V.id_vehiculo
     FROM  karviewdb.geocerca_vehiculos vg, karviewdb.vehiculos v, karviewdb.geocercas g
     WHERE vg.id_geocerca ='$idGeo' AND g.id_empresa = '$empresa'

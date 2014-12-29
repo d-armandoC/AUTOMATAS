@@ -379,6 +379,10 @@ Ext.onReady(function () {
                         text: 'Reportes',
                         iconCls: 'icon-general',
                         menu: [
+                            {text: 'Recorridos General', iconCls: 'icon-all-flags', handler: function () {
+                                    recorridosGeneral();
+                                }}
+                            ,
                             {text: 'Registros de Panico', iconCls: 'icon-reset', handler: function () {
                                     showWinPanicosDaily();
                                 }},
@@ -388,16 +392,13 @@ Ext.onReady(function () {
                             {text: 'Mantenimiento Detallado', iconCls: 'icon-servicios', handler: function () {
                                     showWinMantenimientoGeneral();
                                 }},
-                            {text: 'Recorridos General', iconCls: 'icon-all-flags', handler: function () {
-                                    recorridosGeneral();
-                                }}
-                            ,
                             {text: 'Eventos', iconCls: 'icon-eventos', handler: function () {
                                     ventanaEventos();
-                                }},
-                            {text: 'CMD Enviados', iconCls: 'icon-cmd-hist', handler: function () {
-                                    ventanaCmdHistorial();
                                 }}
+//                            ,
+//                            {text: 'CMD Enviados', iconCls: 'icon-cmd-hist', handler: function () {
+//                                    ventanaCmdHistorial();
+//                                }}
                         ]
                     }
                 ]

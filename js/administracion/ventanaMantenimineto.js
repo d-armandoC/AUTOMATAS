@@ -399,7 +399,7 @@ Ext.onReady(function () {
                                                 emptyText: 'Seleccionar Fecha...',
                                                 listeners: {
                                                     select: function () {
-                                                        edadDate = Ext.Date.add(Ext.getCmp('fechaSoatReg').value, Ext.Date.YEAR, 1);
+                                                        edadDate = Ext.Date.add(new Date(), Ext.Date.DAY, 1);
                                                         Ext.getCmp('fechaSoatVenc').reset();
                                                         Ext.getCmp('fechaSoatVenc').setValue(edadDate);
                                                     }

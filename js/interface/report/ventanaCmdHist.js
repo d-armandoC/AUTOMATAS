@@ -18,15 +18,18 @@ var cbxVehBDComanodos;
 var porEquipoComan = false;
 var hayDatosComandos = false;
 var gridViewDataComandos;
-var placacomandos;
-var empresaComandos;
+var placacomandos="";
+var empresaComandos='KRADAC';
 var banderaComandos;
 Ext.onReady(function () {
     if (idCompanyKarview == 1) {
         banderaComandos = 1;
     } else {
+        empresaComandos='COOPMEGO';
         banderaComandos = storeEmpresas.data.items[0].data.id;
     }
+    
+    
     cbxEmpresasBDComandos = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Organización',
         name: 'idCompanyComando',
@@ -40,7 +43,7 @@ Ext.onReady(function () {
         value: banderaComandos,
         listeners: {
             select: function (combo, records, eOpts) {
-                empresaComandos = cbxEmpresasBDPanico.getRawValue();
+                empresaComandos = cbxEmpresasBDComandos.getRawValue();
                 placacomandos = " ";
                 if (porEquipoComan) {
                     cbxVehBDComanodos.clearValue();
@@ -352,7 +355,7 @@ Ext.onReady(function () {
                                     }
                                 });
                                 var tabComandos = Ext.create('Ext.container.Container', {
-                                    title: '<div id="titulosForm">' + empresaComandos + " : " + placacomandos + '</div>',
+                                    title: '<div id="titulosForm">CMD Enviados' + empresaComandos + " : " + placacomandos + '</div>',
                                     closable: true,
                                     iconCls: 'icon-cmd-hist',
                                     layout: 'border',

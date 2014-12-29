@@ -13,7 +13,7 @@ where gh.id_geocerca=g.id_geocerca and gh.id_vehiculo=v.id_vehiculo and gh.id_ve
     $haveData = false;
     if ($result->num_rows > 0) {
         $haveData = true;
-        $objJson = "datos : [";
+        $objJson = "data: [";
         while ($myrow = $result->fetch_assoc()) {
             $objJson .= "{"
                     . "id_geocerca:" . $myrow["id_geocerca"] . ","

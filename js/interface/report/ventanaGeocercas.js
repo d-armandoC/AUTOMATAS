@@ -1,30 +1,30 @@
-var formParadas;
-var winParadas;
+var formGeocercasReport;
+var winGeocercasReport;
 var bandera = 0;
-var fechaIniPar;
-var dateFinPar;
-var horaIniPrada;
-var horaFinPrada;
-var personaParadas;
-var idEquipoParada;
-var gridViewDataPaaradaTotal;
-var gridViewDataParadaGeneral;
-var gridDataParada;
-var storeDataParada;
-var empresaParada = 1;
-var empresaNomParada = 'KRADAC';
-var cbxEmpresasBDParada;
-var cbxVehBDParada;
-var porEquipoParada = false;
-var hayDatosParada = false;
-var gridViewDataParada;
+var fechaIniGeocercasReport;
+var dateFinGeocercasReport;
+var horaIniGeocercaReport;
+var horaFinGeocercaReport;
+var personaGeocercasReport;
+var idEquipoGeocercaReport;
+var gridViewDatageocercaTotalReport;
+var gridViewDataGeocercaGeneralReport;
+var gridDataGeocercaReport;
+var storeDataGeocercaReport;
+var empresaGeocercaReport = 1;
+var empresaNomGeocercaReport = 'KRADAC';
+var cbxEmpresasBDGeocercaReport;
+var cbxVehBDGeocercaReport;
+var porEquipogeocercaReport = false;
+var hayDatosgeocercaReport = false;
+var gridViewDataGeocercaReport;
 
 
 
 
 Ext.onReady(function () {
 
-    cbxEmpresasBDParada = Ext.create('Ext.form.ComboBox', {
+    cbxEmpresasBDGeocercaReport = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Organización',
         name: 'idCompanyParadas',
         store: storeEmpresaPanicos,
@@ -37,8 +37,8 @@ Ext.onReady(function () {
         value: 1,
         listeners: {
             select: function (combo, records, eOpts) {
-                cbxVehBDParada.clearValue();
-                cbxVehBDParada.enable();
+                cbxVehBDGeocercaReport.clearValue();
+                cbxVehBDGeocercaReport.enable();
                 storeVeh.load({
                     params: {
                         cbxEmpresas: records[0].data.id
@@ -66,7 +66,7 @@ Ext.onReady(function () {
 
 
 
-    cbxVehBDParada = Ext.create('Ext.form.ComboBox', {
+    cbxVehBDGeocercaReport = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Vehículos',
         name: 'cbxVeh',
         store: storeVeh,
@@ -83,7 +83,7 @@ Ext.onReady(function () {
     });
 
 
-    var dateIni = Ext.create('Ext.form.field.Date', {
+    var dateIniGeocerca = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Desde el',
         format: 'Y-m-d',
         id: 'fechaIniParada',
@@ -97,7 +97,7 @@ Ext.onReady(function () {
         emptyText: 'Fecha Inicial...'
     });
 
-    var dateFin = Ext.create('Ext.form.field.Date', {
+    var dateFinGeocerca = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Hasta el',
         format: 'Y-m-d',
         id: 'fechaFinParada',
@@ -110,7 +110,7 @@ Ext.onReady(function () {
         emptyText: 'Fecha Final...'
     });
 
-    var timeInipanico = Ext.create('Ext.form.field.Time', {
+    var timeIniGeocerca = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
         name: 'horaIniParada',
         value: '00:00',
@@ -121,7 +121,7 @@ Ext.onReady(function () {
             minWidth: 300
         }
     });
-    var timeFinpanico = Ext.create('Ext.form.field.Time', {
+    var timeFinGeocerca = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Hasta las',
         name: 'horaFinParada',
         value: '23:59',
@@ -137,10 +137,10 @@ Ext.onReady(function () {
         iconCls: 'icon-today',
         handler: function () {
             var nowDate = new Date();
-            dateIni.setValue(nowDate);
-            dateFin.setValue(nowDate);
-            timeInipanico.setValue('00:00');
-            timeFinpanico.setValue('23:59');
+            dateIniGeocerca.setValue(nowDate);
+            dateFinGeocerca.setValue(nowDate);
+            timeIniGeocerca.setValue('00:00');
+            timeFinGeocerca.setValue('23:59');
         }
     });
     var btnYesterday = Ext.create('Ext.button.Button', {
@@ -148,13 +148,13 @@ Ext.onReady(function () {
         iconCls: 'icon-yesterday',
         handler: function () {
             var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
-            dateIni.setValue(yestDate);
-            dateFin.setValue(yestDate);
-            timeInipanico.setValue('00:00');
-            timeFinpanico.setValue('23:59');
+            dateIniGeocerca.setValue(yestDate);
+            dateFinGeocerca.setValue(yestDate);
+            timeIniGeocerca.setValue('00:00');
+            timeFinGeocerca.setValue('23:59');
         }
     });
-    var panelButtons = Ext.create('Ext.panel.Panel', {
+    var panelButtonsGeocercs = Ext.create('Ext.panel.Panel', {
         layout: 'hbox',
         padding: '0 0 5 0',
         defaults: {
@@ -163,7 +163,7 @@ Ext.onReady(function () {
         items: [btnToday, btnYesterday]
     });
 
-    formParadas = Ext.create('Ext.form.Panel', {
+    formGeocercasReport = Ext.create('Ext.form.Panel', {
         bodyPadding: '10 10 0 10',
         fieldDefaults: {
             labelAlign: 'left',
@@ -173,77 +173,76 @@ Ext.onReady(function () {
                 xtype: 'fieldset',
                 title: '<b>Datos</b>',
                 items: [
-                    cbxEmpresasBDParada,
-                    cbxVehBDParada,
-                    cbxGeocerca
+                    cbxEmpresasBDGeocercaReport,
+                    cbxGeocerca,
+                    cbxVehBDGeocercaReport
                 ]
             }, {
                 xtype: 'fieldset',
                 title: '<b>Fechas</b>',
                 items: [
-                    dateIni,
-                    dateFin,
-                    timeInipanico,
-                    timeFinpanico,
-                    panelButtons
+                    dateIniGeocerca,
+                    dateFinGeocerca,
+                    timeIniGeocerca,
+                    timeFinGeocerca,
+                    panelButtonsGeocercs
                 ]
             }],
         buttons: [{
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
                 handler: function () {
-                    fechaIniPar = dateIni.getRawValue();
-                    dateFinPar = dateFin.getRawValue();
-                    var formulario = formParadas.getForm();
+                    fechaIniGeocercasReport = dateIniGeocerca.getRawValue();
+                    dateFinGeocercasReport = dateFinGeocerca.getRawValue();
+                    var formulario = formGeocercasReport.getForm();
                     if (formulario.isValid()) {
                         formulario.submit({
                             url: 'php/interface/report/getReportGeo.php',
                             waitTitle: 'Procesando...',
                             waitMsg: 'Obteniendo Información',
                             params: {
-                                idCompany: empresaParada
+                                idCompany: empresaGeocercaReport
                             },
                             success: function (form, action) {
-                                var storeDataExcesos = Ext.create('Ext.data.JsonStore', {
+                                var storeDataGeocercas = Ext.create('Ext.data.JsonStore', {
                                     data: action.result.data,
                                     proxy: {
                                         type: 'ajax',
                                         reader: 'array'
                                     },
-                                    fields: ['id_geocerca', 'geocerca', 'placa', 'vehiculo', 'estado', 'fecha_hora'],
+                                    fields: ['id_geocerca', 'geocerca', 'placa', 'estado', 'fecha_hora']
                                 });
-                                var gridViewDataPanico = Ext.create('Ext.grid.Panel', {
-                                    region: 'center',
+                                   var gridDataGeocercas = Ext.create('Ext.grid.Panel', {
+                                    region: 'west',
                                     frame: true,
-                                    width: '60%',
-                                    title: '<center>Detalle: ',
-                                    store: storeViewPanico,
+                                    width: '70%',
+                                    title: '<center>Reporte de Geocercas' + '<br>Desde: ' + fechaIniGeocercasReport + ' | Hasta: ' + dateFinGeocercasReport + '</center>',
+                                    store: storeDataGeocercas,
                                     features: [filters],
                                     multiSelect: true,
                                     viewConfig: {
                                         emptyText: 'No hay datos que Mostrar'
                                     },
                                     columns: [
-                                         Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                        {text: 'Geocerca', flex: 20, dataIndex: 'geocerca'},
-                                        {text: 'Vehiculo', flex: 20, dataIndex: 'vehiculo'},
-                                        {text: 'Placa', flex: 15, dataIndex: 'placa'},
-                                        {text: 'Estado', flex: 10, dataIndex: 'estado', renderer: formatTipoEstado},
-                                        {text: 'Fecha', flex: 15, dataIndex: 'fecha_hora'}
+                                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
+                                        {text: 'Geocerca', width: 150, dataIndex: 'geocerca', align: 'center'},
+                                        {text: 'Placa', width: 100, dataIndex: 'placa', align: 'center'},
+                                        {text: 'Estado', width: 100, dataIndex: 'estado', align: 'center'},
+                                        {text: 'Fecha', width: 100, dataIndex: 'fecha_hora', align: 'center'}
                                     ],
                                     tbar: [{
                                             xtype: 'button',
                                             iconCls: 'icon-excel',
                                             text: 'Exportar a Excel',
                                             handler: function () {
-                                                if (storeViewPanico.getCount() > 0) {
+                                                if (storeDataGeocercas.getCount() > 0) {
                                                     if (getNavigator() === 'img/chrome.png') {
                                                         var a = document.createElement('a');
                                                         var data_type = 'data:application/vnd.ms-excel';
-                                                        var numFil = storeViewPanico.data.length;
-                                                        var numCol = 6;
+                                                        var numFil = storeDataGeocercas.data.length;
+                                                        var numCol = 4;
                                                         var tiLetra = 'Calibri';
-                                                        var titulo = 'Registro de Panico en la Fecha:' + storeViewPanico.data.items[0].data.fecha;
+                                                        var titulo = 'Registro de Geocercas';
                                                         var table_div = "<?xml version='1.0'?><?mso-application progid='Excel.Sheet'?><Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'><DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'><Author>KRADAC SOLUCIONES TECNOLÃ“GICAS</Author><LastAuthor>KRADAC SOLUCIONES TECNOLÃ“GICAS</LastAuthor><Created>2014-08-20T15:33:48Z</Created><Company>KRADAC</Company><Version>15.00</Version>";
                                                         table_div += "</DocumentProperties> " +
                                                                 "<Styles> " +
@@ -252,37 +251,31 @@ Ext.onReady(function () {
                                                                 "<Style ss:ID='datos'><NumberFormat ss:Format='@'/></Style> " +
                                                                 "</Styles>";
                                                         //Definir el numero de columnas y cantidad de filas de la hoja de calculo (numFil + 2))
-                                                        table_div += "<Worksheet ss:Name='Datos'>"; //Nombre de la hoja
+                                                        table_div += "<Worksheet ss:Name='Geocercas'>"; //Nombre de la hoja
                                                         table_div += "<Table ss:ExpandedColumnCount='" + numCol + "' ss:ExpandedRowCount='" + (numFil + 2) + "' x:FullColumns='1' x:FullRows='1' ss:DefaultColumnWidth='60' ss:DefaultRowHeight='15'>";
                                                         table_div += "<Column ss:AutoFitWidth='0' ss:Width='121.5'/>";
                                                         table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
                                                         table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
                                                         table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
                                                         table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
                                                         table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Velocidad</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Geocerca</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Placa</Data></Cell>" +
+                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Estado</Data></Cell>" +
                                                                 "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Fecha</Data></Cell>" +
-                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Hora</Data></Cell>" +
-                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Evento</Data></Cell>" +
-                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Latitutd</Data></Cell>" +
-                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Longitud</Data></Cell>" +
                                                                 "</Row>";
                                                         for (var i = 0; i < numFil; i++) {
                                                             table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewPanico.data.items[i].data.velocidad + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewPanico.data.items[i].data.fecha + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewPanico.data.items[i].data.hora + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewPanico.data.items[i].data.evento + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewPanico.data.items[i].data.latitud + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewPanico.data.items[i].data.longitud + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataGeocercas.data.items[i].data.geocerca + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataGeocercas.data.items[i].data.placa + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataGeocercas.data.items[i].data.estado + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataGeocercas.data.items[i].data.fecha_hora + " </Data></Cell > " +
                                                                     "</Row>";
                                                         }
                                                         table_div += "</Table> </Worksheet></Workbook>";
                                                         var table_xml = table_div.replace(/ /g, '%20');
                                                         a.href = data_type + ', ' + table_xml;
-                                                        a.download = 'Registro Panicos' + '.xml';
+                                                        a.download = 'Registro de Geocercas' + '.xml';
                                                         a.click();
                                                     } else {
                                                         Ext.MessageBox.show({
@@ -303,109 +296,9 @@ Ext.onReady(function () {
                                             }
                                         }]
                                 });
-                                gridViewDataPanico.setTitle('<center>Vista de Panicos: ' + storeDataExcesos.data.items[0].data.personaPanicos + ' Desde: ' + fechaIniPar + ' Hasta:' + dateFinPar + '</center>');
-                                var gridDataExcesos = Ext.create('Ext.grid.Panel', {
-                                    region: 'west',
-                                    frame: true,
-                                    width: '40%',
-                                    title: '<center>Panicos Totales ' + '<br>Desde: ' + fechaIniPar + ' | Hasta: ' + dateFinPar + '</center>',
-                                    store: storeDataExcesos,
-                                    features: [filters],
-                                    multiSelect: true,
-                                    viewConfig: {
-                                        emptyText: 'No hay datos que Mostrar'
-                                    },
-                                    columns: [
-                                        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                        {text: 'Empresa', width: 150, dataIndex: 'empresaPanicos', align: 'center'},
-                                        {text: 'Placa', width: 100, dataIndex: 'placaPanicos', align: 'center'},
-                                        {text: 'Cantidad', width: 100, dataIndex: 'cantidadPanicos', align: 'center'},
-                                    ],
-                                    tbar: [{
-                                            xtype: 'button',
-                                            iconCls: 'icon-excel',
-                                            text: 'Exportar a Excel',
-                                            handler: function () {
-                                                if (storeDataExcesos.getCount() > 0) {
-                                                    if (getNavigator() === 'img/chrome.png') {
-                                                        var a = document.createElement('a');
-                                                        var data_type = 'data:application/vnd.ms-excel';
-                                                        var numFil = storeDataExcesos.data.length;
-                                                        var numCol = 3;
-                                                        var tiLetra = 'Calibri';
-                                                        var titulo = 'Registro de Panico';
-                                                        var table_div = "<?xml version='1.0'?><?mso-application progid='Excel.Sheet'?><Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'><DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'><Author>KRADAC SOLUCIONES TECNOLÃ“GICAS</Author><LastAuthor>KRADAC SOLUCIONES TECNOLÃ“GICAS</LastAuthor><Created>2014-08-20T15:33:48Z</Created><Company>KRADAC</Company><Version>15.00</Version>";
-                                                        table_div += "</DocumentProperties> " +
-                                                                "<Styles> " +
-                                                                "<Style ss:ID='Default' ss:Name='Normal'>   <Alignment ss:Vertical='Bottom'/>   <Borders/>   <Font ss:FontName='" + tiLetra + "' x:Family='Swiss' ss:Size='11' ss:Color='#000000'/>   <Interior/>   <NumberFormat/>   <Protection/>  </Style>  " +
-                                                                "<Style ss:ID='encabezados'><Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>   <Font ss:FontName='Calibri' x:Family='Swiss' ss:Size='11' ss:Color='#000000' ss:Bold='1'/>  </Style>  " +
-                                                                "<Style ss:ID='datos'><NumberFormat ss:Format='@'/></Style> " +
-                                                                "</Styles>";
-                                                        //Definir el numero de columnas y cantidad de filas de la hoja de calculo (numFil + 2))
-                                                        table_div += "<Worksheet ss:Name='Datos'>"; //Nombre de la hoja
-                                                        table_div += "<Table ss:ExpandedColumnCount='" + numCol + "' ss:ExpandedRowCount='" + (numFil + 2) + "' x:FullColumns='1' x:FullRows='1' ss:DefaultColumnWidth='60' ss:DefaultRowHeight='15'>";
-                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='121.5'/>";
-                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                        table_div += "<Column ss:AutoFitWidth='0' ss:Width='100'/>";
-                                                        table_div += "<Row ss:AutoFitHeight='0'><Cell ss:MergeAcross='" + (numCol - 1) + "' ss:StyleID='encabezados'><Data ss:Type='String'>" + titulo + "</Data></Cell>   </Row>";
-                                                        table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Empresa</Data></Cell>" +
-                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Placa</Data></Cell>" +
-                                                                "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Cantidad de Panicos</Data></Cell>" +
-                                                                "</Row>";
-                                                        for (var i = 0; i < numFil; i++) {
-                                                            table_div += "<Row ss:AutoFitHeight='0'>" +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataExcesos.data.items[i].data.empresaPanicos + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataExcesos.data.items[i].data.placaPanicos + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataExcesos.data.items[i].data.cantidadPanicos + " </Data></Cell > " +
-                                                                    "</Row>";
-                                                        }
-                                                        table_div += "</Table> </Worksheet></Workbook>";
-                                                        var table_xml = table_div.replace(/ /g, '%20');
-                                                        a.href = data_type + ', ' + table_xml;
-                                                        a.download = 'Registro Panicos' + '.xml';
-                                                        a.click();
-                                                    } else {
-                                                        Ext.MessageBox.show({
-                                                            title: 'Error',
-                                                            msg: '<center> El servicio para este navegador no esta disponible <br> Use un navegador como Google Chrome </center>',
-                                                            buttons: Ext.MessageBox.OK,
-                                                            icon: Ext.MessageBox.ERROR
-                                                        });
-                                                    }
-                                                } else {
-                                                    Ext.MessageBox.show({
-                                                        title: 'Mensaje',
-                                                        msg: 'No hay datos en la Lista a Exportar',
-                                                        buttons: Ext.MessageBox.OK,
-                                                        icon: Ext.MessageBox.ERROR
-                                                    });
-                                                }
-                                            }
-                                        }],
-                                    listeners: {
-                                        itemclick: function (thisObj, record, item, index, e, eOpts) {
-                                            idEquipoParada = record.get('idEquipoPanicos');
-                                            personaParadas = record.get('personaPanicos');
-                                            bandera = 1;
-                                            hayDatosParada = true;
-                                            gridViewDataPanico.setTitle('<center>Vista de Panicos: ' + personaParadas + ' <br> Equipo: ' + idEquipoParada + ' Desde: ' + fechaIniPar + ' Hasta:' + dateFinPar + '</center>');
-                                            storeViewPanico.load(
-                                                    {
-                                                        params: {
-                                                            idEquipo: idEquipoParada,
-                                                            fechaIni: dateIni.getRawValue(),
-                                                            fechaFin: dateFin.getRawValue(),
-                                                            horaIniP: timeInipanico.getRawValue(),
-                                                            horaFinP: timeFinpanico.getRawValue(),
-                                                        }
-                                                    });
-
-                                        }
-                                    }
-                                });
-                                var tabExcesos = Ext.create('Ext.container.Container', {
-                                    title: 'Panicos Detallados',
+                                
+                                var tabGeocercas = Ext.create('Ext.container.Container', {
+                                    title: 'Geocercas',
                                     closable: true,
                                     iconCls: 'icon-reset',
                                     layout: 'border',
@@ -413,11 +306,11 @@ Ext.onReady(function () {
                                     height: 485,
                                     width: 2000,
                                     region: 'center',
-                                    items: [gridViewDataPanico, gridDataExcesos]
+                                    items: [gridDataGeocercas]
                                 });
-                                panelTabMapaAdmin.add(tabExcesos);
-                                panelTabMapaAdmin.setActiveTab(tabExcesos);
-                                winParadas.hide();
+                                panelTabMapaAdmin.add(tabGeocercas);
+                                panelTabMapaAdmin.setActiveTab(tabGeocercas);
+                                winGeocercasReport.hide();
                             },
                             failure: function (form, action) {
                                 Ext.MessageBox.show({
@@ -435,32 +328,32 @@ Ext.onReady(function () {
                 text: 'Cancelar',
                 iconCls: 'icon-cancelar',
                 handler: function () {
-                    winParadas.hide();
+                    winGeocercasReport.hide();
                 }
             }]
     });
 });
 function ventanaReporteGeocerca() {
-    if (!winParadas) {
-        winParadas = Ext.create('Ext.window.Window', {
+    if (!winGeocercasReport) {
+        winGeocercasReport = Ext.create('Ext.window.Window', {
             layout: 'fit',
             title: 'Reporte de Geocercas',
             iconCls: 'icon-report-geo',
             resizable: false,
             width: 350,
-            height: 390,
+            height: 370,
             closeAction: 'hide',
             plain: false,
-            items: formParadas
+            items: formGeocercasReport
         });
     }
-    winParadas.show();
-    formParadas.getForm().reset();
-    cbxVehBDParada.clearValue();
-    cbxVehBDParada.enable();
+    winGeocercasReport.show();
+    formGeocercasReport.getForm().reset();
+    cbxVehBDGeocercaReport.clearValue();
+    cbxVehBDGeocercaReport.enable();
     storeVeh.load({
         params: {
-            cbxEmpresas: formParadas.down('[name=idCompanyParadas]').getValue()
+            cbxEmpresas: formGeocercasReport.down('[name=idCompanyParadas]').getValue()
         }
     });
 }

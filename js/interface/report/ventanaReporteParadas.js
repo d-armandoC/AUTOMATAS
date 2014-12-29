@@ -16,11 +16,18 @@ var id_vehiculo_paradas;
 var empresaNom = 'KRADAC';
 var porEquipoParadas;
 var cbxVehBDParadas;
-var placaReporteParadas;
-var empresaParadas;
+var placaReporteParadas = "";
+var empresaParadas = 'KRADAC';
 
 
 Ext.onReady(function () {
+    
+    if (idCompanyKarview == 1) {
+        banderaEx = 1;
+    } else {
+        empresaParadas = 'COOPMEGO';
+        banderaEx = storeEmpresas.data.items[0].data.id;
+    }
     storeViewParadas = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
         proxy: {
@@ -31,7 +38,7 @@ Ext.onReady(function () {
                 root: 'data'
             }
         },
-        fields: ['idData','empresa', 'vehiculo', 'placa', 'latitud', 'longitud', 'fecha', 'hora', 'velocidad', 'bateria', 'gsm', 'gps', 'ign', 'sky_evento']
+        fields: ['idData', 'empresa', 'vehiculo', 'placa', 'latitud', 'longitud', 'fecha', 'hora', 'velocidad', 'bateria', 'gsm', 'gps', 'ign', 'sky_evento']
     });
 
     cbxEmpresasParada = Ext.create('Ext.form.ComboBox', {
@@ -492,7 +499,7 @@ Ext.onReady(function () {
                                         }]
                                 });
                                 var tabExces = Ext.create('Ext.container.Container', {
-                                    title: '<div id="titulosForm">' + empresaParadas + " : " + placaReporteParadas + '</div>',
+                                    title: '<div id="titulosForm"> Reporte de Paradas' + empresaParadas + " : " + placaReporteParadas + '</div>',
                                     closable: true,
                                     iconCls: 'icon-unlock',
                                     layout: 'border',

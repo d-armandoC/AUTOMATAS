@@ -1,17 +1,19 @@
 var contenedorwinEvt;
 var winEvt;
-var placaEventos;
-var empresaEventos;
 var banderaEventos;
+var storeVehiculos;
+var empresaEventos='KRADAC';
+var placaEventos="";
 
 Ext.onReady(function () {
     if (idCompanyKarview == 1) {
         banderaEventos = 1;
     } else {
+        empresaEventos='COOPMEGO';
         banderaEventos = storeEmpresaPanicos.data.items[0].data.id;
     }
 
-    var storeVeh = Ext.create('Ext.data.JsonStore', {
+ storeVehiculos = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
         proxy: {
             type: 'ajax',
@@ -56,7 +58,7 @@ Ext.onReady(function () {
                 var listSelected = contenedorwinEvt.down('[name=listVehEvent]');
                 listSelected.clearValue();
                 listSelected.fromField.store.removeAll();
-                storeVeh.load({
+                storeVehiculos.load({
                     params: {
                         cbxEmpresas: records[0].data.id
                     }
@@ -68,7 +70,7 @@ Ext.onReady(function () {
     var cbxVehBD = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Vehículo:',
         name: 'cbxVehEvent',
-        store: storeVeh,
+        store: storeVehiculos,
         valueField: 'id',
         displayField: 'text',
         queryMode: 'local',
@@ -215,7 +217,7 @@ Ext.onReady(function () {
                         name: 'listVehEvent',
                         anchor: '97%',
                         height: 150,
-                        store: storeVeh,
+                        store: storeVehiculos,
                         displayField: 'text',
                         valueField: 'value',
                         allowBlank: false,
@@ -317,6 +319,12 @@ function ventanaEventos() {
     }
     contenedorwinEvt.getForm().reset();
     winEvt.show();
+    storeVehiculos.load({
+        params: {
+            cbxEmpresas: banderaEventos
+        }
+        
+    });
 }
 
 
@@ -324,7 +332,6 @@ function loadGridEvents() {
 
     var empresa = contenedorwinEvt.down('[name=cbxEmpresasEvent]').getValue();
     var listVeh = contenedorwinEvt.down('[name=listVehEvent]').getValue();
-    console.log(listVeh);
     var listEvt = contenedorwinEvt.down('[name=listEvt]').getValue();
     var fi = formatoFecha(contenedorwinEvt.down('[name=fechaIniEvent]').getValue());
     var ff = formatoFecha(contenedorwinEvt.down('[name=fechaFinEvent]').getValue());
@@ -499,7 +506,7 @@ function loadGridEvents() {
                     });
 
                     var tab = Ext.create('Ext.form.Panel', {
-                        title: '<div id="titulosForm">' + empresaEventos + " : " + placaEventos + '</div>',
+                        title: '<div id="titulosForm"> Reporte de Eventos' + empresaEventos + '</div>',
                         closable: true,
                         iconCls: 'icon-eventos',
                         items: gridEvents

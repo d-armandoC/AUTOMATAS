@@ -99,7 +99,7 @@ echo "
         <script type="text/javascript" src="js/mapa.js"></script>
         <!--Fin Mapa-->
     </head>
-    <body oncontextmenu = "return false">        
+<!--    <body oncontextmenu = "return false">        
         <header></header>
         <nav></nav>
         <section id = 'icono'>
@@ -110,5 +110,5 @@ echo "
             </div>
         </section>        
         <footer></footer>
-    </body>
+    </body>-->
 </html>

@@ -16,7 +16,7 @@ if (!$mysqli = getConectionDb()) {
                 order by id_empresa";
     }
     else{
-        $consultaSql = "select id_empresa, empresa,
+        $consultaSql = "select id_empresa, empresa,acronimo,
                 direccion, telefono, correo 
                 from empresas 
                 where id_empresa = '$idEmpresa'";
@@ -29,6 +29,7 @@ if (!$mysqli = getConectionDb()) {
         while ($myrow = $result->fetch_assoc()) {
             $objJson .= "{"
                     . "id:" . $myrow["id_empresa"] . ","
+                    . "acronimo:'".$myrow["acronimo"]."',"
                     . "text:'" . utf8_encode($myrow["empresa"]) . "'},";
         }
 

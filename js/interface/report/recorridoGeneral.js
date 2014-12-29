@@ -1,7 +1,7 @@
 var contenedorWinBan;
 var winBan;
 var tabpanelContain;
-var empresaRecorrido;
+var acronimoRecorrido = 'KRC1';
 var placaRecorrido;
 var banderaRecorrido;
 var cbxVehBD;
@@ -11,8 +11,10 @@ Ext.onReady(function () {
     if (idCompanyKarview == 1) {
         banderaRecorrido = 1;
     } else {
+        acronimoRecorrido = 'CLM';
         banderaRecorrido = storeEmpresas.data.items[0].data.id;
     }
+
     var cbxEmpresasBD = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Organización',
         name: 'cbxEmpresas',
@@ -26,10 +28,10 @@ Ext.onReady(function () {
         value: banderaRecorrido,
         listeners: {
             select: function (combo, records, eOpts) {
-                empresaRecorrido = cbxEmpresasBD.getRawValue();
+                console.log(records[0].data);
+                acronimoRecorrido = records[0].data.acronimo;
                 cbxVehBD.enable();
                 cbxVehBD.clearValue();
-                console.log('hola');
                 storeVeh.load({
                     params: {
                         cbxEmpresas: records[0].data.id
@@ -143,7 +145,6 @@ Ext.onReady(function () {
                 items: [yesterday]
             }]
     });
-
     contenedorWinBan = Ext.create('Ext.form.Panel', {
         frame: false,
         padding: '6 6 6 6',
@@ -151,10 +152,18 @@ Ext.onReady(function () {
             labelAlign: 'left',
             width: '100%'
         },
-        items: [{
+//        defaults: {
+//            margin: '0 5 0 0'
+//        },
+        items: [
+            {
+                
                 layout: 'column',
                 baseCls: 'x-plain',
-                items: [{
+//                 padding: '5 5 5 5',
+                items: [
+                    {
+                       
                         columnWidth: .5,
                         baseCls: 'x-plain',
                         items: [
@@ -163,6 +172,7 @@ Ext.onReady(function () {
                             timeIni
                         ]
                     }, {
+                        padding: '5 5 5 15',
                         columnWidth: .5,
                         baseCls: 'x-plain',
                         items: [
@@ -170,14 +180,16 @@ Ext.onReady(function () {
                             dateFin,
                             timeFin
                         ]
-                    }]
+                    }
+                ]
+                
             },
             panelBotones, {
                 xtype: 'fieldset',
                 title: 'Opciones de Reporte',
                 collapsible: true,
                 layout: 'anchor',
-                margin: '10 10 10 10',
+                margin: '5 5 5 5',
                 defaults: {
                     anchor: '100%'
                 },
@@ -452,7 +464,7 @@ function recorridosGeneral() {
             iconCls: 'icon-all-flags',
             resizable: false,
             width: 580,
-            height: 300,
+            height: 265,
             closeAction: 'hide',
             plain: false,
             items: [contenedorWinBan]
@@ -508,7 +520,7 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
         fields: ['latitud', 'longitud', {name: 'fecha_hora', type: 'date', dateFormat: 'c'}, {name: 'fecha_hora_reg', type: 'date', dateFormat: 'c'}, 'velocidad', 'bateria',
             'gsm', 'gps2', 'ign', 'direccion', 'color', 'evento', 'idEvento', 'g1', 'g2', 'salida', 'eventos']
     });
-    
+
     var columnFlags = [];
     columnFlags = [
         {text: '<b>Trama</b>', width: 65, dataIndex: 'idData', align: 'center'},
@@ -570,7 +582,7 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
     });
 
     var tab = Ext.create('Ext.container.Container', {
-        title: '<div id="titulosForm">' + empresaRecorrido + ":" + placaRecorrido + '</div>',
+        title: '<div id="titulosForm"> Recorrido General  ' + acronimoRecorrido + ":" + placaRecorrido + '</div>',
         closable: true,
         iconCls: 'icon-all-flags',
         layout: 'border',

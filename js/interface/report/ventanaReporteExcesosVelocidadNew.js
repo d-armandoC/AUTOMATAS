@@ -1,7 +1,6 @@
 var winExcesos;
 var formularioExcesos;
 var VentanaExcesos;
-var banderaExcesos = 0;
 var storeViewExcesos;
 var fechaFinperdExcesos;
 var personaExcesos;
@@ -21,17 +20,19 @@ var fechaFnExcesos;
 var porEquipoEx = false;
 var cbxVehExceso;
 var empresaNom = 'KRADAC';
-var empresaExcesos;
-var placaExcesos;
-var banderaExcesos;
+var empresaExVelocidad='KRADAC';
+var placaExcesos="";
+var banderaEx;
 
 Ext.onReady(function () {
-    
     if (idCompanyKarview == 1) {
-        banderaExcesos = 1;
+        banderaEx = 1;
     } else {
-        banderaExcesos = storeEmpresas.data.items[0].data.id;
+        empresaExVelocidad='COOPMEGO';
+        banderaEx = storeEmpresas.data.items[0].data.id;
     }
+    
+    
     cbxEmpresasExcesos = Ext.create('Ext.form.ComboBox', {
         fieldLabel: 'Organización',
         name: 'idempresasExcesos',
@@ -42,10 +43,10 @@ Ext.onReady(function () {
         emptyText: 'Seleccionar Organización...',
         editable: false,
         allowBlank: false,
-        value: banderaExcesos,
+        value: banderaEx,
         listeners: {
             select: function (combo, records, eOpts) {
-                empresaExcesos = cbxEmpresasExcesos.getRawValue();
+                empresaExVelocidad = cbxEmpresasExcesos.getRawValue();
                 placaExcesos = " ";
                 if (porEquipoEx) {
                     cbxVehExceso.clearValue();
@@ -197,7 +198,7 @@ Ext.onReady(function () {
                             change: function (field, newValue, oldValue) {
                                 switch (parseInt(newValue['rb1'])) {
                                     case 1:
-                                        empresaExcesos = 1;
+//                                        empresaExVelocidad = 1;
                                         cbxEmpresasExcesos.enable();
                                         cbxVehExceso.clearValue();
                                         cbxVehExceso.disable();
@@ -205,7 +206,7 @@ Ext.onReady(function () {
                                         break;
                                     case 2:
                                         porEquipoEx = true;
-                                        empresaExcesos = cbxEmpresasExcesos.getValue();
+//                                        empresaExVelocidad = cbxEmpresasExcesos.getValue();
                                         empresaNom = cbxEmpresasExcesos.getRawValue();
                                         if (porEquipoEx) {
                                             cbxVehExceso.enable();
@@ -361,7 +362,7 @@ function cargardatosalGrid(datos) {
 
     var tabExcesosVelocidad = Ext.create('Ext.container.Container', {
         //title: 'Reporte de Excesos de velocidad',
-        title: '<div id="titulosForm">' + empresa + ":" + placaExcesos + '</div>',
+        title: '<div id="titulosForm"> Excesos de Velocidad' + empresaExVelocidad + ":" + placaExcesos + '</div>',
         closable: true,
         iconCls: 'icon-exceso-vel',
         layout: 'border',

@@ -118,7 +118,7 @@
     
     
     </head>
-     <body oncontextmenu = "return false">        
+<!--     <body oncontextmenu = "return false">        
         <header></header>
         <nav></nav>
         <section id = 'icono'>
@@ -129,5 +129,5 @@
             </div>
         </section>        
         <footer></footer>
-    </body>
+    </body>-->
 </html>
