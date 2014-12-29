@@ -364,8 +364,14 @@ Ext.onReady(function () {
 
 
     var administracion = Ext.create('Ext.button.Button', {
-        text: 'Administración',
-        iconCls: 'icon-direccion',
+        width: 150,
+        height: 40,
+        padding: '0 0 0 0',
+        style: {
+            borderStyle: 'none',
+            backgroundImage: 'url(img/stv-05.png)',
+            backgroundSize: '100% 100%',
+        },
         tooltip: 'Administración de Usuarios, Equipos y Vehiculos',
         scope: this,
         menu: [
@@ -412,10 +418,18 @@ Ext.onReady(function () {
     });
 
     var herraminetas = Ext.create('Ext.button.Button', {
-        text: 'Herramientas',
         scope: this,
+        width: 140,
+        height: 40,
+//        padding: '0 0 0 5',
+        x:5,
+        y:30,
+        style: {
+            borderStyle: 'none',
+            backgroundImage: 'url(img/stv-03.png)',
+            backgroundSize: '100% 100%',
+        },
         tooltip: 'Herramintas de Acceso Rapido',
-        iconCls: 'icon-config',
         menu: [
             {text: 'Modificar usuarios', iconCls: 'icon-personal', handler: function () {
                     ventanaModificarUsuario();
@@ -446,9 +460,16 @@ Ext.onReady(function () {
 
 
     var monitoreo = Ext.create('Ext.button.Button', {
-        text: 'Monitoreo',
+        width: 130,
+        height: 40,
+        padding: '0 0 0 10',
+        style: {
+            borderStyle: 'none',
+            backgroundImage: 'url(img/stv-04.png)',
+            backgroundSize: '100% 100%',
+        },
         tooltip: 'Estado Actual de los Vehiculos y Equipos',
-        iconCls: 'icon-monitoreo', handler: function () {
+        handler: function () {
             window.open('monitorTeam.php');
         }
 
@@ -456,10 +477,17 @@ Ext.onReady(function () {
 
     var salir = Ext.create('Ext.button.Button', {
         id: 'custom',
-        text: 'Salir',
-        scope: this,
+               scope: this,
         tooltip: 'Salir del Sistema',
-        icon: 'img/salir.png',
+        width: 40,
+                height: 40,
+                padding: '0 0 0 0',
+                style: {
+                    borderStyle: 'none',
+                    backgroundImage: 'url(img/stv-09.png)',
+                    backgroundSize: '100% 100%',
+                     backgroundColor: '#FAFAFA',
+                },
         handler: function () {
             Ext.MessageBox.confirm('SALIR', 'Desea Salir del Sistema ?', function (choice) {
                 if (choice === 'yes') {
@@ -472,10 +500,20 @@ Ext.onReady(function () {
     });
 
     var barraMenu = Ext.create('Ext.toolbar.Toolbar', {
-        width: '100%',
+        padding: '0 0 0 0',
+        style: {
+            backgroundColor: '#FAFAFA',
+        },
         items: [{
-                text: 'Menú',
-                icon: 'img/menu.png',
+                xtype: 'button',
+                width: 130,
+                height: 40,
+                padding: '0 0 0 0',
+                style: {
+                    borderStyle: 'none',
+                    backgroundImage: 'url(img/stv-02.png)',
+                    backgroundSize: '100% 100%',
+                },
                 tooltip: 'Reportes Informativos',
                 menu: [{
                         text: 'Reportes',
@@ -524,7 +562,15 @@ Ext.onReady(function () {
                     , '->',
             {
                 xtype: 'button',
-                iconCls: 'icon-act-mapa',
+                width: 40,
+                height: 40,
+                padding: '0 0 0 0',
+                style: {
+                    borderStyle: 'none',
+                    backgroundImage: 'url(img/stv-08.png)',
+                    backgroundSize: '100% 100%',
+                     backgroundColor: '#FAFAFA',
+                },
                 tooltip: 'Limpiar Mapa',
                 handler: function () {
                     clearLienzoPointTravel();
@@ -536,7 +582,7 @@ Ext.onReady(function () {
             {
                 xtype: 'label',
                 html: '<section id="panelNorte">' +
-                        '<center><strong id="name"><FONT SIZE=3  COLOR="blue">' + (diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()]) + '  ' + '</FONT><iframe src="http://free.timeanddate.com/clock/i3x5kb7x/n190/tlec4/fn12/fs18/tct/pct/ftb/bas0/bat0/th1"  frameborder="0" width="96"  height="15" allowTransparency="true" ></iframe>' + '</strong></center>' +
+                        '<center><strong id="name"><FONT SIZE=3  COLOR="black">' + (diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()]) + '  ' + '</FONT><iframe src="http://free.timeanddate.com/clock/i3x5kb7x/n190/tlec4/fn12/fs18/tct/pct/ftb/bas0/bat0/th1"  frameborder="0" width="96"  height="15" allowTransparency="true" ></iframe>' + '</strong></center>' +
                         '</section>'
             },
             {
@@ -559,14 +605,13 @@ Ext.onReady(function () {
         items: [{
                 layout: 'hbox',
                 bodyStyle: {
-                    background: '#add2ed'
+                    backgroundImage: 'url(img/stv-01.png)',
+                    backgroundSize: '100% 100%'
                 },
-                items: [{
+                items: [
+                    {
                         xtype: 'label',
-                        html: '<a href="http://www.kradac.com" target="_blank"><img src="img/logo.png" width="250" height="64"></a>'
-                    }, {
-                        xtype: 'label',
-                        padding: '15 0 0 150',
+                        padding: '15 8 8 500',
                         style: {
                             color: '#157fcc'
                         },
@@ -791,7 +836,10 @@ Ext.onReady(function () {
 
     var toolBarOnMap = Ext.create('Ext.toolbar.Toolbar', {
         region: 'north',
-        border: true,
+        padding: '0 0 0 0',
+        style: {
+            backgroundColor: '#FAFAFA',
+        },
         items: [
 //            {
 //                xtype: 'combo',
@@ -833,8 +881,15 @@ Ext.onReady(function () {
                         }
                     }, {
                 xtype: 'splitbutton',
-                text: 'Organización',
-                iconCls: 'icon-central',
+                 width: 150,
+                height: 40,
+                padding: '0 0 0 0',
+                style: {
+                    borderStyle: 'none',
+                    backgroundImage: 'url(img/stv-07.png)',
+                    backgroundSize: '100% 100%',
+                     backgroundColor: '#FAFAFA',
+                },
                 tooltip: 'Organizaciones Asociadas',
                 menu: menuCoop,
                 handler: function () {
