@@ -1102,7 +1102,7 @@ function ventAddMantenimientosPost() {
     if (!winAddVehiculos) {
         winAddVehiculos = Ext.create('Ext.window.Window', {
             layout: 'fit',
-            title: ' Mantenimiento Post',
+            title: ' Mantenimiento',
             iconCls: 'icon-mantenimiento',
             resizable: false,
             width: 1195,
