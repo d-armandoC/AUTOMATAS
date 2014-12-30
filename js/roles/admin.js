@@ -708,9 +708,13 @@ Ext.onReady(function () {
             animate: false
         },
         items: [{
+                
                 xtype: 'treepanel',
                 id: 'veh-taxis-tree',
                 rootVisible: false,
+                bodyStyle: {
+                     backgroundColor: '#f8fdff',
+                },
                 title: 'Organización',
                 autoScroll: true,
                 iconCls: 'icon-tree-company',
@@ -836,9 +840,9 @@ Ext.onReady(function () {
 
     var toolBarOnMap = Ext.create('Ext.toolbar.Toolbar', {
         region: 'north',
-        padding: '0 0 0 0',
+        padding: '2 2 2 2',
         style: {
-            backgroundColor: '#FAFAFA',
+            backgroundColor: '#f8fdff',
         },
         items: [
 //            {
@@ -882,13 +886,14 @@ Ext.onReady(function () {
                     }, {
                 xtype: 'splitbutton',
                  width: 150,
-                height: 40,
-                padding: '0 0 0 0',
+                height: 30,
+                padding: '2 2 2 2',
                 style: {
                     borderStyle: 'none',
                     backgroundImage: 'url(img/stv-07.png)',
                     backgroundSize: '100% 100%',
-                     backgroundColor: '#FAFAFA',
+                     backgroundColor: '#f8fdff',
+                    
                 },
                 tooltip: 'Organizaciones Asociadas',
                 menu: menuCoop,
@@ -958,13 +963,14 @@ Ext.onReady(function () {
         items: [
             toolBarOnMap,
             panelTabMapaAdmin,
-            gridEventos
+            gridEventos,
+            panelEste 
         ]
     });
 
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
-        items: [panelMenu, panelEste, panelCentral]
+        items: [panelMenu, panelCentral]
     });
     storeEmpresas.load();
 
