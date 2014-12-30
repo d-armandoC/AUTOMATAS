@@ -125,13 +125,7 @@ Ext.onReady(function () {
             selectionchange: function (thisObject, selected, eOpts) {
                 setActiveRecord(selected[0] || null);
                 var record = selected[0];
-                 formGeocercas.getForm().loadRecord(record);
-//                storeVehGeocerca.load({
-//                    params: {
-//                        empresa: record.data.id_empresa,
-//                        idGeo: record.data.id
-//                    }
-//                });
+                formGeocercas.getForm().loadRecord(record);
                 recargar(record.data.id_empresa, record.data.id);
                 idGeo = record.data.id;
                 lines.destroyFeatures();
@@ -140,7 +134,6 @@ Ext.onReady(function () {
                 if (ga > 0) {
                     storeVehGeocerca.reload();
                     drawPoligonoGeocerca(record.data.geocercaPuntos);
-                    console.log('si hay datos');
                     mystore.removeAll();
                     var listSelect = formGeocercas.down('[name=vehiculos]');
                     listSelect.clearValue();
@@ -258,7 +251,6 @@ Ext.onReady(function () {
                                                         geosArea = true;
                                                         geosVertice = true;
                                                     } else {
-                                                        console.log('actualizar');
                                                         geosArea = true;
                                                         geosVertice = true;
                                                         modifyLine.activate();
@@ -271,24 +263,25 @@ Ext.onReady(function () {
                                                                     iconCls: 'icon-valid',
                                                                     text: 'Terminar',
                                                                     handler: function () {
-//                                                                        console.log('terminar');
-                                                                        var areaGeoce = lines.features[0].geometry.getArea();
-                                                                        console.log('geos'+areaGeoce);
-//                                                                        Ext.getCmp('numberfield-point-route').setValue(lines.features[0].geometry.components.length);
-//                                                                        modifyLine.deactivate();
-//                                                                        winAddGeocerca.show();
                                                                         geometria = lines.features[0].geometry; //figura
-                                                                        console.log(lines.features[0].geometry);
-                                                                        
-                                                                        console.log(geometria + 'geometria');
-                                                                        console.log(geometria.getArea() + 'area');
-//                                                                        var area = geometria.getArea() / 1000;
-//                                                                        area = Math.round(area * 100) / 100;
-//                                                                        console.log(area);
-//                                                                        Ext.getCmp('numberfield-point-route').setValue(area + ' km2');
+                                                                        var linearRing = new OpenLayers.Geometry.LinearRing(geometria.getVertices());
+                                                                        var polygonFeature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Polygon([linearRing]));
+                                                                        var areaEdit = polygonFeature.geometry.getArea() / 1000;
+                                                                        areaEdit = Math.round(areaEdit * 100) / 100;
+                                                                        Ext.getCmp('numberfield-point-route').setValue(areaEdit + ' km2');
                                                                         modifyLine.deactivate();
+                                                                        var nuevosVertces = geometria.getVertices();
+                                                                        var coordenadasEdit = '';
+                                                                        for (var i = 0; i < nuevosVertces.length; i++) {
+                                                                            nuevosVertces[i] = nuevosVertces[i].transform(new OpenLayers.Projection('EPSG:900913'),
+                                                                                    new OpenLayers.Projection('EPSG:4326'));
+                                                                            coordenadasEdit += nuevosVertces[i].x + ',' + nuevosVertces[i].y;
+                                                                            if (i != nuevosVertces.length - 1) {
+                                                                                coordenadasEdit += ';';
+                                                                            }
+                                                                        }
+                                                                        console.log("Nuevas Cordenadas editadas  "+coordenadasEdit);
                                                                         winAddGeocerca.show();
-                                                                        drawRoute = true;
                                                                     }
                                                                 }]
                                                         }).show();
@@ -432,8 +425,10 @@ function onUpdateGeocerca() {
 
 function onCreateGeocerca() {
     var form = formGeocercas.getForm();
+    console.log(coordenadasGeos);
     if (form.isValid()) {
         if (coordenadasGeos != "") {
+
             form.submit({
                 url: "php/interface/adminGeo/geoNew.php",
                 waitMsg: "Guardando...",

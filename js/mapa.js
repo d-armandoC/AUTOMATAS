@@ -51,6 +51,7 @@ function loadMap() {
                     fillOpacity: 0
                 })
             });
+
             var options = {
                 controls: [
                     new OpenLayers.Control.Navigation({dragPanOptions: {enableKinetic: true}}),
@@ -148,8 +149,8 @@ function loadMap() {
                 fontFamily: "Times New Roman",
                 fontWeight: "bold"
             });
-            
-                var stylePuntosEncendidoApagado = new OpenLayers.StyleMap({
+
+            var stylePuntosEncendidoApagado = new OpenLayers.StyleMap({
                 fillOpacity: 0.7,
                 pointRadius: 10,
                 idPunto: "${idTravel}",
@@ -221,7 +222,7 @@ function loadMap() {
                 fontWeight: "bold"
             });
 
-   lienzoPointEncendidoApagado = new OpenLayers.Layer.Vector('Puntos de Paradas', {
+            lienzoPointEncendidoApagado = new OpenLayers.Layer.Vector('Puntos de Paradas', {
                 eventListeners: {
                     featureselected: function (evt) {
                         var feature = evt.feature;
@@ -242,7 +243,7 @@ function loadMap() {
                                 "<b>Fecha: </b>" + fecha.toString() + "<br>" +
                                 "<b>Hora: </b>" + hora.toString() + "<br>" +
                                 "<b>Evento: </b>" + evento.toString() + "<br>" +
-                                "<b>Velocidad: </b>"+velocidad.toString() + "</br>" +
+                                "<b>Velocidad: </b>" + velocidad.toString() + "</br>" +
                                 "<b>GPS: </b>" + gps.toString() + "</br>" +
                                 "<b>GSM: </b>" + gsm.toString() + "</br>" +
                                 "<b>Bateria: </b>" + bateria.toString() + "</br>" +
@@ -297,7 +298,7 @@ function loadMap() {
                                 "<b>Fecha: </b>" + fecha.toString() + "<br>" +
                                 "<b>Hora: </b>" + hora.toString() + "<br>" +
                                 "<b>Evento: </b>" + evento.toString() + "<br>" +
-                                "<b>Velocidad: </b>"+velocidad.toString() + "</br>" +
+                                "<b>Velocidad: </b>" + velocidad.toString() + "</br>" +
                                 "<b>GPS: </b>" + gps.toString() + "</br>" +
                                 "<b>GSM: </b>" + gsm.toString() + "</br>" +
                                 "<b>Bateria: </b>" + bateria.toString() + "</br>" +
@@ -644,7 +645,7 @@ function loadMap() {
             //Comportamiento de los Elementos de la Capa
             var selectFeatures = new OpenLayers.Control.SelectFeature(
                     [lienzoPointRoute, lienzoPoinTravel, lienzoPointRouteManual, lienzoVehicle, lienzoPointPanico, lienzoPointperdidaGpsGsm, lienzoPointParadas,
-                     lienzoPointEncendidoApagado], {
+                        lienzoPointEncendidoApagado], {
                 hover: false,
                 autoActivate: true
             });
@@ -653,7 +654,7 @@ function loadMap() {
             lienzoLineTravel = new OpenLayers.Layer.Vector("Linea de Recorrido");
             lienzoLineRouteManual = new OpenLayers.Layer.Vector("Linea de Ruta Manual");
             markerInicioFin = new OpenLayers.Layer.Markers("Inicio-Fin");
-            
+
             drawLine = new OpenLayers.Control.DrawFeature(lines, OpenLayers.Handler.Polygon, {featureAdded: getDataRoute});
             modifyLine = new OpenLayers.Control.ModifyFeature(lines, OpenLayers.Handler.Polygon, {featureAdded: drawPoligonoGeocerca});
 
@@ -1378,32 +1379,17 @@ function drawPoligonoGeocerca(dataRoute) {
     Ext.getCmp('btn-draw-edit-route').setIconCls("icon-update");
     var puntosRuta = new Array();
     var json = dataRoute.split(";");
-    var pos = json[0].split(",");
     var i = 0;
-    for (i = 0; i <= json.length; i++) {
-        if (i < json.length - 1) {
-            var dataRuta = json[i].split(",");
-            var pt = new OpenLayers.Geometry.Point(dataRuta[0], dataRuta[1]);
-            pt.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
-            puntosRuta.push(pt);
-        }
-        if (i === json.length) {
-            var pt = new OpenLayers.Geometry.Point(pos[0], pos[1]);
-
-            pt.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
-            puntosRuta.push(pt);
-        }
-
+    for (i = 0; i <json.length-1; i++) {
+        var dataRuta = json[i].split(",");
+        var pt = new OpenLayers.Geometry.Point(dataRuta[0], dataRuta[1]);
+        pt.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+        puntosRuta.push(pt);
     }
-    var ruta = new OpenLayers.Geometry.LineString(puntosRuta);
-    var style = {
-        strokeColor: "#DF3A01",
-        strokeOpacity: 5,
-        strokeWidth: 3
-    };
-    var lineFeature = new OpenLayers.Feature.Vector(ruta, null, style);
-    lines.addFeatures([lineFeature]);
-    console.log(lines.features[0].geometry);
+    console.log(puntosRuta);
+    var linearRing = new OpenLayers.Geometry.LinearRing(puntosRuta);
+    var polygonFeature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Polygon([linearRing]));
+    lines.addFeatures([polygonFeature]);
     drawRoute = false;
 }
 function drawPointsEnergDeserg(puntosPanico) {
@@ -1412,17 +1398,6 @@ function drawPointsEnergDeserg(puntosPanico) {
     pt.transform(new OpenLayers.Projection("EPSG:4326"),
             new OpenLayers.Projection("EPSG:900913"));
     var puntoMap = new OpenLayers.Feature.Vector(pt, {
-//         {text: 'Trama', width: 150, dataIndex: 'idData', align: 'center'},
-//         {text: 'Fecha', width: 150, dataIndex: 'fechaED', align: 'center'},
-//         {text: 'Hora', width: 150, dataIndex: 'horaED', align: 'center'},
-//         {text: 'evento', width: 150, dataIndex: 'eventoED', align: 'center'},
-//         {text: 'Velocidad', width: 150, dataIndex: 'velocidadED', align: 'center', xtype: 'numbercolumn', format: '0.00'},
-//         {text: 'Latitud', width: 200, dataIndex: 'latitudED', align: 'center'},
-//         {text: 'Longitud', width: 200, dataIndex: 'longitudED', align: 'center'},
-//         {text: 'Bateria', width: 200, dataIndex: 'bateriaED', align: 'center'},
-//         {text: 'GSM', width: 200, dataIndex: 'gsmED', align: 'center'},
-//         {text: 'GPS', width: 200, dataIndex: 'gpsED', align: 'center'},
-//         {text: 'Direccion', width: 200, dataIndex: 'direccionED', align: 'center'}
         idTravel: puntosPanico.idData,
         idTrama: puntosPanico.idData,
         fecha: puntosPanico.fechaED,
@@ -1929,19 +1904,20 @@ var geosArea = false;
 var geosVertice = false;
 
 function getDataRoute(fig) {
-    console.log('estoy en el getdataroute');
     var vert = fig.geometry.getVertices();
     var areaGeocerca = fig.geometry.getArea() / 1000;
     if (geosArea) {
-        console.log(geosArea);
+        console.log(fig.geometry.getVertices());
         areaGeocerca = Math.round(areaGeocerca * 100) / 100;
         Ext.getCmp('numberfield-point-route').setValue(areaGeocerca + ' km2');
         drawRoute = false;
         Ext.getCmp('btn-draw-edit-route').setIconCls("icon-update");
         Ext.getCmp('btn-delete-route').enable();
+        modifyLine.activate();
+        modifyLine.activate();
         drawLine.deactivate();
-        winAddGeocerca.show();
         geosArea = false;
+        winAddGeocerca.show();
     }
     if (geosVertice) {
         coordenadasGeos = '';
