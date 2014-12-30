@@ -82,16 +82,6 @@ function loadMap() {
             map.setCenter(lonLat, zoom);
 
             map.events.register('click', map, function (e) {
-//                if (positionPoint) {
-//                    var coord = map.getLonLatFromViewPortPx(e.xy);
-//                    var aux = new OpenLayers.Geometry.Point(coord.lon, coord.lat);
-//                    aux.transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326"));
-//                    Ext.getCmp('latPoint').setValue(aux.y);
-//                    Ext.getCmp('lonPoint').setValue(aux.x);
-//
-//                    winAdminPoint.show();
-//                    positionPoint = false;
-//                }
             }
             );
 
@@ -663,7 +653,9 @@ function loadMap() {
             lienzoLineTravel = new OpenLayers.Layer.Vector("Linea de Recorrido");
             lienzoLineRouteManual = new OpenLayers.Layer.Vector("Linea de Ruta Manual");
             markerInicioFin = new OpenLayers.Layer.Markers("Inicio-Fin");
+            
             drawLine = new OpenLayers.Control.DrawFeature(lines, OpenLayers.Handler.Polygon, {featureAdded: getDataRoute});
+            
             modifyLine = new OpenLayers.Control.ModifyFeature(lines, OpenLayers.Handler.Polygon, {featureAdded: drawPoligonoGeocerca});
 
 

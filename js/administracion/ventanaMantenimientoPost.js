@@ -322,7 +322,7 @@ Ext.onReady(function () {
 //                    padding: '0 0 15 30',
                     baseCls: 'x-plain',
                     defaults: {
-                        labelWidth: 90
+                        labelWidth: 80
                     }
                 }
                 ,

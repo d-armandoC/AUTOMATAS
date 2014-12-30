@@ -9,12 +9,10 @@ var drawRoute;
 var geometria;
 var id_empresageos = 0;
 var vistaVehiculosGeocercas;
-var storeVehGeocerca;
 
 
-storeVehGeocerca = Ext.create('Ext.data.JsonStore', {
+var storeVehGeocerca = Ext.create('Ext.data.JsonStore', {
     autoDestroy: true,
-    autoLoad: true,
     proxy: {
         type: 'ajax',
         url: 'php/interface/adminGeo/geoVeh.php',
@@ -63,7 +61,6 @@ Ext.onReady(function () {
     });
     // crea los datos del store
     gridStoreGeocercas = Ext.create('Ext.data.Store', {
-        autoDestroy: true,
         autoLoad: true,
         autoSync: true,
         model: 'DataObject',
@@ -129,9 +126,14 @@ Ext.onReady(function () {
             selectionchange: function (thisObject, selected, eOpts) {
                 setActiveRecord(selected[0] || null);
                 var record = selected[0];
-                recargar(record.data.id_empresa, record.data.id);
-                console.log(storeVehGeocerca.data);
-                formGeocercas.getForm().loadRecord(record);
+                 formGeocercas.getForm().loadRecord(record);
+                storeVehGeocerca.load({
+                    params: {
+                        empresa: record.data.id_empresa,
+                        idGeo: record.data.id
+                    }
+                });
+//                recargar(record.data.id_empresa, record.data.id);
                 idGeo = record.data.id;
                 lines.destroyFeatures();
                 var ga = storeVehGeocerca.data.length;
@@ -170,19 +172,6 @@ Ext.onReady(function () {
 
     }
 
-
-    var storeVeh = Ext.create('Ext.data.JsonStore', {
-        autoDestroy: true,
-        proxy: {
-            type: 'ajax',
-            url: 'php/combobox/comboVeh.php',
-            reader: {
-                type: 'json',
-                root: 'veh'
-            }
-        },
-        fields: [{name: 'value', mapping: 'id'}, 'text']
-    });
 
     formGeocercas = Ext.create('Ext.form.Panel', {
         id: 'panel',
@@ -283,7 +272,6 @@ Ext.onReady(function () {
                                                                     iconCls: 'icon-valid',
                                                                     text: 'Terminar',
                                                                     handler: function () {
-
 //                                                                        console.log('terminar');
 //                                                                        var areaGeoce = lines.features[0].geometry.getArea();
 //                                                                        console.log(areaGeoce);
