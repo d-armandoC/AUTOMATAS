@@ -655,7 +655,6 @@ function loadMap() {
             markerInicioFin = new OpenLayers.Layer.Markers("Inicio-Fin");
             
             drawLine = new OpenLayers.Control.DrawFeature(lines, OpenLayers.Handler.Polygon, {featureAdded: getDataRoute});
-            
             modifyLine = new OpenLayers.Control.ModifyFeature(lines, OpenLayers.Handler.Polygon, {featureAdded: drawPoligonoGeocerca});
 
 

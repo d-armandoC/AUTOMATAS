@@ -118,7 +118,6 @@ Ext.onReady(function () {
         width: '30%',
         margins: '0 2 0 0',
         region: 'west',
-        title: 'Registros Geocercas',
         selModel: Ext.create('Ext.selection.RowModel', {singleSelect: true}),
         features: [filters],
         //Para cuando de click a una de las filas se pasen los datos
@@ -127,13 +126,13 @@ Ext.onReady(function () {
                 setActiveRecord(selected[0] || null);
                 var record = selected[0];
                  formGeocercas.getForm().loadRecord(record);
-                storeVehGeocerca.load({
-                    params: {
-                        empresa: record.data.id_empresa,
-                        idGeo: record.data.id
-                    }
-                });
-//                recargar(record.data.id_empresa, record.data.id);
+//                storeVehGeocerca.load({
+//                    params: {
+//                        empresa: record.data.id_empresa,
+//                        idGeo: record.data.id
+//                    }
+//                });
+                recargar(record.data.id_empresa, record.data.id);
                 idGeo = record.data.id;
                 lines.destroyFeatures();
                 var ga = storeVehGeocerca.data.length;
@@ -176,7 +175,6 @@ Ext.onReady(function () {
     formGeocercas = Ext.create('Ext.form.Panel', {
         id: 'panel',
         region: 'center',
-        title: '<b>Información de Geocerca</b>',
         activeRecord: null,
         bodyStyle: 'padding: 10px; background-color: #DFE8F6',
         margins: '0 0 0 3',
@@ -260,6 +258,7 @@ Ext.onReady(function () {
                                                         geosArea = true;
                                                         geosVertice = true;
                                                     } else {
+                                                        console.log('actualizar');
                                                         geosArea = true;
                                                         geosVertice = true;
                                                         modifyLine.activate();
@@ -273,17 +272,20 @@ Ext.onReady(function () {
                                                                     text: 'Terminar',
                                                                     handler: function () {
 //                                                                        console.log('terminar');
-//                                                                        var areaGeoce = lines.features[0].geometry.getArea();
-//                                                                        console.log(areaGeoce);
+                                                                        var areaGeoce = lines.features[0].geometry.getArea();
+                                                                        console.log('geos'+areaGeoce);
 //                                                                        Ext.getCmp('numberfield-point-route').setValue(lines.features[0].geometry.components.length);
 //                                                                        modifyLine.deactivate();
 //                                                                        winAddGeocerca.show();
                                                                         geometria = lines.features[0].geometry; //figura
+                                                                        console.log(lines.features[0].geometry);
+                                                                        
                                                                         console.log(geometria + 'geometria');
-                                                                        var area = geometria.getArea() / 1000;
-                                                                        area = Math.round(area * 100) / 100;
-                                                                        console.log(area);
-                                                                        Ext.getCmp('numberfield-point-route').setValue(area + ' km2');
+                                                                        console.log(geometria.getArea() + 'area');
+//                                                                        var area = geometria.getArea() / 1000;
+//                                                                        area = Math.round(area * 100) / 100;
+//                                                                        console.log(area);
+//                                                                        Ext.getCmp('numberfield-point-route').setValue(area + ' km2');
                                                                         modifyLine.deactivate();
                                                                         winAddGeocerca.show();
                                                                         drawRoute = true;
@@ -382,7 +384,7 @@ function ventanaGeocerca() {
             iconCls: 'icon-personal',
             resizable: false,
             width: 990,
-            height: 350,
+            height: 320,
             closeAction: 'hide',
             plain: false,
             items: [{
