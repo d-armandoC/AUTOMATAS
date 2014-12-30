@@ -8439,7 +8439,7 @@ ul.x-tagfield-list.x-tagfield-singleselect {
 /* line 58, ../../../ext-theme-base/sass/src/form/field/Tag.scss */
 .x-field:not(.x-item-disabled) .x-tagfield-item.selected {
   border: 1px solid #e1f2f9 !important;
-  background: #004b6b !important;
+  background: #e1f2f9 !important;
   color: white !important;
 }
 

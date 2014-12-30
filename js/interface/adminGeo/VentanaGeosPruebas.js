@@ -9,7 +9,8 @@ var drawRoute;
 var geometria;
 var id_empresageos = 0;
 var vistaVehiculosGeocercas;
-
+var areaEdit;
+var coordenadasEdit = '';
 
 var storeVehGeocerca = Ext.create('Ext.data.JsonStore', {
     autoDestroy: true,
@@ -266,12 +267,12 @@ Ext.onReady(function () {
                                                                         geometria = lines.features[0].geometry; //figura
                                                                         var linearRing = new OpenLayers.Geometry.LinearRing(geometria.getVertices());
                                                                         var polygonFeature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Polygon([linearRing]));
-                                                                        var areaEdit = polygonFeature.geometry.getArea() / 1000;
+                                                                        areaEdit = polygonFeature.geometry.getArea() / 1000;
                                                                         areaEdit = Math.round(areaEdit * 100) / 100;
                                                                         Ext.getCmp('numberfield-point-route').setValue(areaEdit + ' km2');
                                                                         modifyLine.deactivate();
                                                                         var nuevosVertces = geometria.getVertices();
-                                                                        var coordenadasEdit = '';
+
                                                                         for (var i = 0; i < nuevosVertces.length; i++) {
                                                                             nuevosVertces[i] = nuevosVertces[i].transform(new OpenLayers.Projection('EPSG:900913'),
                                                                                     new OpenLayers.Projection('EPSG:4326'));
@@ -280,7 +281,7 @@ Ext.onReady(function () {
                                                                                 coordenadasEdit += ';';
                                                                             }
                                                                         }
-                                                                        console.log("Nuevas Cordenadas editadas  "+coordenadasEdit);
+                                                                        console.log("Nuevas Cordenadas editadas  " + coordenadasEdit);
                                                                         winAddGeocerca.show();
                                                                     }
                                                                 }]
@@ -412,15 +413,47 @@ function setActiveRecord(record) {
 }
 
 function onUpdateGeocerca() {
-    var active = formGeocercas.activeRecord,
-            form = formGeocercas.getForm();
-    if (!active) {
-        return;
-    }
+    var form = formGeocercas.getForm();
+    console.log(coordenadasGeos);
     if (form.isValid()) {
-        form.updateRecord(active);
-        onResetGeocerca();
-    }
+console.log(coordenadasEdit);
+            form.submit({
+                url: "php/interface/adminGeo/geoUpdate.php",
+                waitMsg: "Guardando...",
+                params: {
+                    idGeo:idGeo,
+                    coord: coordenadasEdit,
+                    area: areaEdit,
+                    vehiculolist: idVehiculos,
+                    idempresa: idempresaGeocerca
+                },
+                failure: function (form, action) {
+                    Ext.MessageBox.show({
+                        title: "Problemas",
+                        msg: "No se puede guardar la Geocerca",
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    })
+                },
+                success: function (form, action) {
+                    Ext.MessageBox.show({
+                        title: "Correcto",
+                        msg: "GeoCerca guardada",
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.INFO,
+                    });
+                    formGeocercas.getForm().reset();
+                    gridStoreGeocercas.reload();
+                }
+            });
+        } else {
+            Ext.MessageBox.show({
+                title: "Sin Geocerca",
+                msg: "Aún no traza la GeoCerca",
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
 }
 
 function onCreateGeocerca() {
