@@ -370,7 +370,7 @@ Ext.onReady(function () {
         style: {
             borderStyle: 'none',
             backgroundImage: 'url(img/stv-05.png)',
-            backgroundSize: '100% 100%',
+            backgroundSize: '100% 100%'
         },
         tooltip: 'Administración de Usuarios, Equipos y Vehiculos',
         scope: this,
@@ -512,7 +512,7 @@ Ext.onReady(function () {
                 style: {
                     borderStyle: 'none',
                     backgroundImage: 'url(img/stv-02.png)',
-                    backgroundSize: '100% 100%',
+                    backgroundSize: '100% 100%'
                 },
                 tooltip: 'Reportes Informativos',
                 menu: [{
@@ -569,7 +569,7 @@ Ext.onReady(function () {
                     borderStyle: 'none',
                     backgroundImage: 'url(img/stv-08.png)',
                     backgroundSize: '100% 100%',
-                     backgroundColor: '#FAFAFA',
+                     backgroundColor: '#FAFAFA'
                 },
                 tooltip: 'Limpiar Mapa',
                 handler: function () {
@@ -577,7 +577,7 @@ Ext.onReady(function () {
                     clearLienzoTravel();
                     var lonlatCenter = new OpenLayers.LonLat(0, 100000000);
                     map.setCenter(lonlatCenter, 7);
-                }},
+                }},' ',
             salir,
             {
                 xtype: 'label',
@@ -591,11 +591,7 @@ Ext.onReady(function () {
                 width: 16,
                 height: 16,
                 margin: '0 5 0 0'
-            }
-
-
-
-        ]
+            } ]
     });
 
     var panelMenu = Ext.create('Ext.form.Panel', {
@@ -707,8 +703,8 @@ Ext.onReady(function () {
         layoutConfig: {
             animate: false
         },
-        items: [{
-                
+        items: [
+            {
                 xtype: 'treepanel',
                 id: 'veh-taxis-tree',
                 rootVisible: false,
