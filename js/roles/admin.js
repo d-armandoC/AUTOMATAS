@@ -888,7 +888,7 @@ Ext.onReady(function () {
                     borderStyle: 'none',
                     backgroundImage: 'url(img/stv-07.png)',
                     backgroundSize: '100% 100%',
-                     backgroundColor: '#f8fdff',
+                     backgroundColor: '#f8fdff'
                     
                 },
                 tooltip: 'Organizaciones Asociadas',
