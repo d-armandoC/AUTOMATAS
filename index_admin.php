@@ -48,7 +48,6 @@
       
 
         <script type="text/javascript" src="js/administracion/ventanaPersonal.js"></script>
-        <script type="text/javascript" src="js/administracion/ventanaMantenimineto.js"></script>
         <script type="text/javascript" src="js/administracion/ventanaEmpresa.js"></script>
         <script type="text/javascript" src="js/administracion/ventanaVehiculo.js"></script>
         <script type="text/javascript" src="js/administracion/ventanaUsuario.js"></script>

@@ -53,7 +53,6 @@
 
         <script type="text/javascript" src="js/administracion/ventanaPersonal.js"></script>
         <script type="text/javascript" src="js/administracion/ventanaVehiculo.js"></script>
-        <script type="text/javascript" src="js/administracion/ventanaMantenimineto.js"></script>
         <script type="text/javascript" src="js/administracion/ventanaUsuario.js"></script>
         <script type="text/javascript" src="js/administracion/cmd/ventanaCmd.js"></script>
         <!--<script type="text/javascript" src="js/administracion/cmd/ventanaCmdHist.js"></script>-->
