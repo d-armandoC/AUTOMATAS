@@ -44,7 +44,6 @@ function showPosition(position) {
 }
 
 function showError(error) {
-    console.log(error);
     switch (error.code) {
         case error.PERMISSION_DENIED:
             //x.innerHTML="User denied the request for Geolocation."
@@ -151,7 +150,6 @@ function velociadadMayor60(json) {
     var contmayor = 0;
     for (var i = 0; i < json.length; i++) {
         var objeto = json[i];
-        console.log('velocidad de 60');
         if (objeto.velocidad > 60) {
             contmayor = contmayor + 1;
         }
@@ -259,7 +257,22 @@ function estadoVehiculo(val) {
     }
 }
 
+function formatBateria(val) {
+    if (val === 1) {
+        return '<span style="color:green;">Con Batería</span>';
+    } else {
+        return '<span style="color:red;">Sin Bateria</span>';
+    }
+}
+
 function formatBatIgnGsmGps2(val) {
+    if (val === 1) {
+        return '<span style="color:green;">Con Cobertura</span>';
+    } else {
+        return '<span style="color:red;">Sin Cobertura</span>';
+    }
+}
+function formatIgn(val) {
     if (val === 1) {
         return '<span style="color:green;">Con Cobertura</span>';
     } else {
@@ -611,14 +624,11 @@ function reloadStore(store, cant) {
 }
 function fijarcadenaPrueba(cadenas) {
     cadena = cadenas;
-//console.log(cadena);
     cadena = cadena.replace(/;/g, ',');
     if (cadena.charAt(cadena.length - 1) == ',') {
         cadena = cadena.substring(0, cadena.length - 1)
-//        console.log(cadena);
     }
     ;
-//console.log(cadena.charAt(cadena.length-1));
 }
 
 
@@ -627,7 +637,6 @@ function dataPrueba() {
     var data = [];
     var lasts = [];
 //    var cadena ='';
-//    console.log(cadena);
 //    cadena.replace(';',',')
     lasts = cadena.split(',');
     var count = 0;

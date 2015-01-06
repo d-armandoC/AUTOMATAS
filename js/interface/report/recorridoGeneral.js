@@ -1,4 +1,4 @@
-var contenedorWinBan;
+var formReporteGeneral;
 var winBan;
 var tabpanelContain;
 var acronimoRecorrido = 'KRC1';
@@ -28,7 +28,6 @@ Ext.onReady(function () {
         value: banderaRecorrido,
         listeners: {
             select: function (combo, records, eOpts) {
-                console.log(records[0].data);
                 acronimoRecorrido = records[0].data.acronimo;
                 cbxVehBD.enable();
                 cbxVehBD.clearValue();
@@ -131,67 +130,48 @@ Ext.onReady(function () {
         }
     });
 
-
     var panelBotones = Ext.create('Ext.form.Panel', {
-        layout: 'column',
-        baseCls: 'x-plain',
-        items: [{
-                baseCls: 'x-plain',
-                bodyStyle: 'padding:0 5px 0 0',
-                items: [today]
-            }, {
-                baseCls: 'x-plain',
-                bodyStyle: 'padding:0 5px 0 0',
-                items: [yesterday]
-            }]
-    });
-    contenedorWinBan = Ext.create('Ext.form.Panel', {
-        frame: false,
-        padding: '6 6 6 6',
-        fieldDefaults: {
-            labelAlign: 'left',
-            width: '100%'
+        layout: 'hbox',
+        defaults: {
+            margin: '5 5 0 0'
         },
-//        defaults: {
-//            margin: '0 5 0 0'
-//        },
         items: [
-            {
-                
-                layout: 'column',
-                baseCls: 'x-plain',
-//                 padding: '5 5 5 5',
-                items: [
-                    {
-                       
-                        columnWidth: .5,
-                        baseCls: 'x-plain',
-                        items: [
-                            cbxEmpresasBD,
-                            dateIni,
-                            timeIni
-                        ]
-                    }, {
-                        padding: '5 5 5 15',
-                        columnWidth: .5,
-                        baseCls: 'x-plain',
-                        items: [
-                            cbxVehBD,
-                            dateFin,
-                            timeFin
-                        ]
-                    }
-                ]
-                
+            today,
+            yesterday
+        ]
+    });
+
+
+    formReporteGeneral = Ext.create('Ext.form.Panel', {
+        bodyPadding: '10 10 0 10',
+        layout: 'vbox',
+        fieldDefaults: {
+            labelAlign: 'left'
+        },
+        defaults: {
+            layout: 'hbox',
+            defaults: {
+                padding: '0 0 5 5'
+            }
+        },
+        items: [
+               {
+                items: [cbxEmpresasBD, cbxVehBD]
+            }, {
+                items: [dateIni, dateFin]
+            }, {
+                items: [timeIni, timeFin]
             },
-            panelBotones, {
+            panelBotones,
+            {
                 xtype: 'fieldset',
                 title: 'Opciones de Reporte',
-                collapsible: true,
+                width: '100%',
                 layout: 'anchor',
-                margin: '5 5 5 5',
+                margin: '10 0 0 0',
                 defaults: {
-                    anchor: '100%'
+                    anchor: '100%',
+                    padding: '0 0 0 50'
                 },
                 items: [{
                         xtype: 'checkboxgroup',
@@ -206,8 +186,10 @@ Ext.onReady(function () {
                                 inputValue: 'reporte'
                             }]
                     }]
-            }],
-        buttons: [{
+            }
+        ],
+        buttons: [
+            {
                 text: 'Simbologia',
                 iconCls: 'icon-edit',
                 tooltip: 'Simbologia',
@@ -217,14 +199,14 @@ Ext.onReady(function () {
                 text: 'Obtener',
                 iconCls: 'icon-consultas',
                 handler: function () {
-                    if (contenedorWinBan.getForm().isValid()) {
+                    if (formReporteGeneral.getForm().isValid()) {
                         var trazar_ruta = this.up('form').down('[name=trazar_ruta]').getValue();
                         var reporte_ruta = this.up('form').down('[name=reporte_ruta]').getValue();
                         var fechaInicial = this.up('form').down('[name=fechaIni]').getValue();
                         var fechaFinal = this.up('form').down('[name=fechaFin]').getValue();
                         var empresaCombo = cbxEmpresasBD.getRawValue();
                         if (trazar_ruta || reporte_ruta) {
-                            contenedorWinBan.getForm().submit({
+                            formReporteGeneral.getForm().submit({
                                 url: 'php/interface/report/getDataFlags.php',
                                 method: 'POST',
                                 waitMsg: 'Comprobando Datos...',
@@ -249,16 +231,13 @@ Ext.onReady(function () {
                                     if (trazar_ruta) {
                                         clearLienzoTravel();
                                         clearLienzoPointTravel();
-                                        console.log(resultado.puntos);
                                         //para cantidad de eventos
 
                                         var valor = resultado.puntos[0].eventos.split(";");
-                                        console.log(valor.length);
                                         eventos = '<TABLE id="tablestados"><TR class="alt"><TD> <IMG SRC="img/inicio.png"> <b>EVENTO:</b></td><TD> <IMG SRC="img/inicio.png"> <b>CANTIDAD:</b></td></TR>';
 
                                         for (var i = 0; i < valor.length - 1; i++) {
                                             var dato = valor[i].split(",")
-                                            console.log(dato[0]);
                                             eventos = eventos +
                                                     '<TR class="alt"><TD align="CENTER "> ' + dato[0] + ' ' + '</TD> ' +
                                                     '   <TD align="CENTER "> ' + dato[1] + ' ' + '</TD></TR> ';
@@ -467,16 +446,16 @@ function recorridosGeneral() {
             height: 265,
             closeAction: 'hide',
             plain: false,
-            items: [contenedorWinBan]
+            items: [formReporteGeneral]
         });
     }
-    contenedorWinBan.getForm().reset();
+    formReporteGeneral.getForm().reset();
 //    contenedorWinBan.down('[name=cbxVeh]').disable();
     var nowDate = new Date();
-    contenedorWinBan.down('[name=fechaIni]').setValue(formatoFecha(nowDate));
-    contenedorWinBan.down('[name=fechaFin]').setValue(formatoFecha(nowDate));
-    contenedorWinBan.down('[name=horaIni]').setValue('00:00');
-    contenedorWinBan.down('[name=horaFin]').setValue('23:59');
+    formReporteGeneral.down('[name=fechaIni]').setValue(formatoFecha(nowDate));
+    formReporteGeneral.down('[name=fechaFin]').setValue(formatoFecha(nowDate));
+    formReporteGeneral.down('[name=horaIni]').setValue('00:00');
+    formReporteGeneral.down('[name=horaFin]').setValue('23:59');
     winBan.show();
     cbxVehBD.enable();
     cbxVehBD.clearValue();
@@ -495,14 +474,14 @@ function ventanaBanderasClick(coop, eqp) {
             menuClick: 1
         }
     });
-    contenedorWinBan.down('[name=cbxEmpresas]').setValue(coop);
+    formReporteGeneral.down('[name=cbxEmpresas]').setValue(coop);
 //    contenedorWinBan.down('[name=cbxVeh]').enable();
     storeVeh.load({
         params: {
             cbxEmpresas: coop
         }
     });
-    contenedorWinBan.down('[name=cbxVeh]').setValue(eqp);
+    formReporteGeneral.down('[name=cbxVeh]').setValue(eqp);
 }
 ;
 
@@ -529,12 +508,12 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
         {text: '<b>Fecha y Hora <br> Registro</b>', xtype: 'datecolumn', format: 'd-m-Y H:i:s', width: 170, dataIndex: 'fecha_hora_reg', align: 'center'},
         {text: '<b>Velocidad <br> (Km/h)</b>', dataIndex: 'velocidad', align: 'center', width: 100, cls: 'listview-filesize', renderer: formatSpeed},
         {text: '<b>Bateria</b>', width: 120, dataIndex: 'bateria', align: 'center', renderer: formatBat},
-        {text: '<b>Estado <br> del Vehículo(Ign)</b>', width: 175, dataIndex: 'ign', align: 'center', renderer: estadoVehiculo},
+        {text: '<b>Estado del<br> Vehículo(Ign)</b>', width: 175, dataIndex: 'ign', align: 'center', renderer: estadoVehiculo},
         {text: '<b>GSM</b>', width: 110, dataIndex: 'gsm', align: 'center', renderer: estadoGsm},
         {text: '<b>GPS</b>', width: 100, dataIndex: 'gps2', align: 'center', renderer: estadoGps},
         {text: '<b>G1</b>', width: 100, dataIndex: 'g1', align: 'center', renderer: formatStateTaxy},
         {text: '<b>G2</b>', width: 200, dataIndex: 'g2', align: 'center', renderer: formatPanic},
-//        {text: '<b>Id Evento</b>', width: 80, dataIndex: 'idEvento', align: 'center'}
+        {text: '<b>Direccion</b>', width: 80, dataIndex: 'direccion', align: 'center'}
     ];
     var gridFlags = Ext.create('Ext.grid.Panel', {
         title: '<center>Informe Detallado</center>',

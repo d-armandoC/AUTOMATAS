@@ -430,17 +430,17 @@ console.log(coordenadasEdit);
                 failure: function (form, action) {
                     Ext.MessageBox.show({
                         title: "Problemas",
-                        msg: "No se puede guardar la Geocerca",
+                        msg: "No se puede Editar la Geocerca",
                         buttons: Ext.MessageBox.OK,
                         icon: Ext.MessageBox.ERROR
-                    })
+                    });
                 },
                 success: function (form, action) {
                     Ext.MessageBox.show({
                         title: "Correcto",
-                        msg: "GeoCerca guardada",
+                        msg: "Datos Modificados Correctamente",
                         buttons: Ext.MessageBox.OK,
-                        icon: Ext.MessageBox.INFO,
+                        icon: Ext.MessageBox.INFO
                     });
                     formGeocercas.getForm().reset();
                     gridStoreGeocercas.reload();

@@ -560,6 +560,7 @@ Ext.onReady(function () {
             monitoreo,
             administracion
                     , '->',
+                    
             {
                 xtype: 'button',
                 width: 40,
