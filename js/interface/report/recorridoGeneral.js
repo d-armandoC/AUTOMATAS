@@ -232,18 +232,15 @@ Ext.onReady(function () {
                                         clearLienzoTravel();
                                         clearLienzoPointTravel();
                                         //para cantidad de eventos
-
                                         var valor = resultado.puntos[0].eventos.split(";");
                                         eventos = '<TABLE id="tablestados"><TR class="alt"><TD> <IMG SRC="img/inicio.png"> <b>EVENTO:</b></td><TD> <IMG SRC="img/inicio.png"> <b>CANTIDAD:</b></td></TR>';
-
                                         for (var i = 0; i < valor.length - 1; i++) {
-                                            var dato = valor[i].split(",")
+                                            var dato = valor[i].split(",");
                                             eventos = eventos +
                                                     '<TR class="alt"><TD align="CENTER "> ' + dato[0] + ' ' + '</TD> ' +
                                                     '   <TD align="CENTER "> ' + dato[1] + ' ' + '</TD></TR> ';
                                         }
                                         eventos = eventos + '</TABLE>';
-
                                         drawPointsRoute(resultado.puntos, "Puntos");
                                         drawRutaMapa(resultado.puntos);
 
@@ -513,7 +510,7 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
         {text: '<b>GPS</b>', width: 100, dataIndex: 'gps2', align: 'center', renderer: estadoGps},
         {text: '<b>G1</b>', width: 100, dataIndex: 'g1', align: 'center', renderer: formatStateTaxy},
         {text: '<b>G2</b>', width: 200, dataIndex: 'g2', align: 'center', renderer: formatPanic},
-        {text: '<b>Direccion</b>', width: 80, dataIndex: 'direccion', align: 'center'}
+        {text: '<b>Direccion</b>', width: 150, dataIndex: 'direccion', align: 'center'}
     ];
     var gridFlags = Ext.create('Ext.grid.Panel', {
         title: '<center>Informe Detallado</center>',
