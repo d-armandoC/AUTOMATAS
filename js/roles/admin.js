@@ -364,16 +364,19 @@ Ext.onReady(function () {
 
 
     var administracion = Ext.create('Ext.button.Button', {
-        width: 150,
-        height: 40,
-        padding: '0 0 0 0',
-        style: {
-            borderStyle: 'none',
-            backgroundImage: 'url(img/stv-05.png)',
-            backgroundSize: '100% 100%'
-        },
+//        width: 150,
+//        height: 40,
+////        padding: '0 0 0 0',
+////        style: {
+////            borderStyle: 'none',
+////            backgroundImage: 'url(img/stv-05.png)',
+////            backgroundSize: '100% 100%'
+////        },
+        text: 'Administración',
+        iconCls: 'icon-direccion',
         tooltip: 'Administración de Usuarios, Equipos y Vehiculos',
-        scope: this,
+        tooltip: 'Administración de Usuarios, Equipos y Vehiculos',
+                scope: this,
         menu: [
             {text: 'Organización', iconCls: 'icon-central', handler: function () {
                     showWinAdminOrganizacion();
@@ -418,18 +421,21 @@ Ext.onReady(function () {
     });
 
     var herraminetas = Ext.create('Ext.button.Button', {
+//        scope: this,
+//        width: 140,
+//        height: 40,
+////        padding: '0 0 0 5',
+//        x:5,
+//        y:30,
+//        style: {
+//            borderStyle: 'none',
+//            backgroundImage: 'url(img/stv-03.png)',
+//            backgroundSize: '100% 100%',
+//        },
+        text: 'Herramientas',
         scope: this,
-        width: 140,
-        height: 40,
-//        padding: '0 0 0 5',
-        x:5,
-        y:30,
-        style: {
-            borderStyle: 'none',
-            backgroundImage: 'url(img/stv-03.png)',
-            backgroundSize: '100% 100%',
-        },
         tooltip: 'Herramintas de Acceso Rapido',
+        iconCls: 'icon-config',
         menu: [
             {text: 'Modificar usuarios', iconCls: 'icon-personal', handler: function () {
                     ventanaModificarUsuario();
@@ -460,34 +466,41 @@ Ext.onReady(function () {
 
 
     var monitoreo = Ext.create('Ext.button.Button', {
-        width: 130,
-        height: 40,
-        padding: '0 0 0 10',
-        style: {
-            borderStyle: 'none',
-            backgroundImage: 'url(img/stv-04.png)',
-            backgroundSize: '100% 100%',
-        },
+//        width: 130,
+//        height: 40,
+//        padding: '0 0 0 10',
+//        style: {
+//            borderStyle: 'none',
+//            backgroundImage: 'url(img/stv-04.png)',
+//            backgroundSize: '100% 100%',
+//        },
+//        tooltip: 'Estado Actual de los Vehiculos y Equipos',
+//        handler: function () {
+//            window.open('monitorTeam.php');
+//        }
+
+        text: 'Monitoreo',
         tooltip: 'Estado Actual de los Vehiculos y Equipos',
-        handler: function () {
+        iconCls: 'icon-monitoreo', handler: function () {
             window.open('monitorTeam.php');
         }
+
 
     });
 
     var salir = Ext.create('Ext.button.Button', {
         id: 'custom',
-               scope: this,
+        scope: this,
         tooltip: 'Salir del Sistema',
         width: 40,
-                height: 40,
-                padding: '0 0 0 0',
-                style: {
-                    borderStyle: 'none',
-                    backgroundImage: 'url(img/stv-09.png)',
-                    backgroundSize: '100% 100%',
-                     backgroundColor: '#FAFAFA',
-                },
+        height: 40,
+        padding: '0 0 0 0',
+        style: {
+            borderStyle: 'none',
+            backgroundImage: 'url(img/stv-09.png)',
+            backgroundSize: '100% 100%',
+            backgroundColor: '#FAFAFA',
+        },
         handler: function () {
             Ext.MessageBox.confirm('SALIR', 'Desea Salir del Sistema ?', function (choice) {
                 if (choice === 'yes') {
@@ -500,21 +513,29 @@ Ext.onReady(function () {
     });
 
     var barraMenu = Ext.create('Ext.toolbar.Toolbar', {
-        padding: '0 0 0 0',
-        style: {
-            backgroundColor: '#FAFAFA',
-        },
-        items: [{
-                xtype: 'button',
-                width: 130,
-                height: 40,
-                padding: '0 0 0 0',
-                style: {
-                    borderStyle: 'none',
-                    backgroundImage: 'url(img/stv-02.png)',
-                    backgroundSize: '100% 100%'
-                },
+//        padding: '0 0 0 0',
+//          style: {
+//           backgroundColor: 'white',
+//            borderStyle: 'solid',
+//            borderBottomColor: 'red',
+//            borderBottomWidth: '5px'
+//        },
+                width: '100%',
+
+                items: [{
+                text: 'Menú',
+                icon: 'img/menu.png',
                 tooltip: 'Reportes Informativos',
+//                xtype: 'button',
+//                width: 130,
+//                height: 40,
+//                padding: '0 0 0 0',
+//                style: {
+//                    borderStyle: 'none',
+//                    backgroundImage: 'url(img/stv-02.png)',
+//                    backgroundSize: '100% 100%'
+//                },
+//                tooltip: 'Reportes Informativos',
                 menu: [{
                         text: 'Reportes',
                         iconCls: 'icon-general',
@@ -560,7 +581,6 @@ Ext.onReady(function () {
             monitoreo,
             administracion
                     , '->',
-                    
             {
                 xtype: 'button',
                 width: 40,
@@ -570,7 +590,7 @@ Ext.onReady(function () {
                     borderStyle: 'none',
                     backgroundImage: 'url(img/stv-08.png)',
                     backgroundSize: '100% 100%',
-                     backgroundColor: '#FAFAFA'
+                    backgroundColor: '#FAFAFA'
                 },
                 tooltip: 'Limpiar Mapa',
                 handler: function () {
@@ -578,7 +598,7 @@ Ext.onReady(function () {
                     clearLienzoTravel();
                     var lonlatCenter = new OpenLayers.LonLat(0, 100000000);
                     map.setCenter(lonlatCenter, 7);
-                }},' ',
+                }}, ' ',
             salir,
             {
                 xtype: 'label',
@@ -592,7 +612,7 @@ Ext.onReady(function () {
                 width: 16,
                 height: 16,
                 margin: '0 5 0 0'
-            } ]
+            }]
     });
 
     var panelMenu = Ext.create('Ext.form.Panel', {
@@ -710,7 +730,7 @@ Ext.onReady(function () {
                 id: 'veh-taxis-tree',
                 rootVisible: false,
                 bodyStyle: {
-                     backgroundColor: '#f8fdff',
+                    backgroundColor: '#f8fdff',
                 },
                 title: 'Organización',
                 autoScroll: true,
@@ -838,9 +858,14 @@ Ext.onReady(function () {
     var toolBarOnMap = Ext.create('Ext.toolbar.Toolbar', {
         region: 'north',
         padding: '2 2 2 2',
-        style: {
-            backgroundColor: '#f8fdff',
+           style: {
+           backgroundColor: 'white',
+            borderStyle: 'solid',
+            borderTopColor: '#074471',
+            borderTopWidth: '10px'
         },
+                border:true,
+
         items: [
 //            {
 //                xtype: 'combo',
@@ -882,16 +907,18 @@ Ext.onReady(function () {
                         }
                     }, {
                 xtype: 'splitbutton',
-                 width: 150,
-                height: 30,
-                padding: '2 2 2 2',
-                style: {
-                    borderStyle: 'none',
-                    backgroundImage: 'url(img/stv-07.png)',
-                    backgroundSize: '100% 100%',
-                     backgroundColor: '#f8fdff'
-                    
-                },
+//                 width: 150,
+//                height: 30,
+//                padding: '2 2 2 2',
+//                style: {
+//                    borderStyle: 'none',
+//                    backgroundImage: 'url(img/stv-07.png)',
+//                    backgroundSize: '100% 100%',
+//                     backgroundColor: '#f8fdff'
+//                    
+//                },
+                text: 'Organización',
+                iconCls: 'icon-central',
                 tooltip: 'Organizaciones Asociadas',
                 menu: menuCoop,
                 handler: function () {
@@ -957,17 +984,18 @@ Ext.onReady(function () {
     panelCentral = Ext.create('Ext.form.Panel', {
         region: 'center',
         layout: 'border',
-        items: [
+               items: [
             toolBarOnMap,
             panelTabMapaAdmin,
             gridEventos,
-            panelEste 
+            
         ]
     });
 
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
-        items: [panelMenu, panelCentral]
+        
+        items: [panelMenu, panelEste,panelCentral]
     });
     storeEmpresas.load();
 
