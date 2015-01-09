@@ -496,7 +496,7 @@ Ext.onReady(function () {
         height: 40,
         padding: '0 0 0 0',
         style: {
-            borderStyle: 'none',
+//            borderStyle: 'none',
             backgroundImage: 'url(img/stv-09.png)',
             backgroundSize: '100% 100%',
             backgroundColor: '#FAFAFA',

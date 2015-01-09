@@ -83,6 +83,9 @@ var usuarioV = '';
 var usuarioE = '';
 var gridStateEqpSKP;
 var gridStateEqpSKPPasivos;
+var datos = {};
+var myJsonString;
+;
 Ext.Loader.setConfig({
     enabled: true
 });
@@ -96,6 +99,7 @@ var panelOeste;
 var panelMapa;
 var tabPanelReports;
 var gridListaNegra;
+var datosStore;
 
 Ext.onReady(function () {
 
@@ -144,9 +148,18 @@ Ext.onReady(function () {
             }
         },
         fields: ['activo', 'id_vehiculo', 'empresa', 'idEquipo', 'vehiculo', 'fhCon', 'fhDes', 'tmpcon', 'tmpdes', 'bateria', 'comentario',
-            'fechaEstado', 'gsm', 'gps2', 'vel', 'ign', 'taximetro', 'panico', {name: 'equipo', type: 'string'}, 'estadoE', 'estadoV', 'fecha_hora_estadoE', 'fecha_hora_estadoV']/*,
-             groupField: 'empresa'*/
+            'fechaEstado', 'gsm', 'gps2', 'vel', 'ign', 'taximetro', 'panico', {name: 'equipo', type: 'string'}, 'estadoE', 'estadoV', 'fecha_hora_estadoE', 'fecha_hora_estadoV'],
+        listeners: {
+            load: function (thisObj, records, successful, eOpts) {
+                if (successful) {
+                    Ext.getCmp('formDataEqPasivos').setTitle(' ' + records.length + ' Equipos Pasivos');
+                }
+            }
+        }
+
     });
+
+
 
     var storeStateEqp = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
@@ -158,6 +171,7 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'stateEqp'
             }
+
         },
         fields: [
             {name: 'activo', type: 'int'},
@@ -183,17 +197,16 @@ Ext.onReady(function () {
             {name: 'estadoV'},
             {name: 'fecha_hora_estadoE'},
             {name: 'fecha_hora_estadoV'}],
-        
-          listeners: {
+        listeners: {
             load: function (thisObj, records, successful, eOpts) {
                 if (successful) {
-                    Ext.getCmp('form-info').setTitle('Datos Inválidos:  ' + records.length);
+                    Ext.getCmp('formDataEqEstado').setTitle(' ' + records.length + ' Estado de Equipos');
                 }
             }
         }
     });
 
-    //para pasivos
+
     var storeListaNegra = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
         autoLoad: true,
@@ -230,15 +243,15 @@ Ext.onReady(function () {
             {name: 'fecha_hora_estadoE'},
             {name: 'fecha_hora_estadoV'}
         ],
-          listeners: {
+        listeners: {
             load: function (thisObj, records, successful, eOpts) {
                 if (successful) {
-                    Ext.getCmp('form-info').setTitle('Datos Inválidos:  ' + records.length);
+                    Ext.getCmp('formDataListNegra').setTitle('' + records.length + ' Equipos en Lista Negra');
                 }
             }
         }
     });
-    storeDataInvalid = Ext.create('Ext.data.JsonStore', {
+  var  storeDataInvalid = Ext.create('Ext.data.JsonStore', {
         autoLoad: true,
         proxy: {
             type: 'ajax',
@@ -260,7 +273,7 @@ Ext.onReady(function () {
         listeners: {
             load: function (thisObj, records, successful, eOpts) {
                 if (successful) {
-                    Ext.getCmp('form-info').setTitle('Datos Inválidos:  ' + records.length);
+                    Ext.getCmp('formDataInvalid').setTitle(' ' + records.length + ' Datos Inválidos');
                 }
             }
         }
@@ -324,8 +337,10 @@ Ext.onReady(function () {
             ActionVista
         ]
     });
+
     gridStateEqpSKP = Ext.create('Ext.grid.Panel', {
         region: 'center',
+        id: 'formDataEqEstado',
         title: '<b>Estado de Equipos</b>',
         store: storeStateEqp,
         iconCls: 'icon-skp',
@@ -355,9 +370,9 @@ Ext.onReady(function () {
             Ext.create('Ext.grid.RowNumberer', {text: '<b>Nº</b>', width: 35, align: 'center'}),
             {text: '<b>Empresa</b>', width: 100, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}, align: 'center'},
             {text: '<b>Equipo</b>', width: 80, dataIndex: 'equipo', filter: {type: 'string'}, align: 'center'},
-            {text: '<b>Vehículo</b>', width: 95, dataIndex: 'vehiculo', align: 'center'},
-            {text: '<b>Fecha Conexión</b>', width: 140, dataIndex: 'fhCon', align: 'center'},
-            {text: '<b>Fecha Ult Trama</b>', width: 140, dataIndex: 'fhDes', align: 'center'},
+            {text: '<b>Vehículo</b>', width: 100, dataIndex: 'vehiculo', filter: {type: 'string'}, align: 'center'},
+            {text: '<b>Fecha Conexión</b>', width: 150, align: 'center', xtype: 'datecolumn', format: 'Y-m-d H:i:s', dataIndex: 'fhCon', filterable: true},
+            {text: '<b>Fecha Ult Trama</b>', width: 150, dataIndex: 'fhDes', align: 'center'},
             {text: '<b>Tmp Conex.</b>', width: 110, dataIndex: 'tmpcon', align: 'center', filter: {type: 'numeric'}},
             {text: '<b>Estado</b>', width: 100, dataIndex: 'tmpdes', renderer: formatStateConect, align: 'center'},
             {text: '<b>Tmp Desc.</b>', width: 100, dataIndex: 'tmpdes', align: 'center', renderer: formatTmpDes, filter: {type: 'numeric'}},
@@ -467,6 +482,7 @@ Ext.onReady(function () {
     gridStateEqpSKPPasivos = Ext.create('Ext.grid.Panel', {
         region: 'center',
         title: '<b>Equipos Pasivos</b>',
+        id: 'formDataEqPasivos',
         store: storeStateEqpPasivos,
         iconCls: 'icon-reten',
         columnLines: true,
@@ -587,6 +603,7 @@ Ext.onReady(function () {
 
     gridListaNegra = Ext.create('Ext.grid.Panel', {
         region: 'center',
+        id: 'formDataListNegra',
         title: '<b>Equipos en Lista Negra</b>',
         store: storeListaNegra,
         iconCls: 'icon-estado-veh',
@@ -708,12 +725,12 @@ Ext.onReady(function () {
     });
     var gridDataInvalid = Ext.create('Ext.grid.Panel', {
         region: 'center',
-        id: 'form-info',
-        title: 'Datos Inválidos de Equipos:0000Mb ',
+        id: 'formDataInvalid',
+        title: 'Datos Inválidos',
         iconCls: 'icon-feed-error',
         store: storeDataInvalid,
         columnLines: true,
-        defaults: {xtype: 'textfield'},
+//        defaults: {xtype: 'textfield'},
         bodyStyle: 'padding: 10px',
         features: [filters],
         viewConfig: {
@@ -731,12 +748,10 @@ Ext.onReady(function () {
         columns: [
             Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
             {text: 'Descripción', width: 200, dataIndex: 'descripcionDI', filter: {type: 'string'}, align: 'center'},
-            {text: 'Fecha y Hora de Registro', width: 200, dataIndex: 'fecha_hora_regDI', align: 'center'},
-            {text: 'Equipo', width: 150, dataIndex: 'equipoDI', filter: {type: 'string'}, align: 'center'},
-            {text: 'Trama', width: 240, dataIndex: 'tramaDI', align: 'center'},
-            {text: 'Excepcion', width: 240, dataIndex: 'excepcionDI', align: 'center'},
-//            {text: 'Tamaño/Mb', width: 100, dataIndex: 'megasDI', align: 'center'}, 
-//            {text: 'Precio/Mb', width: 100, dataIndex: 'precioDI', align: 'center'},
+            {text: 'Fecha y Hora de Registro', width: 150, dataIndex: 'fecha_hora_regDI', align: 'center'},
+            {text: 'Equipo', width: 80, dataIndex: 'equipoDI', filter: {type: 'string'}, align: 'center'},
+            {text: 'Trama', width: 480, dataIndex: 'tramaDI', align: 'center'},
+            {text: 'Excepcion', flex: 1, dataIndex: 'excepcionDI', align: 'center'},
         ], listeners: {
             activate: function (este, eOpts) {
                 panelOeste.hide();
