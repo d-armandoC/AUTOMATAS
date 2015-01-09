@@ -487,20 +487,20 @@ Ext.onReady(function () {
 
 
     });
-
     var salir = Ext.create('Ext.button.Button', {
         id: 'custom',
         scope: this,
         tooltip: 'Salir del Sistema',
-        width: 40,
-        height: 40,
-        padding: '0 0 0 0',
-        style: {
+        icon: 'img/salir.png',
+//        width: 40,
+//        height: 40,
+//        padding: '0 0 0 0',
+//        style: {
 //            borderStyle: 'none',
-            backgroundImage: 'url(img/stv-09.png)',
-            backgroundSize: '100% 100%',
-            backgroundColor: '#FAFAFA',
-        },
+//            backgroundImage: 'url(img/stv-09.png)',
+//            backgroundSize: '100% 100%',
+//            backgroundColor: '#FAFAFA',
+//        },
         handler: function () {
             Ext.MessageBox.confirm('SALIR', 'Desea Salir del Sistema ?', function (choice) {
                 if (choice === 'yes') {
@@ -511,6 +511,27 @@ Ext.onReady(function () {
 
         }
     });
+//    var salir = Ext.create('Ext.button.Button', {
+//        id: 'custom',
+//        scope: this,
+//        tooltip: 'Salir del Sistema',
+//        width: 40,
+//        height: 40,
+//        padding: '0 0 0 0',
+//        style: {
+////            borderStyle: 'none',
+//            backgroundImage: 'url(img/stv-09.png)',
+//            backgroundSize: '100% 100%',
+//            backgroundColor: '#FAFAFA',
+//        },
+//        handler: function () {
+//            Ext.MessageBox.confirm('SALIR', 'Desea Salir del Sistema ?', function (choice) {
+//                if (choice === 'yes') {
+//                    window.location = 'php/login/logout.php';
+//                }
+//            });
+//        }
+//    });
 
     var barraMenu = Ext.create('Ext.toolbar.Toolbar', {
 //        padding: '0 0 0 0',
@@ -520,9 +541,8 @@ Ext.onReady(function () {
 //            borderBottomColor: 'red',
 //            borderBottomWidth: '5px'
 //        },
-                width: '100%',
-
-                items: [{
+        width: '100%',
+        items: [{
                 text: 'Menú',
                 icon: 'img/menu.png',
                 tooltip: 'Reportes Informativos',
@@ -583,15 +603,16 @@ Ext.onReady(function () {
                     , '->',
             {
                 xtype: 'button',
-                width: 40,
-                height: 40,
-                padding: '0 0 0 0',
-                style: {
-                    borderStyle: 'none',
-                    backgroundImage: 'url(img/stv-08.png)',
-                    backgroundSize: '100% 100%',
-                    backgroundColor: '#FAFAFA'
-                },
+//                width: 40,
+//                height: 40,
+//                padding: '0 0 0 0',
+//                style: {
+//                    borderStyle: 'none',
+//                    backgroundImage: 'url(img/stv-08.png)',
+//                    backgroundSize: '100% 100%',
+//                    backgroundColor: '#FAFAFA'
+//                },
+                iconCls: 'icon-act-mapa',
                 tooltip: 'Limpiar Mapa',
                 handler: function () {
                     clearLienzoPointTravel();
@@ -858,14 +879,13 @@ Ext.onReady(function () {
     var toolBarOnMap = Ext.create('Ext.toolbar.Toolbar', {
         region: 'north',
         padding: '2 2 2 2',
-           style: {
-           backgroundColor: 'white',
+        style: {
+            backgroundColor: 'white',
             borderStyle: 'solid',
             borderTopColor: '#074471',
             borderTopWidth: '10px'
         },
-                border:true,
-
+        border: true,
         items: [
 //            {
 //                xtype: 'combo',
@@ -984,18 +1004,16 @@ Ext.onReady(function () {
     panelCentral = Ext.create('Ext.form.Panel', {
         region: 'center',
         layout: 'border',
-               items: [
+        items: [
             toolBarOnMap,
             panelTabMapaAdmin,
             gridEventos,
-            
         ]
     });
 
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
-        
-        items: [panelMenu, panelEste,panelCentral]
+        items: [panelMenu, panelEste, panelCentral]
     });
     storeEmpresas.load();
 

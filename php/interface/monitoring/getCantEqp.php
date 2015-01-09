@@ -6,73 +6,56 @@ include ('../../../dll/config.php');
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
-    $idEmpresa = $_SESSION["IDCOMPANYKARVIEW"];
-    $idRol = $_SESSION["IDROLKARVIEW"];
-    if ($idRol == 3) {
-        $consultaSql = "select d.desco, t.total, e.empresa
-            from (select count(*) as desco, v.id_empresa 
-                from karviewdb.ultimo_dato_skps ee, vehiculos v 
-                where ee.id_equipo = v.id_equipo 
-                and timestampdiff(minute, ee.fecha_hora_ult_dato, now()) > 3 
-                group by v.id_empresa) as d, 
-                (select count(*) as total, v.id_empresa 
-                from karviewdb.ultimo_dato_skps ee, vehiculos v 
-                where ee.id_equipo = v.id_equipo 
-                group by v.id_empresa) as t, empresas e 
-            where d.id_empresa = t.id_empresa 
-            and t.id_empresa = e.id_empresa  and e.id_empresa='$idEmpresa'
-             order by e.empresa"
-        ;
-    } else {
-        $consultaSql = "select d.desco, t.total, e.empresa
-            from (select count(*) as desco, v.id_empresa 
-                from karviewdb.ultimo_dato_skps ee, vehiculos v 
-                where ee.id_equipo = v.id_equipo 
-                and timestampdiff(minute, ee.fecha_hora_ult_dato, now()) > 3 
-                group by v.id_empresa) as d, 
-                (select count(*) as total, v.id_empresa 
-                from karviewdb.ultimo_dato_skps ee, vehiculos v 
-                where ee.id_equipo = v.id_equipo 
-                group by v.id_empresa) as t, empresas e 
-            where d.id_empresa = t.id_empresa 
-            and t.id_empresa = e.id_empresa 
-             order by e.empresa"
-        ;
-    }
-
-    $result = $mysqli->query($consultaSql);
-    $mysqli->close();
-
-    if ($result->num_rows > 0) {
-        $cantDesc = 0;
-        $cantTotal = 0;
-        $cantConect = 0;
+    $consultaSql1 = "SELECT v.id_empresa,e.empresa,count(*) as total FROM karviewdb.ultimo_dato_skps  f, empresas e,vehiculos v where f.id_equipo=v.id_equipo and v.id_empresa=e.id_empresa group by e.empresa order by e.empresa";
+    $result1 = $mysqli->query($consultaSql1);
+    $cantConect = 0;
+    $cantTotal = 0;
+    $cantDesconect = 0;
+    if ($result1->num_rows > 0) {
 
         $objJson = "{cantEqp : [";
-        while ($myrow = $result->fetch_assoc()) {
-            $con = $myrow["total"] - $myrow["desco"];
+        while ($myrow1 = $result1->fetch_assoc()) {
+            $empresa = $myrow1["empresa"];
+            $conectado = 0;
+            $desconectado = 0;
+            $cantTotal1 = $myrow1["total"];
 
-            $cantDesc += $myrow["desco"];
-            $cantTotal += $myrow["total"];
-            $cantConect += $con;
+            $consultaSql = "SELECT count(*) as total FROM karviewdb.ultimo_dato_skps  f, empresas e,vehiculos v
+    where f.id_equipo=v.id_equipo and v.id_empresa=e.id_empresa and 
+    timestampdiff(minute, f.fecha_hora_ult_dato,now()) <=3 and e.empresa='$empresa'";
+            $result = $mysqli->query($consultaSql);
+            if ($result->num_rows > 0) {
+                $myrow = $result->fetch_assoc();
+                $conectado = $myrow["total"];
+            } else {
+                $consultaSql = "SELECT count(*) as total FROM karviewdb.ultimo_dato_skps  f, empresas e,vehiculos v
+    where f.id_equipo=v.id_equipo and v.id_empresa=e.id_empresa and 
+    timestampdiff(minute, f.fecha_hora_ult_dato,now()) > 3 and e.empresa='$empresa'";
+                $result = $mysqli->query($consultaSql);
+                $myrow = $result->fetch_assoc();
+                $desconectado = $myrow["total"];
+            }
 
+        
+            $cantTotal += $cantTotal1;
+            $desconect = $cantTotal1 - $conectado;
+            $cantConect +=$conectado;
+            $cantDesconect += $desconect;
             $objJson .= "{
-                conect:" . $con . ",
-                desco:" . $myrow["desco"] . ",
-                total:" . $myrow["total"] . ",
-                empresa:'" . utf8_encode($myrow["empresa"]) . "'
+                desco:" . $desconect . ",
+                conect:" . $conectado . ",
+                total:" . $cantTotal1 . ",
+                empresa:" . $myrow1["id_empresa"] . "
             },";
         }
-
         $objJson .= "{
+        desco:'<b>" . $cantDesconect . "</b>',
         conect:'<b>" . $cantConect . "</b>',
-        desco:'<b>" . $cantDesc . "</b>',
         total:'<b>" . $cantTotal . "</b>',
         empresa: '<b>Total</b>'
     }";
-
         $objJson .="]}";
-
+        $mysqli->close();
         echo $objJson;
     } else {
         echo "{failure:true, message:'No hay datos que obtener'}";

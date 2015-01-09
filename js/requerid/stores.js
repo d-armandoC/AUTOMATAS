@@ -328,3 +328,16 @@ var storeMarVehList = Ext.create('Ext.data.Store', {
     },
     fields: ['id', 'text']
 });
+
+var storeEventos = Ext.create('Ext.data.Store', {
+    autoDestroy: true,
+    autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        url: 'php/listFilters/listEventos.php',
+        reader: {
+            type: 'array'
+        }
+    },
+    fields: ['id', 'text']
+});

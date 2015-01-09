@@ -308,9 +308,9 @@ function formatTmpDes(val) {
 
 function formatLock(val) {
     if (val === 1) {
-        return '<span style="color:green;">NO</span>';
+        return '<span style="color:green;">SI</span>';
     } else {
-        return '<span style="color:red;">SI</span>';
+        return '<span style="color:red;">NO</span>';
     }
 }
 
@@ -439,6 +439,16 @@ function formatCompany(val) {
     }
     return val;
 }
+function formatCompanyCant(val) {
+    if (val === 2) {
+        return '<span style="color:blue;">' +'COOPMEGO'+ '</span>';
+    }
+    if (val === 1) {
+        return '<span style="color:green;">'+'KRADAC'+'</span>';
+    }
+    return val;
+}
+
 
 function formatEstadoEquipo(val) {
     var estad = 1;
@@ -671,4 +681,43 @@ function dataPrueba() {
 
     return data;
 
+}
+
+
+function formatBateria(val) {
+    if (val === 1) {
+        return '<span style="color:green;">Bat. del Vehiculo</span>';
+    } else if (val === 0) {
+        return '<span style="color:red;">Bat. del Equipo</span>';
+    } else {
+        return '';
+    }
+}
+
+
+function formatBatGSM(val) {
+    if (val === 0) {
+        return '<span style="color:red;">Sin covertura</span>';
+    } else {
+        return '<span style="color:green;">Con covertura</span>';
+    }
+}
+
+
+
+function formatBatGPS(val) {
+    if (val === 0) {
+        return '<span style="color:red;">Sin GPS</span>';
+    } else {
+        return '<span style="color:green;">Con GPS</span>';
+    }
+}
+
+
+function formatBatIgn(val) {
+    if (val === 0) {
+        return '<span style="color:red;">Apagado</span>';
+    } else {
+        return '<span style="color:green;">Encendido</span>';
+    }
 }

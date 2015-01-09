@@ -14,7 +14,7 @@ if (!$mysqli = getConectionDb()) {
             timestampdiff(minute,  b.fecha_hora_conex,now())as conex,
             timestampdiff(minute, b.fecha_hora_ult_dato,now()) AS deconexion,em.empresa,e.equipo,
             b.fecha_hora_conex,b.fecha_hora_ult_dato,se.sky_evento,b.latitud,
-            b.longitud,b.velocidad,b.rumbo,b.g1,b.g2,b.sal,b.bateria,b.v1,b.v2,b.gsm,b.gps,b.ign,b.direccion
+            b.longitud,b.velocidad,b.rumbo,b.g1,b.g2,b.sal,b.bateria,b.v1,b.v2,b.gsm,b.gps,b.ign,b.direccion, b.latitud, b.longitud 
             from ultimo_dato_skps b,equipos e,vehiculos v, empresas em, sky_eventos se 
             where b.id_equipo=e.id_equipo   and e.id_equipo=v.id_equipo  and e.estado=1
             and v.id_empresa=em.id_empresa and b.estado=1 and b.id_sky_evento=se.id_sky_evento 
@@ -74,6 +74,8 @@ if (!$mysqli = getConectionDb()) {
                 ign:" . $myrow["ign"] . ",
                 activo:" . 1 . ",
                 taximetro:" . $myrow["g1"] . ",
+                latitud:" .$myrow["latitud"] . ",
+                longitud:" . $myrow["longitud"] . ",
                 panico:" . $myrow["g2"] . "
             },";
         }

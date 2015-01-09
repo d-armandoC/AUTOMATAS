@@ -22,15 +22,13 @@ if (!$mysqli = getConectionDb()) {
     while ($myrow = $result1->fetch_assoc()) {
         $eventos = $eventos . utf8_encode($myrow["sky_evento"]) . ',' . $myrow["cantidad"] . ',' . $myrow["id_sky_evento"] . ';';
     }
-
-
-
     $consultaSql = "select v.placa, v.vehiculo,r.latitud, r.longitud,r.fecha, r.hora, r.fecha_hora_registro, r.velocidad, 
             r.bateria, r.gsm, r.gps, r.ign, r.direccion, se.color, se.sky_evento, r.id_sky_evento, 
-            r.g1, r.g2, r.sal, e.empresa
-            from karviewhistoricodb.dato_spks r, karviewdb.vehiculos v,  karviewdb.sky_eventos se,  karviewdb.empresas e
+            r.g1, r.g2, r.sal, e.empresa,eq.equipo
+            from karviewhistoricodb.dato_spks r, karviewdb.vehiculos v,  karviewdb.sky_eventos se,  karviewdb.empresas e, karviewdb.equipos eq
             where r.id_sky_evento = se.id_sky_evento
             and r.id_equipo = v.id_equipo
+            and r.id_equipo=eq.id_equipo
             and v.id_empresa = e.id_empresa
             and r.id_equipo = ?
             and r.fecha between ? and ?
@@ -59,6 +57,7 @@ if (!$mysqli = getConectionDb()) {
                         . "latitud: " . $myrow["latitud"] . ","
                         . "longitud: " . $myrow["longitud"] . ","
                         . "placa: '" . $myrow["placa"] . "',"
+                        . "equipo: '" . $myrow["equipo"] . "',"
                         . "fecha_hora_reg:'" . $myrow["fecha_hora_registro"] . "',"
                         . "fecha_hora:'" . $myrow["fecha"] . " " . $myrow["hora"] . "',"
                         . "velocidad:" . $myrow["velocidad"] . ","

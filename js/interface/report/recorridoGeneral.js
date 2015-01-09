@@ -8,6 +8,15 @@ var cbxVehBD;
 var eventos;
 
 Ext.onReady(function () {
+      var filters = {
+        ftype: 'filters',
+        encode: false, // json encode the filter query
+        local: true, // defaults to false (remote filtering)
+        filters: [{
+                type: 'boolean',
+                dataIndex: 'visible'
+            }]
+    };
     if (idCompanyKarview == 1) {
         banderaRecorrido = 1;
     } else {
@@ -241,6 +250,7 @@ Ext.onReady(function () {
                                                     '   <TD align="CENTER "> ' + dato[1] + ' ' + '</TD></TR> ';
                                         }
                                         eventos = eventos + '</TABLE>';
+                                        console.log();
                                         drawPointsRoute(resultado.puntos, "Puntos");
                                         drawRutaMapa(resultado.puntos);
 
@@ -500,10 +510,10 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
     var columnFlags = [];
     columnFlags = [
         {text: '<b>Trama</b>', width: 65, dataIndex: 'idData', align: 'center'},
-        {text: '<b>Evento</b>', width: 300, dataIndex: 'evento', align: 'center'},
-        {text: '<b>Fecha y Hora <br> del Equipo</b>', xtype: 'datecolumn', format: 'd-m-Y H:i:s', width: 160, dataIndex: 'fecha_hora', align: 'center'},
-        {text: '<b>Fecha y Hora <br> Registro</b>', xtype: 'datecolumn', format: 'd-m-Y H:i:s', width: 170, dataIndex: 'fecha_hora_reg', align: 'center'},
-        {text: '<b>Velocidad <br> (Km/h)</b>', dataIndex: 'velocidad', align: 'center', width: 100, cls: 'listview-filesize', renderer: formatSpeed,filterable: true},
+        {text: '<b>Eventos</b>', width: 300, dataIndex: 'eventos', filter: {type: 'list', store: storeEventos}, align: 'center'},
+        {text: '<b>Fecha y Hora <br> del Equipo</b>', xtype: 'datecolumn', width: 160, dataIndex: 'fecha_hora', format: 'Y-m-d H:i:s', filter: {type: 'date'}, filterable: true},
+        {text: '<b>Fecha y Hora <br> Registro</b>', xtype: 'datecolumn', format: 'd-m-Y H:i:s', width: 170, dataIndex: 'fecha_hora_reg', align: 'center',filter: {type: 'date'}, filterable: true},
+        {text: '<b>Velocidad <br> (Km/h)</b>', dataIndex: 'velocidad', align: 'center', width: 100, cls: 'listview-filesize', renderer: formatSpeed,filterable: true,  filter: {type: 'numeric'}},
         {text: '<b>Bateria</b>', width: 120, dataIndex: 'bateria', align: 'center', renderer: formatBat},
         {text: '<b>Estado del<br> Vehículo(Ign)</b>', width: 175, dataIndex: 'ign', align: 'center', renderer: estadoVehiculo},
         {text: '<b>GSM</b>', width: 110, dataIndex: 'gsm', align: 'center', renderer: estadoGsm},
@@ -521,6 +531,7 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
         autoScroll: true,
         height: 425,
         width: 800,
+        features: [filters],
         viewConfig: {
             emptyText: 'No hay datos que Mostrar'
         },
@@ -531,7 +542,7 @@ function loadGridFlags(records, idEmp, idEqp, fi, ff, hi, hf, vehiculo) {
                 Ext.create('Ext.menu.Menu', {
                     items: [
                         Ext.create('Ext.Action', {
-                            iconCls: 'icon-vehiculos_lugar', // Use a URL in the icon config
+                            iconCls: 'icon-vehiculos_lugar', 
                             text: 'Ver Ubicación en el Mapa',
                             disabled: false,
                             handler: function (widget, event) {

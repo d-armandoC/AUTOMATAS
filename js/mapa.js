@@ -496,10 +496,14 @@ function loadMap() {
                         var latitud = feature.attributes.latitud;
                         var longitud = feature.attributes.longitud;
                         var evento = feature.attributes.evenvto;
+                        var equipo = feature.attributes.equipo;
+                        var empresa = feature.attributes.empresa;
                         var contenidoAlternativo =
                                 "<section>" +
                                 "<b>Trama: </b>" + trama.toString() + "<br>" +
+                                "<b>Organización: </b>" + empresa.toString() + "<br>" +
                                 "<b>Vehiculo: </b>" + placa.toString() + "<br>" +
+                                "<b>Equipo: </b>" + equipo.toString() + "<br>" +
                                 "<b>Velocidad: </b>" + velocidad.toString() + "</br>" +
                                 "<b>Latitud: </b>" + latitud.toString() + "</br>" +
                                 "<b>Longitud: </b>" + longitud.toString() + "</br>" +
@@ -1529,6 +1533,7 @@ function drawPointsRoute(coordPuntos) {
             idTravel: cont,
             idTrama: dataRuta.idData,
             placa: dataRuta.placa,
+            equipo:dataRuta.equipo,
             empresa: dataRuta.company,
             direccion: dataRuta.direccion,
             velocidad: dataRuta.velocidad,
