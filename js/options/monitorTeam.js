@@ -364,7 +364,7 @@ Ext.onReady(function () {
         viewConfig: {
             emptyText: '<center>No hay datos que Mostrar</center>',
             loadMask: false,
-            preserveScrollOnRefresh: true,
+//            preserveScrollOnRefresh: true,
             listeners: {
                 itemcontextmenu: function (view, rec, node, index, e) {
                     if (!winReporte) {
@@ -409,7 +409,7 @@ Ext.onReady(function () {
             }],
         columns: [
             Ext.create('Ext.grid.RowNumberer', {text: '<b>Nº</b>', width: 35, align: 'center'}),
-            {text: '<b>Empresa</b>', width: 100, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}, align: 'center'},
+            {text: '<b>Organización</b>', width: 120, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}, align: 'center'},
             {text: '<b>Equipo</b>', width: 80, dataIndex: 'equipo', filter: {type: 'string'}, align: 'center'},
             {text: '<b>Vehículo</b>', width: 100, dataIndex: 'vehiculo', filter: {type: 'string'}, align: 'center'},
             {text: '<b>Fecha Conexión</b>', width: 150, align: 'center', xtype: 'datecolumn', format: 'Y-m-d H:i:s', dataIndex: 'fhCon', filter: {type: 'date'}, filterable: true},
@@ -421,15 +421,15 @@ Ext.onReady(function () {
                     options: [[1, 'Conect'], [0, 'Disconect']]
                 }},
             {text: '<b>Tmp Desc.</b>', width: 100, dataIndex: 'tmpdes', align: 'center', renderer: formatTmpDes, filter: {type: 'numeric'}},
-            {text: 'Batería', width: 140, dataIndex: 'bateria', align: 'center', renderer: formatBateria, filter: {
+            {text: 'Batería', width: 140, dataIndex: 'bateria', align: 'center', renderer: formatBat, filter: {
                     type: 'list',
                     options: [[1, 'Bat. del Equipo'], [0, 'Bat. del Vehiculo']]
                 }},
-            {text: 'GSM', width: 100, dataIndex: 'gsm', align: 'center', renderer: formatBatGSM, filter: {
+            {text: 'GSM', width: 105, dataIndex: 'gsm', align: 'center', renderer: estadoGsm, filter: {
                     type: 'list',
                     options: [[1, 'Con covertura'], [0, 'Sin covertura']]
                 }},
-            {text: 'GPS', width: 100, dataIndex: 'gps2', align: 'center', renderer: formatBatGPS, filter: {
+            {text: 'GPS', width: 105, dataIndex: 'gps2', align: 'center', renderer: estadoGps, filter: {
                     type: 'list',
                     options: [[1, 'Con GPS'], [0, 'Sin GPS']]
                 }},
@@ -445,7 +445,7 @@ Ext.onReady(function () {
                 }},
             {text: '<b>Comentario Vehículo</b>', width: 160, dataIndex: 'estadoV', align: 'center', filterable: true},
             {text: '<b>Comentario Equipo</b>', width: 160, dataIndex: 'estadoE', align: 'center', filterable: true},
-            {text: '<b>Pánico</b>', width: 100, dataIndex: 'panico', renderer: formatPanic, align: 'center', filterable: true},
+            {text: '<b>Pánico</b>', width: 170, dataIndex: 'panico', renderer: formatPanic, align: 'center', filterable: true},
         ],
         listeners: {
             activate: function (este, eOpts) {
@@ -548,8 +548,7 @@ Ext.onReady(function () {
         features: [filters],
         viewConfig: {
             emptyText: '<center>No hay datos que Mostrar</center>',
-            loadMask: false,
-            preserveScrollOnRefresh: true
+            loadMask: false
         },
         tools: [{
                 type: 'refresh',
@@ -558,26 +557,45 @@ Ext.onReady(function () {
                     storeStateEqpPasivos.reload();
                 }
             }],
-        columns: [
+   columns: [
             Ext.create('Ext.grid.RowNumberer', {text: '<b>Nº</b>', width: 35, align: 'center'}),
-            {text: '<b>Empresa</b>', width: 100, dataIndex: 'empresa', filter: {type: 'list', store: storeEmpresasList}, align: 'center'},
-            {text: '<b>Equipo</b>', width: 65, dataIndex: 'equipo', filter: {type: 'string'}, align: 'center'},
-            {text: '<b>Vehículo</b>', width: 95, dataIndex: 'vehiculo', align: 'center'},
-            {text: '<b>Fecha Conexión</b>', width: 140, dataIndex: 'fhCon', align: 'center'},
-            {text: '<b>Fecha Ult Trama</b>', width: 140, dataIndex: 'fhDes', align: 'center'},
-            {text: '<b>Tmp Conex.</b>', width: 100, dataIndex: 'tmpcon', align: 'center', filter: {type: 'numeric'}},
-            {text: '<b>Estado</b>', width: 110, dataIndex: 'tmpdes', renderer: formatStateConect, align: 'center'},
-            {text: '<b>Tmp Desc.</b>', width: 85, dataIndex: 'tmpdes', align: 'center', renderer: formatTmpDes, filter: {type: 'numeric'}},
-            {text: '<b>Bateria</b>', width: 75, dataIndex: 'bateria', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>IGN</b>', width: 65, dataIndex: 'ign', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>GSM</b>', width: 65, dataIndex: 'gsm', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>GPS</b>', width: 65, dataIndex: 'gps2', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>Velocidad (Km/h)</b>', dataIndex: 'vel', align: 'center', width: 130, renderer: formatSpeed, filter: {type: 'numeric'}},
-            {text: '<b>Activo</b>', width: 65, dataIndex: 'activo', renderer: formatLock, align: 'center'},
+            {text: '<b>Organización</b>', width: 120, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}, align: 'center'},
+            {text: '<b>Equipo</b>', width: 80, dataIndex: 'equipo', filter: {type: 'string'}, align: 'center'},
+            {text: '<b>Vehículo</b>', width: 100, dataIndex: 'vehiculo', filter: {type: 'string'}, align: 'center'},
+            {text: '<b>Fecha Conexión</b>', width: 150, align: 'center', xtype: 'datecolumn', format: 'Y-m-d H:i:s', dataIndex: 'fhCon', filter: {type: 'date'}, filterable: true},
+            {text: '<b>Fecha Ult Trama</b>', width: 150, dataIndex: 'fhDes', align: 'center', format: 'Y-m-d H:i:s', filter: {type: 'date'}, filterable: true},
+            {text: '<b>Tmp Conex.</b>', width: 110, dataIndex: 'tmpcon', align: 'center', filter: {type: 'numeric'}},
+            {text: '<b>Estado</b>', width: 100, dataIndex: 'tmpdes', renderer: formatStateConect, align: 'center',
+                filter: {
+                    type: 'list',
+                    options: [[1, 'Conect'], [0, 'Disconect']]
+                }},
+            {text: '<b>Tmp Desc.</b>', width: 100, dataIndex: 'tmpdes', align: 'center', renderer: formatTmpDes, filter: {type: 'numeric'}},
+            {text: 'Batería', width: 140, dataIndex: 'bateria', align: 'center', renderer: formatBat, filter: {
+                    type: 'list',
+                    options: [[1, 'Bat. del Equipo'], [0, 'Bat. del Vehiculo']]
+                }},
+            {text: 'GSM', width: 105, dataIndex: 'gsm', align: 'center', renderer: estadoGsm, filter: {
+                    type: 'list',
+                    options: [[1, 'Con covertura'], [0, 'Sin covertura']]
+                }},
+            {text: 'GPS', width: 105, dataIndex: 'gps2', align: 'center', renderer: estadoGps, filter: {
+                    type: 'list',
+                    options: [[1, 'Con GPS'], [0, 'Sin GPS']]
+                }},
+            {text: 'Vehículo(IGN)', width: 130, dataIndex: 'ign', align: 'center', renderer: formatBatIgn, filter: {
+                    type: 'list',
+                    options: [[1, 'Encendido'], [0, 'Apagado']]
+                }},
+            {text: '<b>Velocidad <br> (Km/h)</b>', dataIndex: 'vel', align: 'center', width: 100, renderer: formatSpeed, filter: {type: 'numeric'}},
+            {text: '<b>Activo</b>', width: 100, dataIndex: 'activo', renderer: formatLock, align: 'center'
+                , filter: {
+                    type: 'list',
+                    options: [[1, 'SI'], [0, 'NO']]
+                }},
             {text: '<b>Comentario Vehículo</b>', width: 160, dataIndex: 'estadoV', align: 'center', filterable: true},
             {text: '<b>Comentario Equipo</b>', width: 160, dataIndex: 'estadoE', align: 'center', filterable: true},
-            {text: '<b>Pánico</b>', width: 150, dataIndex: 'panico', renderer: formatPanic, align: 'center', filterable: true},
-//            {text: '<b>Fecha Comentario</b>', width: 150, dataIndex: 'fechaEstado', align: 'center'}
+            {text: '<b>Pánico</b>', width: 170, dataIndex: 'panico', renderer: formatPanic, align: 'center', filterable: true},
         ],
         listeners: {
             selectionchange: function (sm, selections) {
@@ -664,36 +682,54 @@ Ext.onReady(function () {
         features: [filters],
         viewConfig: {
             emptyText: '<center>No hay datos que Mostrar</center>',
-            loadMask: false,
-            preserveScrollOnRefresh: true
+            loadMask: false
         },
-        tools: [{
-                type: 'refresh',
-                tooltip: 'Refrescar Datos',
-                handler: function (event, toolEl, panelHeader) {
-                    storeListaNegra.reload();
-                }
-            }],
-        columns: [
+                tools: [{
+                        type: 'refresh',
+                        tooltip: 'Refrescar Datos',
+                        handler: function (event, toolEl, panelHeader) {
+                            storeListaNegra.reload();
+                        }
+                    }],
+      columns: [
             Ext.create('Ext.grid.RowNumberer', {text: '<b>Nº</b>', width: 35, align: 'center'}),
-            {text: '<b>Empresa</b>', width: 100, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}, align: 'center'},
-            {text: '<b>Equipo</b>', width: 65, dataIndex: 'equipo', filter: {type: 'string'}, align: 'center'},
-            {text: '<b>Vehículo</b>', width: 95, dataIndex: 'vehiculo', align: 'center'},
-            {text: '<b>Fecha Conexión</b>', width: 140, dataIndex: 'fhCon', align: 'center'},
-            {text: '<b>Fecha Ult Trama</b>', width: 140, dataIndex: 'fhDes', align: 'center'},
-            {text: '<b>Tmp Conex.</b>', width: 100, dataIndex: 'tmpcon', align: 'center', filter: {type: 'numeric'}},
-            {text: '<b>Estado</b>', width: 110, dataIndex: 'tmpdes', renderer: formatStateConect, align: 'center'},
-            {text: '<b>Tmp Desc.</b>', width: 85, dataIndex: 'tmpdes', align: 'center', renderer: formatTmpDes, filter: {type: 'numeric'}},
-            {text: '<b>Bateria</b>', width: 75, dataIndex: 'bateria', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>IGN</b>', width: 65, dataIndex: 'ign', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>GSM</b>', width: 65, dataIndex: 'gsm', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>GPS</b>', width: 65, dataIndex: 'gps2', align: 'center', renderer: formatBatIgnGsmGps2, filter: {type: 'numeric'}},
-            {text: '<b>Velocidad (Km/h)</b>', dataIndex: 'vel', align: 'center', width: 130, renderer: formatSpeed, filter: {type: 'numeric'}},
-            {text: '<b>Activo</b>', width: 65, dataIndex: 'activo', renderer: formatLock, align: 'center'},
+            {text: '<b>Organización</b>', width: 120, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}, align: 'center'},
+            {text: '<b>Equipo</b>', width: 80, dataIndex: 'equipo', filter: {type: 'string'}, align: 'center'},
+            {text: '<b>Vehículo</b>', width: 100, dataIndex: 'vehiculo', filter: {type: 'string'}, align: 'center'},
+            {text: '<b>Fecha Conexión</b>', width: 150, align: 'center', xtype: 'datecolumn', format: 'Y-m-d H:i:s', dataIndex: 'fhCon', filter: {type: 'date'}, filterable: true},
+            {text: '<b>Fecha Ult Trama</b>', width: 150, dataIndex: 'fhDes', align: 'center', format: 'Y-m-d H:i:s', filter: {type: 'date'}, filterable: true},
+            {text: '<b>Tmp Conex.</b>', width: 110, dataIndex: 'tmpcon', align: 'center', filter: {type: 'numeric'}},
+            {text: '<b>Estado</b>', width: 100, dataIndex: 'tmpdes', renderer: formatStateConect, align: 'center',
+                filter: {
+                    type: 'list',
+                    options: [[1, 'Conect'], [0, 'Disconect']]
+                }},
+            {text: '<b>Tmp Desc.</b>', width: 100, dataIndex: 'tmpdes', align: 'center', renderer: formatTmpDes, filter: {type: 'numeric'}},
+            {text: 'Batería', width: 140, dataIndex: 'bateria', align: 'center', renderer: formatBat, filter: {
+                    type: 'list',
+                    options: [[1, 'Bat. del Equipo'], [0, 'Bat. del Vehiculo']]
+                }},
+            {text: 'GSM', width: 105, dataIndex: 'gsm', align: 'center', renderer: estadoGsm, filter: {
+                    type: 'list',
+                    options: [[1, 'Con covertura'], [0, 'Sin covertura']]
+                }},
+            {text: 'GPS', width: 105, dataIndex: 'gps2', align: 'center', renderer: estadoGps, filter: {
+                    type: 'list',
+                    options: [[1, 'Con GPS'], [0, 'Sin GPS']]
+                }},
+            {text: 'Vehículo(IGN)', width: 130, dataIndex: 'ign', align: 'center', renderer: formatBatIgn, filter: {
+                    type: 'list',
+                    options: [[1, 'Encendido'], [0, 'Apagado']]
+                }},
+            {text: '<b>Velocidad <br> (Km/h)</b>', dataIndex: 'vel', align: 'center', width: 100, renderer: formatSpeed, filter: {type: 'numeric'}},
+            {text: '<b>Activo</b>', width: 100, dataIndex: 'activo', renderer: formatLock, align: 'center'
+                , filter: {
+                    type: 'list',
+                    options: [[1, 'SI'], [0, 'NO']]
+                }},
             {text: '<b>Comentario Vehículo</b>', width: 160, dataIndex: 'estadoV', align: 'center', filterable: true},
             {text: '<b>Comentario Equipo</b>', width: 160, dataIndex: 'estadoE', align: 'center', filterable: true},
-            {text: '<b>Pánico</b>', width: 150, dataIndex: 'panico', renderer: formatPanic, align: 'center', filterable: true},
-//            {text: '<b>Fecha Comentario</b>', width: 150, dataIndex: 'fechaEstado', align: 'center'}
+            {text: '<b>Pánico</b>', width: 170, dataIndex: 'panico', renderer: formatPanic, align: 'center', filterable: true},
         ],
         listeners: {
             selectionchange: function (sm, selections) {
@@ -776,11 +812,6 @@ Ext.onReady(function () {
         columnLines: true,
         multiSelect: true,
         features: [filters],
-        viewConfig: {
-            emptyText: '<center>No hay datos que Mostrar</center>',
-            loadMask: false,
-            preserveScrollOnRefresh: true
-        },
         tools: [{
                 type: 'refresh',
                 tooltip: 'Refrescar Datos',
@@ -791,16 +822,21 @@ Ext.onReady(function () {
         columns: [
             Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
             {text: 'Descripción', width: 200, dataIndex: 'descripcionDI', filter: {type: 'string'}, align: 'center'},
-            {text: 'Fecha y Hora de Registro', width: 150, dataIndex: 'fecha_hora_regDI', align: 'center'},
+            {text: 'Fecha y Hora de Registro', width: 180, dataIndex: 'fecha_hora_regDI', align: 'center', format: 'Y-m-d H:i:s', filter: {type: 'date'}, filterable: true},
             {text: 'Equipo', width: 80, dataIndex: 'equipoDI', filter: {type: 'string'}, align: 'center'},
-            {text: 'Trama', width: 480, dataIndex: 'tramaDI', align: 'center'},
-            {text: 'Excepcion', flex: 1, dataIndex: 'excepcionDI', align: 'center'},
+            {text: 'Trama', width: 480, dataIndex: 'tramaDI', filter: {type: 'string'}, align: 'center'},
+            {text: 'Excepcion', flex: 1, dataIndex: 'excepcionDI', filter: {type: 'string'}, align: 'center'}
         ], listeners: {
             activate: function (este, eOpts) {
                 panelOeste.hide();
-                winReporte.hide();
-            }}
-
+                if (winReporte) {
+                    winReporte.hide();
+                }
+            }},
+        viewConfig: {
+            emptyText: '<center>No hay datos que Mostrar</center>',
+            loadMask: false,
+        }
     });
     var panelCentral = Ext.create('Ext.tab.Panel', {
         region: 'center',
@@ -810,7 +846,7 @@ Ext.onReady(function () {
     });
     tabPanelReports = Ext.create('Ext.tab.Panel', {
         region: 'south',
-        height: '45%',
+        height: '40%',
         activeTab: 2,
         items: [{
                 region: 'center',
@@ -825,10 +861,10 @@ Ext.onReady(function () {
                     preserveScrollOnRefresh: true
                 },
                 columns: [
-                    {text: 'Organización ', width: 150, dataIndex: 'empresa', renderer: formatCompanyCant},
-                    {text: 'Conectados', width: 100, dataIndex: 'conect', align: 'center'},
-                    {text: 'Desconectados', width: 150, dataIndex: 'desco', align: 'center'},
-                    {text: 'Total', width: 100, dataIndex: 'total', align: 'center'}
+                    {text: 'Organización ', width: 106, dataIndex: 'empresa', renderer: formatCompanyCant},
+                    {text: 'Conectados', width: 97, dataIndex: 'conect', align: 'center'},
+                    {text: 'Desconectados', width: 119, dataIndex: 'desco', align: 'center'},
+                    {text: 'Total', width: 60, dataIndex: 'total', align: 'center'}
                 ]
             }
             , {
@@ -905,21 +941,22 @@ Ext.onReady(function () {
         title: 'Configuración',
         iconCls: 'icon-config',
         name: 'panelEste',
-        width: '30%',
+        width: '31%',
         frame: true,
         split: true,
         collapsible: true,
         layout: 'border',
         tbar: ['->', {
                 xtype: 'label',
-                html: '<iframe src="http://free.timeanddate.com/clock/i3x5kb7x/n190/tlec4/fn12/fs18/tct/pct/ftb/bas0/bat0/th1" frameborder="0" width="98" height="20" allowTransparency="true"></iframe>'
+                html: '<iframe src="http://free.timeanddate.com/clock/i3x5kb7x/n190/tlec4/fn12/fs18/tct/pct/ftb/bas0/bat0/th1" frameborder="0" width="98" height="15" allowTransparency="true"></iframe>'
             }],
         items: [{
                 xtype: 'form',
                 region: 'north',
-                height: '55%',
+                height: '54%',
+                width: '15%',
                 autoScroll: true,
-                bodyPadding: 10,
+                bodyPadding: 5,
                 title: 'Asignar Comentario al Vehiculo',
                 iconCls: 'icon-obtener',
                 tools: [{

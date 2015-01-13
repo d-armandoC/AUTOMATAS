@@ -437,17 +437,17 @@ Ext.onReady(function () {
         region: 'north',
         deferreRender: false,
         activeTab: 0,
-        items: [{
+        items: [
+          {
                 layout: 'hbox',
                 bodyStyle: {
-                    background: '#add2ed'
+                    backgroundImage: 'url(img/stv-01.png)',
+                    backgroundSize: '100% 100%'
                 },
-                items: [{
+                items: [
+                    {
                         xtype: 'label',
-                        html: '<a href="http://www.kradac.com" target="_blank"><img src="img/logo.png" width="250" height="64"></a>'
-                    }, {
-                        xtype: 'label',
-                        padding: '15 0 0 150',
+                        padding: '15 8 8 500',
                         style: {
                             color: '#157fcc'
                         },

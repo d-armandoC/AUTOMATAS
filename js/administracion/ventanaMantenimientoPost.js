@@ -293,7 +293,7 @@ Ext.onReady(function () {
         }
     });
     formPanelGrid_VehiculosPost = Ext.create('Ext.form.Panel', {
-        width: '31%',
+        width: '18%',
         margins: '0 2 0 0',
         region: 'west',
         height: 560,
@@ -303,7 +303,7 @@ Ext.onReady(function () {
     formRecordsVehiculosPost = Ext.create('Ext.form.Panel', {
         id: 'panel-datos-vehiculos',
         autoScroll: true,
-        width: '79%',
+        width: '82%',
         region: 'center',
         activeRecord: null,
         bodyStyle: 'padding: 10px; background-color: #DFE8F6',
@@ -1105,8 +1105,8 @@ function ventAddMantenimientosPost() {
             title: ' Mantenimiento',
             iconCls: 'icon-mantenimiento',
             resizable: false,
-            width: 1195,
-            height: 560,
+            width: 1198,
+            height: 562,
             closeAction: 'hide',
             plain: false,
             items: [{

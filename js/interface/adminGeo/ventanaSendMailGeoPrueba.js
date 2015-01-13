@@ -140,7 +140,7 @@ Ext.onReady(function() {
 function visualizarEnviosGeoCercas() {
     if (!windowMailGeocercas) {
         windowMailGeocercas = Ext.create('Ext.window.Window', {
-            title: 'Envio de Correos Geocerca',
+            title: 'Envio Correos Geocercas',
             iconCls: 'icon-email',
             resizable: false,
             width: 750,

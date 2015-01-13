@@ -257,13 +257,13 @@ function estadoVehiculo(val) {
     }
 }
 
-function formatBateria(val) {
-    if (val === 1) {
-        return '<span style="color:green;">Con Batería</span>';
-    } else {
-        return '<span style="color:red;">Sin Bateria</span>';
-    }
-}
+//function formatBateria(val) {
+//    if (val === 1) {
+//        return '<span style="color:green;">Con Batería</span>';
+//    } else {
+//        return '<span style="color:red;">Sin Bateria</span>';
+//    }
+//}
 
 function formatBatIgnGsmGps2(val) {
     if (val === 1) {

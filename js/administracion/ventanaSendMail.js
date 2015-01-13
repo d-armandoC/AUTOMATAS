@@ -149,7 +149,7 @@ Ext.onReady(function() {
 function ventanaEnvioMail() {
     if (!winSendMail) {
         winSendMail = Ext.create('Ext.window.Window', {
-            title: 'Envio de Mails',
+            title: 'Envio Correo Eventos',
             iconCls: 'icon-email',
             resizable: false,
             width: 730,
