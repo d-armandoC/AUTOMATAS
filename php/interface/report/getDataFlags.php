@@ -8,13 +8,17 @@ if (!$mysqli = getConectionDb()) {
 } else {
 
     $haveData = false;
+     $consultaSqlvehiculo="SELECT id_equipo FROM karviewdb.vehiculos where id_Vehiculo='$cbxVeh'";
+     $resultVehiculo = $mysqli->query($consultaSqlvehiculo);
+    $myrowvehiculo = $resultVehiculo->fetch_assoc();
+    $idequipo=$myrow["id_equipo"];
 
     $consultaSql1 = "select  count(r.id_sky_evento) as cantidad,r.id_sky_evento, se.sky_evento
             from karviewhistoricodb.dato_spks r, karviewdb.vehiculos v,  karviewdb.sky_eventos se,  karviewdb.empresas e
             where r.id_sky_evento = se.id_sky_evento
             and r.id_equipo = v.id_equipo
             and v.id_empresa = e.id_empresa
-            and r.id_equipo = '$cbxVeh'
+            and r.id_equipo = '$idequipo'
             and r.fecha between '$fechaIni' and '$fechaFin'
             group by id_sky_evento ";
     $result1 = $mysqli->query($consultaSql1);
@@ -36,7 +40,7 @@ if (!$mysqli = getConectionDb()) {
     $stmt = $mysqli->prepare($consultaSql);
     if ($stmt) {
         /* ligar parámetros para marcadores */
-        $stmt->bind_param("iss", $cbxVeh, $fechaIni, $fechaFin);
+        $stmt->bind_param("iss", $idequipo, $fechaIni, $fechaFin);
         /* ejecutar la consulta */
         $stmt->execute();
         $result = $stmt->get_result();
