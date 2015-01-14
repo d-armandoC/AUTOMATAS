@@ -11,7 +11,7 @@ if (!$mysqli = getConectionDb()) {
      $consultaSqlvehiculo="SELECT id_equipo FROM karviewdb.vehiculos where id_Vehiculo='$cbxVeh'";
      $resultVehiculo = $mysqli->query($consultaSqlvehiculo);
     $myrowvehiculo = $resultVehiculo->fetch_assoc();
-    $idequipo=$myrow["id_equipo"];
+    $idequipo=$myrowvehiculo["id_equipo"];
 
     $consultaSql1 = "select  count(r.id_sky_evento) as cantidad,r.id_sky_evento, se.sky_evento
             from karviewhistoricodb.dato_spks r, karviewdb.vehiculos v,  karviewdb.sky_eventos se,  karviewdb.empresas e
