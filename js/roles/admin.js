@@ -364,17 +364,8 @@ Ext.onReady(function () {
 
 
     var administracion = Ext.create('Ext.button.Button', {
-//        width: 150,
-//        height: 40,
-////        padding: '0 0 0 0',
-////        style: {
-////            borderStyle: 'none',
-////            backgroundImage: 'url(img/stv-05.png)',
-////            backgroundSize: '100% 100%'
-////        },
         text: 'Administración',
         iconCls: 'icon-direccion',
-        tooltip: 'Administración de Usuarios, Equipos y Vehiculos',
         tooltip: 'Administración de Usuarios, Equipos y Vehiculos',
                 scope: this,
         menu: [
@@ -421,17 +412,6 @@ Ext.onReady(function () {
     });
 
     var herraminetas = Ext.create('Ext.button.Button', {
-//        scope: this,
-//        width: 140,
-//        height: 40,
-////        padding: '0 0 0 5',
-//        x:5,
-//        y:30,
-//        style: {
-//            borderStyle: 'none',
-//            backgroundImage: 'url(img/stv-03.png)',
-//            backgroundSize: '100% 100%',
-//        },
         text: 'Herramientas',
         scope: this,
         tooltip: 'Herramintas de Acceso Rapido',
@@ -466,19 +446,6 @@ Ext.onReady(function () {
 
 
     var monitoreo = Ext.create('Ext.button.Button', {
-//        width: 130,
-//        height: 40,
-//        padding: '0 0 0 10',
-//        style: {
-//            borderStyle: 'none',
-//            backgroundImage: 'url(img/stv-04.png)',
-//            backgroundSize: '100% 100%',
-//        },
-//        tooltip: 'Estado Actual de los Vehiculos y Equipos',
-//        handler: function () {
-//            window.open('monitorTeam.php');
-//        }
-
         text: 'Monitoreo',
         tooltip: 'Estado Actual de los Vehiculos y Equipos',
         iconCls: 'icon-monitoreo', handler: function () {
@@ -492,15 +459,6 @@ Ext.onReady(function () {
         scope: this,
         tooltip: 'Salir del Sistema',
         icon: 'img/salir.png',
-//        width: 40,
-//        height: 40,
-//        padding: '0 0 0 0',
-//        style: {
-//            borderStyle: 'none',
-//            backgroundImage: 'url(img/stv-09.png)',
-//            backgroundSize: '100% 100%',
-//            backgroundColor: '#FAFAFA',
-//        },
         handler: function () {
             Ext.MessageBox.confirm('SALIR', 'Desea Salir del Sistema ?', function (choice) {
                 if (choice === 'yes') {
@@ -511,51 +469,13 @@ Ext.onReady(function () {
 
         }
     });
-//    var salir = Ext.create('Ext.button.Button', {
-//        id: 'custom',
-//        scope: this,
-//        tooltip: 'Salir del Sistema',
-//        width: 40,
-//        height: 40,
-//        padding: '0 0 0 0',
-//        style: {
-////            borderStyle: 'none',
-//            backgroundImage: 'url(img/stv-09.png)',
-//            backgroundSize: '100% 100%',
-//            backgroundColor: '#FAFAFA',
-//        },
-//        handler: function () {
-//            Ext.MessageBox.confirm('SALIR', 'Desea Salir del Sistema ?', function (choice) {
-//                if (choice === 'yes') {
-//                    window.location = 'php/login/logout.php';
-//                }
-//            });
-//        }
-//    });
 
     var barraMenu = Ext.create('Ext.toolbar.Toolbar', {
-//        padding: '0 0 0 0',
-//          style: {
-//           backgroundColor: 'white',
-//            borderStyle: 'solid',
-//            borderBottomColor: 'red',
-//            borderBottomWidth: '5px'
-//        },
         width: '100%',
         items: [{
                 text: 'Menú',
                 icon: 'img/menu.png',
                 tooltip: 'Reportes Informativos',
-//                xtype: 'button',
-//                width: 130,
-//                height: 40,
-//                padding: '0 0 0 0',
-//                style: {
-//                    borderStyle: 'none',
-//                    backgroundImage: 'url(img/stv-02.png)',
-//                    backgroundSize: '100% 100%'
-//                },
-//                tooltip: 'Reportes Informativos',
                 menu: [{
                         text: 'Reportes',
                         iconCls: 'icon-general',
@@ -569,8 +489,11 @@ Ext.onReady(function () {
                             {text: 'Excesos de Velocidad', iconCls: 'icon-exceso-vel', handler: function () {
                                     ventanaexcesosvelociadadWin();
                                 }},
-                            {text: 'Mantenimiento Detallado', iconCls: 'icon-servicios', handler: function () {
+                            {text: 'Mantenimiento Vehicular', iconCls: 'icon-servicios', handler: function () {
                                     showWinMantenimientoGeneral();
+                                }},
+                            {text: 'Manatenimiento General', iconCls: 'icon-mantenimiento', handler: function () {
+                                   ventanaReporteMantenimiento();
                                 }},
                             {text: 'Perdida de GPS y GSM', iconCls: 'icon-flota', handler: function () {
                                     reporteWinperdidaGpsGsm();
@@ -603,15 +526,6 @@ Ext.onReady(function () {
                     , '->',
             {
                 xtype: 'button',
-//                width: 40,
-//                height: 40,
-//                padding: '0 0 0 0',
-//                style: {
-//                    borderStyle: 'none',
-//                    backgroundImage: 'url(img/stv-08.png)',
-//                    backgroundSize: '100% 100%',
-//                    backgroundColor: '#FAFAFA'
-//                },
                 iconCls: 'icon-act-mapa',
                 tooltip: 'Limpiar Mapa',
                 handler: function () {
@@ -927,16 +841,6 @@ Ext.onReady(function () {
                         }
                     }, {
                 xtype: 'splitbutton',
-//                 width: 150,
-//                height: 30,
-//                padding: '2 2 2 2',
-//                style: {
-//                    borderStyle: 'none',
-//                    backgroundImage: 'url(img/stv-07.png)',
-//                    backgroundSize: '100% 100%',
-//                     backgroundColor: '#f8fdff'
-//                    
-//                },
                 text: 'Organización',
                 iconCls: 'icon-central',
                 tooltip: 'Organizaciones Asociadas',
@@ -961,18 +865,6 @@ Ext.onReady(function () {
             }
         ]
     });
-//
-//    storeEventos = Ext.create('Ext.data.JsonStore', {
-//        proxy: {
-//            type: 'ajax',
-//            url: '',
-//            reader: {
-//                type: 'json',
-//                root: 'eventos'
-//            }
-//        },
-//        fields: ['fecha_hora', 'vehiculo', 'evento', {name: 'velocidad', type: 'float'}, 'direccion', 'coordenadas']
-//    });
 
     var gridEventos = Ext.create('Ext.grid.GridPanel', {
         region: 'south',

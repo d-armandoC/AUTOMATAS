@@ -315,15 +315,15 @@ function cargardatosalGridGpsGsm(datos) {
     });
 
     var columnGsmGps = [
-        {text: '<b>Trama</b>', width: 65, dataIndex: 'idData', align: 'center'},
-        {text: 'Empresa', flex: 80, dataIndex: 'empresa', filter: {type: 'string'}},
+//        {text: '<b>Trama</b>', width: 65, dataIndex: 'idData', align: 'center'},
+        {text: 'Organización', flex: 80, dataIndex: 'empresa',renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}},
         {text: 'Equipo', flex: 80, dataIndex: 'equipo', filter: {type: 'string'}},
         {text: 'Placa', flex: 80, dataIndex: 'placa', filter: {type: 'string'}},
         {text: 'Señal', flex: 80, dataIndex: 'tipo_respuesta', filter: {type: 'string'}, renderer: sinGSM},
         {text: 'Latitud', flex: 80, dataIndex: 'latitud'},
-        {text: 'Longitud', flex: 80, dataIndex: 'longitud', },
-        {text: 'Registro', flex: 80, dataIndex: 'fecha', filter: {type: 'string'}},
-        {text: 'Velocidad', flex: 80, dataIndex: 'velocidad', filter: {type: 'string'}}
+        {text: 'Longitud', flex: 80, dataIndex: 'longitud' },
+        {text: 'Registro', flex: 80, dataIndex: 'fecha', format: 'd-m-Y H:i:s', width: 170, align: 'center',filter: {type: 'date'}, filterable: true},
+        {text: 'Velocidad', flex: 80, dataIndex: 'velocidad',cls: 'listview-filesize', renderer: formatSpeed,filterable: true,  filter: {type: 'numeric'}}
     ];
     var dateStart = fechaInigsm.getRawValue();
     var dateFinish = fechaFingsm.getRawValue();
@@ -387,7 +387,7 @@ function cargardatosalGridGpsGsm(datos) {
     });
 
     var tabGpsGsm = Ext.create('Ext.container.Container', {
-        title: '<div id="titulosForm"> Perdida de GPS y GSM' + empresaPerdidaGsm + " : " + placaPerdidaGsm + '</div>',
+        title: '<div id="titulosForm"> Perdida de GPS y GSM ' + empresaPerdidaGsm + " : " + placaPerdidaGsm + '</div>',
         closable: true,
         iconCls: 'icon-flota',
         layout: 'border',

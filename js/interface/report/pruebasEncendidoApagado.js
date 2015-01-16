@@ -246,16 +246,25 @@ Ext.onReady(function () {
                                     },
                                     columns: [
                                         {text: 'Trama', width: 100, dataIndex: 'idData', align: 'center'},
-                                        {text: 'Fecha', width: 130, dataIndex: 'fechaEA', align: 'center'},
-                                        {text: 'Hora', width: 200, dataIndex: 'horaEA', align: 'center'},
-                                        {text: 'Evento', width: 250, dataIndex: 'eventoEA', align: 'center'},
-                                        {text: 'Veloccidad', width: 200, dataIndex: 'velocidadEA', align: 'center'},
+                                        {text: 'Fecha', width: 130, dataIndex: 'fechaEA', align: 'center', format: 'Y-m-d H:i:s', filter: {type: 'date'}, filterable: true},
+                                        {text: 'Hora', width: 200, dataIndex: 'horaEA', align: 'center', filter: {type: 'string'}},
+                                        {text: 'Evento', width: 250, dataIndex: 'eventoEA', align: 'center', filter: {type: 'string'}},
+                                        {text: 'Veloccidad', width: 200, dataIndex: 'velocidadEA', align: 'center', cls: 'listview-filesize', renderer: formatSpeed, filterable: true, filter: {type: 'numeric'}},
                                         {text: 'Latitud', width: 200, dataIndex: 'latitudEA', align: 'center'},
                                         {text: 'Longitud', width: 200, dataIndex: 'longitudEA', align: 'center'},
-                                        {text: 'Bateria', width: 200, dataIndex: 'bateriaEA', align: 'center'},
-                                        {text: 'GSM', width: 200, dataIndex: 'gsmEA', align: 'center'},
-                                        {text: 'GPS', width: 200, dataIndex: 'gpsEA', align: 'center'},
-                                        {text: 'Dirección', width: 200, dataIndex: 'direccionEA', align: 'center'}
+                                        {text: 'Batería', width: 140, dataIndex: 'bateriaEA', align: 'center', renderer: formatBat, filter: {
+                                                type: 'list',
+                                                options: [[1, 'Bat. del Equipo'], [0, 'Bat. del Vehiculo']]
+                                            }},
+                                        {text: 'GSM', width: 105, dataIndex: 'gsmEA', align: 'center', renderer: estadoGsm, filter: {
+                                                type: 'list',
+                                                options: [[1, 'Con covertura'], [0, 'Sin covertura']]
+                                            }},
+                                        {text: 'GPS', width: 105, dataIndex: 'gpsEA', align: 'center', renderer: estadoGps, filter: {
+                                                type: 'list',
+                                                options: [[1, 'Con GPS'], [0, 'Sin GPS']]
+                                            }},
+                                        {text: 'Dirección', width: 200, dataIndex: 'direccionEA', align: 'center', filter: {type: 'string'}}
                                     ],
                                     listeners: {
                                         itemcontextmenu: function (thisObj, record, item, index, e, eOpts) {
@@ -335,9 +344,9 @@ Ext.onReady(function () {
                                                                     "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.velocidadEA + " </Data></Cell > " +
                                                                     "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.latitudEA + " </Data></Cell > " +
                                                                     "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.longitudEA + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.bateriaEA + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.gsmEA + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.gpsEA + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + formatBat(storeViewEncendidoApag.data.items[i].data.bateriaEA) + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + estadoGsm(storeViewEncendidoApag.data.items[i].data.gsmEA) + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + estadoGps(storeViewEncendidoApag.data.items[i].data.gpsEA) + " </Data></Cell > " +
                                                                     "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeViewEncendidoApag.data.items[i].data.direccionEA + " </Data></Cell > " +
                                                                     "</Row>";
                                                         }
@@ -380,11 +389,11 @@ Ext.onReady(function () {
                                     },
                                     columns: [
                                         Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                        {text: 'Organización', width: 120, dataIndex: 'empresaEncApag', align: 'center'},
-                                        {text: 'Persona', width: 210, dataIndex: 'personaEncApag', align: 'center'},
-                                        {text: 'Placa', width: 100, dataIndex: 'placaEncApag', align: 'center'},
-                                        {text: 'Equipo', width: 100, dataIndex: 'equipoEncApag', align: 'center'},
-                                        {text: 'Cantidad', width: 100, dataIndex: 'totalEncApag', align: 'center'},
+                                        {text: 'Organización', width: 120, dataIndex: 'empresaEncApag', align: 'center',renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}},
+                                        {text: 'Persona', width: 210, dataIndex: 'personaEncApag', align: 'center', filter: {type: 'string'}},
+                                        {text: 'Placa', width: 100, dataIndex: 'placaEncApag', align: 'center', filter: {type: 'string'}},
+                                        {text: 'Equipo', width: 100, dataIndex: 'equipoEncApag', align: 'center', filter: {type: 'string'}},
+                                        {text: 'Cantidad', width: 100, dataIndex: 'totalEncApag', align: 'center'}
                                     ],
                                     tbar: [{
                                             xtype: 'button',

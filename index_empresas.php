@@ -18,19 +18,17 @@ if (!isset($_SESSION["IDROLKARVIEW"])) {
         <title><?php echo $site_title ?></title>
         <link rel="shortcut icon" href="<?php echo $site_icon ?>" type="image/x-icon">
 
-        <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/shared/example.css">
+        <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/packages/ext-theme-neptune/build/resources/ext-theme-neptune-all.css">
         <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/ux/grid/css/GridFilters.css">
         <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/ux/grid/css/RangeMenu.css">
         <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/ux/css/ItemSelector.css"> 
-        <link rel="stylesheet" type="text/css" href="css/principal.css">        
-        <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/shared/example.css">
-        <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/ux/grid/css/GridFilters.css">
-        <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/ux/grid/css/RangeMenu.css">
-        
+        <link rel="stylesheet" type="text/css" href="css/principal.css">       
+
         <script type="text/javascript" src="extjs-docs-5.0.0/extjs-build/build/examples/shared/include-ext.js"></script>
-        <script type="text/javascript" src="extjs-docs-5.0.0/extjs-build/build/examples/shared/options-toolbar.js"></script>
         <script type="text/javascript" src="extjs-docs-5.0.0/extjs-build/build/examples/shared/examples.js"></script>
         <script type="text/javascript" src="extjs-docs-5.0.0/extjs-build/build/packages/ext-charts/build/ext-charts.js"></script>
+
+
         <script type="text/javascript">
 <?php
 echo "               
@@ -42,7 +40,7 @@ echo "
                 ";
 ?>
         </script>
-        <script type="text/javascript" src="js/ext-lang-es.js">  </script>
+        <script type="text/javascript" src="js/ext-lang-es.js"></script>
         <script type="text/javascript" src="js/requerid/functions.js"></script>
         <script type="text/javascript" src="js/roles/empresas.js"></script>
         <script type="text/javascript" src="js/complements/loadLayer.js"></script>        
@@ -89,25 +87,25 @@ echo "
         <script type="text/javascript" src="js/cuenta_Usuario/modificarUsuario.js"></script>
         <script type="text/javascript" src="js/cuenta_Usuario/actualizarEmail.js"></script>
 
-         <!--Stors-->
+        <!--Stors-->
         <script type="text/javascript" src="js/requerid/stores.js"></script>
-        
+
         <!--Mapa-->
         <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
         <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
         <script type="text/javascript" src="js/mapa.js"></script>
         <!--Fin Mapa-->
     </head>
-<!--    <body oncontextmenu = "return false">        
-        <header></header>
-        <nav></nav>
-        <section id = 'icono'>
-            <div style="position: absolute; bottom: -75px; right: 0px">
-                <a href='http://www.kradac.com'>
-                    <img alt="www.kradac.com"   src='img/credits.png'/>
-                </a>    
-            </div>
-        </section>        
-        <footer></footer>
-    </body>-->
+    <!--    <body oncontextmenu = "return false">        
+            <header></header>
+            <nav></nav>
+            <section id = 'icono'>
+                <div style="position: absolute; bottom: -75px; right: 0px">
+                    <a href='http://www.kradac.com'>
+                        <img alt="www.kradac.com"   src='img/credits.png'/>
+                    </a>    
+                </div>
+            </section>        
+            <footer></footer>
+        </body>-->
 </html>

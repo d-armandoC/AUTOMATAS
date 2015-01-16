@@ -21,7 +21,7 @@ var empresaParadas = 'KRADAC';
 
 
 Ext.onReady(function () {
-    
+
     if (idCompanyKarview == 1) {
         banderaEx = 1;
     } else {
@@ -238,7 +238,7 @@ Ext.onReady(function () {
                             waitTitle: 'Procesando...',
                             waitMsg: 'Obteniendo Información',
                             params: {
-                                idEmpresas: idEmpresa,
+                                idEmpresas: idEmpresa
                             },
                             success: function (form, action) {
                                 personaParadas;
@@ -264,11 +264,11 @@ Ext.onReady(function () {
                                     },
                                     columns: [
                                         Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                        {text: 'Organización', width: 150, dataIndex: 'empresa', align: 'center'},
-                                        {text: 'Vehículo', width: 100, dataIndex: 'vehiculo', align: 'center'},
-                                        {text: 'Equipo', width: 100, dataIndex: 'equipo', align: 'center'},
-                                        {text: 'Placa', width: 100, dataIndex: 'placa', align: 'center'},
-                                        {text: 'Cantidad Eventos', width: 150, dataIndex: 'totalEventos', align: 'center'}
+                                        {text: 'Organización', width: 150, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}, align: 'center'},
+                                        {text: 'Vehículo', width: 100, dataIndex: 'vehiculo', align: 'center', filter: {type: 'string'}},
+                                        {text: 'Equipo', width: 100, dataIndex: 'equipo', align: 'center', filter: {type: 'string'}},
+                                        {text: 'Placa', width: 100, dataIndex: 'placa', align: 'center',filter: {type: 'string'}},
+                                        {text: 'Cantidad Eventos', width: 150, dataIndex: 'totalEventos', align: 'center', filter: {type: 'numeric'}}
                                     ],
                                     tbar: [{
                                             xtype: 'button',
@@ -368,18 +368,30 @@ Ext.onReady(function () {
                                     columns: [
                                         //fields: ['empresa', 'vehiculo', 'placa', 'latitud','longitud','fecha','hora','velocidad','bateria','gsm','gps','ign','sky_evento']
                                         Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                        {text: 'Organización', width: 130, dataIndex: 'empresa', align: 'center'},
-                                        {text: 'Vehiculo', width: 200, dataIndex: 'vehiculo', align: 'center'},
-                                        {text: 'Placa', width: 200, dataIndex: 'placa', align: 'center'},
+                                        {text: 'Organización', width: 130, dataIndex: 'empresa', align: 'center', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}},
+                                        {text: 'Vehiculo', width: 200, dataIndex: 'vehiculo', align: 'center', filter: {type: 'string'}},
+                                        {text: 'Placa', width: 200, dataIndex: 'placa', align: 'center', filter: {type: 'string'}},
                                         {text: 'Latitud', width: 200, dataIndex: 'latitud', align: 'center'},
                                         {text: 'Longitud', width: 200, dataIndex: 'longitud', align: 'center'},
-                                        {text: 'Fecha', width: 200, dataIndex: 'fecha', align: 'center'},
-                                        {text: 'Hora', width: 200, dataIndex: 'hora', align: 'center'},
-                                        {text: 'Velocidad', width: 200, dataIndex: 'velocidad', align: 'center'},
-                                        {text: 'Bateria', width: 200, dataIndex: 'bateria', align: 'center'},
-                                        {text: 'GSM', width: 200, dataIndex: 'gsm', align: 'center'},
-                                        {text: 'GPS', width: 200, dataIndex: 'gps', align: 'center'},
-                                        {text: 'IGN', width: 200, dataIndex: 'ign', align: 'center'},
+                                        {text: 'Fecha', width: 200, dataIndex: 'fecha', align: 'center', format: 'Y-m-d H:i:s', filter: {type: 'date'}, filterable: true},
+                                        {text: 'Hora', width: 200, dataIndex: 'hora', align: 'center', filter: {type: 'string'}},
+                                        {text: 'Velocidad', width: 200, dataIndex: 'velocidad', align: 'center', cls: 'listview-filesize', renderer: formatSpeed, filterable: true, filter: {type: 'numeric'}},
+                                        {text: 'Batería', width: 140, dataIndex: 'bateria', align: 'center', renderer: formatBat, filter: {
+                                                type: 'list',
+                                                options: [[1, 'Bat. del Equipo'], [0, 'Bat. del Vehiculo']]
+                                            }},
+                                        {text: 'GSM', width: 105, dataIndex: 'gsm', align: 'center', renderer: estadoGsm, filter: {
+                                                type: 'list',
+                                                options: [[1, 'Con covertura'], [0, 'Sin covertura']]
+                                            }},
+                                        {text: 'GPS', width: 105, dataIndex: 'gps', align: 'center', renderer: estadoGps, filter: {
+                                                type: 'list',
+                                                options: [[1, 'Con GPS'], [0, 'Sin GPS']]
+                                            }},
+                                        {text: 'Vehículo(IGN)', width: 130, dataIndex: 'ign', align: 'center', renderer: formatBatIgn, filter: {
+                                                type: 'list',
+                                                options: [[1, 'Encendido'], [0, 'Apagado']]
+                                            }},
                                         {text: 'Evento', width: 200, dataIndex: 'sky_evento', align: 'center'}
                                     ],
                                     listeners: {
@@ -499,7 +511,7 @@ Ext.onReady(function () {
                                         }]
                                 });
                                 var tabExces = Ext.create('Ext.container.Container', {
-                                    title: '<div id="titulosForm"> Reporte de Paradas' + empresaParadas + " : " + placaReporteParadas + '</div>',
+                                    title: '<div id="titulosForm"> Reporte de Paradas ' + empresaParadas + " : " + placaReporteParadas + '</div>',
                                     closable: true,
                                     iconCls: 'icon-unlock',
                                     layout: 'border',

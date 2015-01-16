@@ -8,7 +8,7 @@ if (!$mysqli = getConectionDb()) {
 
     $consultaSql = "SELECT sk.fecha, sk.hora ,ev.sky_evento, sk.velocidad, sk.latitud, sk.longitud, sk.bateria,sk.gsm, sk.gps, sk.direccion
                             FROM karviewhistoricodb.dato_spks sk ,karviewdb.sky_eventos ev
-                            where  sk.id_equipo='$idEquipoED' and sk.id_sky_evento=ev.id_sky_evento and ev.id_sky_evento in(6,7) and
+                            where  sk.id_equipo='$idEquipoED' and sk.id_sky_evento=ev.id_sky_evento and ev.id_sky_evento in(5,6) and
                             sk.fecha between '$fechaIniED' and '$fechaFinED'and sk.hora between '$horaIniED' and '$horaFinED'";
 
     $result = $mysqli->query($consultaSql);

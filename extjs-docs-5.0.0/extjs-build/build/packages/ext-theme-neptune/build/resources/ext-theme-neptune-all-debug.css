@@ -16257,6 +16257,7 @@ ul.x-tagfield-list.x-tagfield-singleselect {
 /* line 50, ../../../ext-theme-neutral/sass/src/view/Table.scss */
 .x-grid-item-selected {
   background-color: #004b6b;
+  color: #fff;
 }
 /* line 57, ../../../ext-theme-neutral/sass/src/view/Table.scss */
 .x-grid-item-selected > tbody > .x-grid-row {

@@ -212,10 +212,10 @@ Ext.onReady(function () {
                                     },
                                     fields: ['id_geocerca', 'geocerca', 'placa', 'estado', 'fecha_hora']
                                 });
-                                   var gridDataGeocercas = Ext.create('Ext.grid.Panel', {
+                                var gridDataGeocercas = Ext.create('Ext.grid.Panel', {
                                     region: 'west',
                                     frame: true,
-                                    width: '70%',
+                                    width: '100%',
                                     title: '<center>Reporte de Geocercas' + '<br>Desde: ' + fechaIniGeocercasReport + ' | Hasta: ' + dateFinGeocercasReport + '</center>',
                                     store: storeDataGeocercas,
                                     features: [filters],
@@ -226,9 +226,13 @@ Ext.onReady(function () {
                                     columns: [
                                         Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
                                         {text: 'Geocerca', width: 150, dataIndex: 'geocerca', align: 'center'},
-                                        {text: 'Placa', width: 100, dataIndex: 'placa', align: 'center'},
-                                        {text: 'Estado', width: 100, dataIndex: 'estado', align: 'center'},
-                                        {text: 'Fecha', width: 100, dataIndex: 'fecha_hora', align: 'center'}
+                                        {text: 'Placa', width: 100, dataIndex: 'placa', align: 'center', filter: {type: 'string'}},
+                                        {text: 'Estado', width: 100, dataIndex: 'estado', align: 'center', renderer: formatEstadoGeocerca,
+                                            filter: {
+                                                type: 'list',
+                                                options: [[0, 'FUERA'], [1, 'DENTRO']]
+                                            }},
+                                        {text: 'Fecha', width: 150, dataIndex: 'fecha_hora', align: 'center', format: 'd-m-Y H:i:s', filter: {type: 'date'}, filterable: true}
                                     ],
                                     tbar: [{
                                             xtype: 'button',
@@ -268,7 +272,7 @@ Ext.onReady(function () {
                                                             table_div += "<Row ss:AutoFitHeight='0'>" +
                                                                     "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataGeocercas.data.items[i].data.geocerca + " </Data></Cell > " +
                                                                     "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataGeocercas.data.items[i].data.placa + " </Data></Cell > " +
-                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataGeocercas.data.items[i].data.estado + " </Data></Cell > " +
+                                                                    "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + formatEstadoGeocerca(storeDataGeocercas.data.items[i].data.estado) + " </Data></Cell > " +
                                                                     "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + storeDataGeocercas.data.items[i].data.fecha_hora + " </Data></Cell > " +
                                                                     "</Row>";
                                                         }
@@ -296,15 +300,15 @@ Ext.onReady(function () {
                                             }
                                         }]
                                 });
-                                
+
                                 var tabGeocercas = Ext.create('Ext.container.Container', {
-                                    title: 'Geocercas',
+                                    title: 'Reporte de Geocercas',
                                     closable: true,
                                     iconCls: 'icon-reset',
                                     layout: 'border',
                                     fullscreen: true,
                                     height: 485,
-                                    width: 2000,
+                                    width: 4000,
                                     region: 'center',
                                     items: [gridDataGeocercas]
                                 });

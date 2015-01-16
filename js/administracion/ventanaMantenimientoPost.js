@@ -293,10 +293,10 @@ Ext.onReady(function () {
         }
     });
     formPanelGrid_VehiculosPost = Ext.create('Ext.form.Panel', {
-        width: '18%',
+        width: '25%',
         margins: '0 2 0 0',
         region: 'west',
-        height: 560,
+        height: 570,
         autoScroll: true,
         items: [gridRecordsVehiculosPost]
     });
@@ -1110,7 +1110,8 @@ function ventAddMantenimientosPost() {
             closeAction: 'hide',
             plain: false,
             items: [{
-                    layout: 'border', bodyPadding: 5,
+                    layout: 'border', 
+                    bodyPadding: 5,
                     items: [formPanelGrid_VehiculosPost,
                         formRecordsVehiculosPost]
                 }]

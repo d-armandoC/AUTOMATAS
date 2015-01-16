@@ -9,13 +9,13 @@ if (!$mysqli = getConectionDb()) {
     if ($rbEA == 1) {
         $consultaSql = "SELECT  emp.empresa,concat(p.nombres,' ', p.apellidos)as persona, v.placa, sk.id_equipo, e.equipo ,count(*) as total
         FROM karviewdb.vehiculos v ,karviewdb.empresas emp , karviewdb.personas p,karviewdb.equipos e,karviewhistoricodb.dato_spks  sk 
-        where    v.id_empresa=emp.id_empresa and v.id_persona=p.id_persona and v.id_equipo=e.id_equipo and  sk.id_sky_evento in(8,9) 
+        where    v.id_empresa=emp.id_empresa and v.id_persona=p.id_persona and v.id_equipo=e.id_equipo and  sk.id_sky_evento in(7,8) 
         and v.id_equipo=sk.id_equipo and v.id_empresa='$idCompanyEncApag'and sk.fecha between '$fechaIniEA' and '$fechaFinEA' 
         and sk.hora between '$horaIniEncApag' and '$horaFinEncApag'group by v.id_vehiculo";
     } else if ($rbEA== 2) {
         $consultaSql = "SELECT  emp.empresa,concat(p.nombres,' ', p.apellidos)as persona, v.placa, sk.id_equipo, e.equipo ,count(*) as total
         FROM karviewdb.vehiculos v ,karviewdb.empresas emp , karviewdb.personas p,karviewdb.equipos e,karviewhistoricodb.dato_spks  sk 
-        where    v.id_empresa=emp.id_empresa and v.id_persona=p.id_persona and v.id_equipo=e.id_equipo and  sk.id_sky_evento in(8,9) 
+        where    v.id_empresa=emp.id_empresa and v.id_persona=p.id_persona and v.id_equipo=e.id_equipo and  sk.id_sky_evento in(7,8) 
         and v.id_equipo=sk.id_equipo and v.id_Vehiculo='$cbxVehEncApag' and v.id_empresa='$idCompanyEncApag'and sk.fecha between '$fechaIniEA' and '$fechaFinEA' 
         and sk.hora between '$horaIniEncApag' and '$horaFinEncApag'group by v.id_vehiculo";
     }

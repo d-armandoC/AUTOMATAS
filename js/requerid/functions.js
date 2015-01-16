@@ -332,40 +332,19 @@ function formatTipoEstado(val) {
             break;
     }
 }
-//
-//function formatTipoSeguro(val) {
-//     var nowDate = new Date();
-//   console.logg(Ext.Date.format(val, 'Y-m-d'));
-//   console.logg(Ext.Date.format(nowDate, 'Y-m-d'));
-////    if(Ext.Date.format(val, 'Y-m-d')===(Ext.Date.format(nowDate, 'Y-m-d'))){
-////         return '<span style="color:blue;">CADUCADO</span>';
-////    }else if(val==='0000-00-00'){
-////         return '<span style="color:blue;">NO REGISTRADO</span>';
-////    }else{
-////        return '<span style="color:green;">VIGENTE</span>';
-////    }
-//    
 
-//}
-
-
-
-function formatTipoSeguro(val) {
+function formatTipoRegistro(val) {
     var nowDate = new Date();
     if (Ext.Date.format(val, 'Y-m-d') === (Ext.Date.format(nowDate, 'Y-m-d'))) {
-        return '<span style="color:blue;">CADUCADO</span>';
-    } else if (val === '0000-00-00') {
-        return '<span style="color:blue;">NO REGISTRADO</span>';
+        return '<span style="color:BLACK;">CADUCADO</span>';
+    } else if (val === 'NO') {
+        return '<span style="color:RED;">NO REGISTRADO</span>';
     } else {
-        return '<span style="color:green;">VIGENTE</span>';
+        return '<span style="color:GREEN;">VIGENTE</span>';
     }
 
 
 }
-
-
-
-
 
 
 function formatTipoServicio(val) {
@@ -413,7 +392,14 @@ function formatSpeed(val) {
         return '<span style="color:blue;">' + val + '</span>';
     }
 }
-
+///
+function formatEstadoGeocerca(val) {
+    if (val===0) {
+        return '<span style="color:black;">' + "FUERA" + '</span>';
+    } else if (val===1) {
+        return '<span style="color:green;">' + "DENTRO" + '</span>';
+    } 
+}
 function formatState(val) {
     if (val > 6) {
         return '<span style="color:red;">Desconectado</span>';

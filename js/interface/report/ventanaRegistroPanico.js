@@ -257,9 +257,9 @@ Ext.onReady(function () {
                                     },
                                     columns: [
                                         Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                        {text: 'Velocidad', width: 130, dataIndex: 'velocidad', align: 'center', xtype: 'numbercolumn', format: '0.00'},
-                                        {text: 'Fecha', width: 200, dataIndex: 'fecha', align: 'center'},
-                                        {text: 'Hora', width: 200, dataIndex: 'hora', align: 'center'},
+                                        {text: 'Velocidad', width: 130, dataIndex: 'velocidad', align: 'center', xtype: 'numbercolumn', format: '0.00', cls: 'listview-filesize', renderer: formatSpeed,filterable: true},
+                                        {text: 'Fecha', width: 200, dataIndex: 'fecha', align: 'center',filter: {type: 'date'}, filterable: true},
+                                        {text: 'Hora', width: 200, dataIndex: 'hora', align: 'center',filter: {type: 'string'}},
                                         {text: 'Evento', width: 250, dataIndex: 'evento', align: 'center'},
                                         {text: 'Latitud', width: 250, dataIndex: 'latitud', align: 'center'},
                                         {text: 'Longitud', width: 250, dataIndex: 'longitud', align: 'center'}
@@ -372,9 +372,9 @@ Ext.onReady(function () {
                                     },
                                     columns: [
                                         Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                        {text: 'Empresa', width: 150, dataIndex: 'empresaPanicos', align: 'center'},
-                                        {text: 'Placa', width: 100, dataIndex: 'placaPanicos', align: 'center'},
-                                        {text: 'Cantidad', width: 100, dataIndex: 'cantidadPanicos', align: 'center'},
+                                        {text: 'Organización', width: 150, dataIndex: 'empresaPanicos',renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}, align: 'center' },
+                                        {text: 'Placa', width: 100, dataIndex: 'placaPanicos', align: 'center',filter: {type: 'string'}},
+                                        {text: 'Cantidad', width: 100, dataIndex: 'cantidadPanicos', align: 'center',filter: {type: 'numeric'}}
                                     ],
                                     tbar: [{
                                             xtype: 'button',
@@ -460,7 +460,7 @@ Ext.onReady(function () {
                                     }
                                 });
                                 var tabExcesos = Ext.create('Ext.container.Container', {
-                                    title: '<div id="titulosForm"> Registros de Panico'+ empresaPanico + " : " + placa + '</div>',
+                                    title: '<div id="titulosForm"> Registros de Panico '+ empresaPanico + " : " + placa + '</div>',
                                     closable: true,
                                     iconCls: 'icon-reset',
                                     layout: 'border',

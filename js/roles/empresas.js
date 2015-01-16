@@ -341,9 +341,9 @@ Ext.onReady(function () {
             {text: 'Cambiar contraseña', iconCls: 'icon-key', handler: function () {
                     ventanaCambiarContrasenia();
                 }},
-            {text: 'Mantenimientos', iconCls: 'icon-mantenimiento', handler: function () {
-                    ventAddMantenimientos();
-                }},
+//            {text: 'Mantenimientos', iconCls: 'icon-mantenimiento', handler: function () {
+//                    ventAddMantenimientos();
+//                }},
             {text: 'Actualizar email', iconCls: 'icon-email', handler: function () {
                     ventanaActualizarEmail();
                 }},

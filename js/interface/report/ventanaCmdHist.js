@@ -250,12 +250,12 @@ Ext.onReady(function () {
                                     },
                                     columns: [
                                         Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-                                        {text: 'Usuario', width: 130, dataIndex: 'usuario', align: 'center'},
-                                        {text: 'Comando', width: 200, dataIndex: 'comando', align: 'center'},
-                                        {text: 'Respuesta', width: 200, dataIndex: 'respuesta', align: 'center'},
-                                        {text: 'Fecha Creación', width: 250, dataIndex: 'fecha_creacion', align: 'center'},
-                                        {text: 'Fecha Envio', width: 250, dataIndex: 'fecha_envio', align: 'center'},
-                                        {text: 'Estado', width: 250, dataIndex: 'estado', align: 'center'}
+                                        {text: 'Usuario', width: 130, dataIndex: 'usuario', align: 'center',filter: {type: 'string'}},
+                                        {text: 'Comando', width: 200, dataIndex: 'comando', align: 'center',filter: {type: 'string'}},
+                                        {text: 'Respuesta', width: 200, dataIndex: 'respuesta', align: 'center',filter: {type: 'string'}},
+                                        {text: 'Fecha Creación', width: 250, dataIndex: 'fecha_creacion', align: 'center',format: 'Y-m-d H:i:s', filter: {type: 'date'}, filterable: true},
+                                        {text: 'Fecha Envio', width: 250, dataIndex: 'fecha_envio', align: 'center',format: 'Y-m-d H:i:s', filter: {type: 'date'}, filterable: true},
+                                        {text: 'Estado', width: 250, dataIndex: 'estado', align: 'center',filter: {type: 'string'}}
                                     ],
                                     tbar: [{
                                             xtype: 'button',
@@ -355,7 +355,7 @@ Ext.onReady(function () {
                                     }
                                 });
                                 var tabComandos = Ext.create('Ext.container.Container', {
-                                    title: '<div id="titulosForm">CMD Enviados' + empresaComandos + " : " + placacomandos + '</div>',
+                                    title: '<div id="titulosForm">CMD Enviados ' + empresaComandos + " : " + placacomandos + '</div>',
                                     closable: true,
                                     iconCls: 'icon-cmd-hist',
                                     layout: 'border',

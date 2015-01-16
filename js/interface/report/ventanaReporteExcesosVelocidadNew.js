@@ -317,11 +317,11 @@ function cargardatosalGrid(datos) {
 
     var columnExcesosVelocidad = [
         Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-        {text: 'Organización', flex: 80, dataIndex: 'empresa', filter: {type: 'string'}},
+        {text: 'Organización', flex: 80, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}},
         {text: 'Placa', flex: 80, dataIndex: 'placa', filter: {type: 'string'}},
-        {text: 'Velocidad', flex: 80, dataIndex: 'velocidad', filter: {type: 'string'}},
-        {text: 'Registrado', flex: 80, dataIndex: 'fecha', filter: {type: 'string'}},
-        {text: 'Evento', flex: 80, dataIndex: 'evento', filter: {type: 'string'}}
+        {text: 'Velocidad', flex: 80, dataIndex: 'velocidad', cls: 'listview-filesize', renderer: formatSpeed,filterable: true,  filter: {type: 'numeric'}},
+        {text: 'Registrado', flex: 80, dataIndex: 'fecha', format: 'd-m-Y H:i:s', width: 170, align: 'center',filter: {type: 'date'}, filterable: true},
+        {text: 'Evento', flex: 80, dataIndex: 'evento', filter: {type: 'list', store: storeEventos}}
     ];
     var dateStart = fechaIniExcesos.getRawValue();
     var dateFinish = fechaFinExcesos.getRawValue();
@@ -362,7 +362,7 @@ function cargardatosalGrid(datos) {
 
     var tabExcesosVelocidad = Ext.create('Ext.container.Container', {
         //title: 'Reporte de Excesos de velocidad',
-        title: '<div id="titulosForm"> Excesos de Velocidad' + empresaExVelocidad + ":" + placaExcesos + '</div>',
+        title: '<div id="titulosForm"> Excesos de Velocidad ' + empresaExVelocidad + ":" + placaExcesos + '</div>',
         closable: true,
         iconCls: 'icon-exceso-vel',
         layout: 'border',

@@ -45,7 +45,7 @@
                 ";
             ?>
         </script>
-        <script type="text/javascript" src="js/ext-lang-es.js">  </script>
+<!--        <script type="text/javascript" src="js/ext-lang-es.js">  </script>-->
         <script type="text/javascript" src="js/requerid/functions.js"></script>
         <script type="text/javascript" src="js/roles/admin.js"></script>
       
@@ -66,6 +66,7 @@
         <script type="text/javascript" src="js/interface/report/ventanaFranjasHorarias.js"></script>        
         <script type="text/javascript" src="js/interface/report/ventanaNoAtendidas.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaRutas.js"></script>
+        <script type="text/javascript" src="js/interface/report/reporteMantenimiento.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaServicios.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaSoftware.js"></script>
         <script type="text/javascript" src="js/interface/report/ventanaEventos.js"></script>

@@ -2,18 +2,18 @@ var contenedorwinEvt;
 var winEvt;
 var banderaEventos;
 var storeVehiculos;
-var empresaEventos='KRADAC';
-var placaEventos="";
+var empresaEventos = 'KRADAC';
+var placaEventos = "";
 
 Ext.onReady(function () {
     if (idCompanyKarview == 1) {
         banderaEventos = 1;
     } else {
-        empresaEventos='COOPMEGO';
+        empresaEventos = 'COOPMEGO';
         banderaEventos = storeEmpresaPanicos.data.items[0].data.id;
     }
 
- storeVehiculos = Ext.create('Ext.data.JsonStore', {
+    storeVehiculos = Ext.create('Ext.data.JsonStore', {
         autoDestroy: true,
         proxy: {
             type: 'ajax',
@@ -323,7 +323,7 @@ function ventanaEventos() {
         params: {
             cbxEmpresas: banderaEventos
         }
-        
+
     });
 }
 
@@ -381,32 +381,41 @@ function loadGridEvents() {
                 if (records !== null && records.length > 0) {
                     var columnEvets = [
                         Ext.create('Ext.grid.RowNumberer', {text: 'N°', width: 48}),
-                        {text: '<b>Vehiculo</b>', width: 200, dataIndex: 'vehiculor', tooltip: 'vehiculo de la Empresa'},
-                        {text: '<b>Fecha</b>', xtype: 'datecolumn', format: 'd-m-Y', width: 85, dataIndex: 'fecha_horar', align: 'center', tooltip: 'Fecha'},
-                        {text: '<b>Hora</b>', xtype: 'datecolumn', format: 'H:i:s', width: 75, dataIndex: 'fecha_horar', align: 'center', tooltip: 'Hora'},
-                        {text: '<b>Vel. (Km/h)</b>', dataIndex: 'velocidadr', align: 'right', width: 105, cls: 'listview-filesize', renderer: formatSpeed, tooltip: 'Velocidad'},
-                        {text: '<b>Bateria</b>', width: 75, dataIndex: 'bateriar', align: 'center', renderer: formato, tooltip: 'Bateria'},
-                        {text: '<b>GSM</b>', width: 65, dataIndex: 'gsmr', align: 'center', renderer: formato, tooltip: 'GSM'},
-                        {text: '<b>GPS2</b>', width: 65, dataIndex: 'gps2r', align: 'center', renderer: formato, tooltip: 'GPS2'},
-                        {text: '<b>IGN</b>', width: 65, dataIndex: 'ignr', align: 'center', renderer: formato, tooltip: 'IGN'},
-                        {text: '<b>Evento</b>', width: 250, dataIndex: 'evtr', tooltip: 'Evento'},
-                        {text: '<b>Direccion</b>', width: 300, dataIndex: 'direccionr', tooltip: 'Direccion'},
+                        {text: '<b>Vehiculos</b>', width: 200, dataIndex: 'vehiculor', filter: {type: 'string'}},
+                        {text: '<b>Fechas</b>', width: 100, dataIndex: 'fecha_horar', align: 'center', format: 'Y-m-d H:i:s', filter: {type: 'date'}, filterable: true},
+                        {text: '<b>Hora</b>', format: 'H:i:s', width: 100, dataIndex: 'fecha_horar', align: 'center'},
+                        {text: '<b>Vel. (Km/h)</b>', dataIndex: 'velocidadr', align: 'center', width: 105, cls: 'listview-filesize', renderer: formatSpeed, filterable: true, filter: {type: 'numeric'}},
+                        {text: 'Batería', width: 140, dataIndex: 'bateriar', align: 'center', renderer: formatBat, filter: {
+                                type: 'list',
+                                options: [[1, 'Bat. del Equipo'], [0, 'Bat. del Vehiculo']]
+                            }},
+                        {text: 'GSM', width: 105, dataIndex: 'gsmr', align: 'center', renderer: estadoGsm, filter: {
+                                type: 'list',
+                                options: [[1, 'Con covertura'], [0, 'Sin covertura']]
+                            }},
+                        {text: 'GPS', width: 105, dataIndex: 'gps2r', align: 'center', renderer: estadoGps, filter: {
+                                type: 'list',
+                                options: [[1, 'Con GPS'], [0, 'Sin GPS']]
+                            }},
+                        {text: 'Vehículo(IGN)', width: 130, dataIndex: 'ignr', align: 'center', renderer: formatBatIgn, filter: {
+                                type: 'list',
+                                options: [[1, 'Encendido'], [0, 'Apagado']]
+                            }},
+                        {text: '<b>Evento</b>', width: 250, dataIndex: 'evtr', tooltip: 'Evento', filter: {type: 'string'}},
+                        {text: '<b>Direccion</b>', width: 300, dataIndex: 'direccionr', tooltip: 'Direccion', filter: {type: 'string'}},
                         {text: '<b>Latitud</b>', width: 150, dataIndex: 'latitudr', tooltip: 'Latitud'},
                         {text: '<b>Longitud</b>', width: 150, dataIndex: 'longitudr', tooltip: 'Longitud'}
                     ]
 
 
                     var gridEvents = Ext.create('Ext.grid.Panel', {
-                        width: '100%',
-//                        height: 485,
-                        collapsible: true,
-                        autoScroll: true,
-                        height: 420,
-                        //width: 800,
-                        title: '<center>Reporte de Eventos: ' + nameEmp + '</center>',
+                        region: 'center',
+                        frame: true,
+                        width: '60%',
                         store: store,
+                        height: 377,
+                        features: [filters],
                         multiSelect: true,
-                        columnLines: true,
                         viewConfig: {
                             emptyText: 'No hay datos que Mostrar'
                         },
@@ -464,10 +473,10 @@ function loadGridEvents() {
                                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store.data.items[i].data.vehiculor + " </Data></Cell > " +
                                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store.data.items[i].data.fecha_horar + " </Data></Cell > " +
                                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store.data.items[i].data.velocidadr + " </Data></Cell > " +
-                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + formato(store.data.items[i].data.bateriar) + " </Data></Cell > " +
-                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + formato(store.data.items[i].data.gsmr) + " </Data></Cell > " +
-                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + formato(store.data.items[i].data.gps2r) + " </Data></Cell > " +
-                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + formato(store.data.items[i].data.ignr) + " </Data></Cell > " +
+                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + formatBat(store.data.items[i].data.bateriar) + " </Data></Cell > " +
+                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + estadoGsm(store.data.items[i].data.gsmr) + " </Data></Cell > " +
+                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + estadoGps(store.data.items[i].data.gps2r) + " </Data></Cell > " +
+                                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + formatBatIgn(store.data.items[i].data.ignr) + " </Data></Cell > " +
                                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store.data.items[i].data.evtr + " </Data></Cell > " +
                                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store.data.items[i].data.direccionr + " </Data></Cell > " +
                                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + store.data.items[i].data.latitudr + " </Data></Cell > " +
@@ -498,15 +507,31 @@ function loadGridEvents() {
                                 }
                             }],
                         listeners: {
-                            itemcontextmenu: function (thisObj, record, item, index, e, eOpts) {
-                                panelTabMapaAdmin.setActiveTab('panelMapaTab');
-                                localizarDireccion(record.data.longitud, record.data.latitud, 17);
-                            }
+                                 itemcontextmenu: function (thisObj, record, item, index, e, eOpts) {
+                                            e.stopEvent();
+                                            Ext.create('Ext.menu.Menu', {
+                                                items: [
+                                                    Ext.create('Ext.Action', {
+                                                        iconCls: 'icon-vehiculos_lugar', // Use a URL in the icon config
+                                                        text: 'Ver Ubicación en el Mapa',
+                                                        disabled: false,
+                                                        handler: function (widget, event) {
+                                                            panelTabMapaAdmin.setActiveTab('panelMapaTab');
+                                                            clearLienzoPointTravel();
+                                                            clearLienzoTravel();
+                                                            drawPointEncendidoApagado(record.data);
+                                                            localizarDireccion(record.data.longitudEA, record.data.latitudEA, 17);
+                                                        }
+                                                    })
+                                                ]
+                                            }).showAt(e.getXY());
+                                            return false;
+                                        }
                         }
                     });
 
                     var tab = Ext.create('Ext.form.Panel', {
-                        title: '<div id="titulosForm"> Reporte de Eventos' + empresaEventos + '</div>',
+                        title: '<div id="titulosForm"> Reporte de Eventos ' + empresaEventos + '</div>',
                         closable: true,
                         iconCls: 'icon-eventos',
                         items: gridEvents
@@ -514,6 +539,7 @@ function loadGridEvents() {
 
                     panelTabMapaAdmin.add(tab);
                     panelTabMapaAdmin.setActiveTab(tab);
+                    winEvt.hide();
 
                     limpiar_datosEvt();
                 } else {
