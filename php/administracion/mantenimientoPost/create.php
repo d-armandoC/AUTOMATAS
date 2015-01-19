@@ -113,7 +113,7 @@ if (!$mysqli = getConectionDb()) {
         }
     }
 
-    $insertSql = "INSERT INTO karviewdb.mantenimientovehiculo(id_vehiculo,id_estandar_vehiculo,valorTipoServicio,valorTipoMantenimiento,mkilometraje,mdias,mfecha,mobservacion,repaFecha,repaDescripcion,repaObservacion,repuMarca,repuModelo,repuCodigo,repuSerie,repuEstado,fecha_config,responsable)VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?);";
+    $insertSql = "INSERT INTO karviewdb.historicomantenimientovehiculo(id_vehiculo,id_estandar_vehiculo,valorTipoServicio,valorTipoMantenimiento,mkilometraje,mdias,mfecha,mobservacion,repaFecha,repaDescripcion,repaObservacion,repuMarca,repuModelo,repuCodigo,repuSerie,repuEstado,fecha_config,responsable)VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?);";
     if ($stmt = $mysqli->prepare($insertSql)) {
         $stmt->bind_param("iiiiiisssssssssisi", $idvehiculo, $idestandar, $valorTipoServicio, $valorTipoMantenimiento, $mkilometraje, $mdias, $mfecha, utf8_decode($mobservacion), $repaFecha, utf8_decode($repaDescripcion), utf8_decode($repaObservacion), $repuMarca, $repuModelo, $repuCodigo, $repuSerie, $repuEstado,$fechaConfig, $idPersona);
         $stmt->execute();
