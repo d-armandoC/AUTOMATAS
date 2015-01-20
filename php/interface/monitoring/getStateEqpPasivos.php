@@ -40,21 +40,19 @@ if (!$mysqli = getConectionDb()) {
 
         $objJson = "{stateEqpPasivos : [";
         while ($myrow = $result->fetch_assoc()) {
-            $usuarioE = $myrow["usuarioEquipo"];
-            $usuarioV = $myrow["usuarioVehiculo"];
-            $consultaSql1 = "select concat(p.nombres, ' ', p.apellidos)as persona from usuarios u, kbusdb.personas p where u.id_persona=p.id_persona and u.id_usuario='$usuarioE'";
-            $result1 = $mysqli->query($consultaSql1);
-            $myrow1 = $result1->fetch_assoc();
-            $usuarioE = $myrow1['persona'];
-            $consultaSql1 = "select concat(p.nombres, ' ', p.apellidos)as persona from usuarios u, kbusdb.personas p where u.id_persona=p.id_persona and u.id_usuario='$usuarioV'";
+            $consultaSql1= "Select concat(p.nombres, ' ', p.apellidos)as persona from usuarios u, karviewdb.personas p where u.id_persona=p.id_persona and u.id_usuario='".$myrow["usuarioEquipo"]."'";
+            $result1gfg = $mysqli->query($consultaSql1);
+            $myrow1asa =  $result1gfg->fetch_assoc();
+            $usuarioE = $myrow1asa['persona'];
+            $consultaSql1 = "Select concat(p.nombres, ' ', p.apellidos)as persona from usuarios u, karviewdb.personas p where u.id_persona=p.id_persona and u.id_usuario='".$myrow["usuarioVehiculo"]."'";
             $result1 = $mysqli->query($consultaSql1);
             $myrow1 = $result1->fetch_assoc();
             $usuarioV = $myrow1['persona'];
             $objJson .= "{
                  estadoE:'" . utf8_encode($myrow["comentario"]) . "', 
                 estadoV:'" . utf8_encode($myrow["cv"]) . "',
-                usuarioE:'" . utf8_encode($usuarioE) . "',
-                usuarioV:'" . utf8_encode($usuarioV) . "',
+                usuarioE:'" . utf8_encode($myrow["usuarioEquipo"]) . "',
+                usuarioV:'" . utf8_encode($myrow["usuarioVehiculo"]) . "',
                 fecha_hora_estadoE:'" . utf8_encode($myrow["fecha_hora_comentario"]) . "', 
                 fecha_hora_estadoV:'" . utf8_encode($myrow["fechV"]) . "', 
                 id_vehiculo:" . $myrow["id_vehiculo"] . ",
