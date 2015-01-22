@@ -19,6 +19,7 @@ Ext.onReady(function() {
                         name: 'passwordInitial',
                         emptyText: 'Ingrese Contraseña Actual...',
                         itemId: 'password',
+                         vtype:'camposTamanio',
                         inputType: 'password',
                         allowBlank: false,
                         anchor: '95%'
@@ -30,6 +31,7 @@ Ext.onReady(function() {
                         name: 'newpassword',
                         emptyText: 'Ingrese Nueva Contraseña...',
                         itemId: 'pass',
+                        vtype:'camposTamanio',
                         inputType: 'password',
                         allowBlank: false,
                         anchor: '95%'

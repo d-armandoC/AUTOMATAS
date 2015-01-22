@@ -10,32 +10,31 @@ if (!$mysqli = getConectionDb()) {
     if ($opcion == 1) {
         $existeVehiculos = substr_count($listVehiculos, ',');
         if ($existeVehiculos > 0) {
-            $VEHC = str_replace(",", "','", $listVehiculos);
+            $VEHC = str_replace(",", ",", $listVehiculos);
         } else {
             $VEHC = $listVehiculos;
         }
         $existeServicios = substr_count($listServicios, ',');
         if ($existeServicios > 0) {
-            $SERV = str_replace(",", "','", $listServicios);
+            $SERV = str_replace(",", ",", $listServicios);
         } else {
             $SERV = $listServicios;
         }
         $consultaSql = "SELECT m.id_vehiculo, vh.placa, vh.marca, emp.empresa, sv.estandar_vehiculo, m.valorTipoServicio, concat (p.nombres,' ',p.apellidos) nombres
             FROM karviewdb.personas p, karviewhistoricodb.historicomantenimientovehiculo m, karviewdb.vehiculos vh, karviewdb.empresas emp, karviewdb.estandar_vehiculos sv, karviewdb.usuarios us 
-            where m.id_vehiculo=vh.id_vehiculo and m.id_estandar_vehiculo=sv.id_estandar_vehiculo and vh.id_empresa= emp.id_empresa and m.responsable=us.id_persona and us.id_persona=p.id_persona  and vh.id_vehiculo IN ('$VEHC') and m.id_estandar_vehiculo IN ('$SERV') "
-                . "and (m.fecha_registro between concat('$fechaIniMant',' ','$horaIniMant') and concat('$fechaFinMat',' ','$horaFinMant'))  group by id_vehiculo";
+            where  m.id_estandar_vehiculo=sv.id_estandar_vehiculo and m.id_vehiculo=vh.id_vehiculo and vh.id_empresa= emp.id_empresa and m.responsable=us.id_persona and us.id_persona=p.id_persona  and m.id_vehiculo IN ($VEHC) and m.id_estandar_vehiculo IN ($SERV) 
+                and (m.fecha_registro between concat('$fechaIniMant',' ','$horaIniMant') and concat('$fechaFinMat',' ','$horaFinMant'))";
     } else if ($opcion == 2) {
-
         $existeServicios = substr_count($listServicios, ',');
         if ($existeServicios > 0) {
-            $SERV = str_replace(",", "','", $listServicios);
+            $SERV = str_replace(",", ",", $listServicios);
         } else {
             $SERV = $listServicios;
         }
         $consultaSql = "SELECT m.id_vehiculo, vh.placa, vh.marca, emp.empresa, sv.estandar_vehiculo, m.valorTipoServicio, concat (p.nombres,' ',p.apellidos) nombres 
             FROM karviewdb.personas p, karviewhistoricodb.historicomantenimientovehiculo m, karviewdb.vehiculos vh, karviewdb.empresas emp, karviewdb.estandar_vehiculos sv, karviewdb.usuarios us 
-            where m.id_vehiculo=vh.id_vehiculo and m.id_estandar_vehiculo=sv.id_estandar_vehiculo and vh.id_empresa= emp.id_empresa and vh.id_empresa='$cbxEmpresasMant' and m.responsable=us.id_persona and us.id_persona=p.id_persona and m.id_estandar_vehiculo IN ('$SERV') "
-                . "and (m.fecha_registro between concat('$fechaIniMant',' ','$horaIniMant') and concat('$fechaFinMat',' ','$horaFinMant'))  group by id_vehiculo";
+            where m.id_estandar_vehiculo=sv.id_estandar_vehiculo and m.id_vehiculo=vh.id_vehiculo and vh.id_empresa= emp.id_empresa and vh.id_empresa='$cbxEmpresasMant' and m.responsable=us.id_persona and us.id_persona=p.id_persona and m.id_estandar_vehiculo IN ($SERV) "
+                . "and (m.fecha_registro between concat('$fechaIniMant',' ','$horaIniMant') and concat('$fechaFinMat',' ','$horaFinMant'))";
     }
     $result = $mysqli->query($consultaSql);
     $haveData = false;

@@ -19,7 +19,7 @@ var labelRegistro = Ext.create('Ext.form.Label', {
 });
 
 
-Ext.onReady(function() {
+Ext.onReady(function () {
     //Genera campos de array para usar en el inicio del store por defecto
     Ext.define('DataObjectVeh', {
         extend: 'Ext.data.Model',
@@ -70,7 +70,7 @@ Ext.onReady(function() {
                 writeAllFields: false
             },
             listeners: {
-                exception: function(proxy, response, operation) {
+                exception: function (proxy, response, operation) {
                     Ext.MessageBox.show({
                         title: 'ERROR',
                         msg: operation.getError(),
@@ -81,7 +81,7 @@ Ext.onReady(function() {
             }
         },
         listeners: {
-            write: function(store, operation, eOpts) {
+            write: function (store, operation, eOpts) {
                 if (operation.success) {
                     Ext.example.msg("Mensaje", operation._resultSet.message);
                     gridStoreVehiculo.reload();
@@ -105,7 +105,7 @@ Ext.onReady(function() {
 
     // Column Model shortcut array
     var columns = [
-         Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
+        Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
         {header: "Equipo", width: 80, sortable: true, dataIndex: 'equipo', filter: {type: 'string'}},
         {header: "Organización", width: 110, sortable: true, dataIndex: 'empresa', renderer: formatCompany, filter: {type: 'list', store: storeEmpresasList}},
         {header: "Alias", width: 100, sortable: true, dataIndex: 'vehiculo', filter: {type: 'string'}},
@@ -135,7 +135,7 @@ Ext.onReady(function() {
                 xtype: 'button',
                 iconCls: 'icon-excel',
                 text: 'Exportar a Excel',
-                handler: function() {
+                handler: function () {
                     if (gridStoreVehiculo.getCount() > 0) {
                         if (getNavigator() === 'img/chrome.png') {
                             var a = document.createElement('a');
@@ -179,12 +179,12 @@ Ext.onReady(function() {
                                     "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Num. Chasis</Data></Cell>" +
                                     "<Cell ss:StyleID='encabezados'><Data ss:Type='String'>Año</Data></Cell>" +
                                     "</Row>";
-                            
+
                             for (var i = 0; i < numFil; i++) {
                                 console.log(gridStoreVehiculo.data.items[i].data);
                                 table_div += "<Row ss:AutoFitHeight='0'>" +
                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.empresa + " </Data></Cell > " +
-                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.persona+ " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.persona + " </Data></Cell > " +
                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.equipo + " </Data></Cell > " +
                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.placa + " </Data></Cell > " +
                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.clase_vehiculo + " </Data></Cell > " +
@@ -193,7 +193,7 @@ Ext.onReady(function() {
                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.vehiculo + " </Data></Cell > " +
                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.numMotor + " </Data></Cell > " +
                                         "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.numChasis + " </Data></Cell > " +
-                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.year+ " </Data></Cell > " +
+                                        "<Cell ss:StyleID ='datos'><Data ss:Type = 'String' > " + gridStoreVehiculo.data.items[i].data.year + " </Data></Cell > " +
                                         "</Row>";
                             }
                             table_div += "</Table> </Worksheet></Workbook>";
@@ -214,8 +214,9 @@ Ext.onReady(function() {
             }],
         //Para cuando de click a una de las filas se pasen los datos
         listeners: {
-            selectionchange: function(thisObject, selected, eOpts) {
+            selectionchange: function (thisObject, selected, eOpts) {
                 setActiveRecordVeh(selected[0] || null);
+                Ext.getCmp('id_equipos').setValue(selected[0].data.equipo);
             },
 //            itemmousedown: function(thisObject, record, item, index, e, eOpts) {
 //                console.log('mouse sobre item');
@@ -287,7 +288,7 @@ Ext.onReady(function() {
         activeRecord: null,
         bodyStyle: 'padding: 10px; background-color: #DFE8F6',
         labelWidth: 100,
-        margins: '0 0 0 3',
+//        margins: '0 0 0 3',
         items: [{
                 xtype: 'fieldset',
                 title: '<b>Datos de Vehiculo</b>',
@@ -295,7 +296,7 @@ Ext.onReady(function() {
                 layout: 'hbox',
                 //padding: '5 5 10 5',
                 defaults: {
-                    padding: '0 15 0 0',
+                    padding: '5 5 5 5',
                     baseCls: 'x-plain',
                     layout: 'vbox',
                     //defaultType: 'textfield',
@@ -311,7 +312,6 @@ Ext.onReady(function() {
                                 afterLabelTextTpl: required,
                                 fieldStyle: 'text-transform: uppercase',
                                 blankText: 'Este campo es Obligatorio',
-                                
                                 vtype: 'placaValida',
                                 name: 'placa',
                                 id: 'placa_id',
@@ -350,62 +350,76 @@ Ext.onReady(function() {
                                 }
                             },
                             {
-                                layout: 'column',
-                                baseCls: 'x-plain',
-                                items: [{
-                                        columnWidth: .1,
-                                        baseCls: 'x-plain',
-                                        items: [
-                                            {
-                                                xtype: 'combobox',
-                                                fieldLabel: '<b>Equipos Disponibles</b>',
-                                                padding: '0 0 10 0',
-                                                name: 'idEquipo',
-                                                store: store_equipo,
-                                                valueField: 'id',
-                                                displayField: 'text',
-                                                queryMode: 'local',
-                                                emptyText: 'Escoger Equipo...',
-                                                listeners: {
-                                                    select: function(combo, records, eOpts) {
-                                                        store_equipo.reload();
-                                                        Ext.getCmp('eq1').setValue(records[0].data.text);
-                                                    }
-                                                }
-
-                                            }
-                                        ]
-                                    }, {
-                                        columnWidth: .1,
-                                        baseCls: 'x-plain',
-                                        items: [
-                                            {
-                                                xtype: 'button',
-//                                                padding: '0 10 0 0',
-                                                iconCls: 'icon-servicios',
-                                                tooltip: 'Agregar Nuevo Equipo',
-                                                handler: function() {
-                                                    showWinAdminDevice();
-                                                    store_equipo.reload();
-                                                }
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                xtype: 'textfield',
+                                xtype: 'combobox',
                                 fieldLabel: '<b>Equipo</b>',
-                                name: 'equipo',
-                                afterLabelTextTpl: required,
-                                                                allowBlank: false,
+//                                padding: '0 0 10 0',
+                                name: 'idEquipo',
+                                id: 'id_equipos',
+                                store: store_equipo,
+                                valueField: 'id',
+                                displayField: 'text',
+                                queryMode: 'local',
+                                emptyText: 'Escoger Equipo...',
 
-                                blankText: 'Este campo es Obligatorio',
-                                id: 'eq1',
-                                vtype: 'campos',
-                                emptyText: 'Equipo...',
-                                editable: false
                             },
+//                            {
+//                                layout: 'column',
+//                                baseCls: 'x-plain',
+//                                items: [{
+//                                        columnWidth: .1,
+//                                        baseCls: 'x-plain',
+//                                        items: [
+//                                            {
+//                                                xtype: 'combobox',
+//                                                fieldLabel: '<b>Equipo</b>',
+//                                                padding: '0 0 10 0',
+//                                                name: 'idEquipo',
+//                                                id:'id_equipos',
+//                                                store: store_equipo,
+//                                                valueField: 'id',
+//                                                displayField: 'text',
+//                                                queryMode: 'local',
+//                                                emptyText: 'Escoger Equipo...',
+//                                                listeners: {
+//                                                    select: function (combo, records, eOpts) {
+//                                                        store_equipo.reload();
+//                                                        Ext.getCmp('eq1').setValue(records[0].data.text);
+//                                                    }
+//                                                }
+//
+//                                            }
+//                                        ]
+//                                    }
+////                                    , {
+////                                        columnWidth: .1,
+////                                        baseCls: 'x-plain',
+////                                        items: [
+////                                            {
+////                                                xtype: 'button',
+//////                                                padding: '0 10 0 0',
+////                                                iconCls: 'icon-servicios',
+////                                                tooltip: 'Agregar Nuevo Equipo',
+////                                                handler: function () {
+////                                                    showWinAdminDevice();
+////                                                    store_equipo.reload();
+////                                                }
+////                                            }
+////                                        ]
+////                                    }
+//                                ]
+//                            },
+//                            {
+//                                xtype: 'textfield',
+//                                fieldLabel: '<b>Equipo</b>',
+//                                name: 'equipo',
+//                                afterLabelTextTpl: required,
+//                                allowBlank: false,
+//                                blankText: 'Este campo es Obligatorio',
+//                                id: 'eq1',
+//                                vtype: 'campos',
+//                                emptyText: 'Equipo...',
+//                                editable: false
+//                            },
                             {
                                 xtype: 'combobox',
                                 fieldLabel: '<b>Clase Vehiculo</b>',
@@ -463,16 +477,16 @@ Ext.onReady(function() {
                                     tooltip: 'Escoger imagen'
                                 },
                                 listeners: {
-                                    change: function(thisObj, value, eOpts) {
+                                    change: function (thisObj, value, eOpts) {
                                         var form = this.up('form').getForm();
                                         form.submit({
                                             url: 'php/uploads/uploadVehiculo.php',
-                                            success: function(form, action) {
+                                            success: function (form, action) {
                                                 formRecordsVeh.down('[name=labelImage]').setSrc('img/uploads/vehiculos/' + action.result['img']);
 //                                formRecordsVeh.down('[name=imageVehicle]').setValue(action.result['img']);
                                                 thisObj.setRawValue(action.result['img']);
                                             },
-                                            failure: function(form, action) {
+                                            failure: function (form, action) {
                                                 Ext.Msg.alert('Error', 'No se pudo subir la imagen');
                                             }
                                         });
@@ -507,7 +521,6 @@ Ext.onReady(function() {
                                 fieldLabel: '<b>Año</b>',
                                 name: 'year',
                                 emptyText: 'Año del Vehiculo...',
-                                
                                 value: 1950,
                                 minValue: 1950,
                                 editable: true,
@@ -526,7 +539,7 @@ Ext.onReady(function() {
             }
         ],
         listeners: {
-            create: function(form, data) {
+            create: function (form, data) {
                 gridStoreVehiculo.insert(0, data);
                 gridStoreVehiculo.reload();
             }
@@ -681,7 +694,7 @@ function clearWinVeh() {
 }
 
 function onDeleteClickVeh() {
-    Ext.MessageBox.confirm('Atención!', 'Desea Eliminar el vehiculo', function(choice) {
+    Ext.MessageBox.confirm('Atención!', 'Desea Eliminar el vehiculo', function (choice) {
         if (choice === 'yes') {
             var selection = gridRecordsVeh.getView().getSelectionModel().getSelection()[0];
             if (selection) {

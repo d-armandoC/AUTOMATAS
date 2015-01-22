@@ -16,6 +16,7 @@
 
     function hasOption(opt, queryString) {
         var s = queryString || location.search;
+        
         var re = new RegExp('(?:^|[&?])' + opt + '(?:[=]([^&]*))?(?:$|[&])', 'i');
         var m = re.exec(s);
 

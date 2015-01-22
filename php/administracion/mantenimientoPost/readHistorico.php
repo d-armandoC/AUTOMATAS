@@ -11,7 +11,7 @@ if (!$mysqli = getConectionDb()) {
 
     $consultaSql = "SELECT mv.id_vehiculo, p.nombres , v.marca, v.vehiculo, sm.estandar_vehiculo, em.id_empresa, mv.id_estandar_vehiculo, mv.valorTipoServicio,em.empresa, mv.valorTipoMantenimiento, mv.mkilometraje, mv.mdias, mv.mfecha, mv.mobservacion, sm.estandar_vehiculo, mv.repaFecha, mv.repaDescripcion, mv.repaObservacion, mv.repuMarca, mv.repuModelo, mv.repuCodigo, mv.repuSerie, mv.repuEstado, 
         mv.descripSoat, mv.fechaSoatReg, mv.fechaSoatVenc, mv.descripMatricula, mv.fechaMatriculaReg, mv.fechaMatriculaVenc, mv.descripSeguro, mv.fechaSeguroReg, mv.fechaSeguroVenc             
-        FROM karviewdb.mantenimientovehiculo mv, karviewdb.estandar_vehiculos sm,  karviewdb.empresas em, karviewdb.vehiculos v, karviewdb.personas p where mv.id_vehiculo= v.id_vehiculo and mv.id_estandar_vehiculo=sm.id_estandar_vehiculo and v.id_persona=p.id_persona and v.id_empresa=em.id_empresa and mv.id_vehiculo='$idVehiculoStandar' and mv.id_estandar_vehiculo='$idEstandar'";
+        FROM karviewhistoricodb.historicomantenimientovehiculo mv, karviewdb.estandar_vehiculos sm,  karviewdb.empresas em, karviewdb.vehiculos v, karviewdb.personas p where mv.id_vehiculo= v.id_vehiculo and mv.id_estandar_vehiculo=sm.id_estandar_vehiculo and v.id_persona=p.id_persona and v.id_empresa=em.id_empresa and mv.id_vehiculo='$idVehiculoStandar' and mv.id_estandar_vehiculo='$idEstandar'";
 
     $result = $mysqli->query($consultaSql);
     $haveData = false;
@@ -31,7 +31,7 @@ if (!$mysqli = getConectionDb()) {
             $fechaSeguroReg = '';
             $fechaSeguroVenc = '';
             $idVehiculo = $myrow["id_vehiculo"];
-            $consultaSql1 = "SELECT id_estandar_vehiculo FROM karviewdb.mantenimientovehiculo where id_Vehiculo='$idVehiculo'";
+            $consultaSql1 = "SELECT id_estandar_vehiculo FROM karviewhistoricodb.historicomantenimientovehiculo where id_Vehiculo='$idVehiculo'";
             $result1 = $mysqli->query($consultaSql1);
             $estandar = '';
             while ($myrow1 = $result1->fetch_assoc()) {
@@ -69,9 +69,9 @@ if (!$mysqli = getConectionDb()) {
                 servicio:'" . utf8_encode($myrow["estandar_vehiculo"]) . "',
                 vehiculo:'" . $myrow["marca"] . " " . $myrow["vehiculo"] . "',
                 idvehiculo:" . $myrow["id_vehiculo"] . ",
-                valorTipoMantenimiento:" . $myrow["valorTipoMantenimiento"] . ",
-                mkilometraje:" . $myrow["mkilometraje"] . ",
-                mdias:" . $myrow["mdias"] . ",
+                valorTipoMantenimiento:'" . $myrow["valorTipoMantenimiento"] . "',
+                mkilometraje:'" . $myrow["mkilometraje"] . "',
+                mdias:'" . $myrow["mdias"] . "',
                 mfecha:'" . $myrow["mfecha"] . "',
                 mobservacion:'" . utf8_encode($myrow["mobservacion"]) . "',
                 repaFecha:'" . $myrow["repaFecha"] . "',

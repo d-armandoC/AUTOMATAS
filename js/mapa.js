@@ -476,7 +476,7 @@ function loadMap() {
                         map.removePopup(feature.popup);
 //                        feature.popup.destroy();
                         feature.popup = null;
-                        console.log('jjjj');
+//                        console.log('jjjj');
                     }
                 },
                 styleMap: stylePuntosPanico
@@ -1376,25 +1376,25 @@ function drawLineRouteManual(json) {
 }
 
 function drawPoligonoGeocerca(dataRoute) {
-//    geosArea = true;
+    geosArea = true;
     geosVertice = true;
-    modifyLine.activate();
-    modifyLine.activate();
+     Ext.getCmp('btn-draw-edit-route').enable();
     Ext.getCmp('btn-draw-edit-route').setIconCls("icon-update");
     var puntosRuta = new Array();
     var json = dataRoute.split(";");
     var i = 0;
-    for (i = 0; i <json.length-1; i++) {
+    for (i = 0; i < json.length - 1; i++) {
         var dataRuta = json[i].split(",");
         var pt = new OpenLayers.Geometry.Point(dataRuta[0], dataRuta[1]);
         pt.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
         puntosRuta.push(pt);
     }
-    console.log(puntosRuta);
     var linearRing = new OpenLayers.Geometry.LinearRing(puntosRuta);
     var polygonFeature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Polygon([linearRing]));
     lines.addFeatures([polygonFeature]);
     drawRoute = false;
+    modifyLine.activate();
+    modifyLine.activate();
 }
 function drawPointsEnergDeserg(puntosPanico) {
     var features = new Array();
@@ -1522,7 +1522,7 @@ function drawPointsRoute(coordPuntos) {
     var features = new Array();
     var cont = 0;
     for (var i = 0; i < coordPuntos.length; i++) {
-        console.log();
+//        console.log();
         var dataRuta = coordPuntos[i];
         cont = cont + 1;
         var pt = new OpenLayers.Geometry.Point(dataRuta.longitud, dataRuta.latitud);
@@ -1533,7 +1533,7 @@ function drawPointsRoute(coordPuntos) {
             idTravel: cont,
             idTrama: dataRuta.idData,
             placa: dataRuta.placa,
-            equipo:dataRuta.equipo,
+            equipo: dataRuta.equipo,
             empresa: dataRuta.company,
             direccion: dataRuta.direccion,
             velocidad: dataRuta.velocidad,
@@ -1899,7 +1899,7 @@ function estadoControlD(flag) {
                 control.activate();
                 lienzoGeoCercas.destroyFeatures(); // borrar capa
             } else {
-                console.log('activando');
+//                console.log('activando');
                 control.deactivate();
             }
         }
@@ -1912,19 +1912,20 @@ function getDataRoute(fig) {
     var vert = fig.geometry.getVertices();
     var areaGeocerca = fig.geometry.getArea() / 1000;
     if (geosArea) {
-        console.log(fig.geometry.getVertices());
+//        console.log('obteniendo area');
         areaGeocerca = Math.round(areaGeocerca * 100) / 100;
         Ext.getCmp('numberfield-point-route').setValue(areaGeocerca + ' km2');
         drawRoute = false;
-        Ext.getCmp('btn-draw-edit-route').setIconCls("icon-update");
+//        Ext.getCmp('btn-draw-edit-route').setIconCls("icon-update");
         Ext.getCmp('btn-delete-route').enable();
-        modifyLine.activate();
-        modifyLine.activate();
         drawLine.deactivate();
+        modifyLine.activate();
+        modifyLine.activate();
         geosArea = false;
         winAddGeocerca.show();
     }
     if (geosVertice) {
+//        console.log('obteniendo vertices')
         coordenadasGeos = '';
         for (var i = 0; i < vert.length; i++) {
             vert[i] = vert[i].transform(new OpenLayers.Projection('EPSG:900913'),
@@ -1958,8 +1959,8 @@ function getDataRoute(fig) {
             },
             failure: function (form, action) {
                 Ext.MessageBox.show({
-                    title: "Problemas",
-                    msg: "No se ha encontrado vehiculos en esas horas.",
+                    title: "Información",
+                    msg: "No se ha encontrado vehiculos en esta Fecha",
                     buttons: Ext.MessageBox.OK,
                     icon: Ext.MessageBox.ERROR
                 })
@@ -1971,7 +1972,7 @@ function getDataRoute(fig) {
                 gridVehiculos.getStore().loadData(puntos);
             }
         });
-        drawLine.deactivate();
+//        drawLine.deactivate();
         winVehiculosLugares.show();
         lines.destroyFeatures();
         vehiLugares = false;

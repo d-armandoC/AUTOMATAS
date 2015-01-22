@@ -45,6 +45,7 @@ if (!$mysqli = getConectionDb()) {
         $resultRec = $mysqli->query($consultaSqlRec);
         if ($resultRec->num_rows > 0) {
             $c = 0;
+            $objJson = "{data : [";
             while ($myrow2 = $resultRec->fetch_assoc()) {
                 $c++;
                 $objJson .= "{"

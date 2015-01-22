@@ -9,11 +9,12 @@ if (!$mysqli = getConectionDb()) {
     echo "{success:false, message: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
 
-    $consultaSql = "SELECT v.vehiculo, v.placa, V.id_vehiculo, concat(p.apellidos,' ',p.nombres) persona
-    FROM  karviewdb.geocerca_vehiculos vg, karviewdb.vehiculos v, karviewdb.geocercas g, karviewdb.personas p
-    WHERE vg.id_geocerca ='$idGeo' AND g.id_empresa = '$empresa'
-    AND vg.id_vehiculo = v.id_vehiculo AND vg.id_geocerca = g.id_geocerca AND v.id_persona= p.id_persona";
-
+    $consultaSql = "SELECT v.id_vehiculo,v.id_equipo, v.vehiculo, v.placa, concat(p.apellidos, ' ', p.nombres) as persona
+            FROM vehiculos v, personas p
+            where v.id_persona = p.id_persona
+            and v.id_empresa=$cbxEmpresas
+            ORDER BY v.vehiculo;
+        ";
 
     $result = $mysqli->query($consultaSql);
     $haveData = false;

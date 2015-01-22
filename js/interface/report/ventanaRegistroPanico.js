@@ -21,6 +21,7 @@ var placa="";
 var empresa;
 var banderapanico;
 var empresaPanico='KRADAC';
+ var gridViewDataPanico;
 
 Ext.onReady(function () {
 
@@ -244,7 +245,7 @@ Ext.onReady(function () {
                                     },
                                     fields: ['empresaPanicos', 'personaPanicos', 'idEquipoPanicos', 'placaPanicos', 'cantidadPanicos']
                                 });
-                                var gridViewDataPanico = Ext.create('Ext.grid.Panel', {
+                                gridViewDataPanico = Ext.create('Ext.grid.Panel', {
                                     region: 'center',
                                     frame: true,
                                     width: '60%',

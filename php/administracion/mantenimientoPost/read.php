@@ -13,9 +13,10 @@ if (!$mysqli = getConectionDb()) {
     $idRol = $_SESSION["IDROLKARVIEW"];
 
     if ($idRol == 1) {
-        $consultaSql = "SELECT mv.id_vehiculo, mv.fecha_registro,p.nombres,concat(p.apellidos, ' ', p.nombres) as persona ,v.placa, v.marca, v.vehiculo, sm.estandar_vehiculo, em.id_empresa, mv.id_estandar_vehiculo, mv.valorTipoServicio,em.empresa, mv.valorTipoMantenimiento, mv.mkilometraje, mv.mdias, mv.mfecha, mv.mobservacion, sm.estandar_vehiculo, mv.repaFecha, mv.repaDescripcion, mv.repaObservacion, mv.repuMarca, mv.repuModelo, mv.repuCodigo, mv.repuSerie, mv.repuEstado, 
+        $consultaSql = " SELECT mv.id_vehiculo, mv.fecha_registro,p.nombres,concat(p.apellidos, ' ', p.nombres) as persona ,v.placa, v.marca, v.vehiculo, sm.estandar_vehiculo, em.id_empresa, mv.id_estandar_vehiculo, mv.valorTipoServicio,em.empresa, mv.valorTipoMantenimiento, mv.mkilometraje, mv.mdias, mv.mfecha, mv.mobservacion, sm.estandar_vehiculo, mv.repaFecha, mv.repaDescripcion, mv.repaObservacion, mv.repuMarca, mv.repuModelo, mv.repuCodigo, mv.repuSerie, mv.repuEstado, 
         mv.descripSoat, mv.fechaSoatReg, mv.fechaSoatVenc, mv.descripMatricula, mv.fechaMatriculaReg, mv.fechaMatriculaVenc, mv.descripSeguro, mv.fechaSeguroReg, mv.fechaSeguroVenc             
-        FROM karviewhistoricodb.historicomantenimientovehiculo mv, karviewdb.estandar_vehiculos sm,  empresas em, karviewdb.vehiculos v, karviewdb.personas p where mv.id_vehiculo= v.id_vehiculo and mv.id_estandar_vehiculo=sm.id_estandar_vehiculo and v.id_persona=p.id_persona and v.id_empresa=em.id_empresa and mv.fecha_registro=(SELECT max(fecha_registro) FROM karviewdb.mantenimientovehiculo where id_Vehiculo=mv.id_Vehiculo) order by em.empresa;";
+        FROM karviewdb.mantenimientovehiculo mv, karviewdb.estandar_vehiculos sm,  empresas em, karviewdb.vehiculos v, karviewdb.personas p 
+where mv.id_vehiculo= v.id_vehiculo and mv.id_estandar_vehiculo=sm.id_estandar_vehiculo and v.id_persona=p.id_persona and v.id_empresa=em.id_empresa and mv.fecha_registro=(SELECT max(fecha_registro) FROM karviewdb.mantenimientovehiculo where id_Vehiculo=mv.id_Vehiculo) order by em.empresa";
     }
 
     if ($idRol == 2) {
@@ -50,7 +51,6 @@ if (!$mysqli = getConectionDb()) {
                 $estandar = $estandar . $myrow1["id_estandar_vehiculo"] . ',';
             }
 
-
             $consultaSql1 = "SELECT id_registro,descripcion,fechaRegistro,fechaVencimiento FROM karviewdb.registros_mantenimiento where id_vehiculo='$idVehiculo'";
             $result1 = $mysqli->query($consultaSql1);
             while ($myrow1 = $result1->fetch_assoc()) {
@@ -71,7 +71,7 @@ if (!$mysqli = getConectionDb()) {
                     $fechaSeguroVenc = $myrow1["fechaVencimiento"];
                 }
             }
-            
+
             $objJson .= "{
                 idmantenimiento:'" . $myrow["id_vehiculo"] . "_" . $myrow["id_estandar_vehiculo"] . "_" . $myrow["valorTipoServicio"] . "',
                 idempresa:" . $myrow["id_empresa"] . ",
@@ -80,11 +80,11 @@ if (!$mysqli = getConectionDb()) {
                 empresa:'" . utf8_encode($myrow["empresa"]) . "',
                 propietario:'" . $myrow["nombres"] . "',
                 servicio:'" . utf8_encode($myrow["estandar_vehiculo"]) . "',
-                vehiculo:'".utf8_encode($myrow["placa"].'-'.$myrow["vehiculo"]) ."',
+                vehiculo:'" . utf8_encode($myrow["placa"] . '-' . $myrow["vehiculo"]) . "',
                 idvehiculo:" . $myrow["id_vehiculo"] . ",
-                valorTipoMantenimiento:" . $myrow["valorTipoMantenimiento"] . ",
-                mkilometraje:" . $myrow["mkilometraje"] . ",
-                mdias:" . $myrow["mdias"] . ",
+                valorTipoMantenimiento:'" . $myrow["valorTipoMantenimiento"] . "',
+                mkilometraje:'" . $myrow["mkilometraje"] . "',
+                mdias:'" . $myrow["mdias"] . "',
                 estandar:'" . $estandar . "',
                 mfecha:'" . $myrow["mfecha"] . "',
                 mobservacion:'" . utf8_encode($myrow["mobservacion"]) . "',

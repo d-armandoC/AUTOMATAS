@@ -259,7 +259,7 @@ var formularioMantenimientoDetallado;
                                                         columns: [
                                                                 Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
                                                         {text: 'Organización', width: 150, dataIndex: 'empresa', align: 'center'},
-                                                        {text: 'Vehiculo', width: 130, dataIndex: 'vehiculo', align: 'center'},
+                                                        {text: 'Vehiculo', width: 160, dataIndex: 'vehiculo', align: 'center'},
                                                         {text: 'Total Mantenimientos', width: 165, dataIndex: 'total', align: 'center'},
                                                         {text: 'SOAT ', width: 150, dataIndex: 'fechaSoatVenc', align: 'center', renderer: formatTipoRegistro},
                                                         {text: 'MATRICULA ', width: 170, dataIndex: 'fechaMatriculaVenc', align: 'center', renderer: formatTipoRegistro},
@@ -509,10 +509,14 @@ var formularioMantenimientoDetallado;
 
 function metodoRegistros(empresa, vehiculo, total, fechaSoatReg, fechaSoatVenc, descripSoat, fechaMatriculaReg,
         fechaMatriculaVenc, descripMatricula, fechaSeguroReg, fechaSeguroVenc, descripSeguro) {
+//            console.log(fechaSoatReg);
+//            console.log(fechaSoatVenc);
+//            console.log(fechaMatriculaReg);
+//            console.log(fechaSeguroReg);
 vistaVistaRegistrosMantenimiento = Ext.create('Ext.window.Window', {
 layout: 'fit',
         title: 'Estado de Equipos',
-        iconCls: 'icon-company',
+        iconCls:'icon-company',
         resizable: true,
         width: 400,
         height: 300,
@@ -537,27 +541,27 @@ layout: 'fit',
                         '</TR> ' +
                         '<TR class="alt"> ' +
                         '   <TD> <IMG SRC="img/icon-accept.png"> <b>Registro de SOAT:</b></td>' +
-                        '   <TD align="CENTER ">' + fechaSoatReg + '</TD> ' +
+                        '   <TD align="CENTER ">' + formatVistaRegistro(fechaSoatReg) + '</TD> ' +
                         '</TR> ' +
                         '<TR class="alt"> ' +
                         '   <TD> <IMG SRC="img/icon-accept.png"> <b>Vencimiento de SOAT:</b></td>' +
-                        '   <TD align="CENTER ">' + fechaSoatReg + '</TD> ' +
+                        '   <TD align="CENTER ">' + formatVistaRegistro(fechaSoatReg) + '</TD> ' +
                         '</TR> ' +
                         '<TR class="alt"> ' +
                         '   <TD> <IMG SRC="img/icon-accept.png"> <b>Registro de Matricula:</b></td>' +
-                        '   <TD align="CENTER ">' + fechaMatriculaReg + '</TD> ' +
+                        '   <TD align="CENTER ">' + formatVistaRegistro(fechaMatriculaReg) + '</TD> ' +
                         '</TR> ' +
                         '<TR class="alt"> ' +
                         '   <TD> <IMG SRC="img/icon-accept.png"> <b>Vencimiento de Matricula:</b></td>' +
-                        '   <TD align="CENTER ">' + fechaMatriculaVenc + '</TD> ' +
+                        '   <TD align="CENTER ">' + formatVistaRegistro(fechaMatriculaVenc) + '</TD> ' +
                         '</TR> ' +
                         '<TR class="alt"> ' +
                         '   <TD> <IMG SRC="img/icon-accept.png"> <b>Registro de Seguro:</b></td>' +
-                        '   <TD align="CENTER ">' + fechaSeguroReg + '</TD> ' +
+                        '   <TD align="CENTER ">' + formatVistaRegistro(fechaSeguroReg) + '</TD> ' +
                         '</TR> ' +
                         '<TR class="alt"> ' +
                         '   <TD> <IMG SRC="img/icon-accept.png"> <b>Vencimiento de Seguro:</b></td>' +
-                        '   <TD align="CENTER ">' + fechaSeguroVenc + '</TD> ' +
+                        '   <TD align="CENTER ">' + formatVistaRegistro(fechaSeguroVenc) + '</TD> ' +
                         '</TR> ' +
                         ' </TABLE>'
                 }

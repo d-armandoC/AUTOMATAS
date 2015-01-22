@@ -342,8 +342,14 @@ function formatTipoRegistro(val) {
     } else {
         return '<span style="color:GREEN;">VIGENTE</span>';
     }
+}
 
-
+function formatVistaRegistro(val) {
+   if (val === 'NO') {
+        return '<span style="color:RED;">NO REGISTRADO</span>';
+    } else {
+        return '<span style="color:GREEN;">'+val+'</span>';
+    }
 }
 
 

@@ -3,7 +3,32 @@ var winVehiculosLugares;
 var gridVehiculos;
 var isLugar = false;
 
-Ext.onReady(function() {
+Ext.onReady(function () {
+
+    var btn_geocercasHoy = Ext.create('Ext.button.Button', {
+        text: 'Hoy',
+        iconCls: 'icon-today',
+        handler: function () {
+            var nowDate = new Date();
+            date.setValue(nowDate);
+        }
+    });
+    var bt_GeocercasAyer = Ext.create('Ext.button.Button', {
+        text: 'Ayer',
+        iconCls: 'icon-yesterday',
+        handler: function () {
+            var yestDate = Ext.Date.subtract(new Date(), Ext.Date.DAY, 1);
+            date.setValue(yestDate);
+        }
+    });
+    var panel_BotonesMantenimiento = Ext.create('Ext.panel.Panel', {
+        layout: 'hbox',
+        padding: '0 0 2 0',
+        defaults: {
+            margin: '0 2 0 0'
+        },
+        items: [btn_geocercasHoy, bt_GeocercasAyer]
+    });
 
     var date = Ext.create('Ext.form.field.Date', {
         fieldLabel: 'Fecha',
@@ -17,6 +42,7 @@ Ext.onReady(function() {
     var timeIni = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Desde las',
         name: 'horaIni',
+        value: '00:00',
         format: 'H:i',
         allowBlank: false,
         emptyText: 'Hora Inicial...'
@@ -25,6 +51,7 @@ Ext.onReady(function() {
     var timeFin = Ext.create('Ext.form.field.Time', {
         fieldLabel: 'Hasta las',
         name: 'horaFin',
+        value: '23:59',
         format: 'H:i',
         allowBlank: false,
         emptyText: 'Hora Final...'
@@ -35,7 +62,7 @@ Ext.onReady(function() {
             type: 'ajax',
             reader: 'array'
         },
-        fields: ['idEquipo', 'fecha_hora', 'velocidad', 'latitud', 'longitud', 'bateria', 'ign', 'gsm', 'gps2', 'G2']
+        fields: ['idEquipo','idEquipoV' ,'fecha_hora', 'velocidad', 'latitud', 'longitud', 'bateria', 'ign', 'gsm', 'gps2', 'G2']
     });
 
     gridVehiculos = Ext.create('Ext.grid.Panel', {
@@ -48,7 +75,7 @@ Ext.onReady(function() {
         },
         columns: [
             Ext.create('Ext.grid.RowNumberer', {text: '<b>Nº</b>', align: 'center', width: 40}),
-            {text: 'Equipo', width: 100, dataIndex: 'idEquipo', align: 'center'},
+            {text: 'Equipo', width: 100, dataIndex: 'idEquipoV', align: 'center'},
             {text: 'Fecha', xtype: 'datecolumn', format: 'd-m-Y', width: 100, dataIndex: 'fecha_hora', align: 'center'},
             {text: 'Hora', xtype: 'datecolumn', format: 'H:i:s', width: 100, dataIndex: 'fecha_hora', align: 'center'},
             {text: 'Vel. (Km/h)', dataIndex: 'velocidad', align: 'center', width: 100, renderer: formatSpeed},
@@ -59,7 +86,7 @@ Ext.onReady(function() {
             {text: 'G2', width: 100, dataIndex: 'G2', renderer: formatStateTaxy}
         ],
         listeners: {
-            itemcontextmenu: function(thisObj, record, item, index, e, eOpts) {
+            itemcontextmenu: function (thisObj, record, item, index, e, eOpts) {
                 e.stopEvent();
                 Ext.create('Ext.menu.Menu', {
                     items: [
@@ -67,13 +94,9 @@ Ext.onReady(function() {
                             iconCls: 'icon-vehiculos_lugar', // Use a URL in the icon config
                             text: 'Ver Ubicación en el Mapa',
                             disabled: false,
-                            handler: function(widget, event) {
+                            handler: function (widget, event) {
                                 panelTabMapaAdmin.setActiveTab('panelMapaTab');
                                 localizarDireccion(record.data.longitud, record.data.latitud, 17);
-//                                clearLienzoTravel();
-//                                clearLienzoPointTravel();
-//                                drawPointsRoute(record.data, "Puntos");
-//                                drawRutaMapa(record.data);
                             }
                         })
                     ]
@@ -84,24 +107,24 @@ Ext.onReady(function() {
     });
 
     panelVehiculosLugares = Ext.create('Ext.form.Panel', {
-        padding: '5 5 5 5',
+        padding: '2 2 2 2',
         layout: 'border',
         items: [{
                 region: 'north',
                 xtype: 'form',
                 frame: true,
                 items: [date, timeIni, timeFin],
-                buttons: [{
+                buttons: [panel_BotonesMantenimiento, , '->', {
                         text: 'Trazar Lugar',
                         iconCls: 'icon-trazar',
-                        handler: function() {
+                        handler: function () {
                             if (this.up('form').getForm().isValid()) {
                                 drawRoute = true;
                                 vehiLugares = true;
                                 drawLine.activate();
                                 winVehiculosLugares.hide();
-                            }else{
-                                
+                            } else {
+
                             }
                         }
                     }]

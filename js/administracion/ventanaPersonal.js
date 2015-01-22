@@ -2,7 +2,7 @@ var winAddPesonal;
 var gridPersona;
 var formPersona;
 var edadDate = Ext.Date.subtract(new Date(), Ext.Date.YEAR, 18);
-Ext.onReady(function() {
+Ext.onReady(function () {
     //Genera campos de array para usar en el inicio del store por defecto
     Ext.define('DataObject', {
         extend: 'Ext.data.Model',
@@ -42,7 +42,7 @@ Ext.onReady(function() {
                 writeAllFields: false
             },
             listeners: {
-                exception: function(proxy, response, operation) {
+                exception: function (proxy, response, operation) {
                     Ext.MessageBox.show({
                         title: 'ERROR',
                         msg: operation.getError(),
@@ -53,7 +53,7 @@ Ext.onReady(function() {
             }
         },
         listeners: {
-            write: function(store, operation, eOpts) {
+            write: function (store, operation, eOpts) {
                 if (operation.success) {
                     Ext.example.msg("Mensaje", operation._resultSet.message);
                     storePersonas.reload();
@@ -100,7 +100,7 @@ Ext.onReady(function() {
                 xtype: 'button',
                 iconCls: 'icon-excel',
                 text: 'Exportar a Excel',
-                handler: function() {
+                handler: function () {
                     if (gridStorePerson.getCount() > 0) {
                         if (getNavigator() === 'img/chrome.png') {
                             var a = document.createElement('a');
@@ -173,7 +173,7 @@ Ext.onReady(function() {
             }],
         //Para cuando de click a una de las filas se pasen los datos
         listeners: {
-            selectionchange: function(thisObject, selected, eOpts) {
+            selectionchange: function (thisObject, selected, eOpts) {
                 //console.log(selected[0]);
                 setActiveRecords(selected[0] || null);
             }
@@ -230,22 +230,18 @@ Ext.onReady(function() {
                         vtype: 'nombresApe',
                         allowBlank: false,
                         emptyText: 'Ingresar Apellidos...',
-                    }
-                    , {
-                        xtype: 'datefield',
-                        fieldLabel: '<b>Fecha de Nacimiento</b>',
+                    }, {
+                        fieldLabel: '<b>Email</b>',
+                        name: 'email',
                         afterLabelTextTpl: required,
                         blankText: 'Este campo es obligatorio',
-                        editable: false,
-                        value: edadDate,
-                        maxValue: edadDate,
-                        name: 'fechaNacimiento',
-                        format: 'Y-m-d',
-                        emptyText: 'Ingresar Fecha...',
-                    }]
+                        vtype: 'emailNuevo',
+                        emptyText: 'kradac@kradac.com'
+                    }
+                ]
             }, {
                 xtype: 'fieldset',
-                title: '<b>Contacto</b>',
+                title: '<b>Información</b>',
                 collapsible: true,
                 defaultType: 'textfield',
                 layout: 'anchor',
@@ -253,24 +249,30 @@ Ext.onReady(function() {
                     anchor: '100%'
                 },
                 items: [{
+                        xtype: 'datefield',
+                        fieldLabel: '<b>Fecha de Nacimiento</b>',
+//                        afterLabelTextTpl: required,
+//                        blankText: 'Este campo es obligatorio',
+                        editable: false,
+                        value: edadDate,
+                        maxValue: edadDate,
+                        name: 'fechaNacimiento',
+                        format: 'Y-m-d',
+                        emptyText: 'Ingresar Fecha...',
+                    }, {
                         fieldLabel: '<b>Dirección</b>',
                         name: 'direccion',
                         vtype: 'direccion',
                         emptyText: 'Ingresar Direccion...'
                     }, {
-                        fieldLabel: '<b>Email</b>',
-                        name: 'email',
-                        vtype: 'emailNuevo',
-                        emptyText: 'kradac@kradac.com'
-                    }, {
                         fieldLabel: '<b>Celular</b>',
                         name: 'celular',
                         vtype: 'numeroTelefono',
-                        emptyText: '0991540427 (10 digitos)'
+                        emptyText: 'Celular (09) Convencional (07)'
                     }]
             }],
         listeners: {
-            create: function(form, data) {
+            create: function (form, data) {
                 gridStorePerson.insert(0, data);
                 gridStorePerson.reload();
                 storeMails.reload();
@@ -286,7 +288,7 @@ Ext.onReady(function() {
                     {iconCls: 'icon-update', itemId: 'updatePerson', text: 'Actualizar', scope: this, tooltip: 'Actualizar Datos', handler: onUpdatePersona},
                     {iconCls: 'icon-user-add', itemId: 'createPerson', text: 'Crear', scope: this, tooltip: 'Crear Persona', handler: onCreatePersona},
                     {iconCls: 'icon-cleans', text: 'Limpiar', tooltip: 'Limpiar Campos', scope: this, handler: onResetPersona},
-                    {iconCls: 'icon-cancelar', tooltip: 'Cancelar', scope: this, handler: function() {
+                    {iconCls: 'icon-cancelar', tooltip: 'Cancelar', scope: this, handler: function () {
                             winAddPesonal.hide();
                         }}
                 ]
@@ -328,12 +330,12 @@ function ventAddPersonal() {
     var formPanelDropTargetEl = document.getElementById('panel-datos');
     var formPanelDropTarget = Ext.create('Ext.dd.DropTarget', formPanelDropTargetEl, {
         ddGroup: 'GridExample',
-        notifyEnter: function(ddSource, e, data) {
+        notifyEnter: function (ddSource, e, data) {
             // Añadir un poco de brillo al momento de entrar al contenedor
             formPersona.body.stopAnimation();
             formPersona.body.highlight();
         },
-        notifyDrop: function(ddSource, e, data) {
+        notifyDrop: function (ddSource, e, data) {
             // Referencia el record (seleccion simple) para facilitar lectura
             var selectedRecord = ddSource.dragData.records[0];
             setActiveRecords(selectedRecord || null);
@@ -403,7 +405,7 @@ function clearWinPersona() {
 }
 
 function onDeleteClicket() {
-    Ext.MessageBox.confirm('Atención!', 'Desea Eliminar a la persona', function(choice) {
+    Ext.MessageBox.confirm('Atención!', 'Desea Eliminar a la persona', function (choice) {
         if (choice === 'yes') {
             var selection = gridPersona.getView().getSelectionModel().getSelection()[0];
             if (selection) {

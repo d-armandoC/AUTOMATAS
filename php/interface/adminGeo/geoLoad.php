@@ -31,7 +31,7 @@ for ($i = 0; $i < count($resulset); $i++) {
     $salida .= "{
             'id_geocerca':" . $fila["id_geocerca"] . ",
             'geocerca':'" . utf8_encode($fila["geocerca"]) . "',
-            'desc_geo':'" . utf8_encode($fila["descripcion"]) . "',
+            'desc_geo':'" .$fila["descripcion"] . "',
             'empresa':'" . utf8_encode($fila["empresa"]) . "',
             'id_empresa':'" . utf8_encode($fila["id_empresa"]) . "'
         }";

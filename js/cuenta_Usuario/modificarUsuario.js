@@ -16,6 +16,7 @@ Ext.onReady(function() {
                         xtype: 'label',
                         afterLabelTextTpl: required,
                         name: 'mensaje1',
+                        vtype:'camposTamanio',
                         text: 'Usuario actual:',
                         id: 'id_mensaje1',
                     },
@@ -24,6 +25,7 @@ Ext.onReady(function() {
                         xtype: 'label',
                         afterLabelTextTpl: required,
                         name: 'usuario_actual',
+                        vtype:'camposTamanio',
                         text: userKarview,
                         id: 'id_usuario',
                         anchor: '100%'
@@ -36,6 +38,7 @@ Ext.onReady(function() {
                         itemId: 'n_usuario',
                         blankText: 'Este campo es obligatorio',
                         id: 'new_user',
+                        vtype:'camposTamanio',
                         emptyText: 'Ingrese nuevo usuario...',
                         allowBlank: false,
                         anchor: '100%'
@@ -49,7 +52,7 @@ Ext.onReady(function() {
                         blankText: 'Este campo es obligatorio',
                         itemId: 'conf_usuario',
                         id: 'id_usuarioNuevo',
-                        vtype: 'usuarios',
+                        vtype:'camposTamanio',
                         emptyText: 'Confirme usuario...',
                         initialPassField: 'n_usuario',
                         anchor: '100%'

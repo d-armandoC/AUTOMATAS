@@ -31,7 +31,6 @@ if (!$mysqli = getConectionDb()) {
             if (!$mysqli->query($insertSql)) {
                 echo "{failure: true, msg: 'Problemas al modificar en la base de datos.'}";
             } else {
-
                 echo '{success: true, msg: "Usuario modificado correctamente."}';
                 $_SESSION["USERKARVIEW"] = $confirm_usuario;
             }

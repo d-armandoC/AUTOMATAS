@@ -384,7 +384,7 @@ Ext.onReady(function () {
                             failure: function (form, action) {
                                 Ext.MessageBox.show({
                                     title: 'Información',
-                                    msg: action.result.msg,
+                                    msg: "No hay datos en estas Fechas",
                                     buttons: Ext.MessageBox.OK,
                                     icon: Ext.MessageBox.INFO
                                 });

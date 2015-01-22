@@ -27,6 +27,7 @@ if (!$mysqli = getConectionDb()) {
         $consultaSql1 = "SELECT sk.id_equipo,count(*) as total, v.placa,e.empresa,  concat(p.nombres,' ', p.apellidos)as persona FROM karviewhistoricodb.dato_spks  sk,karviewdb.vehiculos v ,karviewdb.empresas e,karviewdb.personas p where v.id_Vehiculo='$cbxVeh' and sk.id_equipo=v.id_equipo  and v.id_empresa='$idCompanyPanico'and v.id_empresa=e.id_empresa and v.id_persona=p.id_persona and sk.id_sky_evento='2' and  sk.fecha between '$fechaIni' and '$fechaFin'  and sk.hora between '$horaIniPanico' and '$horaFinPanico' group by sk.id_equipo";
         $result1 = $mysqli->query($consultaSql1);
         if ($result1->num_rows > 0) {
+            $json = "data: [";
             while ($myrow = $result1->fetch_assoc()) {
                 $json .= "{"
                         . "empresaPanicos:'" . utf8_encode($myrow["empresa"]) . "',"

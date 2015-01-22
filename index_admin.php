@@ -21,15 +21,13 @@
         <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/ux/grid/css/GridFilters.css">
         <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/ux/grid/css/RangeMenu.css">
         <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/shared/example.css">
+        <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/ux/css/ItemSelector.css"> 
+        
         <link rel="stylesheet" type="text/css" href="css/principal.css">        
-
-        
-        
-        
+    
         <script type="text/javascript" src="extjs-docs-5.0.0/extjs-build/build/examples/shared/include-ext.js"></script>
         <script type="text/javascript" src="extjs-docs-5.0.0/extjs-build/build/examples/shared/examples.js"></script>
-
-       
+   
        
        <script type="text/javascript" src="extjs-docs-5.0.0/extjs-build/build/packages/ext-charts/build/ext-charts.js"></script>
        
@@ -45,10 +43,11 @@
                 ";
             ?>
         </script>
-<!--        <script type="text/javascript" src="js/ext-lang-es.js">  </script>-->
+        <!--<script type="text/javascript" src="js/ext-lang-es.js">  </script>-->
         <script type="text/javascript" src="js/requerid/functions.js"></script>
         <script type="text/javascript" src="js/roles/admin.js"></script>
       
+         <script type="text/javascript" src="js/requerid/stores.js"></script>
 
         <script type="text/javascript" src="js/administracion/ventanaPersonal.js"></script>
         <script type="text/javascript" src="js/administracion/ventanaEmpresa.js"></script>
@@ -100,7 +99,7 @@
        <script type="text/javascript" src="js/extra/ventanaVideos.js"></script>
            <!--Dependencias-->
         
-        <script type="text/javascript" src="js/requerid/stores.js"></script>
+<!--        <script type="text/javascript" src="js/requerid/stores.js"></script>-->
         <!--Fin Dependencias-->
         
     

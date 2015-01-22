@@ -85,8 +85,7 @@ Ext.onReady(function () {
             {name: 'descripSeguro', type: 'string'},
             {name: 'fechaSeguroReg', type: 'date', dateFormat: 'c'},
             {name: 'fechaSeguroVenc', type: 'date', dateFormat: 'c'},
-            {name: 'estandar', type: 'string',
-            }
+            {name: 'estandar', type: 'string'}
         ]
     });
     // crea los datos del store
@@ -139,6 +138,7 @@ Ext.onReady(function () {
                                         idEstandar: records[0].data.id
                                     },
                                     success: function (form, action) {
+                                        console.log('HHHHHHHHHHHHH');
                                         //obtener datos
                                         var resultado = action.result;
                                         //habilitar campos
@@ -223,6 +223,7 @@ Ext.onReady(function () {
                     seleccionado = selected[0];
                     //cargo la lista de los estandares del vehiculo seleccionado
                     var lista = seleccionado.data.estandar.split(',');
+                    console.log("Lista: "+lista);
                     var listaStandar = '';
                     for (var i = 0; i < lista.length - 1; i++) {
                         if (i === lista.length - 2) {
@@ -282,12 +283,6 @@ Ext.onReady(function () {
                     formRecordsVehiculosPost.down('#updateVeh').enable();
                     formRecordsVehiculosPost.down('#createVeh').disable();
                     formRecordsVehiculosPost.down('#deleteVeh').enable();
-//                  servicioSeleccionado = false;
-//                Ext.getCmp('mt').disable();
-//                Ext.getCmp('mk').disable();
-//                Ext.getCmp('mtyk').disable();
-//                Ext.getCmp('mtok').disable();
-//                Ext.getCmp('idReparacion').toggle();
                 }
             }
         }
@@ -296,8 +291,10 @@ Ext.onReady(function () {
         width: '25%',
         margins: '0 2 0 0',
         region: 'west',
+        split: true,
+        layout: 'accordion',
+        collapsible: true,
         height: 570,
-        autoScroll: true,
         items: [gridRecordsVehiculosPost]
     });
     formRecordsVehiculosPost = Ext.create('Ext.form.Panel', {
@@ -309,7 +306,8 @@ Ext.onReady(function () {
         bodyStyle: 'padding: 10px; background-color: #DFE8F6',
         labelWidth: 40,
         hight: 150,
-        margins: '3 0 0 3',
+        padding: '0 0 2 2',
+//        margins: '3 0 0 3',
         items: [
             {
                 xtype: 'fieldset',
@@ -1105,7 +1103,7 @@ function ventAddMantenimientosPost() {
             title: ' Mantenimiento',
             iconCls: 'icon-mantenimiento',
             resizable: false,
-            width: 1198,
+            width: 1190,
             height: 562,
             closeAction: 'hide',
             plain: false,

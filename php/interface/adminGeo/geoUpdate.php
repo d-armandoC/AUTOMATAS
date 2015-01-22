@@ -17,22 +17,34 @@ if (!$mysqli = getConectionDb()) {
             return $mysqli;
         }
     }
-
-    function pasosInsersion($idGeo,$geocerca, $idempresa, $desc_geo, $area, $vehiculolist, $coord) {
-
-        
-        
+    
+//    idGeo:1
+//coord:
+//area:
+//vehiculolist:31
+//vehiculolist:47
+//vehiculolist:38
+//vehiculolist:48
+//vehiculolist:37
+//idempresa:
+//geocerca:Geocerca 1
+//areaGeocerca:15000480.99
+//cbxEmpresasV:KRADAC
+//desc_geo:datos de geocerca
+//listVehiGeos:31,47,38,48,37
+    
+    function pasosInsersion($idGeo,$geocerca, $cbxEmpresasV, $desc_geo, $area, $listVehiGeos, $coord) {
         
         //Modificacion de GeoCerca. Datos iniciales
         $consultaSql2 = "UPDATE GEOCERCAS SET geocerca='$geocerca', descripcion='$desc_geo', area='$area'
-         WHERE id_geocerca='$idGeo' and id_empresa='$idempresa'";
+         WHERE id_geocerca='$idGeo' and id_empresa='$cbxEmpresasV'";
         coneccion()->query($consultaSql2);
         
 ////     Eliminar vehiculos existentes
         $consultaSql = "DELETE FROM geocerca_vehiculos WHERE id_geocerca='$idGeo'";
         coneccion()->query($consultaSql);
 //        //Vinculación de nuevos Vehículos
-        $vehVector = explode(",", $vehiculolist);
+        $vehVector = explode(",", $listVehiGeos);
         for ($i = 0; $i < count($vehVector); $i++) {
             //Extracción ID de vehículo según ID de equipo
             $consultaSql3 = "INSERT INTO geocerca_vehiculos (id_geocerca,id_vehiculo)
@@ -53,7 +65,7 @@ if (!$mysqli = getConectionDb()) {
         return 1;
     }
 
-    $est = pasosInsersion($idGeo,$geocerca, $idempresa, $desc_geo, $area, $vehiculolist, $coord);
+    $est = pasosInsersion($idGeo,$geocerca, $idempresa, $desc_geo, $area, $listVehiGeos, $coord);
     if ($est == 0) {
         echo "{success:false}";
     } else {

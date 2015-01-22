@@ -22,9 +22,15 @@ if (!$mysqli = getConectionDb()) {
         $haveData = true;
         $objJson = "countByMantenimiento : [";
         while ($myrow = $result->fetch_assoc()) {
+            $fechaRegSoat = "NO";
             $fechaFinSoat = "NO";
+             
+            $fechaRegMatricula = "NO";
             $fechaFinMatricula = "NO";
+             
+            $fechaRegSeguro = "NO";
             $fechaFinSeguro = "NO";
+            
             $consultarRegiSoat = "SELECT rgm.fechaRegistro, rgm.fechaVencimiento FROM karviewdb.registros_mantenimiento rgm where rgm.id_vehiculo='" . $myrow["id_vehiculo"] . "' and rgm.id_registro =1;";
             $consultarRegiMatricula = "SELECT rgm.fechaRegistro, rgm.fechaVencimiento FROM karviewdb.registros_mantenimiento rgm where rgm.id_vehiculo='" . $myrow["id_vehiculo"] . "' and rgm.id_registro =2;";
             $consultarRegiSeguro = "SELECT rgm.fechaRegistro, rgm.fechaVencimiento FROM karviewdb.registros_mantenimiento rgm where rgm.id_vehiculo='" . $myrow["id_vehiculo"] . "' and rgm.id_registro =3;";
@@ -34,14 +40,17 @@ if (!$mysqli = getConectionDb()) {
 
             if ($resultRegiSoat->num_rows > 0) {
                 $rowRegiSoat = $resultRegiSoat->fetch_assoc();
+                $fechaRegSoat = $rowRegiSoat["fechaRegistro"];
                 $fechaFinSoat = $rowRegiSoat["fechaVencimiento"];
             }
             if ($resultRegiMatricula->num_rows > 0) {
                 $rowRegiMatricula = $resultRegiMatricula->fetch_assoc();
+                $fechaRegMatricula = $rowRegiMatricula["fechaRegistro"];
                 $fechaFinMatricula = $rowRegiMatricula["fechaVencimiento"];
             }
             if ($resultRegiSeguro->num_rows > 0) {
                 $rowRegiSeguro = $resultRegiSeguro->fetch_assoc();
+                $fechaRegSeguro = $rowRegiSeguro["fechaRegistro"];
                 $fechaFinSeguro = $rowRegiSeguro["fechaVencimiento"];
             }
             $objJson .= "{"
@@ -49,13 +58,13 @@ if (!$mysqli = getConectionDb()) {
                     . "empresa:'" . $myrow["empresa"] . "',"
                     . "vehiculo:'" . $myrow["placa"] . " " . $myrow["marca"] . "',"
                     . "total:" . $myrow["totalMantenimiento"] . ","
-                    . "fechaSoatReg:'" . $myrow["fechaSoatReg"] . "',"
+                    . "fechaSoatReg:'" . $fechaRegSoat . "',"
                     . "fechaSoatVenc:'" . $fechaFinSoat . "',"
                     . "descripSoat:'" . $myrow["descripSoat"] . "',"
-                    . "fechaMatriculaReg:'" . $myrow["fechaMatriculaReg"] . "',"
+                    . "fechaMatriculaReg:'" . $fechaRegMatricula . "',"
                     . "fechaMatriculaVenc:'" . $fechaFinMatricula . "',"
                     . "descripMatricula:'" . $myrow["descripMatricula"] . "',"
-                    . "fechaSeguroReg:'" . $myrow["fechaSeguroReg"] . "',"
+                    . "fechaSeguroReg:'" . $fechaRegSeguro . "',"
                     . "fechaSeguroVenc:'" . $fechaFinSeguro . "',"
                     . "descripSeguro:'" . $myrow["descripSeguro"] . "'"
                     . "},";

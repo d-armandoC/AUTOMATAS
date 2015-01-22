@@ -177,13 +177,21 @@ Ext.onReady(function () {
         campos: function (val, field) {
             if (!/^[-0-9.A-Z.a-z./áéíóúñÑ\s*]{2,45}$/.test(val)) {
                 return false;
-
             }
-
             return true;
             Ext.Msg.alert('Error', 'Solo carateres alfa numéricos');
         },
         camposText: 'Solo carateres alfa numéricos<br> Tamaño min de 2 y un máx de 45 carateres',
+        
+         camposTamanio: function (val, field) {
+            if (!/^[-0-9.A-Z.a-z./áéíóúñÑ%_?¿!\s*]{3,45}$/.test(val)) {
+                return false;
+            }
+            return true;
+            Ext.Msg.alert('Error', 'Solo carateres alfa numéricos');
+        },
+        camposTamanioText: 'Solo carateres alfa numéricos<br> Tamaño min de 2 y un máx de 45 carateres',
+        
         usuario: function (val, field) {
             if (!/^[0-9.A-Z.a-z.áéíóúñÑ\s]{2,45}$/.test(val)) {
                 return false;
@@ -328,7 +336,7 @@ Ext.onReady(function () {
         camposRegMunText: 'Solo carateres alfa numéricos,y guiones <br> Tamaño min de 5 y un máx de 10 carateres'
 
     });
-////////////
+
     Ext.tip.QuickTipManager.init();
 
     menuCoop = Ext.create('Ext.menu.Menu', {
@@ -907,6 +915,7 @@ Ext.onReady(function () {
         layout: 'border',
         items: [panelMenu, panelEste, panelCentral]
     });
+    
     storeEmpresas.load();
 
     if (connectionMap()) {

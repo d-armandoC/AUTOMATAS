@@ -16,8 +16,8 @@ if (!$mysqli = getConectionDb()) {
         $verty[$i] = $data[1];
     }
 
-    $consultaSql = "SELECT dskp.ID_EQUIPO, dskp.FECHA, dskp.HORA, dskp.VELOCIDAD, dskp.LATITUD, dskp.LONGITUD, dskp.bateria, dskp.IGN, dskp.GSM, dskp.GPS, dskp.G2
-	FROM karviewhistoricodb.dato_spks dskp WHERE FECHA = '$fecha'
+    $consultaSql = "SELECT eq.equipo, dskp.id_equipo, dskp.fecha, dskp.hora, dskp.velocidad, dskp.LATITUD, dskp.LONGITUD, dskp.bateria, dskp.IGN, dskp.GSM, dskp.GPS, dskp.G2
+	FROM karviewhistoricodb.dato_spks dskp, karviewdb.equipos  eq WHERE dskp.id_equipo=eq.id_equipo and  dskp.FECHA = '$fecha'
 	AND HORA BETWEEN '$horaIni' AND '$horaFin'";
     $result = $mysqli->query($consultaSql);
     $mysqli->close();
@@ -29,6 +29,7 @@ if (!$mysqli = getConectionDb()) {
             if (pointOnVertice($numVer, $verty, $vertx, $myrow["LATITUD"], $myrow["LONGITUD"])) {
                   $objJson .= "{"
                     . "idEquipo:" . $myrow["ID_EQUIPO"] . ","
+                    . "idEquipoV:" . $myrow["equipo"] . ","
                     . "fecha_hora:'" .$myrow["FECHA"] . ' ' . $myrow["HORA"]. "',"
                     . "velocidad:'" . $myrow["VELOCIDAD"] . "',"
                     . "latitud:'" . $myrow["LATITUD"] . "',"
@@ -46,7 +47,7 @@ if (!$mysqli = getConectionDb()) {
     if ($haveData) {
         echo "{success:true, string: " . json_encode($objJson) . "}";
     } else {
-        echo "{failure: true, msg: 'Problemas al Obtener los  Datos'}";
+        echo "{failure: true, msg: 'No existieron Datos'}";
     }
 }
 

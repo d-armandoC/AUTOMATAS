@@ -14,7 +14,7 @@ if (!$mysqli = getConectionDb()) {
     $miFila = $result->fetch_assoc();
     $persona = $miFila['id_persona'];
     if ($result->num_rows == 1) {
-        $insertSql = "UPDATE personas SET email='$new_email' where id_persona='$persona'";
+        $insertSql = "UPDATE personas SET correo='$new_email' where id_persona='$persona'";
         if (!$mysqli->query($insertSql)) {
             echo "{failure: true, msg: 'Problemas al modificar en la base de datos.'}";
         } else {
